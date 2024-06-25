@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- ====================================
+    ——— MODAL SECTION
+    ===================================== -->
+    <th:block  th:fragment="modalFragment">
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-label="signupModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header rounded">
+            <h3 class="modal-title text-uppercase font-weight-bold">Create your account</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form class="" action="index.html" method="post">
+              <div class="mb-3">
+                <input type="text" class="form-control bg-smoke" required="" placeholder="Full Name">
+              </div>
+    
+              <div class="mb-3">
+                <input type="email" class="form-control bg-smoke" required="" placeholder="Email">
+              </div>
+    
+              <div class="mb-3">
+                <input type="password" class="form-control bg-smoke" required="" placeholder="Password">
+              </div>
+    
+              <div class="mb-3 form-check mb-0">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label text-gray-color mb-3" for="exampleCheck1">
+                  I agree to the terms of use and privacy.
+                </label>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary text-uppercase">Login</button>
+              </div>
+    
+              <div class="text-uppercase text-center py-3">Or</div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-facebook text-uppercase text-white">Login with facebook</button>
+              </div>
+    
+            </form>
+          </div>
+    
+          <div class="modal-footer justify-content-center">
+            <p class="mb-1">Don’t have an Account?>
+            <a href="javascript:void(0)">회원가입</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-label="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header rounded">
+            <h3 class="modal-title text-uppercase font-weight-bold">로그인</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form class="" action="index.html" method="post">
+              <div class="mb-3">
+                <input type="email" class="form-control bg-smoke" required="" placeholder="Email">
+              </div>
+
+              <div class="mb-3">
+                <input type="password" class="form-control bg-smoke" required="" placeholder="Password">
+              </div>
+
+              <div class="mb-3 form-check mb-0">
+                <!-- <input type="checkbox" class="form-check-input" id="exampleCheck2">
+                <label class="form-check-label text-gray-color mb-3" for="exampleCheck2">
+                  Remember me
+                </label> -->
+                 <p class="mb-1"><a href="javascript:void(0)">아이디 찾기</a></p>
+                 <a>	|	</a>
+                <p class="mb-1"><a href="javascript:void(0)">비밀번호 찾기</a></p>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-block text-uppercase">로그인</button>
+              </div>
+
+<!--               <div class="text-uppercase text-center py-3">Or</div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-facebook btn-block text-uppercase text-white">Login with facebook</button>
+              </div>
+ -->
+            </form>
+          </div>
+
+          <div class="modal-footer justify-content-center">
+            <!-- <p class="mb-1"><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#signup">회원가입</a></p> -->
+            <p class="mb-1"><a href="/member/member_login_terms_mem">회원가입</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOG IN MODAL -->
+    <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-label="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-uppercase">Log in to your account</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <input type="text" class="form-control" id="recipient-name1" placeholder="Email">
+              </div>
+
+              <div class="mb-3">
+                <input type="text" class="form-control" id="recipient-name2" placeholder="Password">
+              </div>
+
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck3">
+
+                <label class="form-label form-check-label d-flex align-items-center justify-content-between"
+                  for="exampleCheck3"><span>Remember Me </span><a class="" href="javascript:void(0)">Fogot Password?</a>
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary text-uppercase">Login</button>
+
+              <div class="text-uppercase text-center">
+                Or
+              </div>
+
+              <button type="submit" class="btn btn-primary text-uppercase">Login with facebook</button>
+            </form>
+          </div>
+
+          <div class="modal-footer justify-content-center">
+            <p class="">Don’t have an Account?<a href="javascript:void(0)"> Sign up</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+</th:block>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAL 회원가입 폼</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}" >
+</head>
+<body>
+    <div class="member-insert-form-body">
+    <div class="member-insert-form">
+       <!-- 로고 -->		
+		<a href="/member/member_main" class="logo">
+			<img th:src="@{/assets/img/pal_logo.png}" alt="IMG-LOGO">
+		</a>
+        
+        <div class="login-insert-field">
+            <b>반려동물이름</b>
+            <input type="text">
+        </div>
+
+ 		<!-- 4. 필드(성별) -->
+        <b>성별</b>
+        <div class="login-insert-field-button">
+		    <button class="login-insert-field-button-child">남자</button>
+		    <button class="login-insert-field-button-child">여자</button>
+		    <button class="login-insert-field-button-child">선택안함</button>
+		</div>
+
+
+        <!-- 3. 필드(생년월일) -->
+        <div class="login-insert-field birth">
+            <b>생년월일</b>
+            <div>
+                <input type="number" placeholder="년(4자)">                
+                <select>
+                    <option value="">월</option>
+                    <option value="">1월</option>
+                    <option value="">2월</option>
+                    <option value="">3월</option>
+                    <option value="">4월</option>
+                    <option value="">5월</option>
+                    <option value="">6월</option>
+                    <option value="">7월</option>
+                    <option value="">8월</option>
+                    <option value="">9월</option>
+                    <option value="">10월</option>
+                    <option value="">11월</option>
+                    <option value="">12월</option>
+                </select>
+                <input type="number" placeholder="일">
+            </div>
+        </div>
+
+       
+		<!-- 5. 이메일_전화번호 -->
+        <div class="login-insert-field">
+            <b>몸무게(kg)<!-- <small>(선택)</small> --></b>
+            <input type="number">
+        </div>
+
+		<div class="login-insert-field birth">
+            <b>분류(강)</b>
+            <div>
+                <select>
+                    <option value="">분류</option>
+                    <option value="">포유류</option>
+                    <option value="">조류</option>
+                    <option value="">파충류</option>
+                    <option value="">어류</option>
+                    <option value="">양서류</option>
+                </select>
+                <input type="text" placeholder="종">           
+                <input type="text" placeholder="품종">
+            </div>
+        </div>
+
+
+		<!-- 4. 필드(반려동물 유무) -->
+        <b>중성화 여부</b>
+		<div class="login-insert-field-button">
+			<button class="login-insert-field-button-child">있다</button>
+		    <button class="login-insert-field-button-child">없다</button>
+		</div>
+        
+        <!-- 4. 필드(반려동물 유무) -->
+        <b>기타 수술 여부</b>
+		<div class="login-insert-field-button">
+			<button class="login-insert-field-button-child">있다</button>
+		    <button class="login-insert-field-button-child">없다</button>
+		</div>
+		
+		
+		<!-- 4. 필드(반려동물 유무) -->
+        <b>복용중인 약</b>
+		<div class="login-insert-field-button">
+			<button class="login-insert-field-button-child">있다</button>
+		    <button class="login-insert-field-button-child">없다</button>
+		</div>
+
+		<b>약 상세</b>
+		<input type="text" placeholder="선택사항">
+		
+		<b>기타</b>
+		<input type="text" placeholder="선택사항">            
+
+        <!-- 6. 가입하기 버튼 -->
+        <input type="submit" value="가입하기">
+
+        <!-- 7. 푸터 -->
+        <div class="member-insert-form-footer">
+            <div>
+                <a href="#none">이용약관</a>
+                <a href="#none">개인정보처리방침</a>
+                <a href="#none">회원정보 고객센터</a>
+            </div>
+            <span><a href="#none">PALCorp.</a></span>
+        </div>
+    </div>
+</div>
+</body>
