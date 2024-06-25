@@ -10,7 +10,7 @@ message.txt
 -->
 <configuration>
 	<!-- 변수 지정 -->
-    <property name="LOG_DIR" value="/home/pal/logs" />
+    <property name="LOG_DIR" value="/home/ks51team03/logs" />
     <property name="LOG_PATH_NAME" value="${LOG_DIR}/application.log" />
 	
 	<!-- ConsoleAppender -->
