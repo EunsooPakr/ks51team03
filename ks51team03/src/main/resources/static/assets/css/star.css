@@ -9685,6 +9685,11 @@ textarea.form-control-lg {
   padding-bottom: 6.25rem !important;
 }
 
+.py-12 {
+  padding-top: 12rem !important;
+  padding-bottom: 6.25rem !important;
+}
+
 .pt-0 {
   padding-top: 0 !important;
 }
@@ -16762,6 +16767,7 @@ a.hover-text-gray-color:hover, a.hover-text-gray-color:focus {
 
 
 /* /* Header
+/* Header
 .header {
   position: relative;
 }
@@ -16783,6 +16789,7 @@ Top bar
   padding-top: 1.0625rem;
   padding-bottom: 1.125rem;
 } */ */
+} */
 
 
 
