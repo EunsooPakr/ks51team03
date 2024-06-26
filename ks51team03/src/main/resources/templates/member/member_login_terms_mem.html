@@ -23,7 +23,7 @@
             <ul class="clearfix" >
                 <li>이용약관, 개인정보 수집 및 이용, 위치정보 이용약관(선택), 프로모션 안내 메일 수신(선택)에 모두 동의합니다.</li>
                 <li class="checkAllBtn">
-                    <input type="checkBox" name="chkAll" id="chk" class="chkAll">
+                    <input type="checkBox" name="chkAll" id="chkAll" class="chkAll">
                 </li>
             </ul>
         </li>
@@ -65,10 +65,45 @@
     </ul>
     <ul class="terms-agree-btn clearfix">
         <li><button class="terms-agree-disagree-btn">비동의</button></li>
-        <li><button class="terms-agree-agree-btn">동의</button></li>
+        <li><button class="terms-agree-agree-btn" id="agreeBtn">동의</button></li>
     </ul>
     <br><br>
 </form>
 </div>
 </body>
+
+	<script th:inline="javascript">
+			 // '전체 동의' 체크박스 클릭 시 처리할 함수
+		    document.getElementById('chkAll').addEventListener('click', function() {
+		        var isChecked = this.checked;
+		        var checkboxes = document.querySelectorAll('input[type="checkbox"]:not(#chkAll)');
+		
+		        checkboxes.forEach(function(checkbox) {
+		            checkbox.checked = isChecked;
+		        });
+		    });
+	 
+	        // '동의' 버튼 클릭 시 처리할 함수
+	        document.getElementById('agreeBtn').addEventListener('click', function(event) {
+	            event.preventDefault(); // 기본 동작 방지
+	
+	            // 모든 체크박스 확인
+	            var checkboxes = document.querySelectorAll('input[type="checkBox"]');
+	            var allChecked = true;
+	
+	            checkboxes.forEach(function(checkbox) {
+	                if (!checkbox.checked) {
+	                    allChecked = false;
+	                }
+	            });
+	
+	            // 모든 체크박스가 체크되어 있으면 다음 페이지로 이동
+	            if (allChecked) {
+	                window.location.href = '/member/member_login_insert_mem'; // 다음 페이지 URL 입력
+	            } else {
+	                alert('모든 약관에 동의해야 합니다.'); // 모든 체크박스가 체크되지 않은 경우 경고 메시지 표시
+	            }
+	        });
+	    </script>
 </html>
+
