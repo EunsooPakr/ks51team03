@@ -12,7 +12,10 @@
 						<div class="content-topbar flex-sb-m h-full container">
 							<div class="left-top-bar">
 								<!-- <a href="#">로그인</a> -->
-								<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#login">로그인</a>
+<!-- 								<a th:if="${session.SID == null}" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#login">로그인</a> -->
+<!-- 								<a th:if="${session.SID == null}" th:href="@{/member/login}" data-bs-toggle="modal" data-bs-target="#login">로그인</a> -->
+								<a th:if="${session.SID == null}" th:href="@{/member/login}" data-bs-toggle="modal" data-bs-target="#login">로그인</a>
+								<a th:unless="${session.SID == null}" th:href="@{/member/logout}">로그아웃</a>
 							</div>
 
 							<div class="right-top-bar flex-w h-full">
@@ -86,8 +89,5 @@
 				</nav>
 			</div>	
 		</div>
-		
-		
 </header>
-
 </html>

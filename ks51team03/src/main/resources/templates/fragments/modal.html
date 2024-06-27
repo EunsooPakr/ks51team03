@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- ====================================
     ——— MODAL SECTION
     ===================================== -->
     <th:block  th:fragment="modalFragment">
+    <h1 th:text="${title}"></h1>
     <!-- Signup Modal:아이디 찾기 -->
-    <div class="modal fade" id="findId" tabindex="-1" role="dialog" aria-label="signupModalLabel" aria-hidden="true">
+    <div class="modal fade" id="findId" tabindex="-1"  role="dialog" aria-label="signupModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header rounded">
@@ -128,40 +130,77 @@
 
 
     <!-- Login Modal:로그인 화면 -->
-    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-label="loginModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header rounded">
-            <h3 class="modal-title text-uppercase font-weight-bold">로그인</h3>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
+	<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-label="loginModalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+	        <div class="modal-content">
+	            <div class="modal-header rounded">
+	                <h3 class="modal-title text-uppercase font-weight-bold">로그인</h3>
+	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	            </div>
+	
+	            <div class="modal-body">
+	                <form id="loginForm" th:action="@{/member/login}" method="post">
+	                    <div class="mb-3">
+	                        <input type="text" id="memberId" name="memberId" th:value="${memberId}" class="form-control bg-smoke" required="" placeholder="Id">
+	                    </div>
+	
+	                    <div class="mb-3">
+	                        <input type="password" id="memberPw" name="memberPw" class="form-control bg-smoke" required="" placeholder="Password">
+	                    </div>
+	
+	                    <div class="mb-3 form-check mb-0">
+	                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#findId">아이디 찾기</a>
+	                        <a> | </a>
+	                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#findPw">비밀번호 찾기</a>
+	                        <a> | </a>
+	                        <a href="/member/member_login_terms_mem">회원가입</a>
+	                    </div>
+	
+	                    <div class="d-grid">
+	                        <button type="button" id="loginBtn" class="btn btn-primary btn-block text-uppercase">로그인</button>
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	</th:block>
+	
+	<th:block layout:fragment="customJsFile">
+			<!-- <script th:src="@{/assets/js/jquery-3.7.1.js}"></script> -->
+			<script th:src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	</th:block>
+		
+	<th:block layout:fragment="customJs">
+    <script th:inline="javascript">
+        const msg = [[${msg}]];
+        if(msg) alert(msg);
+       
+        // 로그인 버튼 클릭 시
+        $('#loginBtn').click(function(event){
+        	 console.log("확인!!!");
+            event.preventDefault(); // 기본 동작 방지 (폼 서브밋 차단)
 
-          <div class="modal-body">
-            <form class="" action="index.html" method="post">
-              <div class="mb-3">
-                <input type="email" class="form-control bg-smoke" required="" placeholder="Id">
-              </div>
+            let isSubmit = true;
 
-              <div class="mb-3">
-                <input type="password" class="form-control bg-smoke" required="" placeholder="Password">
-              </div>
+            $('#loginForm input').each(function (idx, element){
+                const id = element.id;
+                const value = $(element).val().trim(); // 값 가져오기 (공백 제거)
 
-              <div class="mb-3 form-check mb-0">
-                 <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#findId">아이디 찾기</a>
-                 <a>	|	</a>
-                 <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#findPw">비밀번호 찾기</a>
-                 <a>	|	</a>
-                 <a href="/member/member_login_terms_mem">회원가입</a>
-              </div>
+                if(value === ''){
+                    const cate = $(`label[for="${id}"]`).text();
+                    alert(`${cate} 항목은 필수입력항목입니다.`);
+                    $(element).focus();
+                    isSubmit = false;
+                    return false;
+                }
+            });
 
-              <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-block text-uppercase">로그인</button>
-              </div>
-              </form>
-              </div>
-        </div>
-      </div>
-    </div>
-</th:block>
-
+            // 폼 서브밋
+            if(isSubmit) {
+                $('#loginForm').submit(); // 폼 서브밋
+            }
+        });
+    </script>
+	</th:block>
 </html>
