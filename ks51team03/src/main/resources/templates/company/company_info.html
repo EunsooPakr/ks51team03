@@ -12,7 +12,7 @@
         }
 
         .company_container {
-        	position: relative;
+            position: relative;
             max-width: 800px;
             top: 200px;
             margin: 0 auto;
@@ -31,24 +31,10 @@
             position: relative;
         }
 
-        .edit-button {
+        .edit-button, .delete-button, .role-edit-button {
             position: absolute;
             top: 10px;
             padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .delete-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 10px 20px;
-            background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 4px;
@@ -57,8 +43,27 @@
             font-size: 14px;
         }
 
-        .edit-button:hover ,.delete-button:hover{
+        .edit-button {
+            background-color: #007BFF;
+        }
+
+        .delete-button {
+            background-color: #007BFF;
+            right: 10px;
+        }
+
+        .role-edit-button {
+            background-color: #28a745;
+            top: 50px;
+            margin: 10px 0px 10px 0px;
+        }
+
+        .edit-button:hover, .delete-button:hover, .role-edit-button:hover {
             background-color: #0056b3;
+        }
+
+        .role-edit-button:hover {
+            background-color: #218838;
         }
 
         .content-section {
@@ -148,6 +153,7 @@
         <div class="content-section">
             <a th:href="@{company_modify}" class="edit-button">수정하기</a>
             <a th:href="@{company_delete}" class="delete-button">삭제하기</a>
+            <a th:href="@{employee_role_modify}" class="role-edit-button">직원 권한 수정하기</a>
             <h1 th:text="${businessName}">늘채움</h1>
             <p>
                 <span th:text="${category}">한식</span> ·

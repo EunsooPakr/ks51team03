@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ks51team03.company.mapper.CompanyMapper">
+
+	<resultMap type="ks51team03.member.dto.Member" id="memberResultMap">
+		<!-- pk, column -->
+		<id column="m_id" property="memberId"/>
+		<result column="m_pw" property="memberPw"/>
+		<result column="m_name" property="memberName"/>
+		<result column="m_level" property="memberLevel"/>
+		<result column="level_name" property="memberLevelName"/>
+		<result column="m_email" property="memberEmail"/>
+		<result column="m_addr" property="memberAddr"/>
+		<result column="m_reg_date" property="memberRegDate"/>
+	</resultMap>
+
+	<resultMap type="ks51team03.company.dto.Company" id="CompanyResultMap">
+		<id column="ccode" property="companyCode" />
+		<result column="com_class" property="companyClass" />
+		<result column="com_name" property="companyName" />
+		<result column="com_ceo" property="companyCeo" />
+		<result column="com_addr" property="companyAddr" />
+		<result column="com_addr_deta" property="companyAddrDeta" />
+		<result column="com_phone" property="companyPhone" />
+		<result column="com_stfcount" property="companyStfCount" />
+		<result column="com_email" property="companyEmail" />
+		<result column="com_parking" property="companyParking" />
+		<result column="com_page" property="companyPage" />
+		<result column="com_reg_date" property="companyRegDate" />
+		<association property="memberId" column="id" javaType="ks51team03.member.dto.Member" resultMap="memberResultMap" />
+	</resultMap>
+
+	<select id="getCompanyList" resultMap="CompanyResultMap">
+		SELECT
+		ccode,
+		com_class,
+		com_name,
+		com_ceo,
+		com_addr,
+		com_addr_deta,
+		com_phone,
+		com_stfcount,
+		com_email,
+		com_parking,
+		com_page,
+		com_reg_date,
+		id
+		FROM
+		company
+	</select>
+
+</mapper>
