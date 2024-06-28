@@ -17,7 +17,6 @@ public class Company {
     private boolean companyParking;
     private String companyPage;
     private String companyRegDate;
-
-    private Member memberId;
+    private String memberId;
 
 }

@@ -4,7 +4,7 @@
 		"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks51team03.company.mapper.CompanyMapper">
 
-	<resultMap type="ks51team03.member.dto.Member" id="memberResultMap">
+	<resultMap type="Member" id="memberResultMap">
 		<!-- pk, column -->
 		<id column="m_id" property="memberId"/>
 		<result column="m_pw" property="memberPw"/>
@@ -29,26 +29,47 @@
 		<result column="com_parking" property="companyParking" />
 		<result column="com_page" property="companyPage" />
 		<result column="com_reg_date" property="companyRegDate" />
-		<association property="memberId" column="id" javaType="ks51team03.member.dto.Member" resultMap="memberResultMap" />
+		<result column="id" property="memberId" />
+		<!-- <association property="memberId" column="id" javaType="ks51team03.member.dto.Member" resultMap="memberResultMap" /> -->
+	</resultMap>
+
+	<resultMap type="ks51team03.company.dto.ComMap" id="ComMapResultMap">
+		<id column="ccode" property="cCode"/>
+		<result column="cm_link" property="cmLink"/>
+		<result column="cm_x" property="cmX"/>
+		<result column="cm_y" property="cmY"/>
+		<result column="id" property="memberId"/>
+		<!-- <association property="memberId" column="id" javaType="ks51team03.member.dto.Member" resultMap="memberResultMap"/> -->
 	</resultMap>
 
 	<select id="getCompanyList" resultMap="CompanyResultMap">
 		SELECT
-		ccode,
-		com_class,
-		com_name,
-		com_ceo,
-		com_addr,
-		com_addr_deta,
-		com_phone,
-		com_stfcount,
-		com_email,
-		com_parking,
-		com_page,
-		com_reg_date,
-		id
+			ccode,
+			com_class,
+			com_name,
+			com_ceo,
+			com_addr,
+			com_addr_deta,
+			com_phone,
+			com_stfcount,
+			com_email,
+			com_parking,
+			com_page,
+			com_reg_date,
+			id
 		FROM
-		company
+			company
+		WHERE
+			com_class = #{keyword}
+	</select>
+
+	<select id="getComMapByCCode" resultMap="ComMapResultMap">
+		SELECT
+			c.ccode, c.cm_link, c.cm_x, c.cm_y, c.id
+		FROM
+			com_map AS c
+		WHERE
+			c.ccode = #{cCode}
 	</select>
 
 </mapper>
