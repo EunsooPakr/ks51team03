@@ -63,9 +63,9 @@
             </div>
           </div>
         </div>
-
-        <div class="row" th:if="${serviceListDto != null}" th:each="l : ${serviceListDto}" >
-          <div class="col-md-6 col-lg-4 mb-5">
+s
+        <div class="row" >
+          <div class="col-md-6 col-lg-4 mb-5" th:if="${serviceListDto != null}" th:each="l : ${serviceListDto}" >
             <div class="card card-hover">
               <a href="javascript:void(0)" class="position-relative">
                 <img class="card-img-top lazyestload" th:data-src="@{/assets/img/cars/car-img-01.jpg}" th:src="@{/assets/img/cars/car-img-01.jpg}" alt="Card image cap">
