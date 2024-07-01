@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<head>
+    <title>업체 목록</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .apply-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .settingContainer {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .py-13 {
+            padding-top: 16rem !important;
+            padding-bottom: 10.25rem !important;
+        }
+
+    </style>
+</head>
+
+<th:block layout:fragment="customContent">
+    <section class="bg-smoke py-13">
+        <div class="settingContainer">
+            <h2>업체 목록</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>업체 이름</th>
+                    <th>대표자 이름</th>
+                    <th>업체 주소</th>
+                    <th>업체 번호</th>
+                    <th>액션</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="company : ${companyList}">
+                    <td th:text="${company.companyName}"></td>
+                    <td th:text="${company.companyCeo}"></td>
+                    <td th:text="${company.companyAddr} + ' ' + ${company.companyAddrDeta}"></td>
+                    <td th:text="${company.companyPhone}"></td>
+                    <td>
+                        <form th:action="@{/company/staff/apply}" method="post">
+                            <input type="hidden" name="companyCode" th:value="${company.companyCode}" />
+                            <button type="submit" class="apply-btn">신청</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td>업체이름</td>
+                    <td>업체대표자이름</td>
+                    <td>주소123</td>
+                    <td>업체 번호</td>
+                    <td>
+                        <form method="post">
+                            <input type="hidden" name="companyCode"/>
+                            <button type="submit" class="apply-btn">신청</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</th:block>
+</html>

@@ -84,4 +84,9 @@ public class MapController {
 	public String companyInfo() {
 		return "map/map_company_info";
 	}
+
+	@GetMapping("/map/map_myQandR")
+	public String myQandR() {
+		return "map/map_myQandR";
+	}
 }

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .title-decoration h2 {
+      border-bottom: 2px solid white;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+
+    .category-select select {
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .post-list {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .post-title {
+      font-size: 20px;
+      color: #007BFF;
+      text-decoration: none;
+      margin: 0;
+    }
+
+    .post-title:hover {
+      text-decoration: underline;
+    }
+
+    .post-date {
+      color: #999;
+    }
+
+    .post-content {
+      margin-top: 10px;
+      color: #666;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .edit-button, .delete-button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 14px;
+      color: white;
+    }
+
+    .edit-button {
+      background-color: #28a745;
+    }
+
+    .delete-button {
+      background-color: #dc3545;
+    }
+
+    .edit-button:hover {
+      background-color: #218838;
+    }
+
+    .delete-button:hover {
+      background-color: #c82333;
+    }
+
+  </style>
+</head>
+
+<th:block layout:fragment="customContent" id="body" class="up-scroll">
+  <section class="bg-smoke py-12">
+    <div class="main-wrapper cars-list">
+      <section class="page-title">
+        <div class="page-title-img bg-img bg-overlay-darken" style="background-image: url(/assets/img/pages/page-title-bg15.jpg);">
+          <div class="container">
+            <div class="row align-items-center justify-content-center" style="height: 200px;">
+              <div class="col-lg-6">
+                <div class="page-title-content">
+                  <div class="title-border">
+                    <h2 class="text-uppercase text-white font-weight-bold">내가 쓴 글</h2>
+                  </div>
+                  <p class="text-white mb-0"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="bg-smoke">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="mb-md-6">
+            <div class="row align-items-center">
+              <div class="col-md-6 col-xl-4">
+                <div class="form-group mb-5 mb-md-0 bg-white">
+                  <div class="select-default select-category-2">
+                    <select class="select-option" id="postType">
+                      <option value="inquiry">내가 쓴 문의</option>
+                      <option value="review">내가 쓴 후기</option>
+                      <option value="community">내가 쓴 커뮤니티</option>
+                      <option value="comment">내가 쓴 댓글</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="bg-smoke" style="padding-bottom: 6.25rem !important;">
+    <div id="postContent">
+    </div>
+  </section>
+
+  <section class="pt-5 pt-md-7">
+    <div class="container">
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center align-items-center">
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0)" tabindex="-1">
+              <i class="fas fa-long-arrow-alt-left d-none d-md-inline-block me-md-1" aria-hidden="true"></i> Previous
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0)">Next
+              <i class="fas fa-long-arrow-alt-right d-none d-md-inline-block ms-md-1" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+</th:block>
+<th:block layout:fragment="customJs">
+    <script>
+      $(document).ready(function() {
+        function updateContent() {
+          const selectedValue = $('#postType').val();
+          console.log("postType changed:", selectedValue);
+          let content = '';
+          switch (selectedValue) {
+            case 'inquiry':
+              content = `
+          <div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+            <div class="media-body">
+              <div class="row">
+                <div class="col-md-7 col-xl-8 position-relative">
+                  <div class="post-header">
+                    <h4>
+                      <a class="post-title">문의 제목</a>
+                    </h4>
+                    <div class="post-date">
+                      <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
+                    </div>
+                  </div>
+                  <p class="post-content">문의 내용</p>
+                </div>
+                <div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+                  <div class="action-buttons">
+                    <button class="edit-button">수정</button>
+                    <button class="delete-button">삭제</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+              break;
+
+            case 'review':
+              content = `
+          <div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+            <div class="media-body">
+              <div class="row">
+                <div class="col-md-7 col-xl-8 position-relative">
+                  <div class="post-header">
+                    <h4>
+                      <a class="post-title">후기 제목</a>
+                    </h4>
+                    <div class="post-date">
+                      <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
+                    </div>
+                  </div>
+                  <p class="post-content">후기 내용</p>
+                  <p class="post-content">대상 업체</p>
+                  <img src="/path/to/image.jpg" alt="후기 이미지" />
+                </div>
+                <div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+                  <div class="action-buttons">
+                    <button class="edit-button">수정</button>
+                    <button class="delete-button">삭제</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+              break;
+
+            case 'community':
+              content = `
+          <div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+            <div class="media-body">
+              <div class="row">
+                <div class="col-md-7 col-xl-8 position-relative">
+                  <div class="post-header">
+                    <h4>
+                      <a class="post-title">글 제목</a>
+                    </h4>
+                    <div class="post-date">
+                      <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
+                    </div>
+                  </div>
+                  <p class="post-content">게시판 이름</p>
+                  <p class="post-content">글 내용</p>
+                  <p class="post-content">조회수: 123</p>
+                  <p class="post-content">댓글 수: 10</p>
+                </div>
+                <div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+                  <div class="action-buttons">
+                    <button class="edit-button">수정</button>
+                    <button class="delete-button">삭제</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+              break;
+
+            case 'comment':
+              content = `
+          <div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+            <div class="media-body">
+              <div class="row">
+                <div class="col-md-7 col-xl-8 position-relative">
+                  <div class="post-header">
+                    <h4>
+                      <a class="post-title">글 제목</a>
+                    </h4>
+                    <div class="post-date">
+                      <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
+                    </div>
+                  </div>
+                  <p class="post-content">댓글 내용</p>
+                </div>
+                <div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+                  <div class="action-buttons">
+                    <button class="edit-button">수정</button>
+                    <button class="delete-button">삭제</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+              break;
+          }
+
+          $('#postContent').html(content);
+        }
+        // select 요소의 값 변경 시 이벤트 처리
+        $('#postType').on('change', updateContent);
+        // 페이지 로드 시 '내가 쓴 문의' 이벤트 발생
+        $('#postType').val('inquiry').trigger('change');
+      });
+  </script>
+</th:block>
+</html>

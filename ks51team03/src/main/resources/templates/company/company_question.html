@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<head>
+    <title>문의 리스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .reply-btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .settingContainer {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .py-13 {
+            padding-top: 16rem !important;
+            padding-bottom: 10.25rem !important;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="customContent">
+    <section class="bg-smoke py-13">
+        <div class="settingContainer">
+            <h2>문의 리스트</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>카테고리</th>
+                    <th>문의자 아이디</th>
+                    <th>문의 내용</th>
+                    <th>문의 등록일</th>
+                    <th>답변</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="inquiry : ${inquiryList}">
+                    <td th:text="${inquiry.category}"></td>
+                    <td th:text="${inquiry.userId}"></td>
+                    <td th:text="${inquiry.content}"></td>
+                    <td th:text="${inquiry.regDate}"></td>
+                    <td>
+                        <form th:action="@{/company/inquiry/reply}" method="post">
+                            <input type="hidden" name="quesnum" th:value="${inquiry.quesnum}" />
+                            <button type="submit" class="reply-btn">답변하기</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td>병원행정</td>
+                    <td>id07</td>
+                    <td>병원언제열어요</td>
+                    <td>2024-07-01</td>
+                    <td>
+                        <form method="post">
+                            <input type="hidden" name="quesnum"/>
+                            <!-- <button type="submit" class="reply-btn">답변하기</button> -->
+                            <a th:href="@{/company/company_question_answer}">답변하기</a>
+                            <a th:href="@{/company/company_question_answer}">/수정하기</a>
+                            <a th:href="@{/company/company_question_answer}">/삭제하기</a>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</th:block>
+</html>

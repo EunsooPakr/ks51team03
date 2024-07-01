@@ -8,9 +8,11 @@
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             margin: 0;
-            padding: 20px;
         }
-
+        .py-13 {
+            padding-top: 14rem !important;
+            padding-bottom: 6.25rem !important;
+        }
         .form-container {
             max-width: 600px;
             margin: 0 auto;
@@ -72,6 +74,7 @@
 </head>
 
 <th:block layout:fragment="customContent">
+    <section class="bg-smoke py-13">
     <div class="form-container">
         <h2>업체 정보 수정</h2>
         <form action="">
@@ -123,6 +126,7 @@
             </div>
         </form>
     </div>
+    </section>
 </th:block>
 
 </html>

@@ -111,9 +111,11 @@
 </head>
 
 <th:block layout:fragment="customContent">
+    <section class="bg-smoke py-12">
     <div class="infocontainer">
         <div class="image-section" th:style="|background-image: url('${imageUrl}');|"></div>
         <div class="content-section">
+
             <h1 th:text="${businessName}">늘채움</h1>
             <p>
                 <span th:text="${category}">한식</span> ·
@@ -132,6 +134,7 @@
             </div>
         </div>
     </div>
+    </section>
 </th:block>
 
 </html>

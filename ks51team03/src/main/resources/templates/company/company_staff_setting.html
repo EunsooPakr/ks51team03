@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<head>
+    <title>직원 설정</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .accept-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .reject-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .settingContainer{
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="customContent">
+    <section class="bg-smoke py-12">
+        <div class="settingContainer">
+            <h2>직원 등록 요청 관리</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>회원 아이디</th>
+                    <th>회원 전화번호</th>
+                    <th>회원 이름</th>
+                    <th>액션</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="l : ${staffRequests}">
+                    <td th:text="${l.userId}"></td>
+                    <td th:text="${l.phoneNumber}"></td>
+                    <td th:text="${l.name}"></td>
+                    <td>
+                        <div class="action-buttons">
+                            <form th:action="@{/company/staff/accept}" method="post">
+                                <input type="hidden" name="requestId" th:value="${l.id}" />
+                                <button type="submit" class="accept-btn">수락</button>
+                            </form>
+                            <form th:action="@{/company/staff/reject}" method="post">
+                                <input type="hidden" name="requestId" th:value="${l.id}" />
+                                <button type="submit" class="reject-btn">거절</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>id7</td>
+                    <td>010-000-0007</td>
+                    <td>홍07</td>
+                    <td>
+                        <div class="action-buttons">
+                            <form method="post">
+                                <input type="hidden" name="requestId"/>
+                                <button type="submit" class="accept-btn">수락</button>
+                            </form>
+                            <form method="post">
+                                <input type="hidden" name="requestId"/>
+                                <button type="submit" class="reject-btn">거절</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</th:block>
+</html>

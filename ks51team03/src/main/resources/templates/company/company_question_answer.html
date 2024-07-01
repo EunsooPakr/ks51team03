@@ -8,16 +8,16 @@
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             margin: 0;
-            padding: 20px;
         }
 
         .form-container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 500px;
+
         }
 
         .form-container h2 {
@@ -42,22 +42,18 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-        }
-
-        .form-group input, .form-group select {
             width: 100%;
         }
 
         .form-group textarea {
             height: 150px;
             resize: vertical;
-            width: 100%;
         }
 
         .form-group button {
             width: 100%;
             padding: 10px;
-            background-color: #28a745;
+            background-color: #007BFF;
             border: none;
             color: #fff;
             font-size: 16px;
@@ -66,50 +62,53 @@
         }
 
         .form-group button:hover {
-            background-color: #218838;
+            background-color: #0056b3;
         }
 
-        .file-upload {
-            display: flex;
-            justify-content: space-between;
+        .form-group input[type="file"] {
+            padding: 3px;
+        }
+
+        .checkbox-container {
+            margin: 10px;
+            display: block;
             align-items: center;
         }
 
-        .file-upload input[type="file"] {
+        .checkbox-container label {
+            margin-bottom: 0; /* 라벨의 기본 하단 여백 제거 */
+            margin-left: 10px; /* 체크박스와 라벨 사이의 간격 */
+        }
+
+        .checkbox-container input[type="checkbox"] {
             width: auto;
-            margin-left: 10px;
+            margin-right: 10px;
         }
     </style>
 </head>
 
 <th:block layout:fragment="customContent">
     <section class="bg-smoke py-12">
-    <div class="form-container">
-        <h2>후기 작성</h2>
-        <form>
-            <div class="form-group">
-                <label for="rating">별점</label>
-                <select id="rating" name="rating" required>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
-            <div class="form-group file-upload">
-                <label for="image-upload">이미지 첨부</label>
-                <input type="file" id="image-upload" name="image-upload" accept="image/*">
-            </div>
-            <div class="form-group">
-                <label for="review-content">내용</label>
-                <textarea id="review-content" name="review-content" required></textarea>
-            </div>
-            <div class="form-group">
-                <button type="submit">후기 제출</button>
-            </div>
-        </form>
-    </div>
+        <div class="form-container">
+            <h2>답변 작성</h2>
+            <form>
+                <div class="form-group">
+                    <label for="inquiry-content">답변 내용</label>
+                    <textarea id="inquiry-content" name="inquiry-content" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="file-upload">파일 업로드</label>
+                    <input type="file" id="file-upload" name="file-upload" accept="image/*">
+                </div>
+                <div class="form-group checkbox-container">
+                    <label for="is-public">공개하기</label>
+                    <input type="checkbox" id="is-public" name="is-public">
+                </div>
+                <div class="form-group">
+                    <button type="submit">답변작성</button>
+                </div>
+            </form>
+        </div>
     </section>
 </th:block>
 

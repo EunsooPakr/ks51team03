@@ -11,10 +11,8 @@
             padding: 0;
         }
 
-        .company_container {
-            position: relative;
+        .infocontainer {
             max-width: 800px;
-            top: 200px;
             margin: 0 auto;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -148,12 +146,13 @@
 </head>
 
 <th:block layout:fragment="customContent">
-    <div class="company_container">
+    <section class="bg-smoke py-12">
+    <div class="infocontainer">
         <div class="image-section" th:style="|background-image: url('${imageUrl}');|"></div>
         <div class="content-section">
             <a th:href="@{company_modify}" class="edit-button">수정하기</a>
             <a th:href="@{company_delete}" class="delete-button">삭제하기</a>
-            <a th:href="@{employee_role_modify}" class="role-edit-button">직원 권한 수정하기</a>
+            <a th:href="@{company_staff_setting}" class="role-edit-button">직원 권한 수정하기</a>
             <h1 th:text="${businessName}">늘채움zz</h1>
             <p>
                 <span th:text="${category}">한식</span> ·
@@ -172,6 +171,7 @@
             </div>
         </div>
     </div>
+    </section>
 </th:block>
 
 </html>
