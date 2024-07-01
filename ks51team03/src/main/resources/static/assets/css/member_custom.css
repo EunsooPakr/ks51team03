@@ -262,6 +262,18 @@ a{
     flex:1;
 }
 
+.login-insert-field-id div {
+    display: flex;
+}
+
+.login-insert-field-id div input:nth-child(1){
+    flex:2;
+}
+
+.login-insert-field-id div input:nth-child(2){
+    flex:1;
+}
+
 .login-insert-field-button {
     overflow: hidden; /* float된 요소들을 포함하기 위해 부모 요소에 overflow 속성 추가 */
     text-align: center; /* 버튼을 가운데 정렬 */
@@ -296,6 +308,20 @@ a{
     background-color: lightsalmon; /* 마우스 오버 또는 포커스 시 배경색 변화 */
     color: #fff; /* 텍스트 색상 변경 */
 }
+
+/* 선택된 버튼에 대한 스타일 추가 */
+.gender-btn.active,
+.pet-btn.active {
+    background-color: lightsalmon;
+    color: #fff;
+}
+
+/* 선택된 버튼이 마지막 버튼일 경우 오른쪽 모서리 둥글기 제거 */
+.gender-btn.active:last-child,
+.pet-btn.active:last-child {
+    border-radius: 0;
+}
+
 
 .login-insert-field.gender div{
     border: 1px solid #dadada;
@@ -752,5 +778,5 @@ a{
 /*//////////////////////////////////////////////////////////////////
 [ header ]*/
 .list-unstyled li{
-	margin-right: 40px;
+	margin-right: 0px;
 }
