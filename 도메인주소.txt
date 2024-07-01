@@ -1,0 +1,8 @@
+[ 도메인 주소 ]
+
+https://petalllife.duckdns.org/
+
+
+[ 아이피 ]
+
+152.69.192.107

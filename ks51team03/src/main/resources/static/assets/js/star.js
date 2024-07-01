@@ -31,6 +31,23 @@
   });
   
   $(document).ready(function() {
+  $('.main-menu > li').hover(function() {
+    $(this).children('.sub-menu').css('transition','all 0.4s').css('-webkit-transition','all 0.4s').css('-o-transition','all 0.4s').css('-moz-transition','all 0.4s')
+    .css('visibility', 'visible').css('opacity', '1').css('display', 'block');
+  }, function() {
+    $(this).children('.sub-menu').css('transition','all 0.4s').css('-webkit-transition','all 0.4s').css('-o-transition','all 0.4s').css('-moz-transition','all 0.4s')
+	.css('visibility', 'hidden').css('opacity', '0').css('display', 'none');
+  });
+
+  // 자식 ul을 호버했을 때 hidden 처리
+  $('.sub-menu li').hover(function() {
+    $(this).children('.sub-menu')
+    .css('transition','all 0.4s').css('-webkit-transition','all 0.4s').css('-o-transition','all 0.4s').css('-moz-transition','all 0.4s')
+    .css('visibility', 'hidden').css('opacity', '0').css('display', 'none');
+  });
+});
+
+  $(document).ready(function() {
     $('.removeNav').on('click', function() {
       $('.dropdown').hide();
     });

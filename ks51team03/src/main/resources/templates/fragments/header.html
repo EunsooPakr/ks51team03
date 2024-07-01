@@ -12,7 +12,10 @@
 						<div class="content-topbar flex-sb-m h-full container">
 							<div class="left-top-bar">
 								<!-- <a href="#">로그인</a> -->
-								<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#login">로그인</a>
+<!-- 								<a th:if="${session.SID == null}" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#login">로그인</a> -->
+<!-- 								<a th:if="${session.SID == null}" th:href="@{/member/login}" data-bs-toggle="modal" data-bs-target="#login">로그인</a> -->
+								<a th:if="${session.SID == null}" th:href="@{/member/login}" data-bs-toggle="modal" data-bs-target="#login">로그인</a>
+								<a th:unless="${session.SID == null}" th:href="@{/member/logout}">로그아웃</a>
 							</div>
 
 							<div class="right-top-bar flex-w h-full">
@@ -62,12 +65,12 @@
 							</li>
 
 							<li>
-								<a href="product.html">지도검색</a>
+								<a th:href="@{/map/map_main}">지도검색</a>
 							</li>
 							<li>
 								<a href="shoping-cart.html">커뮤니티</a>
 								<ul class="sub-menu">
-									<li><a href="index.html">자유게시판</a></li>
+									<li><a href="/board/board_list_normal">자유게시판</a></li>
 									<li><a href="home-02.html">반려동물게시판</a></li>
 									<li><a href="home-03.html">질문게시판</a></li>
 									<li><a href="home-03.html">갤러리</a></li>
@@ -78,7 +81,7 @@
 								<a href="blog.html">이별준비</a>
 								<ul class="sub-menu">
 									<li><a th:href="@{/funeral/serviceList}">이별업체예약</a></li>
-									<li><a href="home-02.html">이별내역조회</a></li>
+									<li><a th:href="@{/funeral/funeral_confirm_payment}">이별내역조회</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -86,8 +89,5 @@
 				</nav>
 			</div>	
 		</div>
-		
-		
 </header>
-
 </html>

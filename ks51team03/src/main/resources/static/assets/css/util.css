@@ -37,7 +37,7 @@ ul, li {
 
 /*---------------------------------------------*/
 input, textarea, label {
-	display: block;
+	/* display: block; */
 	outline: none;
 	border: none;
 }
@@ -3710,5 +3710,5 @@ iframe {border: none;}
 
 /*---------------------------------------------*/
 .pointer-none {
-	pointer-events: none;
+	/*pointer-events: none;*/
 }
