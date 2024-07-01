@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+</head>
+
+<th:block layout:fragment="customContent">
+    <!-- ====================================
+    ——— ACCOUNT SETTINGS SECTION
+    ===================================== -->
+    <section class="py-12">
+        <div class="container">
+            <div class="bg-smoke p-2 p-md-6 pb-6 pb-md-8 mb-9 rounded">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <h3 class="text-uppercase mb-3">예약 상세 확인</h3>
+                                    <p class="text-primary mb-0">회원 정보</p>
+                                </div>
+
+                                <form action="" method="">
+                                    <div class="form-group mb-4">
+                                        <input type="password" class="form-control form-control-lg rounded border-0" required="" placeholder="회원아이디">
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <input type="password" class="form-control form-control-lg rounded border-0" required="" placeholder="반려동물">
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <input type="password" class="form-control form-control-lg rounded border-0" required="" placeholder="결제 상태">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <p class="text-primary mb-0">장례 서비스</p>
+                                </div>
+
+                                <form action="" method="">
+                                    <div class="form-group mb-4">
+                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
+                                               placeholder="장례 업체">
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
+                                               placeholder="장례 서비스명">
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
+                                               placeholder="장례 서비스 설명">
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
+                                               placeholder="예약일">
+                                    </div>
+
+                                    <div class="pt-2">
+                                        <button type="submit" class="btn btn-primary text-uppercase font-size-15 px-2 px-md-6">장례 서비스 수정</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <p class="text-primary mb-0">결제 정보</p>
+                                </div>
+
+                                <form action="" method="">
+                                    <div class="form-group mb-4">
+                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
+                                               placeholder="결제 수단">
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
+                                               placeholder="결제액">
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
+                                               placeholder="결제일">
+                                    </div>
+
+
+                                    <div class="pt-2">
+                                        <button type="submit" class="btn btn-primary text-uppercase font-size-15 px-2 px-md-6">결제 취소</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</th:block>
+<!-- 사용자정의 javascript file -->
+<th:block layout:fragment="customJsFile">
+
+</th:block>
+
+<!-- 사용자정의 javascript -->
+<th:block layout:fragment="customJs">
+
+</th:block>
+
+</html>

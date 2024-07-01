@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+            width: 100%;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #218838;
+        }
+
+        .file-upload {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-upload input[type="file"] {
+            width: auto;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="customContent">
+    <div class="form-container">
+        <h2>후기 작성</h2>
+        <form>
+            <div class="form-group">
+                <label for="rating">별점</label>
+                <select id="rating" name="rating" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div class="form-group file-upload">
+                <label for="image-upload">이미지 첨부</label>
+                <input type="file" id="image-upload" name="image-upload" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="review-content">내용</label>
+                <textarea id="review-content" name="review-content" required></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit">후기 제출</button>
+            </div>
+        </form>
+    </div>
+</th:block>
+
+</html>
