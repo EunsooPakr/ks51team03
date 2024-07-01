@@ -1,0 +1,20 @@
+spring.application.name=ksmart51team03
+
+#\uC11C\uBC84 \uD3EC\uD2B8 \uC124\uC815
+server.port=8081
+
+#thymeleaf \uC0C8\uB85C\uACE0\uCE68 \uC801\uC6A9
+spring.thymleaf.cache=false
+
+#database \uC124\uC815
+spring.datasource.driver-class-name=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+spring.datasource.url=jdbc:log4jdbc:mysql://152.69.192.107:3306/ks51team03db?serverTimezon=UTC&characterEncoding=utf8
+spring.datasource.username=ks51team03id
+spring.datasource.password=ks51team03pw
+
+mybatis.mapper-locations=classpath:mapper/**/*.xml
+mybatis.type-aliases-package=ks51team03.*.dto
+logging.config=classpath:logback-spring.xml
+server.servlet.session.tracking-modes=cookie
+server.servlet.session.cookie.http-only=true
+server.servlet.session.timeout=10m

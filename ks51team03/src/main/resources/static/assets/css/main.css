@@ -226,7 +226,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 .top-bar {
   position: fixed;
   width: 100%;
-  z-index:10;
+  z-index:1200;
   height: 40px;
   background-color: #222;
 }
@@ -237,6 +237,8 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   font-size: 12px;
   line-height: 1.8;
   color: #b2b2b2;
+  
+  float:right;
 }
 
 
@@ -248,17 +250,25 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
   height: 100%;
   color: #b2b2b2;
-  border-right: 1px solid rgba(255,255,255,0.3);
+ /*  border-right: 1px solid rgba(255,255,255,0.3); */
 }
 
 .right-top-bar a:first-child {
-  border-left: 1px solid rgba(255,255,255,0.3);
+  /* border-left: 1px solid rgba(255,255,255,0.3); */
 }
 
 .right-top-bar a:hover {
   color: #6c7ae0;
 }
 
+.right-top-bar i {
+	font-size: 20px;
+}
+
+
+.right-top-bar zmdi zmdi-account {
+	font-size: 40px;
+}
 
 /*---------------------------------------------*/
 .topbar-mobile li {

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+</head>
+
+<th:block layout:fragment="customContent">
+    <div class="main-wrapper booking-step-2">
+
+
+        <!-- ====================================
+        ———	BOOKING SECTION
+        ===================================== -->
+        <section class="py-8 py-md-10">
+            <div class="container">
+                <div class="mb-8 mt-10">
+                    <div class="row progress-wizard">
+                        <div class="col-4 progress-wizard-step complete">
+                            <div class="progress">
+                                <div class="progress-bar"></div>
+                            </div>
+
+                            <a th:href="@{/funeral/funeral_reserve_info}" class="progress-wizard-dot">
+                                <div class="progress-wizard-content">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    <span class="d-block">예약 1단계 : 회원 정보</span>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-4 progress-wizard-step active">
+                            <div class="progress">
+                                <div class="progress-bar"></div>
+                            </div>
+
+                            <a th:href="@{/funeral/funeral_reserve_payment}" class="progress-wizard-dot">
+                                <div class="progress-wizard-content">
+                                    <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                                    <span class="d-block">예약 2단계 : 결제</span>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-4 progress-wizard-step incomplete">
+                            <div class="progress">
+                                <div class="progress-bar"></div>
+                            </div>
+
+                            <a th:href="@{/funeral/funeral_reserve_confirm}" class="progress-wizard-dot">
+                                <div class="progress-wizard-content">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                    <span class="d-block">예약 3단계 : 예약 결제 확인</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7 col-lg-8 order-1 order-md-0">
+                        <h3 class="text-capitalize mb-5">장례 서비스 결제</h3>
+
+                        <form action="" method="post" target="_blank">
+                            <div class="mb-5">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="inputName">회원 아이디</label>
+                                            <input type="text" class="form-control border-0 bg-smoke">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="inputName">장례 서비스</label>
+                                            <input type="text" class="form-control border-0 bg-smoke">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="inputName">모바일 결제</label>
+                                            <div class="select-default select-confirm">
+                                                <select class="select-option">
+                                                    <option>모바일 결제 수단 선택</option>
+                                                    <option>카카오페이</option>
+                                                    <option>카카오뱅크</option>
+                                                    <option>페이북</option>
+                                                    <option>토스</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="mb-8">
+                                <h3 class="text-capitalize mb-5">카드 결제</h3>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="inputName">결제 카드 선택</label>
+                                            <div class="select-default select-confirm">
+                                                <select class="select-option">
+                                                    <option>카드 결제</option>
+                                                    <option>우리은행</option>
+                                                    <option>신한은행</option>
+                                                    <option>전북은행</option>
+                                                    <option>농협</option>
+                                                    <option>국민은행</option>
+                                                    <option>기업은행</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="inputNumber">Card Number</label>
+                                            <input type="number" class="form-control border-0 bg-smoke">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="inputName">CVV</label>
+                                            <input type="text" class="form-control border-0 bg-smoke">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="inputNumber">Pay with</label>
+                                            <div class="row" id="inputNumber">
+                                                <div class="col-3 pe-lg-1 pe-xl-3">
+
+                                                    <div class="img-overlay rounded">
+                                                        <img class="w-100 lazyestload" th:data-src="@{/assets/img/booking/master-card.jpg}" th:src="@{/assets/img/booking/master-card.jpg}" alt="Generic placeholder image">
+                                                        <a href="" class="hover-img-overlay-dark"></a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3 px-lg-2 px-xl-3">
+                                                    <div class="img-overlay rounded">
+                                                        <img class="w-100 lazyestload" th:data-src="@{/assets/img/booking/discover.jpg}" th:src="@{/assets/img/booking/discover.jpg}" alt="Generic placeholder image">
+                                                        <a href="" class="hover-img-overlay-dark"></a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3 px-lg-2 px-xl-3">
+                                                    <div class="img-overlay rounded">
+                                                        <img class="w-100 lazyestload" th:data-src="@{/assets/img/booking/visa.jpg}" th:src="@{/assets/img/booking/visa.jpg}" alt="Generic placeholder image">
+                                                        <a href="" class="hover-img-overlay-dark"></a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3 ps-lg-1 ps-xl-3">
+                                                    <div class="img-overlay rounded">
+                                                        <img class="w-100 lazyestload" th:data-src="@{/assets/img/booking/paypal.jpg}" th:src="@{/assets/img/booking/paypal.jpg}" alt="Generic placeholder image">
+                                                        <a href="" class="hover-img-overlay-dark"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label for="exampleInputText">Expiration Date</label>
+                                        <div class="form-group form-group-icon form-group-icon-default" id="exampleInputText">
+                                            <i class="far fa-calendar-alt" aria-hidden="true"></i>
+                                            <input type="text" class="form-control border-0 bg-smoke" name="dateRange" value="" placeholder="DD/MM/YY">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="inputName">Security Code</label>
+                                            <input type="password" id="inputName" class="form-control border-0 bg-smoke">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <button type="button" onclick="location.href='/funeral/funeral_reserve_info';" class="btn btn-primary text-uppercase">
+                                    뒤로 가기
+                                </button>
+
+                                <button type="button" onclick="location.href='/funeral/funeral_reserve_confirm';" class="btn btn-primary text-uppercase">
+                                    다음 단계
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-md-5 col-lg-4">
+                        <h3 class="mb-5">Booking Details</h3>
+                        <div class="card bg-smoke mb-6 mb-md-0">
+                            <img class="card-img-top lazyestload" th:data-src="@{/assets/img/booking/booking.jpg}" th:src="@{/assets/img/booking/booking.jpg}" alt="Card image cap">
+                            <div class="card-body">
+                                <h6 class="card-title text-dark">Maldives Tour</h6>
+
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-transparent border-top-0 px-0 py-4">
+                                        <span><i class="far fa-calendar-alt me-1" aria-hidden="true"></i>From:</span>
+                                        <span class="text-gray-color">25 Mar, 2019</span>
+                                    </li>
+
+                                    <li class="list-group-item bg-transparent px-0 py-4 border-off-white">
+                                        <span><i class="far fa-calendar-alt me-1" aria-hidden="true"></i>To:</span>
+                                        <span class="text-gray-color">28 Mar, 2019</span>
+                                    </li>
+
+                                    <li class="list-group-item bg-transparent px-0 py-4 border-off-white">
+                                        <span><i class="fa fa-user me-1" aria-hidden="true"></i>Guests:</span>
+                                        <span class="text-gray-color">2 Adults, 1Child</span>
+                                    </li>
+
+                                    <li class="list-group-item bg-transparent px-0 py-4 d-none"></li>
+                                </ul>
+                            </div>
+
+                            <div class="card-footer mt-6">
+                                <h2 class="mb-0">
+                                    <span>Total:</span>
+                                    <span class="text-primary font-weight-bold">$6,500</span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+    </div><!-- element wrapper ends -->
+
+</th:block>
+<!-- 사용자정의 javascript file -->
+<th:block layout:fragment="customJsFile">
+
+</th:block>
+
+<!-- 사용자정의 javascript -->
+<th:block layout:fragment="customJs">
+
+</th:block>
+
+</html>

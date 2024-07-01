@@ -3957,6 +3957,7 @@ textarea.form-control-lg {
 .dropup-center,
 .dropdown-center {
   position: relative;
+  margin-left: 20px;
 }
 
 .dropdown-toggle {

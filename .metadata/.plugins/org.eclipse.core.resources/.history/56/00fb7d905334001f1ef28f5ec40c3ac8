@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group input[type="radio"] {
+            width: auto;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+            width: 150px;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="customContent">
+    <div class="form-container">
+        <h2>업체 정보 수정</h2>
+        <form action="">
+            <div class="form-group">
+                <label for="business-type">업체 종류</label>
+                <select id="business-type" name="business-type">
+                    <option value="hospital">병원</option>
+                    <option value="pharmacy">약국</option>
+                    <option value="funeral">장례</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="business-name">업체명</label>
+                <input type="text" id="business-name" name="business-name" required>
+            </div>
+            <div class="form-group">
+                <label for="business-address">업체 주소</label>
+                <input type="text" id="business-address" name="business-address" required>
+            </div>
+            <div class="form-group">
+                <label for="business-detail-address">업체 상세주소</label>
+                <input type="text" id="business-detail-address" name="business-detail-address" required>
+            </div>
+            <div class="form-group">
+                <label for="business-phone">업체 전화번호</label>
+                <input type="tel" id="business-phone" name="business-phone" required>
+            </div>
+            <div class="form-group">
+                <label for="employee-count">업체 직원수</label>
+                <input type="number" id="employee-count" name="employee-count" required>
+            </div>
+            <div class="form-group">
+                <label for="business-email">업체 이메일</label>
+                <input type="email" id="business-email" name="business-email" required>
+            </div>
+            <div class="form-group">
+                <span>업체 주차장 유무</span>
+                <div class="radio-group">
+                    <label><input type="radio" id="parking-yes" name="parking" value="yes" required> 예</label>
+                    <label><input type="radio" id="parking-no" name="parking" value="no"> 아니오</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="business-url">회사 URL</label>
+                <input type="url" id="business-url" name="business-url">
+            </div>
+            <div class="form-group">
+                <button type="submit">등록하기</button>
+            </div>
+        </form>
+    </div>
+</th:block>
+
+</html>

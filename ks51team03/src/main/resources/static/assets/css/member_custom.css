@@ -745,3 +745,12 @@ a{
     border: 0;
     resize: vertical;
 }
+
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ header ]*/
+.list-unstyled li{
+	margin-right: 40px;
+}

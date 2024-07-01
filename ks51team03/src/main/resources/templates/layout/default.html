@@ -47,13 +47,13 @@
 <header th:replace="~{fragments/header :: headerFragment}"></header>
 <!-- header end -->
 <body id="body" class="up-scroll">
+<!-- modal start -->
+<div th:replace="~{fragments/modal :: modalFragment}"></div>
+<!-- modal end -->
 <!-- content start -->
 <th:block layout:fragment="customContent">
 </th:block>
 <!-- content end -->
-<!-- modal start -->
-<div th:replace="~{fragments/modal :: modalFragment}"></div>
-<!-- modal end -->
 <!-- footer start -->
 <footer th:replace="~{fragments/footer :: footerFragment}"></footer>
 <!-- footer end -->
@@ -80,7 +80,7 @@
 <!-- Preloader end -->
 
 <!-- Vendor JS-->
-<script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+
 <!-- <script th:src="@{/assets/plugins/jquery/jquery-3.4.1.min.js}"></script> -->
 <script th:src="@{/assets/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/assets/plugins/menuzord/js/menuzord.js}"></script>
