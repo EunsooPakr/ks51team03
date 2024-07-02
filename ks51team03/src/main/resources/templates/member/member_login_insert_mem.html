@@ -14,13 +14,13 @@
 <body>
     <div class="member-insert-form-body">
     <!-- <div class="member-insert-form"> -->
-    <form class="member-insert-form" id="insertMemberForm" th:action="@{/member/InsertMember}" method="post">
+    <form class="member-insert-form" id="insertMemberForm" th:action="@{/member/insertMember}" method="post">
        <!-- 로고 -->		
 		<a href="/member/member_main" class="logo-single">
 			<img th:src="@{/assets/img/pal_logo.png}" alt="IMG-LOGO">
 		</a>
 
-        <!-- 2. 필드 -->
+        <!-- 1. 아이디 -->
         <div class="login-insert-field-id">
             <b>아이디</b>
             <div>
@@ -29,6 +29,8 @@
             </div>
             <a id="idCheckResult" style="display: none;"></a>
         </div>
+        
+        <!-- 2. 비밀번호 -->
         <div class="login-insert-field">
             <b>비밀번호</b>
             <input class="userpw" type="password" id="memberPw">
@@ -39,10 +41,10 @@
              <a id="passwordMatchResult" style="display: none;"></a> <!-- 결과를 출력할 <a> 태그 -->
         </div>
         
-        
+        <!-- 3. 이름 -->
         <div class="login-insert-field">
             <b>이름</b>
-            <input type="text" id="memberName">
+            <input type="text" id="memberName" maxlength="20" oninput="KoreanInput(event)" required>
         </div>
 
  		<!-- 4. 필드(성별) -->
@@ -51,21 +53,14 @@
 		    <button class="login-insert-field-button-child gender-btn">남자</button>
 		    <button class="login-insert-field-button-child gender-btn">여자</button>
 		    <button class="login-insert-field-button-child gender-btn">선택안함</button>
+			<input type="text" id="memberGender" style="display: none;" value="">
 		</div>
 
-
-		<!-- 5. 이메일_전화번호 -->
-        <div class="login-insert-field">
-            <b>본인 확인 이메일<!-- <small>(선택)</small> --></b>
-            <input type="email">
-        </div>
-
-
-        <!-- 3. 필드(생년월일) -->
+        <!-- 5. 필드(생년월일) -->
         <div class="login-insert-field birth">
             <b>생년월일</b>
             <div>
-                <input type="number" placeholder="년(4자)" id="memberBirth">                
+                <input type="number" placeholder="년(4자)">                
                 <select>
                     <option value="">월</option>
                     <option value="">1월</option>
@@ -83,44 +78,63 @@
                 </select>
                 <input type="number" placeholder="일">
             </div>
+            <input type="text" id="memberBirth" style="display: none;" value="">
         </div>
 
 
+		<!-- 6. 주소 -->
 		<div class="login-insert-field-addr">
             <b>주소</b>
             <div>
-                <input type="number" placeholder="우편번호 입력">
-                <input type="button" value="검색">
+                <input type="number" id="postcode" placeholder="우편번호 입력">
+                <input type="button" onclick="SearchPostNumberAddr()" value="우편번호 검색">
             </div>
-            <input type="text" placeholder="주소를 입력하세요">
-            <input type="text" placeholder="상세주소를 입력하세요">
+            <input type="text" id="memberAddr" placeholder="주소">
+            <input type="text" id="memberAddrDetail" placeholder="상세주소">
+        </div>
+
+		
+		<!-- 7. 전화번호 -->
+        <div class="login-insert-field">
+            <b>전화번호</b>
+            <input type="tel" id="memberPhone">
         </div>
 
 
-
-		<!-- 4. 필드(반려동물 유무) -->
+		<!-- 8. 필드(반려동물 유무) -->
         <b>반려동물 유무</b>
 		<div class="login-insert-field-button">
 			<button class="login-insert-field-button-child pet-btn">있다</button>
 		    <button class="login-insert-field-button-child pet-btn">없다</button>
+		    <input type="number" id="memberPet" style="display: none;" value="">
 		</div>
         
-        
+        <!-- 9. 이메일 인증 -->
         <div class="login-insert-field-tel-number">
         	<br><br>
-            <b>휴대전화</b>
-            <div>
-                <input type="tel" placeholder="전화번호 입력" id=memberPhone>
-                <input type="button" value="인증번호 받기">
-            </div>
-            <input type="number" placeholder="인증번호를 입력하세요">
-            <a>인증이 완료되었습니다.</a>
+            <b>이메일 인증</b>
+            <form role="form" method="post" th:object="${memberFormDto}">
+	            <div class="confirm-group">
+	                <input type="email"  id=memberEmail placeholder="이메일 입력" required>
+	                <input type="button" id="sendBtn" onclick="sendNumber()" value="인증번호 받기">
+	            </div>
+	            <div id="confirmEmailNum">
+	                <input type="text" id="confirmNum" placeholder="인증번호 입력">
+	                <input type="button" id="confirmBtn" onclick="confirmNumber()" value="인증번호 확인">
+	            </div>
+	            <a id="confirmResult">이메일 인증을 진행해주세요.</a>
+	            
+	            <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
+            
+	            <div class="login-insert-field">
+			        <!-- 6. 가입하기 버튼 -->
+			        <input type="submit" value="가입하기" id="memberInsertBtn">
+				</div>
+            </form>
         </div>
 
-        <!-- 6. 가입하기 버튼 -->
-        <input type="submit" value="가입하기" id="addBtn">
-
-        <!-- 7. 푸터 -->
+		
+        <!-- 10. 푸터 -->
         <div class="member-insert-form-footer">
             <div>
                 <a href="#none">이용약관</a>
@@ -133,13 +147,100 @@
    </div>
 
 <script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+<script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js}"></script>
 <script th:inline="javascript">
+
+	/* 이메일 인증번호 발송 */
+	function sendNumber()
+	{
+		const confirmResult = $('#confirmResult');
+	    /* $("#confirmEmailNum").css("display","block"); */
+	    $.ajax({
+	        url:"/mail",
+	        type:"post",
+	        dataType:"json",
+	        data:{"mail" : $("#memberEmail").val()},
+	        success: function(data){
+	        	confirmResult.text('인증번호가 발송되었습니다. 이메일을 확인해주세요.');
+	        	confirmResult.show(); 	
+	            $("#Confirm").attr("value",data);
+	        },
+	        error: function(xhr, status, error) {
+	        	confirmResult.text('인증번호 발송에 실패하였습니다.');
+	        	confirmResult.show(); 	
+                console.error(xhr.responseText);
+            }
+	    });
+	}
+	
+	/* 이메일 인증번호 비교 */
+	function confirmNumber(){
+	    var number1 = $("#confirmNum").val();
+	    var number2 = $("#Confirm").val();
+	    const confirmResult = $('#confirmResult');
+	    
+	    if(number1 == number2&&number1!=null){
+	    	confirmResult.text('이메일 인증이 완료되었습니다.');
+	    	confirmResult.show(); 	
+	    }else{
+	    	confirmResult.text('인증번호가 일치하지않습니다.');
+	    	confirmResult.show(); 	
+	    }
+	}
+
+
+	/*다음 Api로 우편번호 주소 검색*/
+	function SearchPostNumberAddr() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	
+	            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	            var addr = ''; // 주소 변수
+	            var extraAddr = ''; // 참고항목 변수
+	
+	            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	            // 사용자가 도로명 주소를 선택했을 경우
+	            if (data.userSelectedType === 'R') 
+	            { 
+	                addr = data.roadAddress;
+	            }
+	            else // 사용자가 지번 주소를 선택했을 경우(J)
+	            { 
+	                addr = data.jibunAddress;
+	            }
+	
+	
+	            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	            document.getElementById('postcode').value = data.zonecode;
+	            document.getElementById("memberAddr").value = addr;
+	            // 커서를 상세주소 필드로 이동한다.
+	            document.getElementById("memberAddrDetail").focus();
+	        }
+	    }).open();
+	}
+
+
+	/* 한글 검사 */
+	function KoreanInput(event)
+	{
+	    var inputValue = event.target.value;			// 입력값
+	    var regex = /^[ㄱ-ㅎㅏ-ㅣ가-힣]{0,18}$/; 			// 한글만 입력 받고+최대 20자 제한
+	    if (!regex.test(inputValue))
+		{
+	        alert("한글로만 입력해 주세요 (최대 20자).");
+	        event.target.value = ''; 					// 입력 초기화
+	    }
+	}
+
     /* Thymeleaf 내부에서 JavaScript 사용 */
     document.addEventListener('DOMContentLoaded', function() {
         var genderButtons = document.querySelectorAll('.gender-btn');
         var petButtons = document.querySelectorAll('.pet-btn');
 
-        // 성별 버튼 클릭 시 처리
+        /* 성별 버튼 클릭 시 처리 */
         genderButtons.forEach(function(button) {
             button.addEventListener('click', function() {
                 // 선택된 버튼에 active 클래스 추가
@@ -150,7 +251,7 @@
             });
         });
 
-        // 반려동물 유무 버튼 클릭 시 처리
+        /* 반려동물 유무 버튼 클릭 시 처리 */
         petButtons.forEach(function(button) {
             button.addEventListener('click', function() {
                 // 선택된 버튼에 active 클래스 추가
@@ -162,7 +263,7 @@
         });
     });
     
-    /*아이디 중복 검사*/
+    /* 아이디 중복 검사 */
     $('#idCheck').click(function(){
         const memberId = $('#memberId').val();
         if (!memberId) {
@@ -186,12 +287,12 @@
             const idCheckResult = $('#idCheckResult');
             if (isMember) {
                 idCheckResult.text('회원가입을 할 수 없는 아이디입니다.');
-                idCheckResult.show(); // 결과 메시지 출력
+                idCheckResult.show(); 						// 결과 메시지 출력
                 $('#memberId').val('');
                 $('#memberId').focus();
             } else {
                 idCheckResult.text('사용 가능한 아이디입니다.');
-                idCheckResult.show(); // 결과 메시지 출력
+                idCheckResult.show(); 						// 결과 메시지 출력
             }
         });
         request.fail((jqXHR, textStatus, error) => {
@@ -199,16 +300,16 @@
         });
     });
     
-    /*비밀번호 재확인*/
+    /* 비밀번호 재확인 */
      $('.userpw-confirm').keyup(function() {
-        var password = $('.userpw').val(); // 첫 번째 비밀번호 입력 값
-        var confirmPassword = $(this).val(); // 비밀번호 재확인 입력 값
+        var password = $('.userpw').val(); 					// 첫 번째 비밀번호 입력 값
+        var confirmPassword = $(this).val(); 				// 비밀번호 재확인 입력 값
         
         var passwordMatchResult = $('#passwordMatchResult');
         
         if (password === confirmPassword) {
             passwordMatchResult.text('비밀번호가 일치합니다.');
-            passwordMatchResult.css('color', 'green'); // 일치 시 글자색 초록색으로 변경
+            passwordMatchResult.css('color', 'green'); 		// 일치 시 글자색 초록색으로 변경
             passwordMatchResult.show();
         } else {
             passwordMatchResult.text('비밀번호가 일치하지 않습니다.');
@@ -217,18 +318,17 @@
         }
     });
     
-  	// 첫 번째 비밀번호 입력 필드의 keyup 이벤트 처리
+  	/* 첫 번째 비밀번호 입력 필드의 keyup 이벤트 처리 */
      $('.userpw').keyup(function() {
          // 비밀번호가 변경될 때마다 결과 메시지 숨기기
          $('#passwordMatchResult').hide();
      });
   	
-  	
-  	// 회원가입
-	$('#addBtn').click(function(){
+  	/* 회원가입 */
+	$('#memberInsertBtn').click(function(){
 		let isSubmit = true;
 		
-		$('#addMemberForm input, #addMemberForm select').each( (idx, element) => {
+		$('#insertMemberForm input, #insertMemberForm select').each( (idx, element) => {
 			const id = element.id;
 			const value = element.value;
 			if(!value){
@@ -239,7 +339,7 @@
 			}
 		});
 		
-		if(isSubmit) $('#addMemberForm').submit();
+		if(isSubmit) $('#insertMemberForm').submit();
 	});
 </script>
 </body>

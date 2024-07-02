@@ -235,6 +235,7 @@ a{
     background-color: #fff;
     line-height: 1.5em;
     color : #222;
+    margin-bottom: 5px;
 }
 
 .login-insert-field-addr div {
@@ -350,13 +351,13 @@ a{
 } */
 
 .userpw{
-    background:url(./images/images2/icon-01.png) no-repeat center right 15px;
+   /*  background:url(./images/images2/icon-01.png) no-repeat center right 15px; */
     background-size: 20px;
     background-color: #fff;
 }
 
 .userpw-confirm{
-    background:url(./images/images2/icon-02.png) no-repeat center right 15px;
+    /* background:url(./images/images2/icon-02.png) no-repeat center right 15px; */
     background-size: 20px;
     background-color: #fff;
 }

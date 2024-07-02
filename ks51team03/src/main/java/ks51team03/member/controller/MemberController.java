@@ -70,48 +70,6 @@ public class MemberController {
         return isCheck;
     }
 
-	/*
-	@PostMapping("/login")
-	public String login(@RequestParam(value = "memberId") String memberId
-						, @RequestParam(value = "memberPw") String memberPw
-						, @RequestParam(value = "currentPage") String currentPage
-						, RedirectAttributes reAttr
-						, HttpServletRequest request
-						, HttpServletResponse response
-						, HttpSession session){
-		
-		String viewName = "redirect:"+currentPage;
-		//String viewName="/login";
-		Map<String, Object> checkMap = memberService.checkMemberInfo(memberId, memberPw);
-		boolean isCheck = (boolean) checkMap.get("isCheck");
-		if(isCheck) {
-			Member memberInfo = (Member) checkMap.get("memberInfo");
-
-			// 1. session
-			//HttpSession requestGetSession = request.getSession();  이렇게 가져올 수도 있다.
-			session.setAttribute("SID", memberInfo.getMemberId());
-			session.setAttribute("SNAME", memberInfo.getMemberName());
-			session.setAttribute("SLEVEL", memberInfo.getMemberLevel());
-
-			// 2. cookies
-			Cookie cookie = new Cookie("loginId", memberInfo.getMemberId());
-			cookie.setPath("/");
-			cookie.setHttpOnly(true);
-			cookie.setMaxAge(60*60*1);  // 1시간 유지
-
-			// 생성된 쿠키를 응답객체에 담아 반환
-			response.addCookie(cookie);
-		}else {
-			viewName = "redirect:"+currentPage;
-			//viewName="/login";
-			reAttr.addAttribute("alertMsg", "회원의 정보가 일치하지 않습니다.");
-		}
-		
-		reAttr.addAttribute("currentPage",currentPage);
-		
-        return viewName;
-    }
-	*/
 	@GetMapping("/logout")
 	public String logout(HttpSession session, HttpServletResponse response){
 		session.invalidate();
@@ -147,6 +105,27 @@ public class MemberController {
 		isMember = memberMapper.idCheck(memberId);
 		
 		return isMember;
+	}
+	
+	@PostMapping("/member/insertMember")
+	public String addMember(Member member) {
+		
+		log.info("회원가입 Member:{}", member);
+		
+		memberService.addMember(member);
+		
+		return "redirect:/member/member_main";
+	}
+	
+	@GetMapping("/addMember")
+	public String addMember(Model model) {
+		
+		List<MemberLevel> memberLevelList = memberService.getMemberLevelList();
+		
+		model.addAttribute("title", "회원가입");
+		model.addAttribute("levelList", memberLevelList);
+		
+		return "member/member_main";
 	}
 	
 	@GetMapping("/member_main")
