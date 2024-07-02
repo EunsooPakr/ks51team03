@@ -6,19 +6,28 @@
 
 	<resultMap type="Member" id="memberResultMap">
 		<!-- pk, column -->
-		<id 	column="id" 		property="memberId"/>
-		<result column="pw" 		property="memberPw"/>
-		<result column="name" 		property="memberName"/>
-		<result column="level" 		property="memberLevel"/>
-		<result column="level_name" property="memberLevelName"/>
-		<result column="email" 		property="memberEmail"/>
-		<result column="addr" 		property="memberAddr"/>
-		<result column="regist_date" property="memberRegDate"/>
+		<id 	column="id" 			property="memberId"/>
+		<result column="pw" 			property="memberPw"/>
+		<result column="name" 			property="memberName"/>
+		<result column="level" 			property="memberLevel"/>
+		<result column="level_name" 	property="memberLevelName"/>
+		<result column="grade" 			property="memberGrade"/>
+		<result column="gender" 		property="memberGender"/>
+		<result column="birth" 			property="memberBirth"/>
+		<result column="phone" 			property="memberPhone"/>
+		<result column="email" 			property="memberEmail"/>
+		<result column="addr" 			property="memberAddr"/>
+		<result column="addr_detail" 	property="memberAddrDetail"/>
+		<result column="post_num" 		property="memberPostNum"/>
+		<result column="pet" 			property="memberPet"/>
+		<result column="sms_check" 		property="memberSmsCheck"/>
+		<result column="email_check" 	property="memberEmailCheck"/>
+		<result column="regist_date" 	property="memberRgstDate"/>
 		
 	</resultMap>
 	
 	<resultMap type="MemberLevel" id="memberLevelResultMap">
-		<id 	column="level_num" 		property="levelNum" />
+		<id 	column="level" 			property="level" />
 		<result column="level_name" 	property="levelName" />
 	</resultMap>
 	
@@ -84,30 +93,6 @@
 		ORDER BY m.id
 	</select>
 	
-	<!-- 판매자현황 -->
-	<select id="getSellerList" resultMap="memberResultMap">
-		/* 판매자 현황 */
-		SELECT 
-			m.m_id,
-			m.m_pw,
-			m.m_name,
-			m.m_email,
-			m.m_addr,
-			m.m_reg_date,
-			g.g_code,
-			g.g_name,
-			g.g_price,
-			g.g_reg_date
-		FROM
-			tb_member AS m
-			LEFT JOIN 
-			tb_goods AS g
-			ON 
-			m.m_id = g.g_seller_id
-		WHERE 
-			m.m_level = 2;
-	</select>
-	
 	<!-- 회원 탈퇴 -->
 	<delete id="removeMemberById" parameterType="String">
 		/* 회원탈퇴 */
@@ -167,23 +152,41 @@
 			m.id = #{memberId};
 	</select>
 	
-	<insert id="addMember" parameterType="Member">
+	<insert id="insertMember" parameterType="Member">
 		/* 회원가입 */
 		INSERT INTO member 
 		(	id,
-			pw, 
-			name, 
-			level, 
-			email, 
-			addr, 
+			pw,
+			name,
+			level,
+			grade,
+			gender,
+			birth,
+			phone,
+			email,
+			addr,
+			addr_detail,
+			post_num,
+			pet,
+			sms_check,
+			email_check,
 			regist_date
 		)VALUES(
-			#{memberId}, 
-			#{memberPw}, 
+			#{memberId},
+			#{memberPw},
 			#{memberName}, 
 			#{memberLevel}, 
+			#{memberGrade}, 
+			#{memberGender}, 
+			#{memberBirth}, 
+			#{memberPhone}, 
 			#{memberEmail}, 
 			#{memberAddr}, 
+			#{memberAddrDetail}, 
+			#{memberPostNum}, 
+			#{memberPet}, 
+			#{memberSmsCheck}, 
+			#{memberEmailCheck}, 
 			CURDATE()
 		);
 	</insert>

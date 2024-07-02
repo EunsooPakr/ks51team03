@@ -37,7 +37,7 @@ public interface MemberMapper {
 	Member getMemberInfoById(String memberId);
 	
 	// 회원가입
-	int addMember(Member member);
+	int insertMember(Member member);
 	
 	// 아이디 중복체크
 	boolean idCheck(String memberId);

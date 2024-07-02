@@ -28,7 +28,7 @@ public interface MemberService {
 	Member getMemberInfoById(String memberId);
 	
 	// 회원가입
-	void addMember(Member member);
+	void insertMember(Member member);
 	
 	// 회원등급 조회
 	List<MemberLevel> getMemberLevelList();

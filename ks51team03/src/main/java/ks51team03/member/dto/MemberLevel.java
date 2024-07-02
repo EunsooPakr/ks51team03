@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class MemberLevel {
-	private int levelNum;
+	private String level;
 	private String levelName;
 }
