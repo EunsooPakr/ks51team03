@@ -365,15 +365,28 @@
         // 숨겨둔 input value에 넣기
         $('#memberBirth').val(birthDate);
         
-		
+        const idCheckResult = $('#idCheckResult');
+        const passwordMatchResult = $('#passwordMatchResult');
+        const confirmResult = $('#confirmResult');
+        
 		/* 회원정보 입력 */
 		let isSubmit = true;
+		
+		if(!confirmResult.text('이메일 인증이 완료되었습니다.')&&!idCheckResult.text('사용 가능한 아이디입니다.')
+				&&!passwordMatchResult.text('비밀번호가 일치합니다.'))
+		{
+			isSubmit = false;
+		}
+		
 		
 		$('#insertMemberForm input').each( (idx, element) => {
 			const id = element.id;
 			const value = element.value;
 			if(!value){
-				alert('필수입력 항목입니다.');
+				if(element.text!=null)
+					alert(element.text);
+				else
+					alert('필수입력 항목입니다.');
 				$(element).focus() ;
 				isSubmit = false;
 				return false;
