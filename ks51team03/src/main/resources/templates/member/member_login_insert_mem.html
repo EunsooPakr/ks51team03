@@ -60,8 +60,8 @@
         <div class="login-insert-field birth">
             <b>생년월일</b>
             <div>
-                <input type="number" placeholder="년(4자)">                
-                <select>
+                <input type="text" id="yearInput" placeholder="년(4자)" maxlength="4">                
+                <select id="monthSelect">
                     <option value="">월</option>
                     <option value="">1월</option>
                     <option value="">2월</option>
@@ -76,7 +76,7 @@
                     <option value="">11월</option>
                     <option value="">12월</option>
                 </select>
-                <input type="number" placeholder="일">
+                <input type="number" id="dayInput" placeholder="일" maxlength="2">
             </div>
             <input type="text" id="memberBirth" style="display: none;" value="">
         </div>
@@ -126,8 +126,8 @@
 	            
 	            <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
             
+            	<!-- 10. 가입하기 버튼 -->
 	            <div class="login-insert-field">
-			        <!-- 6. 가입하기 버튼 -->
 			        <input type="submit" value="가입하기" id="memberInsertBtn">
 				</div>
             </form>
@@ -326,9 +326,32 @@
   	
   	/* 회원가입 */
 	$('#memberInsertBtn').click(function(){
+		
+		/* 생년월일 변환하여 input에 추가 */
+		var yearInput = $('#yearInput').val().trim();
+		var monthInput = $('#monthInput').val();
+        var dayInput = $('#dayInput').val().trim();
+
+        if (yearInput.length > 4 || isNaN(yearInput)) {
+            alert('년도는 최대 4자리 숫자만 입력 가능합니다.');
+            return;
+        }
+        if (dayInput.length > 2 || isNaN(dayInput) || dayInput < 1 || dayInput > 31) {
+            alert('일은 최대 2자리 숫자이며, 1부터 31 사이의 숫자만 입력 가능합니다.');
+            return;
+        }
+
+     	// 생년월일 6자리로 변환 YYYYMMDD
+        var birthDate = yearInput + pad(monthInput, 2) + pad(dayInput, 2);
+        
+        // 숨겨둔 input value에 넣기
+        $('#memberBirth').val(birthDate);
+        
+		
+		/* 회원정보 입력 */
 		let isSubmit = true;
 		
-		$('#insertMemberForm input, #insertMemberForm select').each( (idx, element) => {
+		$('#insertMemberForm input').each( (idx, element) => {
 			const id = element.id;
 			const value = element.value;
 			if(!value){
@@ -341,5 +364,16 @@
 		
 		if(isSubmit) $('#insertMemberForm').submit();
 	});
+  	
+  	/*생년월일의 일의 자리 숫자는 앞에 0을 추가하는 함수*/
+	 function pad(number, length)
+	 {
+	        var str = '' + number;
+	        while (str.length < length)
+	        {
+	            str = '0' + str;
+	        }
+	        return str;
+	    }
 </script>
 </body>
