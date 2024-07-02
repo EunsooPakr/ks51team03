@@ -13,8 +13,7 @@
 </head>
 <body>
     <div class="member-insert-form-body">
-    <!-- <div class="member-insert-form"> -->
-    <form class="member-insert-form" id="insertMemberForm" th:action="@{/member/insertMember}" method="post">
+	<form class="member-insert-form" id="insertMemberForm" th:action="@{/member/insertMember}" method="post">
        <!-- 로고 -->		
 		<a href="/member/member_main" class="logo-single">
 			<img th:src="@{/assets/img/pal_logo.png}" alt="IMG-LOGO">
@@ -24,7 +23,7 @@
         <div class="login-insert-field-id">
             <b>아이디</b>
             <div>
-                <input type="text" id="memberId" placeholder="아이디 입력">
+                <input type="text" id="memberId" name="memberId" placeholder="아이디 입력">
                 <input type="button" id="idCheck" value="중복검사">
             </div>
             <a id="idCheckResult" style="display: none;"></a>
@@ -33,7 +32,7 @@
         <!-- 2. 비밀번호 -->
         <div class="login-insert-field">
             <b>비밀번호</b>
-            <input class="userpw" type="password" id="memberPw">
+            <input class="userpw" type="password" id="memberPw" name="memberPw">
         </div>
         <div class="login-insert-field">
             <b>비밀번호 재확인</b>
@@ -44,7 +43,7 @@
         <!-- 3. 이름 -->
         <div class="login-insert-field">
             <b>이름</b>
-            <input type="text" id="memberName" maxlength="20" oninput="KoreanInput(event)" required>
+            <input type="text" id="memberName" name="memberName" maxlength="20" oninput="KoreanInput(event)" required>
         </div>
 
  		<!-- 4. 필드(성별) -->
@@ -53,7 +52,7 @@
 		    <button class="login-insert-field-button-child gender-btn">남자</button>
 		    <button class="login-insert-field-button-child gender-btn">여자</button>
 		    <button class="login-insert-field-button-child gender-btn">선택안함</button>
-			<input type="text" id="memberGender" style="display: none;" value="">
+			<input type="text" id="memberGender" name="memberGender" style="display: none;" value="">
 		</div>
 
         <!-- 5. 필드(생년월일) -->
@@ -61,24 +60,15 @@
             <b>생년월일</b>
             <div>
                 <input type="text" id="yearInput" placeholder="년(4자)" maxlength="4">                
-                <select id="monthSelect">
+                <select id="monthInput">
                     <option value="">월</option>
-                    <option value="">1월</option>
-                    <option value="">2월</option>
-                    <option value="">3월</option>
-                    <option value="">4월</option>
-                    <option value="">5월</option>
-                    <option value="">6월</option>
-                    <option value="">7월</option>
-                    <option value="">8월</option>
-                    <option value="">9월</option>
-                    <option value="">10월</option>
-                    <option value="">11월</option>
-                    <option value="">12월</option>
+                    <option th:each="month : ${#numbers.sequence(1,12)}"
+                    		th:value="${month}"
+                    		th:text="|${month}월|"></option>
                 </select>
                 <input type="number" id="dayInput" placeholder="일" maxlength="2">
             </div>
-            <input type="text" id="memberBirth" style="display: none;" value="">
+            <input type="text" id="memberBirth" name="memberBirth" style="display: none;" value="">
         </div>
 
 
@@ -86,65 +76,67 @@
 		<div class="login-insert-field-addr">
             <b>주소</b>
             <div>
-                <input type="number" id="postcode" placeholder="우편번호 입력">
+                <input type="number" id="memberPostNum" name="memberPostNum" placeholder="우편번호 입력">
                 <input type="button" onclick="SearchPostNumberAddr()" value="우편번호 검색">
             </div>
-            <input type="text" id="memberAddr" placeholder="주소">
-            <input type="text" id="memberAddrDetail" placeholder="상세주소">
+            <input type="text" id="memberAddr" name="memberAddr" placeholder="주소">
+            <input type="text" id="memberAddrDetail" name="memberAddrDetail" placeholder="상세주소">
         </div>
 
 		
 		<!-- 7. 전화번호 -->
         <div class="login-insert-field">
             <b>전화번호</b>
-            <input type="tel" id="memberPhone">
+            <input type="tel" id="memberPhone" name="memberPhone">
         </div>
 
 
 		<!-- 8. 필드(반려동물 유무) -->
         <b>반려동물 유무</b>
 		<div class="login-insert-field-button">
-			<button class="login-insert-field-button-child pet-btn">있다</button>
 		    <button class="login-insert-field-button-child pet-btn">없다</button>
-		    <input type="number" id="memberPet" style="display: none;" value="">
+			<button class="login-insert-field-button-child pet-btn">있다</button>
+		    <input type="number" id="memberPet" name="memberPet" style="display: none;" value="">
 		</div>
         
         <!-- 9. 이메일 인증 -->
-        <div class="login-insert-field-tel-number">
-        	<br><br>
-            <b>이메일 인증</b>
-            <form role="form" method="post" th:object="${memberFormDto}">
-	            <div class="confirm-group">
-	                <input type="email"  id=memberEmail placeholder="이메일 입력" required>
-	                <input type="button" id="sendBtn" onclick="sendNumber()" value="인증번호 받기">
-	            </div>
-	            <div id="confirmEmailNum">
-	                <input type="text" id="confirmNum" placeholder="인증번호 입력">
-	                <input type="button" id="confirmBtn" onclick="confirmNumber()" value="인증번호 확인">
-	            </div>
-	            <a id="confirmResult">이메일 인증을 진행해주세요.</a>
-	            
-	            <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
+        <br><br>
+        <b>이메일 인증</b>
+        <div class="login-insert-field-addr" role="form" method="post" th:object="${memberFormDto}">
+	          <div class="confirm-group">
+	              <input type="email"  id=memberEmail name="memberEmail" placeholder="이메일 입력">
+	              <input type="button" id="sendBtn" onclick="sendNumber()" value="인증번호 받기">
+	          </div>
+	          <div id="confirmEmailNum">
+	              <input type="text" id="confirmNum" placeholder="인증번호 입력">
+	              <input type="button" id="confirmBtn" onclick="confirmNumber()" value="인증번호 확인">
+	          </div>
+	          <a id="confirmResult">이메일 인증을 진행해주세요.</a>
+	          
+	          <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
+        </div>
+        <!-- 11. 회원 권한 -->
+		<input type="text" id="memberLevel" name="memberLevel" style="display: none" value="level4"> <!-- Adjust the value as needed -->
+        <!-- 12. 회원 등급 -->
+		<input type="text" id="memberGrade" name="memberGrade" style="display: none" value="New"> <!-- Adjust the value as needed -->
+       
             
-            	<!-- 10. 가입하기 버튼 -->
-	            <div class="login-insert-field">
-			        <input type="submit" value="가입하기" id="memberInsertBtn">
-				</div>
-            </form>
-        </div>
-
-		
-        <!-- 10. 푸터 -->
-        <div class="member-insert-form-footer">
-            <div>
-                <a href="#none">이용약관</a>
-                <a href="#none">개인정보처리방침</a>
-                <a href="#none">회원정보 고객센터</a>
-            </div>
-            <span><a href="#none">PALCorp.</a></span>
-        </div>
+        <!-- 10. 가입하기 버튼 -->
+        <div class="login-insert-field">
+        	<input type="button" value="회원가입" id="memberInsertBtn">
+		</div>
 	</form>
-   </div>
+	</div>s
+	
+    <!-- 10. 푸터 -->
+    <div class="member-insert-form-footer">
+        <div>
+            <a href="#none">이용약관</a>
+            <a href="#none">개인정보처리방침</a>
+            <a href="#none">회원정보 고객센터</a>
+        </div>
+        <span><a href="#none">PALCorp.</a></span>
+    </div>
 
 <script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
 <script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
@@ -176,8 +168,8 @@
 	
 	/* 이메일 인증번호 비교 */
 	function confirmNumber(){
-	    var number1 = $("#confirmNum").val();
-	    var number2 = $("#Confirm").val();
+		const number1 = $("#confirmNum").val();
+		const number2 = $("#Confirm").val();
 	    const confirmResult = $('#confirmResult');
 	    
 	    if(number1 == number2&&number1!=null){
@@ -198,8 +190,8 @@
 	
 	            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
 	            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-	            var addr = ''; // 주소 변수
-	            var extraAddr = ''; // 참고항목 변수
+	            let addr = ''; // 주소 변수
+	            let extraAddr = ''; // 참고항목 변수
 	
 	            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
 	            // 사용자가 도로명 주소를 선택했을 경우
@@ -214,7 +206,7 @@
 	
 	
 	            // 우편번호와 주소 정보를 해당 필드에 넣는다.
-	            document.getElementById('postcode').value = data.zonecode;
+	            document.getElementById('memberPostNum').value = data.zonecode;
 	            document.getElementById("memberAddr").value = addr;
 	            // 커서를 상세주소 필드로 이동한다.
 	            document.getElementById("memberAddrDetail").focus();
@@ -226,8 +218,8 @@
 	/* 한글 검사 */
 	function KoreanInput(event)
 	{
-	    var inputValue = event.target.value;			// 입력값
-	    var regex = /^[ㄱ-ㅎㅏ-ㅣ가-힣]{0,18}$/; 			// 한글만 입력 받고+최대 20자 제한
+		const inputValue = event.target.value;			// 입력값
+		const regex = /^[ㄱ-ㅎㅏ-ㅣ가-힣]{0,18}$/; 			// 한글만 입력 받고+최대 20자 제한
 	    if (!regex.test(inputValue))
 		{
 	        alert("한글로만 입력해 주세요 (최대 20자).");
@@ -237,28 +229,54 @@
 
     /* Thymeleaf 내부에서 JavaScript 사용 */
     document.addEventListener('DOMContentLoaded', function() {
-        var genderButtons = document.querySelectorAll('.gender-btn');
-        var petButtons = document.querySelectorAll('.pet-btn');
-
+        const genderButtons = document.querySelectorAll('.gender-btn');
+        const memberGenderInput = document.getElementById('memberGender');
+        const petButtons = document.querySelectorAll('.pet-btn');
+        const memberPetInput = document.getElementById('memberPet');
+        
         /* 성별 버튼 클릭 시 처리 */
-        genderButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
+        genderButtons.forEach(function(button, index) {
+            button.addEventListener('click', function(event) {
+            	event.preventDefault(); // 폼 제출 기본 동작 막기
                 // 선택된 버튼에 active 클래스 추가
                 genderButtons.forEach(function(btn) {
                     btn.classList.remove('active');
                 });
                 this.classList.add('active');
+                
+                var gender="";
+                
+                switch(index)
+                {
+                case 0:
+                	gender="남";
+                	break;
+                case 1:
+                	gender="여";
+                	break;
+                case 2:
+                	gender="선택안함"
+                	break;
+                default:
+                	break;
+                }
+                
+                memberGenderInput.value = gender;
+                
             });
         });
 
         /* 반려동물 유무 버튼 클릭 시 처리 */
-        petButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
+        petButtons.forEach(function(button, index) {
+            button.addEventListener('click', function(event) {
+            	event.preventDefault(); // 폼 제출 기본 동작 막기
                 // 선택된 버튼에 active 클래스 추가
-                petButtons.forEach(function(btn) {
+                petButtons.forEach(function(btn){
                     btn.classList.remove('active');
                 });
                 this.classList.add('active');
+                
+                memberPetInput.value = (index).toString();
             });
         });
     });
@@ -302,10 +320,10 @@
     
     /* 비밀번호 재확인 */
      $('.userpw-confirm').keyup(function() {
-        var password = $('.userpw').val(); 					// 첫 번째 비밀번호 입력 값
-        var confirmPassword = $(this).val(); 				// 비밀번호 재확인 입력 값
-        
-        var passwordMatchResult = $('#passwordMatchResult');
+	   	const password = $('.userpw').val(); 					// 첫 번째 비밀번호 입력 값
+	   	const confirmPassword = $(this).val(); 				// 비밀번호 재확인 입력 값
+	       
+	   	const passwordMatchResult = $('#passwordMatchResult');
         
         if (password === confirmPassword) {
             passwordMatchResult.text('비밀번호가 일치합니다.');
@@ -328,21 +346,21 @@
 	$('#memberInsertBtn').click(function(){
 		
 		/* 생년월일 변환하여 input에 추가 */
-		var yearInput = $('#yearInput').val().trim();
-		var monthInput = $('#monthInput').val();
-        var dayInput = $('#dayInput').val().trim();
+		const yearInput = $('#yearInput').val().trim();
+		const monthInput = $('#monthInput').val();
+		const dayInput = $('#dayInput').val().trim();
 
         if (yearInput.length > 4 || isNaN(yearInput)) {
-            alert('년도는 최대 4자리 숫자만 입력 가능합니다.');
+            alert('생년월일의 년도는 최대 4자리 숫자만 입력 가능합니다.');
             return;
         }
         if (dayInput.length > 2 || isNaN(dayInput) || dayInput < 1 || dayInput > 31) {
-            alert('일은 최대 2자리 숫자이며, 1부터 31 사이의 숫자만 입력 가능합니다.');
+            alert('생년월일의 날짜는 최대 2자리 숫자이며, 1부터 31 사이의 숫자만 입력 가능합니다.');
             return;
         }
 
      	// 생년월일 6자리로 변환 YYYYMMDD
-        var birthDate = yearInput + pad(monthInput, 2) + pad(dayInput, 2);
+        const birthDate = yearInput.substr(2)+ monthInput.padStart(2,'0') + dayInput.padStart(2,'0');
         
         // 숨겨둔 input value에 넣기
         $('#memberBirth').val(birthDate);
@@ -356,19 +374,20 @@
 			const value = element.value;
 			if(!value){
 				alert('필수입력 항목입니다.');
-				$(element).focus();
+				$(element).focus() ;
 				isSubmit = false;
 				return false;
 			}
 		});
 		
+		console.log("회원정보 입력:")
 		if(isSubmit) $('#insertMemberForm').submit();
 	});
   	
   	/*생년월일의 일의 자리 숫자는 앞에 0을 추가하는 함수*/
 	 function pad(number, length)
 	 {
-	        var str = '' + number;
+	        const str = '' + number;
 	        while (str.length < length)
 	        {
 	            str = '0' + str;

@@ -172,8 +172,8 @@ public class MemberServiceImpl implements MemberService{
 	 * 회원가입 프로세스
 	 */
 	@Override
-	public void addMember(Member member) {
-		int result = memberMapper.addMember(member);
+	public void insertMember(Member member) {
+		int result = memberMapper.insertMember(member);
 		
 		//if(result > 0) // 다음 프로세스
 		

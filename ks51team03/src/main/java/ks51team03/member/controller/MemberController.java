@@ -111,25 +111,25 @@ public class MemberController {
 		return isMember;
 	}
 	
-	@PostMapping("/member/insertMember")
-	public String addMember(Member member) {
+	@PostMapping("/insertMember")
+	public String insertMember(Member member) {
 		
 		log.info("회원가입 Member:{}", member);
 		
-		memberService.addMember(member);
+		memberService.insertMember(member);
 		
 		return "redirect:/member/member_main";
 	}
 	
-	@GetMapping("/addMember")
-	public String addMember(Model model) {
+	@GetMapping("/insertMember")
+	public String insertMember(Model model) {
 		
 		List<MemberLevel> memberLevelList = memberService.getMemberLevelList();
 		
 		model.addAttribute("title", "회원가입");
 		model.addAttribute("levelList", memberLevelList);
 		
-		return "member/member_main";
+		return "member/member_login_insert_mem";
 	}
 	
 	@GetMapping("/member_main")
