@@ -23,7 +23,7 @@ public class MapController {
 
 	@GetMapping("/map/map_main")
 	public String mapMainPage(Model model, @RequestParam(value = "keyword", required = false) String keyword) throws JsonProcessingException {
-		List<Company> companyList = companyService.getCompanyList(keyword);
+		List<Company> companyList = companyService.getCompanyListByKeyWord(keyword);
 		List<ComMap> comMapList = new ArrayList<>();
 
 		// 회사 목록에서 cCode 값을 추출하여 ComMap 객체를 가져옵니다
@@ -50,7 +50,7 @@ public class MapController {
 	@GetMapping("/map/get_company_list")
 	public List<Company> getCompanyList(@RequestParam(value = "keyword", required = false) String keyword) {
 		log.info("Received keyword: {}", keyword);
-		List<Company> companyList = companyService.getCompanyList(keyword);
+		List<Company> companyList = companyService.getCompanyListByKeyWord(keyword);
 		log.info("Resulting company list: {}", companyList);
 		return companyList;
 	}

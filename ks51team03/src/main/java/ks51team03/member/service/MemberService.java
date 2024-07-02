@@ -35,4 +35,6 @@ public interface MemberService {
 
 	// 회원목록 조회
 	List<Member> getMemberList();
+
+	String getCompanyCodeByMemberId(String memberId);
 }

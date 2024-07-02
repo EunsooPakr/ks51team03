@@ -47,6 +47,7 @@
     <section class="bg-smoke py-12">
         <div class="settingContainer">
             <h2>직원 등록 요청 관리</h2>
+            <h2>업체 대표 세션으로 업데이트문 수정해야함</h2>
             <table>
                 <thead>
                 <tr>
@@ -58,34 +59,17 @@
                 </thead>
                 <tbody>
                 <tr th:each="l : ${staffRequests}">
-                    <td th:text="${l.userId}"></td>
-                    <td th:text="${l.phoneNumber}"></td>
-                    <td th:text="${l.name}"></td>
+                    <td th:text="${l.memberId}"></td>
+                    <td th:text="${l.stfPhone}"></td>
+                    <td th:text="${l.memberName}"></td>
                     <td>
                         <div class="action-buttons">
                             <form th:action="@{/company/staff/accept}" method="post">
-                                <input type="hidden" name="requestId" th:value="${l.id}" />
+                                <input type="hidden" name="requestId" th:value="${l.memberId}" />
                                 <button type="submit" class="accept-btn">수락</button>
                             </form>
                             <form th:action="@{/company/staff/reject}" method="post">
-                                <input type="hidden" name="requestId" th:value="${l.id}" />
-                                <button type="submit" class="reject-btn">거절</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>id7</td>
-                    <td>010-000-0007</td>
-                    <td>홍07</td>
-                    <td>
-                        <div class="action-buttons">
-                            <form method="post">
-                                <input type="hidden" name="requestId"/>
-                                <button type="submit" class="accept-btn">수락</button>
-                            </form>
-                            <form method="post">
-                                <input type="hidden" name="requestId"/>
+                                <input type="hidden" name="requestId" th:value="${l.memberId}" />
                                 <button type="submit" class="reject-btn">거절</button>
                             </form>
                         </div>

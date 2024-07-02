@@ -30,7 +30,6 @@
 		<result column="com_page" property="companyPage" />
 		<result column="com_reg_date" property="companyRegDate" />
 		<result column="id" property="memberId" />
-		<!-- <association property="memberId" column="id" javaType="ks51team03.member.dto.Member" resultMap="memberResultMap" /> -->
 	</resultMap>
 
 	<resultMap type="ks51team03.company.dto.ComMap" id="ComMapResultMap">
@@ -41,8 +40,103 @@
 		<result column="id" property="memberId"/>
 		<!-- <association property="memberId" column="id" javaType="ks51team03.member.dto.Member" resultMap="memberResultMap"/> -->
 	</resultMap>
+	<resultMap id="ComStaffResultMap" type="ComStaff">
+		<id column="stfcode" property="stfCode" />
+		<result column="id" property="memberId" />
+		<result column="ccode" property="cCode" />
+		<result column="level" property="level" />
+		<result column="stf_phone" property="stfPhone" />
+		<result column="stf_check" property="stfCheck" />
+		<result column="stf_appro_id" property="stfApproId" />
+		<result column="stf_date" property="stfDate" />
+		<result column="name" property="memberName" />
+	</resultMap>
+	<resultMap id="ComOperTimeResultMap" type="ComOperTime">
+		<id column="otcode" property="otCode" />
+		<result column="ccode" property="cCode" />
+		<result column="ot_mon" property="otMon" />
+		<result column="ot_tue" property="otTue" />
+		<result column="ot_wed" property="otWed" />
+		<result column="ot_thu" property="otWhu" />
+		<result column="ot_fri" property="otFri" />
+		<result column="ot_sat" property="otSat" />
+		<result column="ot_sun" property="otSun" />
+		<result column="ot_holiday" property="otHoliday" />
+		<result column="ot_regular_holiday" property="otRegularHoliday" />
+		<result column="ot_break_time" property="otBreakTime" />
+		<result column="id" property="memberId" />
+		<result column="ot_reg_date" property="otRegDate" />
+	</resultMap>
+
+	<select id="getCompanyOperTime" resultMap="ComOperTimeResultMap">
+		-- 업체 운영시간 검색
+		SELECT
+			otcode, ccode, ot_mon, ot_tue, ot_wed, ot_thu, ot_fri, ot_sat, ot_sun, ot_holiday, ot_regular_holiday, ot_break_time, id, ot_reg_date
+		FROM
+			com_oper_time
+		WHERE
+			ccode = #{ccode}
+	</select>
 
 	<select id="getCompanyList" resultMap="CompanyResultMap">
+		-- 업체 리스트 검색
+		SELECT
+			ccode,
+			com_class,
+			com_name,
+			com_ceo,
+			com_addr,
+			com_addr_deta,
+			com_phone,
+			com_stfcount,
+			com_email,
+			com_parking,
+			com_page,
+			com_reg_date,
+			id
+		FROM
+			company
+		WHERE
+			id = #{memberId}
+	</select>
+
+	<select id="getCompanyByMemberId" resultMap="CompanyResultMap">
+		-- 세션 저장용 쿼리
+		SELECT
+			ccode
+		FROM
+			company
+		WHERE
+			id = #{memberId}
+	</select>
+
+	<update id="acceptStaff" parameterType="String" >
+		/* 회원수정 */
+		UPDATE staff
+		<set>
+			stf_check = 1, stf_date = now(), stf_appro_id = #{memberId}
+		</set>
+		WHERE
+		id = #{requestId}
+	</update>
+
+	<select id="getStaffSingList" resultMap="ComStaffResultMap">
+		-- 직원 등록 신청 리스트
+		SELECT
+			s.id, s.stf_phone, m.name, s.ccode
+		FROM
+			staff AS s
+		INNER JOIN
+			member AS m
+		ON
+			s.id = m.id
+		WHERE
+			s.stf_check = 0 AND s.ccode = #{ccode}
+	</select>
+
+
+	<select id="getCompanyListByKeyWord" resultMap="CompanyResultMap">
+		-- 업체 리스트 검색
 		SELECT
 			ccode,
 			com_class,
@@ -64,6 +158,7 @@
 	</select>
 
 	<select id="getComMapByCCode" resultMap="ComMapResultMap">
+		-- 업체코드로 업체 좌표및 링크 검색
 		SELECT
 			c.ccode, c.cm_link, c.cm_x, c.cm_y, c.id
 		FROM

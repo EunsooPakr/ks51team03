@@ -57,6 +57,10 @@ public class MemberController {
 			session.setAttribute("SNAME", memberInfo.getMemberName());
 			session.setAttribute("SLEVEL", memberInfo.getMemberLevel());
 
+			String ccode = memberService.getCompanyCodeByMemberId(memberInfo.getMemberId());
+			session.setAttribute("CCODE", ccode);
+			log.info("Session CCODE set: {}", ccode);
+
 			// 2. cookies
 			Cookie cookie = new Cookie("loginId", memberInfo.getMemberId());
 			cookie.setPath("/");

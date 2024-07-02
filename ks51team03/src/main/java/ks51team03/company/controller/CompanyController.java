@@ -1,6 +1,9 @@
 package ks51team03.company.controller;
 
+import jakarta.servlet.http.HttpSession;
+import ks51team03.company.dto.ComOperTime;
 import ks51team03.company.dto.ComStaff;
+import ks51team03.company.dto.Company;
 import ks51team03.company.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,33 +21,44 @@ import java.util.List;
 public class CompanyController {
 	private final CompanyService companyService;
 
-	@GetMapping("/company/company_info")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
-	public String companyInfo() {
-		//완
+	@GetMapping("/company/company_info")
+	public String companyInfo(HttpSession session, Model model) {
+
+		String memberId = (String) session.getAttribute("SID");
+		String ccode = (String) session.getAttribute("CCODE");
+		List<Company> companyList = companyService.getCompanyList(memberId);
+		List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(ccode);
+		model.addAttribute("companyList", companyList);
+		model.addAttribute("companyOperTime", companyOperTime);
+
 		return "company/company_info";
 	}
 	@GetMapping("/company/company_modify")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
 	public String companyModify() {
-		//완
+
 		return "company/company_modify";
 	}
 
 	@GetMapping("/company/company_staff_setting")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
-	public String companyStaffSetting(Model model) {
+	public String companyStaffSetting(Model model, HttpSession session) {
 		// 직원 등록 요청 목록을 가져와서 모델에 추가
-		//완
-		List<ComStaff> staffRequests;
-		//model.addAttribute("staffRequests", staffRequests);
+
+		String ccode = (String) session.getAttribute("CCODE");
+		List<ComStaff> staffRequests = companyService.getStaffSingList(ccode);
+
+		model.addAttribute("staffRequests", staffRequests);
 		return "company/company_staff_setting";
 	}
-	@PostMapping("/staff/accept")
-	public String acceptStaff(@RequestParam Long requestId) {
+	@PostMapping("/company/staff/accept")
+	public String acceptStaff(@RequestParam String requestId, HttpSession session) {
 		// 직원 등록 요청 수락 로직
-		return "redirect:/company/staff/setting";
+		String memberId = (String) session.getAttribute("SID");
+		companyService.acceptStaff(requestId,memberId);
+		return "redirect:/company/company_staff_setting";
 	}
 
 	@PostMapping("/staff/reject")
-	public String rejectStaff(@RequestParam Long requestId) {
+	public String rejectStaff(@RequestParam String requestId) {
 		// 직원 등록 요청 거절 로직
 		return "redirect:/company/staff/setting";
 	}

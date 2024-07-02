@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ks51team03.company.dto.Company;
+import ks51team03.company.mapper.CompanyMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberServiceImpl implements MemberService{
 	
 	private final MemberMapper memberMapper;
+	private final CompanyMapper companyMapper;
 
 	/**
 	 * 로그인 이력 조회
@@ -222,6 +225,12 @@ public class MemberServiceImpl implements MemberService{
 		}
 		
 		return memberList;
+	}
+
+	@Override
+	public String getCompanyCodeByMemberId(String memberId) {
+		Company company = companyMapper.getCompanyByMemberId(memberId);
+		return company != null ? company.getCompanyCode() : null;
 	}
 }
 
