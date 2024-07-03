@@ -41,6 +41,11 @@ public class ServiceListController {
 		return "funeral/funeral_total_serviceList";
 	}
 
+	@GetMapping("funeral/funeral_service_detail")
+	public String reserveDetail() {
+
+		return "funeral/funeral_service_detail";
+	}
 
 
 }
