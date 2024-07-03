@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns=""
       layout:decorate="~{layout/default}">
 <head>
 </head>
@@ -84,11 +84,12 @@
                                             <div class="col-xl-7">
                                                 <div class="form-group mb-0">
                                                     <div class="select-default select-category-2">
-                                                        <select id="inputText" class="select-option">
-                                                            <option>기본 장례</option>
-                                                            <option>PAL 패키지</option>
-                                                            <option>요람장 패키지</option>
-                                                            <option>프리미엄 패키지</option>
+                                                        <select id="inputText" class="select-option" onchange="updateTotalPrice()">
+                                                            <option th:each="service : ${serviceListCcode}"
+                                                                    th:value="${service.getFuneralserviceTitle()}"
+                                                                    th:text="${service.getFuneralserviceTitle()}"
+                                                                    th:data-price="${service.getFuneralservicePrice()}"></option>
+
                                                         </select>
                                                     </div>
                                                 </div>
@@ -113,7 +114,7 @@
 
                                 <div class="d-flex justify-content-between border-bottom mb-5 pb-5">
                                     <span class="text-uppercase h4 mb-0">전체 비용</span>
-                                    <span class="font-weight-bold text-primary h3 mb-0">$198</span>
+                                    <span class="font-weight-bold text-primary h3 mb-0" id="totalPrice" th:te>$0</span>
                                 </div>
 
                                 <div class="d-grid text-center px-4">
@@ -161,12 +162,21 @@
 </th:block>
 <!-- 사용자정의 javascript file -->
 <th:block layout:fragment="customJsFile">
-
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
 </th:block>
 
 <!-- 사용자정의 javascript -->
 <th:block layout:fragment="customJs">
-
+    <script th:inline="javascript">
+        $(document).ready(function (){
+            $('#inputText').change(function (){
+                const selectedOption = $(this).find('option:selected');
+                const price = parseInt(selectedOption.data('price'));
+                $('#totalPrice').text(`$${price.toFixed(0)}`);
+            });
+        })
+    </script>
 </th:block>
+
 
 </html>
