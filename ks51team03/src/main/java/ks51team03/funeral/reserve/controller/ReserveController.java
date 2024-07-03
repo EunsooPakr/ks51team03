@@ -6,12 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ReserveController {
 
-    @GetMapping("funeral/funeral_reserve_detail")
-    public String reserveDetail() {
-
-        return "funeral/funeral_reserve_detail";
-    }
-
     @GetMapping("funeral/funeral_reserve_info")
     public String reserveInfo() {
 
