@@ -182,11 +182,11 @@
                     후기수: <span th:text="${companyReviewCount}"></span> ·
                     직원수: <span th:text="${c.companyStfCount}"></span>
                 </p>
-                <div class="details" th:each="o : ${companyOperTime}">
+                <div class="details">
                     <h2>상세정보</h2>
                     <ul>
                         <li><i class="fas fa-road"></i><strong>주소:</strong> <span th:text="${c.companyAddr}"></span> <span th:text="${c.companyAddrDetail}"></span></li>
-                        <li>
+                        <li th:each="o : ${companyOperTime}">
                             <i class="fas fa-clock"></i><strong>영업중: 금일</strong>
                             <span th:text="${openingHours}"></span>
                             <button type="button" class="accordion-button">더보기</button>

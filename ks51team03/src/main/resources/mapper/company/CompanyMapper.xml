@@ -29,7 +29,7 @@
 		<result column="com_parking" property="companyParking" />
 		<result column="com_page" property="companyPage" />
 		<result column="com_reg_date" property="companyRegDate" />
-		<result column="com_post_num" property="companyPostNum" />
+		<result column="com_post_num" property="comPostNum" />
 		<result column="id" property="memberId" />
 		<result column="com_post_num" property="comPostNum" />
 	</resultMap>
