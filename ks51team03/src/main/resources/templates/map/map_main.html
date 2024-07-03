@@ -31,7 +31,7 @@
                                 <img alt="PAL 업체 등록 이미지" id="placeIcon" src="">
                             </div>
                             <div class="details">
-                                <div id="placeName"></div>
+                                <a th:href="@{/map/map_company_info}" id="placeName"></a>
                                 <div id="placeRating">별점: 알수없음</div>
                                 <div id="parking">주차장: 알수없음</div>
                                 <div id="placeAddress"></div>
@@ -336,7 +336,7 @@
                 var el = document.createElement('li'),
                     itemStr = '<span class="markerbg2"></span>' +
                         '<div class="info" onclick="showDetails(' + listIdx + ', true)">' +
-                        '   <h5>' + dbPlace.companyName + '</h5>';
+                        '   <a th:href="/map/map_company_info">' + dbPlace.companyName + '</a>';
 
                 if (dbPlace.road_address_name) {
                     itemStr += '    <span>' + dbPlace.road_address_name + '</span>' +

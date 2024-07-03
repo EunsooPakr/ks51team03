@@ -10,7 +10,7 @@ public class Company {
     private String companyName;
     private String companyCeo;
     private String companyAddr;
-    private String companyAddrDeta;
+    private String companyAddrDetail;
     private String companyPhone;
     private int companyStfCount;
     private String companyEmail;
@@ -18,5 +18,6 @@ public class Company {
     private String companyPage;
     private String companyRegDate;
     private String memberId;
+    private String comPostNum;
 
 }

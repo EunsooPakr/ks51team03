@@ -93,7 +93,6 @@
         }
 
         .details ul li {
-            display: flex;
             align-items: center;
             margin-bottom: 10px;
         }
@@ -142,36 +141,92 @@
             font-size: 24px;
             margin-bottom: 5px;
         }
+
+        /* Accordion CSS */
+        .accordion-button {
+            background: none;
+            border: none;
+            color: blue;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+            margin-left: 5px;
+            font-size: 14px;
+        }
+
+        .accordion-content {
+            display: none;
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .accordion-content li {
+            margin-bottom: 5px;
+        }
+
     </style>
 </head>
 
 <th:block layout:fragment="customContent">
     <section class="bg-smoke py-12">
-    <div class="infocontainer" th:each="c : ${companyList}">
-        <div class="image-section" th:style="|background-image: url('${imageUrl}');|"></div>
-        <div class="content-section">
-            <a th:href="@{company_modify}" class="edit-button">수정하기</a>
-            <a th:href="@{company_delete}" class="delete-button">삭제하기</a>
-            <a th:href="@{company_staff_setting}" class="role-edit-button">직원 권한 수정하기</a>
-            <h1 th:text="${c.companyName}"></h1>
-            <p>
-                <span th:text="${c.companyClass}"></span> ·
-                후기 <span th:text="${reviewCount}">3.3</span> ·
-                리뷰 <span th:text="${reviewTotal}">318</span> ·
-                직원수 <span th:text="${c.companyStfCount}"></span>
-            </p>
-            <div class="details">
-                <h2>상세정보</h2>
-                <ul>
-                    <li><i class="fas fa-road"></i><strong>주소:</strong> <span th:text="${c.companyAddr}"></span> <span th:text="${c.companyAddrDeta}"></span></li>
-                    <li><i class="fas fa-clock"></i><strong>영업중:</strong> <span th:text="${openingHours}">화-토 11:30 ~ 21:00</span></li>
-                    <li><i class="fas fa-link"></i><strong>웹사이트:</strong> <a th:href="${c.companyPage}" th:text="${c.companyPage}"></a></li>
-                    <li><i class="fas fa-phone-alt"></i><strong>전화:</strong> <span th:text="${c.companyPhone}"></span></li>
-                </ul>
+        <div class="infocontainer" th:each="c : ${companyListById}">
+            <div class="image-section" th:style="|background-image: url('${imageUrl}');|"></div>
+            <div class="content-section">
+                <a th:href="@{company_modify}" class="edit-button">수정하기</a>
+                <a th:href="@{company_delete}" class="delete-button">삭제하기</a>
+                <a th:href="@{company_staff_setting}" class="role-edit-button">직원 권한 수정하기</a>
+                <h1 th:text="${c.companyName}"></h1>
+                <p>
+                    <span th:text="${c.companyClass}"></span> ·
+                    후기수: <span th:text="${companyReviewCount}"></span> ·
+                    직원수: <span th:text="${c.companyStfCount}"></span>
+                </p>
+                <div class="details" th:each="o : ${companyOperTime}">
+                    <h2>상세정보</h2>
+                    <ul>
+                        <li><i class="fas fa-road"></i><strong>주소:</strong> <span th:text="${c.companyAddr}"></span> <span th:text="${c.companyAddrDetail}"></span></li>
+                        <li>
+                            <i class="fas fa-clock"></i><strong>영업중: 금일</strong>
+                            <span th:text="${openingHours}"></span>
+                            <button type="button" class="accordion-button">더보기</button>
+                            <ul class="accordion-content">
+                                <li><a th:href="@{/company/company_modify_opertime}">수정하기</a></li>
+                                <li><strong>월요일:</strong> <span th:text="${o.otMon}"></span></li>
+                                <li><strong>화요일:</strong> <span th:text="${o.otTue}"></span></li>
+                                <li><strong>수요일:</strong> <span th:text="${o.otWed}"></span></li>
+                                <li><strong>목요일:</strong> <span th:text="${o.otThu}"></span></li>
+                                <li><strong>금요일:</strong> <span th:text="${o.otFri}"></span></li>
+                                <li><strong>토요일:</strong> <span th:text="${o.otSat}"></span></li>
+                                <li><strong>일요일:</strong> <span th:text="${o.otSun}"></span></li>
+                                <li><strong>공휴일:</strong> <span th:text="${o.otHoliday}"></span></li>
+                                <li><strong>정기 휴일:</strong> <span th:text="${o.otRegularHoliday}"></span></li>
+                                <li><strong>브레이크 타임:</strong> <span th:text="${o.otBreakTime}"></span></li>
+                            </ul>
+                        </li>
+                        <li><i class="fas fa-link"></i><strong>웹사이트:</strong> <a th:href="${c.companyPage}" th:text="${c.companyPage}"></a></li>
+                        <li><i class="fas fa-phone-alt"></i><strong>전화:</strong> <span th:text="${c.companyPhone}"></span></li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+
+            accordionButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    if (content.style.display === "none" || content.style.display === "") {
+                        content.style.display = "block";
+                    } else {
+                        content.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
 </th:block>
 
 </html>

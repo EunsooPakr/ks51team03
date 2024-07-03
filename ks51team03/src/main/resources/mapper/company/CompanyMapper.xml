@@ -22,7 +22,7 @@
 		<result column="com_name" property="companyName" />
 		<result column="com_ceo" property="companyCeo" />
 		<result column="com_addr" property="companyAddr" />
-		<result column="com_addr_deta" property="companyAddrDeta" />
+		<result column="com_addr_detail" property="companyAddrDetail" />
 		<result column="com_phone" property="companyPhone" />
 		<result column="com_stfcount" property="companyStfCount" />
 		<result column="com_email" property="companyEmail" />
@@ -30,6 +30,7 @@
 		<result column="com_page" property="companyPage" />
 		<result column="com_reg_date" property="companyRegDate" />
 		<result column="id" property="memberId" />
+		<result column="com_post_num" property="comPostNum" />
 	</resultMap>
 
 	<resultMap type="ks51team03.company.dto.ComMap" id="ComMapResultMap">
@@ -38,7 +39,6 @@
 		<result column="cm_x" property="cmX"/>
 		<result column="cm_y" property="cmY"/>
 		<result column="id" property="memberId"/>
-		<!-- <association property="memberId" column="id" javaType="ks51team03.member.dto.Member" resultMap="memberResultMap"/> -->
 	</resultMap>
 	<resultMap id="ComStaffResultMap" type="ComStaff">
 		<id column="stfcode" property="stfCode" />
@@ -57,7 +57,7 @@
 		<result column="ot_mon" property="otMon" />
 		<result column="ot_tue" property="otTue" />
 		<result column="ot_wed" property="otWed" />
-		<result column="ot_thu" property="otWhu" />
+		<result column="ot_thu" property="otThu" />
 		<result column="ot_fri" property="otFri" />
 		<result column="ot_sat" property="otSat" />
 		<result column="ot_sun" property="otSun" />
@@ -68,6 +68,60 @@
 		<result column="ot_reg_date" property="otRegDate" />
 	</resultMap>
 
+	<resultMap id="ComReviewResultMap" type="ComReview">
+		<id column="revcode" property="revCode" />
+		<result column="id" property="memberId" />
+		<result column="rev_category" property="revCategory" />
+		<result column="ccode" property="cCode" />
+		<result column="rev_admin_date" property="revAdminDate" />
+		<result column="rev_update_date" property="revUpdateDate" />
+		<result column="rev_delete_date" property="revDeleteDate" />
+		<result column="rev_img" property="revImg" />
+		<result column="rev_scope" property="revScope" />
+		<result column="rev_content" property="revContent" />
+	</resultMap>
+
+	<resultMap id="QuestionResultMap" type="ComQuestion">
+		<id column="quesnum" property="quesNum" />
+		<result column="ques_kind" property="quesKind" />
+		<result column="ccode" property="cCode" />
+		<result column="qctenum" property="qcteNum" />
+		<result column="id" property="memberId" />
+		<result column="ques_content" property="quesContent" />
+		<result column="ques_date" property="quesDate" />
+	</resultMap>
+
+	<select id="getCompanyQuestion" resultMap="QuestionResultMap">
+		-- 업체 문의 검색
+		SELECT
+			quesnum, ques_kind, ccode, qctenum, id, ques_content, ques_date
+		FROM
+			questions
+		WHERE
+			ccode = #{cCode}
+	</select>
+
+	<select id="getCompanyReviewCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
+		-- 업체 리뷰수 검색
+		SELECT
+			count(ccode)
+		FROM
+			service_review
+		WHERE
+			ccode = #{cCode}
+	</select>
+
+	<select id="getCompanyReview" resultMap="ComReviewResultMap">
+		-- 업체 리뷰 검색
+		SELECT
+			revcode, id, rev_category, ccode, rev_admin_date, rev_update_date,
+			rev_delete_date, rev_img, rev_scope, rev_content
+		FROM
+			service_review
+		WHERE
+			ccode = #{ccode}
+	</select>
+
 	<select id="getCompanyOperTime" resultMap="ComOperTimeResultMap">
 		-- 업체 운영시간 검색
 		SELECT
@@ -75,25 +129,47 @@
 		FROM
 			com_oper_time
 		WHERE
-			ccode = #{ccode}
+			ccode = #{cCode}
 	</select>
 
 	<select id="getCompanyList" resultMap="CompanyResultMap">
-		-- 업체 리스트 검색
+		-- 전체 업체 검색
 		SELECT
 			ccode,
 			com_class,
 			com_name,
 			com_ceo,
 			com_addr,
-			com_addr_deta,
+			com_addr_detail,
 			com_phone,
 			com_stfcount,
 			com_email,
 			com_parking,
 			com_page,
 			com_reg_date,
-			id
+			id,
+			com_post_num
+		FROM
+			company
+	</select>
+
+	<select id="getCompanyListById" resultMap="CompanyResultMap">
+		-- 업체 검색
+		SELECT
+			ccode,
+			com_class,
+			com_name,
+			com_ceo,
+			com_addr,
+			com_addr_detail,
+			com_phone,
+			com_stfcount,
+			com_email,
+			com_parking,
+			com_page,
+			com_reg_date,
+			id,
+			com_post_num
 		FROM
 			company
 		WHERE
@@ -111,7 +187,7 @@
 	</select>
 
 	<update id="acceptStaff" parameterType="String" >
-		/* 회원수정 */
+		/* 업체 직원 승인 */
 		UPDATE staff
 		<set>
 			stf_check = 1, stf_date = now(), stf_appro_id = #{memberId}
@@ -120,7 +196,43 @@
 		id = #{requestId}
 	</update>
 
-	<select id="getStaffSingList" resultMap="ComStaffResultMap">
+	<update id="modifyCompany" parameterType="Company" >
+		/* 업체 수정 */
+		UPDATE company
+		<set>
+			<if test="companyClass != null and companyClass != ''">
+				com_class = #{companyClass},
+			</if>
+			<if test="companyName != null and companyName != ''">
+				com_name = #{companyName},
+			</if>
+			<if test="companyAddr != null and companyAddr != ''">
+				com_addr = #{companyAddr},
+			</if>
+			<if test="companyAddrDetail != null and companyAddrDetail != ''">
+				com_addr_detail = #{companyAddrDetail},
+			</if>
+			<if test="companyPhone != null and companyPhone != ''">
+				com_phone = #{companyPhone},
+			</if>
+			<if test="companyStfCount != null and companyStfCount != ''">
+				com_stfcount = #{companyStfCount},
+			</if>
+			<if test="companyEmail != null and companyEmail != ''">
+				com_email = #{companyEmail},
+			</if>
+			<if test="companyParking != null and companyParking != ''">
+				com_parking = #{companyParking},
+			</if>
+			<if test="companyPage != null and companyPage != ''">
+				com_page = #{companyPage}
+			</if>
+		</set>
+		WHERE
+		ccode = #{companyCode}
+	</update>
+
+	<select id="getStaffSignList" resultMap="ComStaffResultMap">
 		-- 직원 등록 신청 리스트
 		SELECT
 			s.id, s.stf_phone, m.name, s.ccode
@@ -131,19 +243,19 @@
 		ON
 			s.id = m.id
 		WHERE
-			s.stf_check = 0 AND s.ccode = #{ccode}
+			s.stf_check = 0 AND s.ccode = #{cCode}
 	</select>
 
 
 	<select id="getCompanyListByKeyWord" resultMap="CompanyResultMap">
-		-- 업체 리스트 검색
+		-- 키워드로 업체 리스트 검색
 		SELECT
 			ccode,
 			com_class,
 			com_name,
 			com_ceo,
 			com_addr,
-			com_addr_deta,
+			com_addr_detail,
 			com_phone,
 			com_stfcount,
 			com_email,

@@ -56,23 +56,11 @@
                 <tr th:each="company : ${companyList}">
                     <td th:text="${company.companyName}"></td>
                     <td th:text="${company.companyCeo}"></td>
-                    <td th:text="${company.companyAddr} + ' ' + ${company.companyAddrDeta}"></td>
+                    <td th:text="${company.companyAddr} + ' ' + ${company.companyAddrDetail}"></td>
                     <td th:text="${company.companyPhone}"></td>
                     <td>
-                        <form th:action="@{/company/staff/apply}" method="post">
+                        <form th:action="@{/company/staff/sign}" method="post">
                             <input type="hidden" name="companyCode" th:value="${company.companyCode}" />
-                            <button type="submit" class="apply-btn">신청</button>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <td>업체이름</td>
-                    <td>업체대표자이름</td>
-                    <td>주소123</td>
-                    <td>업체 번호</td>
-                    <td>
-                        <form method="post">
-                            <input type="hidden" name="companyCode"/>
                             <button type="submit" class="apply-btn">신청</button>
                         </form>
                     </td>

@@ -77,7 +77,7 @@
     <section class="bg-smoke py-13">
     <div class="form-container">
         <h2>업체 정보 수정</h2>
-        <form action="">
+        <form th:action="@{/company/modify_Company}" method="post" th:each="c : ${companyListById}">
             <div class="form-group">
                 <label for="business-type">업체 종류</label>
                 <select id="business-type" name="business-type">
@@ -87,39 +87,39 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="business-name">업체명</label>
-                <input type="text" id="business-name" name="business-name" required>
+                <label for="companyName">업체명</label>
+                <input type="text" id="companyName" name="companyName" th:value="${c.companyName}" required>
             </div>
             <div class="form-group">
-                <label for="business-address">업체 주소</label>
-                <input type="text" id="business-address" name="business-address" required>
+                <label for="companyAddr">업체 주소</label>
+                <input type="text" id="companyAddr" name="companyAddr" th:value="${c.companyAddr}" required>
             </div>
             <div class="form-group">
-                <label for="business-detail-address">업체 상세주소</label>
-                <input type="text" id="business-detail-address" name="business-detail-address" required>
+                <label for="companyAddrDetail">업체 상세주소</label>
+                <input type="text" id="companyAddrDetail" name="companyAddrDetail" th:value="${c.companyAddrDetail}" required>
             </div>
             <div class="form-group">
-                <label for="business-phone">업체 전화번호</label>
-                <input type="tel" id="business-phone" name="business-phone" required>
+                <label for="companyPhone">업체 전화번호</label>
+                <input type="tel" id="companyPhone" name="companyPhone" th:value="${c.companyPhone}" required>
             </div>
             <div class="form-group">
-                <label for="employee-count">업체 직원수</label>
-                <input type="number" id="employee-count" name="employee-count" required>
+                <label for="companyStfCount">업체 직원수</label>
+                <input type="number" id="companyStfCount" name="companyStfCount" th:value="${c.companyStfCount}" required>
             </div>
             <div class="form-group">
-                <label for="business-email">업체 이메일</label>
-                <input type="email" id="business-email" name="business-email" required>
+                <label for="companyEmail">업체 이메일</label>
+                <input type="email" id="companyEmail" name="companyEmail" th:value="${c.companyEmail}" required>
             </div>
             <div class="form-group">
                 <span>업체 주차장 유무</span>
                 <div class="radio-group">
-                    <label><input type="radio" id="parking-yes" name="parking" value="yes" required> 예</label>
-                    <label><input type="radio" id="parking-no" name="parking" value="no"> 아니오</label>
+                    <label><input type="radio" id="parking-yes" name="companyParking" value="yes" required> 예</label>
+                    <label><input type="radio" id="parking-no" name="companyParking" value="no"> 아니오</label>
                 </div>
             </div>
             <div class="form-group">
-                <label for="business-url">회사 URL</label>
-                <input type="url" id="business-url" name="business-url">
+                <label for="companyPage">회사 URL</label>
+                <input type="text" id="companyPage" name="companyPage" th:value="${c.companyPage}" required>
             </div>
             <div class="form-group">
                 <button type="submit">등록하기</button>

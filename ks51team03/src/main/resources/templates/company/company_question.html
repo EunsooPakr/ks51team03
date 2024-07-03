@@ -61,27 +61,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="inquiry : ${inquiryList}">
-                    <td th:text="${inquiry.category}"></td>
-                    <td th:text="${inquiry.userId}"></td>
-                    <td th:text="${inquiry.content}"></td>
-                    <td th:text="${inquiry.regDate}"></td>
+                <tr th:each="q : ${comQuestionList}">
+                    <td th:text="${q.getQcteNum}"></td>
+                    <td th:text="${q.getMemberId}"></td>
+                    <td th:text="${q.getQuesContent}"></td>
+                    <td th:text="${q.getQuesDate}"></td>
                     <td>
                         <form th:action="@{/company/inquiry/reply}" method="post">
-                            <input type="hidden" name="quesnum" th:value="${inquiry.quesnum}" />
-                            <button type="submit" class="reply-btn">답변하기</button>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <td>병원행정</td>
-                    <td>id07</td>
-                    <td>병원언제열어요</td>
-                    <td>2024-07-01</td>
-                    <td>
-                        <form method="post">
-                            <input type="hidden" name="quesnum"/>
-                            <!-- <button type="submit" class="reply-btn">답변하기</button> -->
+                            <input type="hidden" name="quesnum" th:value="${q.getMemberId}" />
                             <a th:href="@{/company/company_question_answer}">답변하기</a>
                             <a th:href="@{/company/company_question_answer}">/수정하기</a>
                             <a th:href="@{/company/company_question_answer}">/삭제하기</a>

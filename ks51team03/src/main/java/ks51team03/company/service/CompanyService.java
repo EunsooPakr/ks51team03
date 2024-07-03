@@ -1,10 +1,7 @@
 package ks51team03.company.service;
 
 
-import ks51team03.company.dto.ComMap;
-import ks51team03.company.dto.ComOperTime;
-import ks51team03.company.dto.ComStaff;
-import ks51team03.company.dto.Company;
+import ks51team03.company.dto.*;
 import ks51team03.company.mapper.CompanyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +17,24 @@ import java.util.List;
 public class CompanyService {
     private final CompanyMapper companyMapper;
 
+    // 업체 수정
+    public int modifyCompany(Company company) {
+        return companyMapper.modifyCompany(company);
+    }
+
+    // 업체 문의 리스트 반환
+    public List<ComQuestion> getCompanyQuestion(String cCode){
+        log.info("getCompanyQuestion: {}", companyMapper.getCompanyQuestion(cCode));
+        return companyMapper.getCompanyQuestion(cCode);
+
+    }
+
+    // 전체 업체 리스트 반환
+    public List<Company> getCompanyList(){
+        log.info("getCompanyList: {}", companyMapper.getCompanyList());
+        return companyMapper.getCompanyList();
+    }
+
     // 업체 코드로 업체 운영시간 리스트 반환
     public List<ComOperTime> getCompanyOperTime(String cCode){
         log.info("getCompanyOperTime: {}", companyMapper.getCompanyOperTime(cCode));
@@ -27,9 +42,9 @@ public class CompanyService {
     }
 
     // 세션의 아이디를 통해 업체 리스트 반환
-    public List<Company> getCompanyList(String memberId){
-        log.info("getCompanyList: {}", companyMapper.getCompanyList(memberId));
-        return companyMapper.getCompanyList(memberId);
+    public List<Company> getCompanyListById(String memberId){
+        log.info("getCompanyListById: {}", companyMapper.getCompanyListById(memberId));
+        return companyMapper.getCompanyListById(memberId);
     }
 
     // 업체 리스트 키워드로 반환
@@ -44,10 +59,23 @@ public class CompanyService {
         return companyMapper.getComMapByCCode(companyCode);
     }
 
+    // 업체 리뷰 반환
+    public List<ComReview> getCompanyReview(String companyCode) {
+        log.info("Getting ComReview for cCode: {}", companyCode);
+        return companyMapper.getCompanyReview(companyCode);
+    }
+
+    // 업체 리뷰수 반환
+    public int getCompanyReviewCount(String companyCode) {
+        int reviewCount = companyMapper.getCompanyReviewCount(companyCode);
+        log.info("Review Count for cCode {}: {}", companyCode, reviewCount);
+        return reviewCount;
+    }
+
     // 직원 신청 회원 조회
-    public List<ComStaff> getStaffSingList(String ccode){
-        log.info("Getting Staff List: {}", companyMapper.getStaffSingList(ccode));
-        return companyMapper.getStaffSingList(ccode);
+    public List<ComStaff> getStaffSingList(String cCode){
+        log.info("Getting Staff List: {}", companyMapper.getStaffSignList(cCode));
+        return companyMapper.getStaffSignList(cCode);
     }
 
     // 해당 멤버 직원으로 업데이트
