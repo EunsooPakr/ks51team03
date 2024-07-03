@@ -76,8 +76,14 @@ public class CompanyService {
 
     // 직원 신청 회원 조회
     public List<ComStaff> getStaffSingList(String cCode){
-        log.info("Getting Staff List: {}", companyMapper.getStaffSignList(cCode));
+        log.info("Getting Sign Staff List: {}", companyMapper.getStaffSignList(cCode));
         return companyMapper.getStaffSignList(cCode);
+    }
+
+    // 직원 리스트 반환
+    public List<ComStaff> getStaffList(String cCode){
+        log.info("Getting Staff List: {}", companyMapper.getStaffList(cCode));
+        return companyMapper.getStaffList(cCode);
     }
 
     // 해당 멤버 직원으로 업데이트

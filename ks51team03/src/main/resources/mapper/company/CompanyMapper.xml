@@ -246,6 +246,23 @@
 		WHERE
 			s.stf_check = 0 AND s.ccode = #{cCode}
 	</select>
+	<select id="getStaffList" resultMap="ComStaffResultMap">
+		-- 직원 리스트
+		SELECT
+		s.id, s.stf_phone, m.name, s.ccode
+		FROM
+		staff AS s
+		INNER JOIN
+		member AS m
+		ON
+		s.id = m.id
+		WHERE
+		s.stf_check = 1 AND s.ccode = #{cCode}
+	</select>
+	<select id="getStaffList" resultMap="ComStaffResultMap">
+		-- 직원 신청 로직 TODO!!!!!!!!!!!!!!!
+
+	</select>
 
 
 	<select id="getCompanyListByKeyWord" resultMap="CompanyResultMap">

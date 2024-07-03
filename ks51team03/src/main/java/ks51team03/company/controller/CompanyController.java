@@ -92,8 +92,11 @@ public class CompanyController {
 
 		String ccode = (String) session.getAttribute("CCODE");
 		List<ComStaff> staffRequests = companyService.getStaffSingList(ccode);
+		List<ComStaff> staffList = companyService.getStaffList(ccode);
 
 		model.addAttribute("staffRequests", staffRequests);
+		model.addAttribute("staffList", staffList);
+
 		return "company/company_staff_setting";
 	}
 	@PostMapping("/company/staff/accept")
@@ -117,9 +120,9 @@ public class CompanyController {
 		return "company/company_staff_signUp";
 	}
 	@PostMapping("/staff/sign")
-	public String signStaff(@RequestParam String requestId, HttpSession session) {
-		// 직원 등록 요청 거절 로직
-		String memberId = (String) session.getAttribute("SID");
+	public String signStaff(@RequestParam String requestId) {
+		// 직원 등록 요청 로직
+
 		return "redirect:/company/staff/setting";
 	}
 

@@ -37,6 +37,9 @@ public interface CompanyMapper {
     // 신청 직원 가져오기
     List<ComStaff> getStaffSignList(String cCode);
 
+    // 직원 리스트 가져오기
+    List<ComStaff> getStaffList(String cCode);
+
     int acceptStaff(String requestId, String memberId);
 
     // 아이디로 업체 정보 가져오기
