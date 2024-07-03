@@ -6,8 +6,9 @@
     <resultMap type="ks51team03.funeral.serviceList.dto.ServiceListDto" id="getServiceListMap">
         <id         column="fscode"         property="funeralserviceCode"/>
         <result     column="fs_title"       property="funeralserviceTitle"/>
+        <result     column="fs_title"       property="funeralserviceTitle"/>
         <result     column="fs_price"       property="funeralservicePrice"/>
-        <result     column="id"             property="funeralserviceId"/>
+        <result     column="ccode"          property="funeralserviceCcode"/>
         <result     column="fs_reg_date"    property="funeralserviceRegDate"/>
         <result     column="fs_state"       property="funeralserviceState"/>
     </resultMap>
@@ -15,14 +16,29 @@
     <!-- 장례 서비스 전체 조회 -->
     <select id="getServiceListDto" resultMap="getServiceListMap">
         SELECT
-        fs.fscode,
-        fs.fs_title,
-        fs.fs_price,
-        fs.id,
-        fs.fs_reg_date,
-        fs.fs_state
+            fs.fscode,
+            fs.ccode,
+            fs.fs_title,
+            fs.fs_price,
+            fs.fs_reg_date,
+            fs.fs_state
         FROM
-        funeral_service AS fs
+            funeral_service AS fs
+    </select>
+
+    <!-- 장례 서비스 전체 조회 -->
+    <select id="getServiceInfoByCode" parameterType="String" resultMap="getServiceListMap">
+        SELECT
+            fs.fscode,
+            fs.fs_title,
+            fs.ccode,
+            fs.fs_price,
+            fs.fs_reg_date,
+            fs.fs_state
+        FROM
+            funeral_service AS fs
+        where
+        fs.ccode = #{funeralserviceCcode};
     </select>
 
 

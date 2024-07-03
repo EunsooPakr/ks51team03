@@ -128,7 +128,7 @@
                 </div>
 
                 <div class="col-md-7 col-lg-8">
-                    <div class="col-md-12 col-lg-12">
+                    <div class="col-md-12 col-lg-12" th:if="${serviceListCcode != null}" th:each="ml : ${serviceListCcode}">
 
                         <div id="package-slider1" class="owl-carousel owl-theme package-slider">
 
@@ -136,65 +136,14 @@
                                 <img class="lazyestload" th:data-src="@{/assets/img/holets/hotel-slider-01.jpg}" th:src="@{assets/img/holets/hotel-slider-01.jpg}" alt="image">
                             </div>
                             <div class="mt-8">
-                                <h2 class="text-uppercase mb-5">서비스 1 : 기본 장례</h2>
-                                <h3 class="text-uppercase mb-6">비용 : 35,000원</h3>
+                                <h2 class="text-uppercase mb-5" th:text="${ml.funeralserviceTitle}"></h2>
+                                <h3 class="text-uppercase mb-6" th:text="${ml.funeralservicePrice}"></h3>
                                 <p class="mb-6">장례 서비스, 기본 유골함, 포포즈 어메니티</p>
                             </div>
 
                         </div>
                     </div>
 
-                    <hr>
-
-
-                    <div class="col-md-12 col-lg-12">
-                        <div id="package-slider2" class="owl-carousel owl-theme package-slider">
-
-                            <div class="item">
-                                <img class="lazyestload" th:data-src="@{/assets/img/holets/hotel-slider-01.jpg}" th:src="@{assets/img/holets/hotel-slider-01.jpg}" alt="image">
-                            </div>
-                            <div class="mt-8">
-                                <h2 class="text-uppercase mb-5">서비스 2 : PAL 패키지</h2>
-                                <h3 class="text-uppercase mb-6">비용 : 55,000원</h3>
-                                <p class="mb-6">장례 서비스, 인견 수의보, 오동나무 관, 한지 수목함, 생화(소량), 포포즈 어메니티</p>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="col-md-12 col-lg-12">
-                        <div id="package-slider3" class="owl-carousel owl-theme package-slider">
-
-                            <div class="item">
-                                <img class="lazyestload" th:data-src="@{/assets/img/holets/hotel-slider-01.jpg}" th:src="@{assets/img/holets/hotel-slider-01.jpg}" alt="image">
-                            </div>
-                            <div class="mt-8">
-                                <h2 class="text-uppercase mb-5">서비스 3 : 요람장 패키지</h2>
-                                <h3 class="text-uppercase mb-6">비용 : 85,000원</h3>
-                                <p class="mb-6">장례 서비스, 고급 면 수의, 목화솜 이불, 요람 관, 한지 수목함, 생화(소량), 어메니티</p>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="col-md-12 col-lg-12">
-                        <div id="package-slider4" class="owl-carousel owl-theme package-slider">
-
-                            <div class="item">
-                                <img class="lazyestload" th:data-src="@{/assets/img/holets/hotel-slider-01.jpg}" th:src="@{assets/img/holets/hotel-slider-01.jpg}" alt="image">
-                            </div>
-                            <div class="mt-8">
-                                <h2 class="text-uppercase mb-5">서비스 4 : 요람장 패키지</h2>
-                                <h3 class="text-uppercase mb-6">비용 : 85,000원</h3>
-                                <p class="mb-6">장례 서비스, 고급 면 수의+수의보, 고급 오동나무관, 2중 기능성 유골함, 생화(소량), PAL 어메니티</p>
-                            </div>
-
-                        </div>
-                    </div>
                 </div>
 
             </div>

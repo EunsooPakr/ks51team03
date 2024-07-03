@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -42,7 +43,19 @@ public class ServiceListController {
 	}
 
 	@GetMapping("funeral/funeral_service_detail")
-	public String reserveDetail() {
+	public String reserveDetail(
+			@RequestParam(value="funeralserviceCcode") String funeralserviceCcode,
+			Model model) {
+		log.info("funeralserviceCcode: ?????" + funeralserviceCcode);
+
+
+		List<ServiceListDto> serviceListCcode = serviceListService.getServiceInfoByCode(funeralserviceCcode);
+		//ServiceListDto serviceListCcode = serviceListService.getServiceInfoByCode(funeralserviceCcode);
+		//List<ServiceListDto> serviceListDto = serviceListService.getServiceList();
+
+		model.addAttribute("funeralserviceCcode", funeralserviceCcode);
+		//model.addAttribute("serviceListDto", serviceListDto);
+		model.addAttribute("serviceListCcode", serviceListCcode);
 
 		return "funeral/funeral_service_detail";
 	}
