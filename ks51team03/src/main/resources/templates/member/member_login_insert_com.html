@@ -1,99 +1,326 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>PAL_회원가입_업체등록</title>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAL 회원가입 폼</title>
     <link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
     <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}" >
 </head>
 <body>
     <div class="member-insert-form-body">
-    <div class="member-insert-form">
+	<form class="member-insert-form" id="insertCompanyForm" th:action="@{/company/insertCompany}" method="post">
        <!-- 로고 -->		
 		<a href="/member/member_main" class="logo-single">
 			<img th:src="@{/assets/img/pal_logo.png}" alt="IMG-LOGO">
 		</a>
 
-        <!-- 2. 필드 -->
+		<!-- 1. 업체 이름 -->
+        <br><br>
         <div class="login-insert-field">
-            <b>아이디</b>
-            <span class="placehold-text"><input type="text"></span>
-        </div>
-        <div class="login-insert-field">
-            <b>비밀번호</b>
-            <input class="userpw" type="password">
-        </div>
-        <div class="login-insert-field">
-            <b>비밀번호 재확인</b>
-            <input class="userpw-confirm" type="password">
-            <a>비밀번호가 일치합니다.</a>
-        </div>
-        
-        
-        <div class="login-insert-field">
-            <b>대표이름</b>
-            <input type="text">
-        </div>
-        
-        <div class="login-insert-field">
-            <b>업체이름</b>
-            <input type="text">
+            <b>업체 이름</b>
+            <input type="text" id="companyName" name="companyName" maxlength="25" required>
         </div>
 
- 		<!-- 4. 필드(성별) -->
-        <b>업체종류</b>
+		<!-- 2. 업체 종류 -->
+        <b>업체 종류</b>
         <div class="login-insert-field-button">
-		    <button class="login-insert-field-button-child">약국</button>
-		    <button class="login-insert-field-button-child">병원</button>
-		    <button class="login-insert-field-button-child">장례</button>
+		    <button class="login-insert-field-button-child class-btn">약국</button>
+		    <button class="login-insert-field-button-child class-btn">병원</button>
+		    <button class="login-insert-field-button-child class-btn">장례</button>
+			<input type="text" id="companyClass" name="companyClass" style="display: none;" value="">
 		</div>
 
+		<!-- 3. 업체 주소 -->
+		<div class="login-insert-field-addr">
+            <b>업체 주소</b>
+            <div>
+                <input type="number" id="comPostNum" name="comPostNum" placeholder="우편번호 입력">
+                <input type="button" onclick="SearchPostNumberAddr()" value="우편번호 검색">
+            </div>
+            <input type="text" id="companyAddr" name="companyAddr" placeholder="주소">
+            <input type="text" id="companyAddrDetail" name="companyAddrDetail" placeholder="상세주소">
+        </div>
 
-		<!-- 5. 이메일_전화번호 -->
+		<!-- 4. 업체 전화번호 -->
         <div class="login-insert-field">
-            <b>사업자 번호<!-- <small>(선택)</small> --></b>
-            <input type="number">
+            <b>업체 전화번호</b>
+            <input type="tel" id="companyPhone" name="companyPhone">
+        </div>
+        
+        <!-- 5. 업체 이메일 인증 -->
+        <b>업체 이메일 인증</b>
+        <div class="login-insert-field-addr" role="form" method="post" th:object="${companyFormDto}">
+	          <div class="confirm-group">
+	              <input type="email"  id=companyEmail name="companyEmail" placeholder="이메일 입력">
+	              <input type="button" id="sendBtn" onclick="sendNumber()" value="인증번호 받기">
+	          </div>
+	          <div id="confirmEmailNum">
+	              <input type="text" id="confirmNum" placeholder="인증번호 입력">
+	              <input type="button" id="confirmBtn" onclick="confirmNumber()" value="인증번호 확인">
+	          </div>
+	          <div class="login-insert-field">
+	          	<a id="confirmResult">이메일 인증을 진행해주세요.</a>
+	          </div>
+	          
+	          <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
+        </div>
+        
+        <br>
+		 <!-- 6. 대표 이름 -->
+        <div class="login-insert-field">
+            <b>대표 이름</b>
+            <input type="text" id="companyCeo" name="companyCeo" maxlength="20" oninput="KoreanInput(event)" required>
         </div>
        
-
-		<div class="login-insert-field-addr">
-            <b>주소</b>
+       <!-- 7. 대표 아이디 로그인 -->
+        <div class="login-insert-field" id="loginForm" th:action="@{/member/login}" method="post">
+            <b>대표 아이디 인증</b>
             <div>
-                <input type="number" placeholder="우편번호 입력">
-                <input type="button" value="검색">
+                <input type="text" id="memberId" name="memberId" th:value="${memberId}" placeholder="아이디 입력">
+                <input type="password" id="memberPw" name="memberPw" th:value="${memberPw}" placeholder="비밀번호 입력">
+                <input type="button" id="loginBtn" value="대표 아이디 인증">
             </div>
-            <input type="number" placeholder="상세주소를 입력하세요">
+            <a id="idCheckResult" style="display: none;"></a>
         </div>
 
-
-        <div class="login-insert-field-tel-number">
-        	<br><br>
-            <b>휴대전화</b>
-            <div>
-                <input type="tel" placeholder="전화번호 입력">
-                <input type="button" value="인증번호 받기">
-            </div>
-            <input type="number" placeholder="인증번호를 입력하세요">
-            <a>인증이 완료되었습니다.</a>
+		<br><br>
+       <!-- 8. 등록하기 버튼 -->
+        <div class="login-insert-field">
+        	<input type="button" value="업체등록" id="companyInsertBtn">
+		</div>
+	</form>
+	</div>
+		
+    <!-- 7. 푸터 -->
+    <div class="member-insert-form-footer">
+        <div>
+            <a href="#none">이용약관</a>
+            <a href="#none">개인정보처리방침</a>
+            <a href="#none">회원정보 고객센터</a>
         </div>
-
-        <!-- 6. 가입하기 버튼 -->
-        <input type="submit" value="가입하기">
-
-        <!-- 7. 푸터 -->
-        <div class="member-insert-form-footer">
-            <div>
-                <a href="#none">이용약관</a>
-                <a href="#none">개인정보처리방침</a>
-                <a href="#none">회원정보 고객센터</a>
-            </div>
-            <span><a href="#none">PALCorp.</a></span>
-        </div>
+        <span><a href="#none">PALCorp.</a></span>
     </div>
-</div>
+    
+   	<script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+	<script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
+	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js}"></script>
+	<script th:inline="javascript">
+	/* 이메일 인증번호 발송 */
+	function sendNumber()
+	{
+		const confirmResult = $('#confirmResult');
+	    /* $("#confirmEmailNum").css("display","block"); */
+	    $.ajax({
+	        url:"/mail",
+	        type:"post",
+	        dataType:"json",
+	        data:{"mail" : $("#companyEmail").val()},
+	        success: function(data){
+	        	confirmResult.text('인증번호가 발송되었습니다. 이메일을 확인해주세요.');
+	        	confirmResult.css('color', 'blue');
+	        	confirmResult.show(); 	
+	            $("#Confirm").attr("value",data);
+	        },
+	        error: function(xhr, status, error) {
+	        	confirmResult.text('인증번호 발송에 실패하였습니다.');
+	        	confirmResult.css('color', 'orange');
+	        	confirmResult.show(); 	
+                console.error(xhr.responseText);
+            }
+	    });
+	}
+	
+	/* 이메일 인증번호 비교 */
+	function confirmNumber(){
+		const number1 = $("#confirmNum").val();
+		const number2 = $("#Confirm").val();
+	    const confirmResult = $('#confirmResult');
+	    
+	    if(number1 == number2&&number1!=null){
+	    	confirmResult.text('이메일 인증이 완료되었습니다.');
+	    	confirmResult.css('color', 'green');
+	    	confirmResult.show(); 	
+	    }else{
+	    	confirmResult.text('인증번호가 일치하지않습니다.');
+	    	confirmResult.css('color', 'orange');
+	    	confirmResult.show(); 	
+	    }
+	}
+	
+	/*다음 Api로 우편번호 주소 검색*/
+	function SearchPostNumberAddr() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	
+	            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	            let addr = ''; // 주소 변수
+	            let extraAddr = ''; // 참고항목 변수
+	
+	            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	            // 사용자가 도로명 주소를 선택했을 경우
+	            if (data.userSelectedType === 'R') 
+	            { 
+	                addr = data.roadAddress;
+	            }
+	            else // 사용자가 지번 주소를 선택했을 경우(J)
+	            { 
+	                addr = data.jibunAddress;
+	            }
+	
+	            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	            document.getElementById('comPostNum').value = data.zonecode;
+	            document.getElementById("companyAddr").value = addr;
+	            // 커서를 상세주소 필드로 이동한다.
+	            document.getElementById("companyAddrDetail").focus();
+	        }
+	    }).open();
+	}
+	
+	/* 한글 검사 */
+	function KoreanInput(event)
+	{
+		const inputValue = event.target.value;		// 입력값
+		const regex = /^[ㄱ-ㅎㅏ-ㅣ가-힣]{0,18}$/; 	// 한글만 입력 받고+최대 20자 제한
+	    if (!regex.test(inputValue))
+		{
+	        alert("한글로만 입력해 주세요 (최대 20자).");
+	        event.target.value = ''; 				// 입력 초기화
+	    }
+	}
+	
+	/* Thymeleaf 내부에서 JavaScript 사용 */
+    document.addEventListener('DOMContentLoaded', function() {
+        const classButtons = document.querySelectorAll('.class-btn');
+        const companyClassInput = document.getElementById('companyClass');
+        
+        /* 성별 버튼 클릭 시 처리 */
+        classButtons.forEach(function(button, index) {
+            button.addEventListener('click', function(event) {
+            	event.preventDefault(); // 폼 제출 기본 동작 막기
+                // 선택된 버튼에 active 클래스 추가
+                classButtons.forEach(function(btn) {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                var comClass="";
+                
+                switch(index)
+                {
+                case 0:
+                	comClass="동물약국";
+                	break;
+                case 1:
+                	comClass="동물병원";
+                	break;
+                case 2:
+                	comClass="동물장례"
+                	break;
+                default:
+                	break;
+                }
+                
+                companyClassInput.value = comClass;
+            });
+        });
+    });
+	
+	/*대표자 아이디 인증(로그인)*/
+	$('#loginBtn').click(function() {
+    	let isProcess = true;
+        $('#loginForm input').each(function(idx, element) {
+            const id = element.id;
+            const value = $(element).val().trim();
+
+            if (value === '')
+            {
+                // 값이 비어 있는 경우 required 속성을 추가합니다.
+                $('#' + id).prop('required', true);
+                // 해당 필드로 포커스를 이동합니다.
+                $('#' + id).focus();
+
+                isProcess = false;
+                return false; // each 함수 종료
+            } else
+            {
+                // 값이 있는 경우 required 속성을 제거합니다.
+                $('#' + id).prop('required', false);
+            }
+        });
+        if(!isProcess) return ; 
+		
+        const memberId = $('#memberId').val().trim();
+        const memberPw = $('#memberPw').val().trim();
+        const idCheckResult = $('#idCheckResult');
+        
+        const request = $.ajax({
+        	url : '/member/ceoIdCheck',
+        	method : 'POST',
+        	data : { 'memberId' : memberId, 'memberPw' : memberPw },
+        	dataType : 'json'
+        });
+        request.done(function(isLogin){
+        	if(!isLogin){
+        		idCheckResult.text('일치하는 회원 아이디가 없습니다.');
+                idCheckResult.css('color', 'orange');
+                idCheckResult.show();
+                
+                $('#memberId').prop('required', true).val('');
+        		$('#memberPw').prop('required', true).val('');
+        		$('#memberId').focus();
+        		return ;
+        	}
+        	else
+       		{
+        		idCheckResult.text('대표자 아이디가 인증되었습니다.');
+             	idCheckResult.css('color', 'green');
+                idCheckResult.show(); 						
+       		}
+        });
+	});
+	
+	/* 업체등록 */
+	$('#companyInsertBtn').click(function(){
+
+        const idCheckResult = $('#idCheckResult');
+        const confirmResult = $('#confirmResult');
+        
+        /* 인증확인 */
+		if(confirmResult.text()==='이메일 인증이 완료되었습니다.'
+				&&idCheckResult.text()==='대표자 아이디가 인증되었습니다.')
+		{
+			isSubmit = true;
+		}
+		else
+		{
+			alert('이메일 인증, 대표자 아이디 인증을 확인해주세요.');
+		}
+        
+		$('#insertCompanyForm input').each( (idx, element) => {
+			const id = element.id;
+			const value = element.value;
+			if(!value){
+				if(element.text!=null)
+					alert(element.text);
+				else
+					alert('필수입력 항목입니다.');
+				$(element).focus() ;
+				isSubmit = false;
+				return false;
+			}
+		});
+		
+		//회원정보를 담은 폼 전송
+		if(isSubmit)
+		{
+			alert('업체등록이 완료되었습니다.');
+			$('#insertCompanyForm').submit();
+		}
+	});
+	</script>
 </body>

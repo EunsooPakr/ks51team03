@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>PAL_회원가입_반려동물등록</title>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAL 회원가입 폼</title>
     <link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
     <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}" >
 </head>
 <body>
     <div class="member-insert-form-body">
-    <div class="member-insert-form">
-       <!-- 로고 -->		
+	<form class="member-insert-form" id="insertPetForm" th:action="@{/pet/insertPet}" method="post">
+         <!-- 로고 -->		
 		<a href="/member/member_main" class="logo-single">
 			<img th:src="@{/assets/img/pal_logo.png}" alt="IMG-LOGO">
 		</a>
         
+        <!-- 1. 반려동물 이름 -->
+        <br><br>
         <div class="login-insert-field">
-            <b>반려동물이름</b>
-            <input type="text">
+            <b>반려동물 이름</b>
+            <input type="text" id="companyName" name="companyName" maxlength="25" required>
         </div>
 
  		<!-- 4. 필드(성별) -->
@@ -112,6 +112,7 @@
         <!-- 6. 가입하기 버튼 -->
         <input type="submit" value="가입하기">
 
+</form>
         <!-- 7. 푸터 -->
         <div class="member-insert-form-footer">
             <div>
@@ -124,3 +125,4 @@
     </div>
 </div>
 </body>
+</html>

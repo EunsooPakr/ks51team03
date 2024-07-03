@@ -2,12 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>PAL_회원가입_일반회원</title>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAL 회원가입 폼</title>
     <link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
     <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}" >
 </head>
@@ -111,7 +110,9 @@
 	              <input type="text" id="confirmNum" placeholder="인증번호 입력">
 	              <input type="button" id="confirmBtn" onclick="confirmNumber()" value="인증번호 확인">
 	          </div>
-	          <a id="confirmResult">이메일 인증을 진행해주세요.</a>
+	          <div class="login-insert-field">
+	          	<a id="confirmResult">이메일 인증을 진행해주세요.</a>
+	          </div>
 	          
 	          <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
         </div>
@@ -126,7 +127,7 @@
         	<input type="button" value="회원가입" id="memberInsertBtn">
 		</div>
 	</form>
-	</div>s
+	</div>
 	
     <!-- 10. 푸터 -->
     <div class="member-insert-form-footer">
@@ -155,11 +156,13 @@
 	        data:{"mail" : $("#memberEmail").val()},
 	        success: function(data){
 	        	confirmResult.text('인증번호가 발송되었습니다. 이메일을 확인해주세요.');
+	        	confirmResult.css('color', 'blue');
 	        	confirmResult.show(); 	
 	            $("#Confirm").attr("value",data);
 	        },
 	        error: function(xhr, status, error) {
 	        	confirmResult.text('인증번호 발송에 실패하였습니다.');
+	        	confirmResult.css('color', 'orange');
 	        	confirmResult.show(); 	
                 console.error(xhr.responseText);
             }
@@ -174,9 +177,11 @@
 	    
 	    if(number1 == number2&&number1!=null){
 	    	confirmResult.text('이메일 인증이 완료되었습니다.');
+	    	confirmResult.css('color', 'green');
 	    	confirmResult.show(); 	
 	    }else{
 	    	confirmResult.text('인증번호가 일치하지않습니다.');
+	    	confirmResult.css('color', 'orange');
 	    	confirmResult.show(); 	
 	    }
 	}
@@ -283,6 +288,8 @@
     
     /* 아이디 중복 검사 */
     $('#idCheck').click(function(){
+    	let isSubmit = false;
+    	
         const memberId = $('#memberId').val();
         if (!memberId) {
             /* alert('회원아이디를 입력해주세요'); */
@@ -305,11 +312,13 @@
             const idCheckResult = $('#idCheckResult');
             if (isMember) {
                 idCheckResult.text('회원가입을 할 수 없는 아이디입니다.');
+                idCheckResult.css('color', 'orange');
                 idCheckResult.show(); 						// 결과 메시지 출력
                 $('#memberId').val('');
                 $('#memberId').focus();
             } else {
                 idCheckResult.text('사용 가능한 아이디입니다.');
+            	idCheckResult.css('color', 'green');
                 idCheckResult.show(); 						// 결과 메시지 출력
             }
         });
@@ -331,7 +340,7 @@
             passwordMatchResult.show();
         } else {
             passwordMatchResult.text('비밀번호가 일치하지 않습니다.');
-            passwordMatchResult.css('color', 'red'); // 불일치 시 글자색 빨간색으로 변경
+            passwordMatchResult.css('color', 'orange'); // 불일치 시 글자색 빨간색으로 변경
             passwordMatchResult.show();
         }
     });
@@ -365,23 +374,42 @@
         // 숨겨둔 input value에 넣기
         $('#memberBirth').val(birthDate);
         
-		
-		/* 회원정보 입력 */
-		let isSubmit = true;
-		
+        const idCheckResult = $('#idCheckResult');
+        const passwordMatchResult = $('#passwordMatchResult');
+        const confirmResult = $('#confirmResult');
+        
+        /* 인증확인 */
+		if(confirmResult.text()==='이메일 인증이 완료되었습니다.'
+				&&idCheckResult.text()==='사용 가능한 아이디입니다.'
+				&&passwordMatchResult.text()==='비밀번호가 일치합니다.')
+		{
+			isSubmit = true;
+		}
+		else
+		{
+			alert('아이디, 비밀번호, 이메일 인증을 확인해주세요.');
+		}
+        
 		$('#insertMemberForm input').each( (idx, element) => {
 			const id = element.id;
 			const value = element.value;
 			if(!value){
-				alert('필수입력 항목입니다.');
+				if(element.text!=null)
+					alert(element.text);
+				else
+					alert('필수입력 항목입니다.');
 				$(element).focus() ;
 				isSubmit = false;
 				return false;
 			}
 		});
 		
-		console.log("회원정보 입력:")
-		if(isSubmit) $('#insertMemberForm').submit();
+		//회원정보를 담은 폼 전송
+		if(isSubmit)
+		{
+			alert('회원가입이 완료되었습니다.');
+			$('#insertMemberForm').submit();
+		}
 	});
   	
   	/*생년월일의 일의 자리 숫자는 앞에 0을 추가하는 함수*/

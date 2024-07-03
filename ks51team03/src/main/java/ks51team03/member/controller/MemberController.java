@@ -132,6 +132,20 @@ public class MemberController {
 		return "member/member_login_insert_mem";
 	}
 	
+	@PostMapping("/ceoIdCheck")
+	@ResponseBody
+	public boolean ceoIdCheck(@RequestParam(value = "memberId") String memberId
+						, @RequestParam(value = "memberPw") String memberPw
+						, HttpServletRequest request
+						, HttpServletResponse response){
+
+		Map<String, Object> checkMap = memberService.checkMemberInfo(memberId, memberPw);
+		boolean isCheck = (boolean) checkMap.get("isCheck");
+		
+        return isCheck;
+    }
+	
+	
 	@GetMapping("/member_main")
 	public String userMainPage(Model model, @RequestParam(value="alertMsg", required = false) String alertMsg)
 	{

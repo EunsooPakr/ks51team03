@@ -1,6 +1,10 @@
 package ks51team03.company.mapper;
 
+
 import ks51team03.company.dto.*;
+import ks51team03.company.dto.ComMap;
+import ks51team03.company.dto.Company;
+import ks51team03.member.dto.Member;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
 
@@ -43,5 +47,14 @@ public interface CompanyMapper {
 
     // 업체 코드로 해당 업체 리뷰수 불러오기
     Integer getCompanyReviewCount(@Param("cCode") String cCode);
+    
+    // 업체 등록
+ 	int insertCompany(Company company);
+ 	
+ 	// 업체 코드 도출
+ 	int getCompanyCode();
+ 	
+ 	// 업체 대표 권한 변경
+ 	int updateCeo(Company company);
 
 }

@@ -1,19 +1,21 @@
 package ks51team03.company.controller;
-
 import jakarta.servlet.http.HttpSession;
 import ks51team03.company.dto.*;
 import ks51team03.company.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.List;
+import ks51team03.company.dto.ComStaff;
+import ks51team03.company.dto.Company;
+
+
 
 @Controller
 @RequiredArgsConstructor
@@ -146,6 +148,25 @@ public class CompanyController {
 	public String companySendAlarm() {
 
 		return "company/company_send_alarm";
+	}
+	
+	/*업체 등록*/
+	@PostMapping("/company/insertCompany")
+	public String insertCompany(Company company) {
+		
+		log.info("업체등록 Company:{}", company);
+		
+		companyService.insertCompany(company);
+		
+		return "redirect:/member/member_main";
+	}
+	
+	@GetMapping("/company/insertCompany")
+	public String insertCompany(Model model) {
+		
+		model.addAttribute("title", "업체등록");
+		
+		return "member/member_login_insert_com";
 	}
 
 }
