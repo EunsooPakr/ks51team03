@@ -21,53 +21,48 @@
         <br><br>
         <div class="login-insert-field">
             <b>반려동물 이름</b>
-            <input type="text" id="companyName" name="companyName" maxlength="25" required>
+            <input type="text" id="petName" name="petName" maxlength="25" required>
         </div>
 
- 		<!-- 4. 필드(성별) -->
+ 		<!-- 2. 성별 -->
         <b>성별</b>
-        <div class="login-insert-field-button">
-		    <button class="login-insert-field-button-child">남자</button>
-		    <button class="login-insert-field-button-child">여자</button>
-		    <button class="login-insert-field-button-child">선택안함</button>
+        <div class="login-insert-field-button gender">
+		    <button class="login-insert-field-button-child gender-btn">남자</button>
+		    <button class="login-insert-field-button-child gender-btn">여자</button>
+		    <button class="login-insert-field-button-child gender-btn">선택안함</button>
+			<input type="text" id="petGender" name="petGender" style="display: none;" value="">
 		</div>
 
 
-        <!-- 3. 필드(생년월일) -->
+        <!-- 3. 생년월일 -->
         <div class="login-insert-field birth">
             <b>생년월일</b>
             <div>
-                <input type="number" placeholder="년(4자)">                
-                <select>
+                <input type="text" id="yearInput" placeholder="년(4자)" maxlength="4">                
+                <select id="monthInput">
                     <option value="">월</option>
-                    <option value="">1월</option>
-                    <option value="">2월</option>
-                    <option value="">3월</option>
-                    <option value="">4월</option>
-                    <option value="">5월</option>
-                    <option value="">6월</option>
-                    <option value="">7월</option>
-                    <option value="">8월</option>
-                    <option value="">9월</option>
-                    <option value="">10월</option>
-                    <option value="">11월</option>
-                    <option value="">12월</option>
+                    <option th:each="month : ${#numbers.sequence(1,12)}"
+                    		th:value="${month}"
+                    		th:text="|${month}월|"></option>
                 </select>
-                <input type="number" placeholder="일">
+                <input type="number" id="dayInput" placeholder="일" maxlength="2">
             </div>
+            <input type="text" id="petBirth" name="petBirth" style="display: none;" value="">
         </div>
 
        
-		<!-- 5. 이메일_전화번호 -->
+		<!-- 4. 몸무게 -->
         <div class="login-insert-field">
-            <b>몸무게(kg)<!-- <small>(선택)</small> --></b>
-            <input type="number">
+            <b>몸무게(kg)</b>
+            <input type="text" id="petWeight" name="petWeight">
         </div>
 
+
+		<!-- 4. 분류 -->
 		<div class="login-insert-field birth">
             <b>분류(강)</b>
             <div>
-                <select>
+                <select id="petClass" name="petClass">
                     <option value="">분류</option>
                     <option value="">포유류</option>
                     <option value="">조류</option>
@@ -75,44 +70,50 @@
                     <option value="">어류</option>
                     <option value="">양서류</option>
                 </select>
-                <input type="text" placeholder="종">           
-                <input type="text" placeholder="품종">
+                <input type="text" id="petSpecies" name="petSpecies" placeholder="종">           
+                <input type="text" id="petBreed" name="petBreed" placeholder="품종">
             </div>
         </div>
 
 
-		<!-- 4. 필드(반려동물 유무) -->
+		<!-- 5. 중성화 여부 -->
         <b>중성화 여부</b>
 		<div class="login-insert-field-button">
-			<button class="login-insert-field-button-child">있다</button>
-		    <button class="login-insert-field-button-child">없다</button>
+			<button class="login-insert-field-button-child neuter-btn">있다</button>
+		    <button class="login-insert-field-button-child neuter-btn">없다</button>
+		    <input type="number" id="petNeuter" name="petNeuter" style="display: none;" value="">
 		</div>
-        
-        <!-- 4. 필드(반려동물 유무) -->
+		
+		
+        <!-- 6. 수술 여부 -->
         <b>기타 수술 여부</b>
 		<div class="login-insert-field-button">
-			<button class="login-insert-field-button-child">있다</button>
-		    <button class="login-insert-field-button-child">없다</button>
+			<button class="login-insert-field-button-child operation-btn">있다</button>
+		    <button class="login-insert-field-button-child operation-btn">없다</button>
+		    <input type="number" id="petOperation" name="petOperation" style="display: none;" value="">
 		</div>
 		
 		
-		<!-- 4. 필드(반려동물 유무) -->
-        <b>복용중인 약</b>
+		<!-- 7. 복용중인 약 -->
+        <b>복용중인 약 유무</b>
 		<div class="login-insert-field-button">
-			<button class="login-insert-field-button-child">있다</button>
-		    <button class="login-insert-field-button-child">없다</button>
+			<button class="login-insert-field-button-child medicine-btn">있다</button>
+		    <button class="login-insert-field-button-child medicine-btn">없다</button>
 		</div>
-
-		<b>약 상세</b>
-		<input type="text" placeholder="선택사항">
+		<div id="medicineDetails" style="display: none;">
+		    <b>복용중인 약 상세정보</b>
+		    <input type="text" id="petMedicine" name="petMedicine">
+		</div>
 		
-		<b>기타</b>
-		<input type="text" placeholder="선택사항">            
+		<!-- 8. 기타사항 -->
+		<b>기타사항</b>
+		<input type="text" id="petNote" name="petNote" placeholder="선택사항">            
 
-        <!-- 6. 가입하기 버튼 -->
-        <input type="submit" value="가입하기">
-
-</form>
+        <!-- 9. 등록하기 버튼 -->
+        <div class="login-insert-field">
+        	<input type="button" value="반려동물등록" id="petInsertBtn">
+		</div>
+	</form>
         <!-- 7. 푸터 -->
         <div class="member-insert-form-footer">
             <div>
@@ -123,6 +124,22 @@
             <span><a href="#none">PALCorp.</a></span>
         </div>
     </div>
-</div>
+    
+    <script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+	<script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
+	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js}"></script>
+	<script th:inline="javascript">
+	
+		/*복용중인 약 상세 표기하기*/
+		function showMedicineDetails(show)
+		{
+		    var medicineDetails = document.getElementById('medicineDetails');
+		    if (show) {
+		        medicineDetails.style.display = 'block';
+		    } else {
+		        medicineDetails.style.display = 'none';
+		    }
+		}
+	</script>
 </body>
 </html>

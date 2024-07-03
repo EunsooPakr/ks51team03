@@ -314,7 +314,11 @@ a{
 /* 선택된 버튼에 대한 스타일 추가 */
 .gender-btn.active,
 .pet-btn.active,
-.class-btn.active {
+.class-btn.active,
+.neuter-btn.active,
+.operation-btn.active,
+.medicine-btn.active 
+{
     background-color: lightsalmon;
     color: #fff;
 }
@@ -322,7 +326,10 @@ a{
 /* 선택된 버튼이 마지막 버튼일 경우 오른쪽 모서리 둥글기 제거 */
 .gender-btn.active:last-child,
 .pet-btn.active:last-child,
-.class-btn.active:last-child{
+.class-btn.active:last-child,
+.neuter-btn.active:last-child,
+.operation-btn.active:last-child,
+.medicine-btn.active:last-child{
     border-radius: 0;
 }
 
