@@ -63,12 +63,12 @@
             <b>분류(강)</b>
             <div>
                 <select id="petClass" name="petClass">
-                    <option value="">분류</option>
-                    <option value="">포유류</option>
-                    <option value="">조류</option>
-                    <option value="">파충류</option>
-                    <option value="">어류</option>
-                    <option value="">양서류</option>
+                    <option value="-">분류</option>
+                    <option value="포유류">포유류</option>
+                    <option value="조류">조류</option>
+                    <option value="파충류">파충류</option>
+                    <option value="어류">어류</option>
+                    <option value="양서류">양서류</option>
                 </select>
                 <input type="text" id="petSpecies" name="petSpecies" placeholder="종">           
                 <input type="text" id="petBreed" name="petBreed" placeholder="품종">
@@ -102,7 +102,7 @@
 		</div>
 		<div id="medicineDetails" style="display: none;">
 		    <b>복용중인 약 상세정보</b>
-		    <input type="text" id="petMedicine" name="petMedicine">
+		    <input type="text" id="petMedicine" name="petMedicine" placeholder="선택사항">
 		</div>
 		
 		<!-- 8. 기타사항 -->
@@ -129,17 +129,165 @@
 	<script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
 	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js}"></script>
 	<script th:inline="javascript">
+		
+		/* Thymeleaf 내부에서 JavaScript 사용 */
+	    document.addEventListener('DOMContentLoaded', function() {
+	        const genderButtons = document.querySelectorAll('.gender-btn');
+	        const petGenderInput = document.getElementById('petGender');
+	        const petNeuterButtons = document.querySelectorAll('.neuter-btn');
+	        const petNeuterInput = document.getElementById('petNeuter');
+	        const petOperationButtons = document.querySelectorAll('.operation-btn');
+	        const petOperationInput = document.getElementById('petOperation');
+	        const petMedicineButtons = document.querySelectorAll('.medicine-btn');
+	        const petMedicineInput = document.getElementById('petMedicine');
+	        const medicineDetails = document.getElementById('medicineDetails');
+	        
+	        /* 성별 버튼 클릭 시 처리 */
+	        genderButtons.forEach(function(button, index) {
+	            button.addEventListener('click', function(event) {
+	            	event.preventDefault(); // 폼 제출 기본 동작 막기
+	                // 선택된 버튼에 active 클래스 추가
+	                genderButtons.forEach(function(btn) {
+	                    btn.classList.remove('active');
+	                });
+	            	
+	                this.classList.add('active');
+	                
+	                var gender="";
+	                
+	                switch(index)
+	                {
+	                case 0:
+	                	gender="남";
+	                	break;
+	                case 1:
+	                	gender="여";
+	                	break;
+	                case 2:
+	                	gender="선택안함"
+	                	break;
+	                default:
+	                	break;
+	                }
+	                
+	                petGenderInput.value = gender;
+	            });
+	        });
+	        
+	        /* 반려동물 중성화 유무 버튼 클릭 시 처리 */
+	        petNeuterButtons.forEach(function(button, index) {
+	            button.addEventListener('click', function(event) {
+	            	event.preventDefault(); // 폼 제출 기본 동작 막기
+	                // 선택된 버튼에 active 클래스 추가
+	                petNeuterButtons.forEach(function(btn){
+	                    btn.classList.remove('active');
+	                });
+	                this.classList.add('active');
+	                
+	                petNeuterInput.value = (index).toString();
+	            });
+	        });
+	        
+	        /* 반려동물 기타 수술 유무 버튼 클릭 시 처리 */
+	        petOperationButtons.forEach(function(button, index) {
+	            button.addEventListener('click', function(event) {
+	            	event.preventDefault(); // 폼 제출 기본 동작 막기
+	                // 선택된 버튼에 active 클래스 추가
+	                petOperationButtons.forEach(function(btn){
+	                    btn.classList.remove('active');
+	                });
+	                this.classList.add('active');
+	                
+	                petOperationInput.value = (index).toString();
+	            });
+	        });
+	        
+	        
+	        
+	        /* 반려동물 복용중인 약 유무 버튼 클릭 시 처리 */
+	        petMedicineButtons.forEach(function(button, index) {
+	            button.addEventListener('click', function(event) {
+	            	event.preventDefault(); // 폼 제출 기본 동작 막기
+	                // 선택된 버튼에 active 클래스 추가
+	                petMedicineButtons.forEach(function(btn){
+	                    btn.classList.remove('active');
+	                });
+	                this.classList.add('active');
+	                
+	             	// 복용중인 약 유무에 따라 상세 정보 input 창 보이기/감추기
+	                if (index === 0) { // index 0은 "있다" 버튼
+	                    medicineDetails.style.display = 'block';
+	                    //petMedicineInput.value = ''; // 상세정보 초기화 혹은 필요에 따라 다른 처리
+	                } else { // index 1은 "없다" 버튼
+	                    medicineDetails.style.display = 'none';
+	                    //petMedicineInput.value = ''; // 상세정보 초기화 혹은 필요에 따라 다른 처리
+	                }
+	            });
+	        });
+	    });
+		
+	    /* 반려동물 등록 */
+		$('#petInsertBtn').click(function(){
+			
+			/* 생년월일 변환하여 input에 추가 */
+			const yearInput = $('#yearInput').val().trim();
+			const monthInput = $('#monthInput').val();
+			const dayInput = $('#dayInput').val().trim();
+
+	        if (yearInput.length > 4 || isNaN(yearInput)) {
+	            alert('생년월일의 년도는 최대 4자리 숫자만 입력 가능합니다.');
+	            return;
+	        }
+	        if (dayInput.length > 2 || isNaN(dayInput) || dayInput < 1 || dayInput > 31) {
+	            alert('생년월일의 날짜는 최대 2자리 숫자이며, 1부터 31 사이의 숫자만 입력 가능합니다.');
+	            return;
+	        }
+
+	     	// 생년월일 6자리로 변환 YYYYMMDD
+	        const birthDate = yearInput.substr(2)+ monthInput.padStart(2,'0') + dayInput.padStart(2,'0');
+	        
+	        // 숨겨둔 input value에 넣기
+	        $('#petBirth').val(birthDate);
+	        
+	        const idCheckResult = $('#idCheckResult');
+	        const passwordMatchResult = $('#passwordMatchResult');
+	        const confirmResult = $('#confirmResult');
+	        isSubmit = true;
+	        /* 인증확인 */
 	
-		/*복용중인 약 상세 표기하기*/
-		function showMedicineDetails(show)
-		{
-		    var medicineDetails = document.getElementById('medicineDetails');
-		    if (show) {
-		        medicineDetails.style.display = 'block';
-		    } else {
-		        medicineDetails.style.display = 'none';
-		    }
-		}
+	        
+			$('#insertPetForm input, select').each( (idx, element) => {
+				const id = element.id;
+				const value = element.value;
+				if(!value){
+					if(element.text!=null)
+						alert(element.text);
+					else
+						alert('필수입력 항목입니다.');
+					$(element).focus() ;
+					isSubmit = false;
+					return false;
+				}
+			});
+			
+			//회원정보를 담은 폼 전송
+			if(isSubmit)
+			{
+				alert('회원가입이 완료되었습니다.');
+				$('#insertPetForm').submit();
+			}
+		});
+	    
+		/*생년월일의 일의 자리 숫자는 앞에 0을 추가하는 함수*/
+		 function pad(number, length)
+		 {
+	        const str = '' + number;
+	        while (str.length < length)
+	        {
+	            str = '0' + str;
+	        }
+	        return str;
+		  }
 	</script>
 </body>
 </html>
