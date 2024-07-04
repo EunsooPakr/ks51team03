@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public class ReserveMapper {
 
-    int funeralReserve(ReserveDto.Funeral_reserve reserve);
+    //int funeralReserve(ReserveDto.Funeral_reserve reserve);
 }

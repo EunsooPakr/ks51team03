@@ -41,5 +41,32 @@
         fs.ccode = #{funeralserviceCcode};
     </select>
 
+    <insert id="reserveDetail" parameterType="ServiceListDto">
+        /* 회원 가입 */
+        INSERT INTO funeral_reserve
+        (   frcode,
+            ccode,
+            fscode,
+            id,
+            fr_start_date,
+            fr_end_date,
+            fr_phone,
+            fr_payment,
+            fr_confirm,
+            fr_reg_date)
+        VALUES (
+                '',
+                '',
+                '',
+                '',
+                NOW(),
+                NOW(),
+                '',
+                '',
+                '예약 대기',
+                NOW())
+
+    </insert>
+
 
 </mapper>

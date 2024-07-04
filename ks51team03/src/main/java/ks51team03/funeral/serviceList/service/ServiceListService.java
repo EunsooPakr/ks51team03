@@ -28,6 +28,14 @@ public class ServiceListService {
         return serviceListMapper.getServiceInfoByCode(funeralserviceCcode);
     }
 
+    /**
+     * 회원가입 프로세스
+     */
+    public void reserveDetail(ServiceListDto serviceListDto){
+
+        int result = serviceListMapper.reserveDetail(serviceListDto);
+    }
+
 
 //    public ServiceListDto getServiceInfoByCode(String funeralserviceCcode) {
 //
