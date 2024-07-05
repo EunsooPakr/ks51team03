@@ -2587,7 +2587,7 @@ textarea.form-control-lg {
 .form-check {
   display: block;
   min-height: 1.3125rem;
-  padding-left: 1.5em;
+  padding-left: 0rem;
   margin-bottom: 0.125rem;
 }
 .form-check .form-check-input {
@@ -16790,12 +16790,7 @@ Top bar
   padding-top: 1.0625rem;
   padding-bottom: 1.125rem;
 <<<<<<< HEAD
-} */ */
-
-=======
 } */ 
->>>>>>> origin/HSL
-
 
 
 /* Nav Custom */

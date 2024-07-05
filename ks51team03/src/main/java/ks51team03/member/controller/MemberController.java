@@ -166,6 +166,15 @@ public class MemberController {
 		return "member/member_main";
 	}
 	
+	@GetMapping("/member_mypage_main")
+	public String userMyPageMain(Model model)
+	{
+		model.addAttribute("title","member_mypage_main");
+		
+		return "member/member_mypage_main";
+	}
+	
+	
 	@GetMapping("/member_login_terms_mem")
 	public String userTermsPageMem(Model model)
 	{
