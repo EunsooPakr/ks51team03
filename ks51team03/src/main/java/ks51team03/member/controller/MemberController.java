@@ -112,13 +112,24 @@ public class MemberController {
 	}
 	
 	@PostMapping("/insertMember")
-	public String insertMember(Member member) {
+	public String insertMember(Member member,HttpSession session) {
 		
-		log.info("회원가입 Member:{}", member);
+		String nextPage="redirect:/member/member_main";
+
+		//반려동물이 있는 경우
+		if(member.getMemberPet()>0)
+		{
+			//session.setAttribute("SID", member.getMemberId());
+			session.setAttribute("SMEM", member);
+			nextPage="redirect:/member/member_login_insert_pet";
+		}
+		else
+		{
+			log.info("회원가입 Member:{}", member);
+			memberService.insertMember(member);
+		}
 		
-		memberService.insertMember(member);
-		
-		return "redirect:/member/member_main";
+		return nextPage;
 	}
 	
 	@GetMapping("/insertMember")
@@ -154,6 +165,15 @@ public class MemberController {
 		
 		return "member/member_main";
 	}
+	
+	@GetMapping("/member_mypage_main")
+	public String userMyPageMain(Model model)
+	{
+		model.addAttribute("title","member_mypage_main");
+		
+		return "member/member_mypage_main";
+	}
+	
 	
 	@GetMapping("/member_login_terms_mem")
 	public String userTermsPageMem(Model model)

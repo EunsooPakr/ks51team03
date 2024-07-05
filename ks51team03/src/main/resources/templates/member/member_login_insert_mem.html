@@ -404,10 +404,15 @@
 			}
 		});
 		
+		const memberPetInput = document.getElementById('memberPet');
+		
 		//회원정보를 담은 폼 전송
 		if(isSubmit)
 		{
-			alert('회원가입이 완료되었습니다.');
+			if(parseInt(memberPetInput.value)>0)
+				alert('반려동물 정보입력 페이지로 이동합니다.');
+			else
+				alert('회원가입이 완료되었습니다.');
 			$('#insertMemberForm').submit();
 		}
 	});
@@ -415,12 +420,12 @@
   	/*생년월일의 일의 자리 숫자는 앞에 0을 추가하는 함수*/
 	 function pad(number, length)
 	 {
-	        const str = '' + number;
-	        while (str.length < length)
-	        {
-	            str = '0' + str;
-	        }
-	        return str;
-	    }
+        const str = '' + number;
+        while (str.length < length)
+        {
+            str = '0' + str;
+        }
+        return str;
+	  }
 </script>
 </body>

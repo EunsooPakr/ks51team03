@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ks51team03.pet.mapper.PetMapper">
+
+	<resultMap type="Pet" id="petResultMap">
+		<!-- pk, column -->
+		<id column="pcode" property="petCode"/>
+		<result column="id" property="memberId"/>
+		<result column="p_name" property="petName"/>
+		<result column="p_gender" property="petGender"/>
+		<result column="p_birth" property="petBirth"/>
+		<result column="p_class" property="petClass"/>
+		<result column="p_species" property="petSpecies"/>
+		<result column="p_breed" property="petBreed"/>
+		<result column="p_weight" property="petWeight"/>
+		<result column="p_neuter" property="petNeuter"/>
+		<result column="p_operation" property="petOperation"/>
+		<result column="p_medicine" property="petMedicine"/>
+		<result column="p_note" property="petNote"/>
+		<result column="p_url" property="petUrl"/>
+		<result column="p_regist_date" property="petRegistDate"/>
+	</resultMap>
+	
+	<insert id="insertPet" parameterType="Pet">
+		/* 업체등록 */
+		INSERT INTO pet
+		(	pcode,
+			id,
+			p_name,
+			p_gender,
+			p_birth,
+			p_class,
+			p_species,
+			p_breed,
+			p_weight,
+			p_neuter,
+			p_operation,
+			p_medicine,
+			p_note,
+			p_url,
+			p_regist_date
+		)VALUES(
+			#{petCode},
+			#{memberId},
+			#{petName},
+			#{petGender},
+			#{petBirth}, 
+			#{petClass}, 
+			#{petSpecies}, 
+			#{petBreed}, 
+			#{petWeight}, 
+			#{petNeuter}, 
+			#{petOperation}, 
+			#{petMedicine}, 
+			#{petNote}, 
+			#{petUrl}, 
+			CURDATE()
+		);
+	</insert>
+	
+	<select id="getPetCode" resultType="int">
+		/* 반려동물코드 도출*/
+		SELECT 
+	    	MAX(CAST(REGEXP_REPLACE(pcode, '[^0-9]', '') AS UNSIGNED)) AS max_number
+		FROM 
+	    	pet;
+	</select>
+</mapper>

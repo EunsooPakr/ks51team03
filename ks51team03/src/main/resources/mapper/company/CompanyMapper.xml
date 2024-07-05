@@ -316,6 +316,7 @@
 	</select>
 
 	<select id="getCompanyCode" resultType="int">
+		/* 업체코드 도출*/
 		SELECT 
 	    	MAX(CAST(REGEXP_REPLACE(ccode, '[^0-9]', '') AS UNSIGNED)) AS max_number
 		FROM 
