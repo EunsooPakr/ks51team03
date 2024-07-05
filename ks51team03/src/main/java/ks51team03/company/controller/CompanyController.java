@@ -16,7 +16,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import ks51team03.company.dto.ComStaff;
 import ks51team03.company.dto.Company;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -32,19 +32,44 @@ public class CompanyController {
 
 		String memberId = (String) session.getAttribute("SID");
 		String ccode = (String) session.getAttribute("CCODE");
-		List<Company> companyListById = companyService.getCompanyListById(memberId);
-		List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(ccode);
-		int companyReviewCount = companyService.getCompanyReviewCount(ccode);
-		log.info("ReviewCount: {}", companyReviewCount);
-		// 현재 요일 가져오기
-		DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
-		String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
+		// 세션 아이디로 직원 테이블에서 업체 코드 찾기
+		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
+		log.info("companyCode : {}", companyCode);
 
-		model.addAttribute("companyListById", companyListById);
-		model.addAttribute("companyOperTime", companyOperTime);
-		model.addAttribute("openingHours", openingHours);
-		model.addAttribute("companyReviewCount", companyReviewCount);
+		// 직원일 경우
+		if (companyCode != null) {
+			// 업체 코드로 업체 정보 출력
+			List<Company> companyInfoById = companyService.getCompanyInfoByCcode(companyCode);
+			log.info("companyInfoById : {}", companyInfoById);
+			// 현재 요일 가져오기
+			List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(companyCode);
+			int companyReviewCount = companyService.getCompanyReviewCount(companyCode);
+			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
+			String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
+			model.addAttribute("companyOperTime", companyOperTime);
+			model.addAttribute("openingHours", openingHours);
+			model.addAttribute("companyReviewCount", companyReviewCount);
 
+			model.addAttribute("companyInfoById", companyInfoById);
+
+		}
+		// 업체 대표일 경우
+		else {
+			// 세션 아이디로 업체 정보 불러오기
+			List<Company> companyInfoById = companyService.getCompanyInfoById(memberId);
+			// 현재 요일 가져오기
+			List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(ccode);
+			int companyReviewCount = companyService.getCompanyReviewCount(ccode);
+
+			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
+			String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
+			model.addAttribute("companyOperTime", companyOperTime);
+			model.addAttribute("openingHours", openingHours);
+			model.addAttribute("companyReviewCount", companyReviewCount);
+			log.info("companyInfoById : {}", companyInfoById);
+			model.addAttribute("companyInfoById", companyInfoById);
+
+		}
 		return "company/company_info";
 	}
 	private String getOpeningHoursForDay(DayOfWeek dayOfWeek, List<ComOperTime> companyOperTime) {
@@ -75,7 +100,7 @@ public class CompanyController {
 	@GetMapping("/company/company_modify")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
 	public String companyModify(Model model, HttpSession session) {
 		String memberId = (String) session.getAttribute("SID");
-		List<Company> companyListById = companyService.getCompanyListById(memberId);
+		List<Company> companyListById = companyService.getCompanyInfoById(memberId);
 		model.addAttribute("companyListById", companyListById);
 		return "company/company_modify";
 	}
@@ -91,7 +116,24 @@ public class CompanyController {
 	}
 
 	@GetMapping("/company/company_staff_setting")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
-	public String companyStaffSetting(Model model, HttpSession session) {
+	public String companyStaffSetting(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		String memberId = (String) session.getAttribute("SID");
+
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/company/company_info"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (member == null || !member.getMemberLevel().equals("level2")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/company/company_info"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
+
 		// 직원 등록 요청 목록을 가져와서 모델에 추가
 
 		String ccode = (String) session.getAttribute("CCODE");
@@ -103,6 +145,14 @@ public class CompanyController {
 
 		return "company/company_staff_setting";
 	}
+
+	@PostMapping("/company/staff/delete")
+	public String deleteStaff(@RequestParam String requestId) {
+		// 직원 해고 로직
+		companyService.deleteStaff(requestId);
+		return "redirect:/company/company_staff_setting";
+	}
+
 	@PostMapping("/company/staff/accept")
 	public String acceptStaff(@RequestParam String requestId, HttpSession session) {
 		// 직원 등록 요청 수락 로직
@@ -111,10 +161,11 @@ public class CompanyController {
 		return "redirect:/company/company_staff_setting";
 	}
 
-	@PostMapping("/staff/reject")
+	@PostMapping("/company/staff/reject")
 	public String rejectStaff(@RequestParam String requestId) {
 		// 직원 등록 요청 거절 로직
-		return "redirect:/company/staff/setting";
+		companyService.deleteStaff(requestId);
+		return "redirect:/company/company_staff_setting";
 	}
 
 	@GetMapping("/company/company_staff_signUp")
@@ -146,7 +197,7 @@ public class CompanyController {
 
 		companyService.insertStaff(comStaff);
 
-		return "redirect:/company/company_info"; // 신청 후 리다이렉트
+		return "redirect:/member/member_mypage_main"; // 신청 후 리다이렉트
 	}
 
 	@GetMapping("/company/company_question")

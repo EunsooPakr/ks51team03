@@ -67,9 +67,9 @@
                     <td th:text="${q.getQuesContent}"></td>
                     <td th:text="${q.getQuesDate}"></td>
                     <td>
-                        <form th:action="@{/company/inquiry/reply}" method="post">
+                        <form th:action="@{/company/company_question_answer}" method="post">
                             <input type="hidden" name="quesnum" th:value="${q.getMemberId}" />
-                            <a th:href="@{/company/company_question_answer}">답변하기</a>
+                            <a th:href="@{/company/company_question_answer}">답변하기 or 답변완료</a>
                             <a th:href="@{/company/company_question_answer}">/수정하기</a>
                             <a th:href="@{/company/company_question_answer}">/삭제하기</a>
                         </form>

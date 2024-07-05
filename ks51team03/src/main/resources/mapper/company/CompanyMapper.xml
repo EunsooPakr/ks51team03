@@ -154,8 +154,36 @@
 			company
 	</select>
 
-	<select id="getCompanyListById" resultMap="CompanyResultMap">
-		-- 업체 검색
+	<select id="getCompanyCodeByMemberId" parameterType="String" resultType="String">
+		-- 아이디로 직원 여부 및 업체 코드 반환
+		SELECT ccode FROM staff WHERE id = #{memberId}
+	</select>
+
+	<select id="getCompanyInfoByCcode" resultMap="CompanyResultMap">
+		-- ccode로 업체 정보 검색
+		SELECT
+			ccode,
+			com_class,
+			com_name,
+			com_ceo,
+			com_addr,
+			com_addr_detail,
+			com_phone,
+			com_stfcount,
+			com_email,
+			com_parking,
+			com_page,
+			com_reg_date,
+			id,
+			com_post_num
+		FROM
+			company
+		WHERE
+			ccode = #{companyCode}
+	</select>
+
+	<select id="getCompanyInfoById" resultMap="CompanyResultMap">
+		-- 업체 회원 아이디로 검색
 		SELECT
 			ccode,
 			com_class,
@@ -196,6 +224,15 @@
 		WHERE
 		id = #{requestId}
 	</update>
+
+	<delete id="deleteStaff" parameterType="String" >
+		/* 업체 직원 승인 */
+		DELETE
+		FROM
+			staff
+		WHERE
+			id = #{requestId}
+	</delete>
 
 	<update id="modifyCompany" parameterType="Company" >
 		/* 업체 수정 */

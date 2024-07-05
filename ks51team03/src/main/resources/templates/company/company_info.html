@@ -170,7 +170,12 @@
 
 <th:block layout:fragment="customContent">
     <section class="bg-smoke py-12">
-        <div class="infocontainer" th:each="c : ${companyListById}">
+        <div th:if="${errorMessage != null}">
+            <script>
+                alert("[[${errorMessage}]]");
+            </script>
+        </div>
+        <div class="infocontainer" th:each="c : ${companyInfoById}">
             <div class="image-section" th:style="|background-image: url('${imageUrl}');|"></div>
             <div class="content-section">
                 <a th:href="@{company_modify}" class="edit-button">수정하기(완료)</a>

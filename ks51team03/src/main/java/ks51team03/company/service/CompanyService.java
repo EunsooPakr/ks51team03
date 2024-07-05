@@ -56,9 +56,19 @@ public class CompanyService {
     }
 
     // 세션의 아이디를 통해 업체 리스트 반환
-    public List<Company> getCompanyListById(String memberId){
-        log.info("getCompanyListById: {}", companyMapper.getCompanyListById(memberId));
-        return companyMapper.getCompanyListById(memberId);
+    public List<Company> getCompanyInfoById(String memberId){
+        log.info("getCompanyListById: {}", companyMapper.getCompanyInfoById(memberId));
+        return companyMapper.getCompanyInfoById(memberId);
+    }
+
+    // 회원 아이디로 업체 코드 검색(직원용)
+    public String getCompanyCodeByMemberId(String memberId) {
+        return companyMapper.getCompanyCodeByMemberId(memberId);
+    }
+
+    // 업체 코드로 업체 정보 조회
+    public List<Company> getCompanyInfoByCcode(String companyCode) {
+        return companyMapper.getCompanyInfoByCcode(companyCode);
     }
 
     // 업체 리스트 키워드로 반환
@@ -99,12 +109,17 @@ public class CompanyService {
         return companyMapper.getStaffList(cCode);
     }
 
-    // 해당 멤버 직원으로 업데이트
+    // 직원 승인
     public int acceptStaff(String requestId, String memberId){
         log.info("Accepting Staff: {}", requestId);
         return companyMapper.acceptStaff(requestId,memberId);
     }
 
+    // 직원 해고
+    public int deleteStaff(String requestId){
+        log.info("deleting Staff: {}", requestId);
+        return companyMapper.deleteStaff(requestId);
+    }
 
     // 업체 등록
     public void insertCompany(Company company) {
