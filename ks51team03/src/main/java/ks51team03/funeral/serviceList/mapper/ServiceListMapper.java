@@ -1,5 +1,6 @@
 package ks51team03.funeral.serviceList.mapper;
 
+import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,5 +17,7 @@ public interface ServiceListMapper {
 
     //ServiceListDto getServiceInfoByCode(String funeralserviceCcode);
 
+    //장례 예약
+    int reserveDetail(ReserveDto.Funeral_reserve reserve);
 
 }

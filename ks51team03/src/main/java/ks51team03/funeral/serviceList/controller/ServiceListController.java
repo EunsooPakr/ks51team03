@@ -1,5 +1,6 @@
 package ks51team03.funeral.serviceList.controller;
 
+import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
 import ks51team03.funeral.serviceList.service.ServiceListService;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -19,6 +21,18 @@ public class ServiceListController {
 
 
 	private final ServiceListService serviceListService;
+
+	@PostMapping("/funeral/funeral_service_detail")
+	public String reserveDetail(ReserveDto.Funeral_reserve reserve) {
+
+		log.info("장례 예약 reserve: {}", reserve);
+
+		serviceListService.reserveDetail(reserve);
+
+		return "redirect:/funeral/funeral_service_detail";
+	}
+
+
 
 	@GetMapping("/funeral/serviceList")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
 	public String funeralServiceList(Model model) {

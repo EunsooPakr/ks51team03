@@ -1,5 +1,6 @@
 package ks51team03.funeral.serviceList.service;
 
+import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,14 @@ public class ServiceListService {
         log.info("getServiceInfoByCode: {}", serviceListMapper.getServiceInfoByCode(funeralserviceCcode));
 
         return serviceListMapper.getServiceInfoByCode(funeralserviceCcode);
+    }
+
+    /**
+     * 회원가입 프로세스
+     */
+    public void reserveDetail(ReserveDto.Funeral_reserve reserve){
+
+        int result = serviceListMapper.reserveDetail(reserve);
     }
 
 
