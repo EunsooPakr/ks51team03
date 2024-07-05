@@ -13,6 +13,19 @@
         <result     column="fs_state"       property="funeralserviceState"/>
     </resultMap>
 
+    <resultMap id="getFureralReserve" type="ks51team03.funeral.reserve.dto.ReserveDto">
+        <id         column="frcode"         property="reserveCode"/>
+        <result     column="ccode"          property="reserveCompanyCode"/>
+        <result     column="fscode"         property="reserveServiceCode"/>
+        <result     column="id"             property="reserveId"/>
+        <result     column="fr_start_date"  property="reserveStartDate"/>
+        <result     column="fr_end_date"    property="reserveEndDate"/>
+        <result     column="fr_phone"       property="reservePhone"/>
+        <result     column="fr_payment"     property="reservePayment"/>
+        <result     column="fr_confirm"     property="reserveConfirm"/>
+        <result     column="fr_reg_date"    property="reserveRegDate"/>
+    </resultMap>
+
     <!-- 장례 서비스 전체 조회 -->
     <select id="getServiceListDto" resultMap="getServiceListMap">
         SELECT
@@ -40,6 +53,33 @@
         where
         fs.ccode = #{funeralserviceCcode};
     </select>
+
+    <insert id="reserveDetail" parameterType="String" >
+        /* 회원 가입 */
+        INSERT INTO funeral_reserve
+        (   frcode,
+            ccode,
+            fscode,
+            id,
+            fr_start_date,
+            fr_end_date,
+            fr_phone,
+            fr_payment,
+            fr_confirm,
+            fr_reg_date)
+        VALUES (
+                ${reserveCode},
+                ${reserveCompanyCode},
+                ${reserveServiceCode},
+                ${reserveId},
+                ${reserveStartDate},
+                ${reserveEndDate},
+                ${reservePhone},
+                ${reservePayment},
+                ${reserveConfirm},
+                CURDATE()
+
+    </insert>
 
 
 </mapper>

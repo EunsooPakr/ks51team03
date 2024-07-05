@@ -16,5 +16,7 @@ public interface ServiceListMapper {
 
     //ServiceListDto getServiceInfoByCode(String funeralserviceCcode);
 
+    //장례 예약
+    int reserveDetail(ServiceListDto serviceListDto);
 
 }
