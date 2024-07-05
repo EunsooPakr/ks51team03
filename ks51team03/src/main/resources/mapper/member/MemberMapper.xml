@@ -140,16 +140,26 @@
 	<select id="getMemberInfoById" parameterType="String" resultMap="memberResultMap">
 		/* 특정회원 정보조회 */
 		SELECT 
-			m.id,
-			m.pw,
-			m.name,
-			m.level,
-			m.email,
-			m.addr
+			id,
+			pw,
+			name,
+			level,
+			grade,
+			gender,
+			birth,
+			phone,
+			email,
+			addr,
+			addr_detail,
+			post_num,
+			pet,
+			sms_check,
+			email_check,
+			regist_date
 		FROM
-			member AS m
+			member
 		WHERE 
-			m.id = #{memberId};
+			id = #{memberId};
 	</select>
 	
 	<insert id="insertMember" parameterType="Member">

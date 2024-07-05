@@ -30,6 +30,8 @@ public class PetController {
 		memberService.insertMember(member);
 		petService.insertPet(pet,member.getMemberId());
 		
+		session.invalidate();
+		
 		return "redirect:/member/member_main";
 	}
 	
