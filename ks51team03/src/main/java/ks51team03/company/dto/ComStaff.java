@@ -9,7 +9,7 @@ public class ComStaff {
     private String cCode;
     private String level;
     private String stfPhone;
-    private boolean stfCheck;
+    private String stfCheck;
     private String stfApproId;
     private String stfDate;
     private String memberName;

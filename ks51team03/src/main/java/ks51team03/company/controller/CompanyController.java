@@ -2,6 +2,8 @@ package ks51team03.company.controller;
 import jakarta.servlet.http.HttpSession;
 import ks51team03.company.dto.*;
 import ks51team03.company.service.CompanyService;
+import ks51team03.member.dto.Member;
+import ks51team03.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import java.util.List;
@@ -21,6 +23,8 @@ import ks51team03.company.dto.Company;
 @RequiredArgsConstructor
 @Slf4j
 public class CompanyController {
+
+	private final MemberService memberService;
 	private final CompanyService companyService;
 
 	@GetMapping("/company/company_info")
@@ -119,11 +123,30 @@ public class CompanyController {
 		model.addAttribute("companyList", companyList);
 		return "company/company_staff_signUp";
 	}
-	@PostMapping("/staff/sign")
-	public String signStaff(@RequestParam String requestId) {
-		// 직원 등록 요청 로직
+	@PostMapping("/company/staff/sign")
+	public String signStaff(@RequestParam("companyCode") String companyCode, HttpSession session) {
+		String memberId = (String) session.getAttribute("SID");
 
-		return "redirect:/company/staff/setting";
+		// 회원 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		String phone = member.getMemberPhone();
+
+		// 새로운 stfcode 생성 (가장 높은 숫자 찾아 1 더하기)
+		String newStfCode = companyService.getNewStfCode();
+
+		ComStaff comStaff = new ComStaff();
+		comStaff.setStfCode(newStfCode);
+		comStaff.setMemberId(memberId);
+		comStaff.setCCode(companyCode);
+		comStaff.setLevel("level3");
+		comStaff.setStfPhone(phone);
+		comStaff.setStfCheck("0");
+		comStaff.setStfApproId("");
+		comStaff.setStfDate(null);
+
+		companyService.insertStaff(comStaff);
+
+		return "redirect:/company/company_info"; // 신청 후 리다이렉트
 	}
 
 	@GetMapping("/company/company_question")

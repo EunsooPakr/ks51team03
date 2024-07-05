@@ -246,6 +246,19 @@
 		WHERE
 			s.stf_check = 0 AND s.ccode = #{cCode}
 	</select>
+
+	<select id="getLastStfCode" resultType="String">
+		-- 직원 신청 기본키 숫자 찾기
+		SELECT MAX(stfcode) FROM staff
+	</select>
+
+	<insert id="insertStaff" parameterType="ComStaff">
+		INSERT INTO staff
+			(stfcode, id, ccode, `level`, stf_phone, stf_check, stf_appro_id, stf_date)
+		VALUES
+			(#{stfCode}, #{memberId}, #{cCode}, #{level}, #{stfPhone}, #{stfCheck}, #{stfApproId}, #{stfDate})
+	</insert>
+
 	<select id="getStaffList" resultMap="ComStaffResultMap">
 		-- 직원 리스트
 		SELECT
@@ -259,8 +272,12 @@
 		WHERE
 		s.stf_check = 1 AND s.ccode = #{cCode}
 	</select>
-	<select id="getStaffList" resultMap="ComStaffResultMap">
-		-- 직원 신청 로직 TODO!!!!!!!!!!!!!!!
+	<select id="addStaff" resultMap="ComStaffResultMap">
+		-- 직원 신청 로직
+		INSERT INTO staff
+		(stfcode, id, ccode, `level`, stf_phone, stf_check, stf_appro_id, stf_date)
+		VALUES
+		('stf3', 'id7', 'ccode3', 'level3', '010-0000-0007', 0, '', null)
 
 	</select>
 

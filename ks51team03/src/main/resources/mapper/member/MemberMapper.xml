@@ -145,7 +145,8 @@
 			m.name,
 			m.level,
 			m.email,
-			m.addr
+			m.addr,
+			m.phone
 		FROM
 			member AS m
 		WHERE 

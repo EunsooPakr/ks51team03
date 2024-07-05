@@ -13,6 +13,12 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
 
+    // 마지막 숫자 알아내기 직원 신청
+    String getLastStfCode();
+
+    // 직원 신청 로직
+    void insertStaff(ComStaff comStaff);
+
     // 업체  수정
     int modifyCompany(Company company);
 

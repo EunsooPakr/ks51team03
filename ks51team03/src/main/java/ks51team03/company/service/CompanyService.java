@@ -18,6 +18,19 @@ import java.util.List;
 public class CompanyService {
     private final CompanyMapper companyMapper;
 
+
+    // 직원 신청 insert 작업시 기본키 숫자 알아내기
+    public String getNewStfCode() {
+        String lastStfCode = companyMapper.getLastStfCode();
+        int newCodeNumber = Integer.parseInt(lastStfCode.substring(3)) + 1;
+        return "stf" + newCodeNumber;
+    }
+
+    // 직원 신청 insert 작업
+    public void insertStaff(ComStaff comStaff) {
+        companyMapper.insertStaff(comStaff);
+    }
+
     // 업체 수정
     public int modifyCompany(Company company) {
         return companyMapper.modifyCompany(company);
