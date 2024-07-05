@@ -56,8 +56,8 @@
                 <tr th:each="company : ${companyList}">
                     <td th:text="${company.companyName}"></td>
                     <td th:text="${company.companyCeo}"></td>
-                    <td th:text="${company.companyAddr} + ' ' + ${company.companyAddrDetail}"></td>
-                    <td th:text="${company.companyPhone}"></td>
+                    <td th:text="${company.companyAddr} + ' ' + ${company.companyAddrDetail}" style="width: 400px"></td>
+                    <td th:text="${company.companyPhone}" style="width: 150px"></td>
                     <td>
                         <form th:action="@{/company/staff/sign}" method="post">
                             <input type="hidden" name="companyCode" th:value="${company.companyCode}" />

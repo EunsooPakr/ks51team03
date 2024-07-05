@@ -31,8 +31,14 @@ public interface CompanyMapper {
     // 업체 운영 시간리스트 가져오기
     List<ComOperTime> getCompanyOperTime(String cCode);
 
-    // 업체 리스트 아이디로 가져오기
-    List<Company> getCompanyListById(String memberId);
+    // 업체 정보 아이디로 가져오기
+    List<Company> getCompanyInfoById(String memberId);
+
+    // 회원 아이디로 업체 코드 가져오기
+    String getCompanyCodeByMemberId(String memberId);
+
+    // 업체 코드로 업체 정보 가져오기(직원용)
+    List<Company> getCompanyInfoByCcode(String companyCode);
 
     // 업체 리스트 키워드로 가져오기
     List<Company> getCompanyListByKeyWord(@Param("keyword") String keyword);
@@ -46,7 +52,11 @@ public interface CompanyMapper {
     // 직원 리스트 가져오기
     List<ComStaff> getStaffList(String cCode);
 
+    // 직원 승인
     int acceptStaff(String requestId, String memberId);
+
+    // 직원 해고
+    int deleteStaff(String requestId);
 
     // 아이디로 업체 정보 가져오기
     Company getCompanyByMemberId(@Param("memberId") String memberId);
