@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ks51team03.board.mapper.BoardMapper">
+	
+	<resultMap type="NoticeBoard" id="nBoardResultMap">
+		<!-- pk, column -->
+		<id column="nbcode" property="nboardCode"/>
+		<result column="id" property="memberId"/>
+		<result column="bcode" property="boardCode"/>
+		<result column="bctcode" property="boardCateCode"/>
+		<result column="nb_title" property="nboardTitle"/>
+		<result column="nb_content" property="nboardContent"/>
+		<result column="nb_reg" property="nboardRegistDate"/>
+		<result column="nb_update" property="nboardUpdateDate"/>
+		<result column="nb_delete" property="nboardDeleteDate"/>
+		<result column="nb_img" property="nboardImg"/>
+		<result column="nb_view" property="nboardView"/>
+		<result column="nb_rec" property="nboardRec"/>
+	</resultMap>
+
+	<select id="getNoticeBoardList" parameterType="String" resultMap="nBoardResultMap">
+		/*게시글 목록 조회*/
+		SELECT
+			*
+		FROM
+			notice_board AS nb
+			INNER JOIN
+			board_category AS bc
+			ON
+			nb.bctcode=bc.bctcode
+		WHERE
+			bc.bct_value=#{boardCateValue};
+	</select>
+	
+	
+	<insert id="insertNBoard" parameterType="NoticeBoard">
+	/*게시글 작성*/
+	INSERT INTO notice_board
+	( 	nbcode,
+		id,
+		bcode,
+		bctcode,
+		nb_title,
+		nb_content,
+		nb_reg,
+		nb_update,
+		nb_delete,
+		nb_img,
+		nb_view,
+		nb_rec
+	)VALUES(
+		#{nboardCode},
+		#{memberId},
+		#{boardCode},
+		#{boardCateCode},
+		#{nboardTitle},
+		#{nboardContent},
+		CURDATE(),
+		#{nboardUpdateDate},
+		#{nboardDeleteDate},
+		#{nboardImg},
+		#{nboardView},
+		#{nboardRec}
+	);
+	</insert>
+	
+	<select id="getNBoardCode" resultType="int">
+		/* 게시글코드 도출*/
+		SELECT 
+	    	MAX(CAST(REGEXP_REPLACE(nbcode, '[^0-9]', '') AS UNSIGNED)) AS max_number
+		FROM 
+	    	notice_board;
+	</select>
+</mapper>

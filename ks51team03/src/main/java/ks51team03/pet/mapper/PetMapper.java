@@ -6,9 +6,9 @@ import ks51team03.pet.dto.Pet;
 
 @Mapper
 public interface PetMapper {
-	 // 업체 등록
+	 // 반려동물 등록
  	int insertPet(Pet pet);
  	
- 	// 업체 코드 도출
+ 	// 반려동물 코드 도출
  	int getPetCode();
 }

@@ -559,6 +559,36 @@ a{
     color: #fff;
 }
 
+.board-list-btn {
+	padding:10px;
+	text-align: center;
+}
+
+.board-list-write-btn {
+	background: #000;
+    color: #fff;
+	position: relative;
+	border: 0;
+	padding: 15px 25px;
+	display: inline-block;
+	text-align: center;
+	color: white;
+	margin:5px;
+}
+
+.board-list-reset-btn {
+	background: #000;
+    color: #fff;
+	position: relative;
+	border: 0;
+	padding: 15px 25px;
+	display: inline-block;
+	text-align: center;
+	color: white;
+	margin:5px;
+}
+
+
 .board_list {
     width: 100%;
     border-top: 2px solid #000;
@@ -571,22 +601,36 @@ a{
 
 .board_list > div.top {
     border-bottom: 1px solid #999;
+    padding: 5px 0;
 }
 
 .board_list > div:last-child {
     border-bottom: 1px solid #000;
 }
 
-.board_list > div > div {
+/* .board_list > div > div {
     display: inline-block;
     padding: 15px 0;
     text-align: center;
     font-size: 1.4rem;
+} */
+
+.board_list > div > div {
+    padding: 10px 0;
+    text-align: center;
+    font-size: 1rem;
 }
 
 .board_list > div.top > div {
     font-weight: 600;
+    display: inline-block;
 }
+
+.board-list-item > div{
+	display: flex;
+	width:100%;
+}
+
 
 .board_list .num {
     width: 10%;
@@ -781,6 +825,7 @@ a{
     box-sizing: border-box;
     border: 0;
     resize: vertical;
+    font-size:15px;
 }
 
 
