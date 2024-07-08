@@ -6,6 +6,7 @@ import ks51team03.company.mapper.CompanyMapper;
 import ks51team03.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,10 @@ import java.util.List;
 public class CompanyService {
     private final CompanyMapper companyMapper;
 
+    // 문의 등록하기
+    public void addQuestion(ComQuestion comQuestion) {
+        companyMapper.insertQuestion(comQuestion);
+    }
 
     // 직원 신청 insert 작업시 기본키 숫자 알아내기
     public String getNewStfCode() {
@@ -31,9 +36,35 @@ public class CompanyService {
         companyMapper.insertStaff(comStaff);
     }
 
+    // 특정 문의 조회
+    public ComQuestion getCompanyQuestionById(String quesnum) {
+        return companyMapper.getCompanyQuestionById(quesnum);
+    }
+
+    // 특정 문의 답변 조회
+    public ComQuestionAnswer getAnswerByQuesNum(String quesnum) {
+        return companyMapper.getAnswerByQuesNum(quesnum);
+    }
+
+    // 문의 답변 수정 로직
+    public void updateAnswer(ComQuestionAnswer comQuestionAnswer) {
+        companyMapper.updateAnswer(comQuestionAnswer);
+    }
+
     // 업체 수정
     public int modifyCompany(Company company) {
         return companyMapper.modifyCompany(company);
+    }
+
+    // 문의 답변 등록
+    public void addAnswer(ComQuestionAnswer comQuestionAnswer) {
+        companyMapper.insertAnswer(comQuestionAnswer);
+    }
+
+    // 업체 문의 답변 리스트 반환
+    public List<ComQuestionAnswer> getCompanyQuestionAnswer(String cCode){
+        log.info("getCompanyQuestionAnswer cCode:{}",companyMapper.getCompanyQuestionAnswer(cCode));
+        return companyMapper.getCompanyQuestionAnswer(cCode);
     }
 
     // 업체 문의 리스트 반환
@@ -41,6 +72,16 @@ public class CompanyService {
         log.info("getCompanyQuestion: {}", companyMapper.getCompanyQuestion(cCode));
         return companyMapper.getCompanyQuestion(cCode);
 
+    }
+
+    // 업체 문의 삭제
+    public void deleteQuestion(String comQuestion) {
+        companyMapper.deleteQuestion(comQuestion);
+    }
+
+    // 문의 답변 먼저 삭제
+    public void deleteAnswersByQuesNum(String quesNum) {
+        companyMapper.deleteAnswersByQuesNum(quesNum);
     }
 
     // 전체 업체 리스트 반환
@@ -133,5 +174,6 @@ public class CompanyService {
     	int update=companyMapper.updateCeo(company);
 		int result = companyMapper.insertCompany(company);
 	}
+
 
 }

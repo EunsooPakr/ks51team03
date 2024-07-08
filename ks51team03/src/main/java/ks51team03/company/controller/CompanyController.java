@@ -6,14 +6,19 @@ import ks51team03.member.dto.Member;
 import ks51team03.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Map;
+
 import ks51team03.company.dto.ComStaff;
 import ks51team03.company.dto.Company;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -72,6 +77,7 @@ public class CompanyController {
 		}
 		return "company/company_info";
 	}
+
 	private String getOpeningHoursForDay(DayOfWeek dayOfWeek, List<ComOperTime> companyOperTime) {
 		if (companyOperTime.isEmpty()) {
 			return "정보 없음";
@@ -168,12 +174,15 @@ public class CompanyController {
 		return "redirect:/company/company_staff_setting";
 	}
 
+	// 직원 신청
 	@GetMapping("/company/company_staff_signUp")
 	public String companySignUp(Model model) {
 		List<Company> companyList = companyService.getCompanyList();
 		model.addAttribute("companyList", companyList);
 		return "company/company_staff_signUp";
 	}
+
+	// 직원 신청 승인
 	@PostMapping("/company/staff/sign")
 	public String signStaff(@RequestParam("companyCode") String companyCode, HttpSession session) {
 		String memberId = (String) session.getAttribute("SID");
@@ -200,18 +209,98 @@ public class CompanyController {
 		return "redirect:/member/member_mypage_main"; // 신청 후 리다이렉트
 	}
 
+	// 업체 문의 조회
 	@GetMapping("/company/company_question")
 	public String companyQuestion(Model model, HttpSession session) {
-		String ccode = (String) session.getAttribute("CCODE");
-		List<ComQuestion> comQuestionList = companyService.getCompanyQuestion(ccode);
-		model.addAttribute("comQuestionList", comQuestionList);
-		return "company/company_question";
+		String memberId = (String) session.getAttribute("SID");
+		String cCode = (String) session.getAttribute("CCODE");
+
+		// 세션 아이디로 직원 테이블에서 업체 코드 찾기
+		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
+		if (companyCode == null) {
+			companyCode = cCode; // 업체 대표일 경우
+		}
+
+		if (companyCode != null) {
+			List<ComQuestion> comQuestionList = companyService.getCompanyQuestion(companyCode);
+			List<ComQuestionAnswer> comQuestionAnswers = companyService.getCompanyQuestionAnswer(companyCode);
+
+			// 답변이 존재하는지 여부를 확인하여 각 문의에 설정
+			Map<String, Boolean> questionAnswerMap = new HashMap<>();
+			for (ComQuestion question : comQuestionList) {
+				boolean hasAnswer = comQuestionAnswers.stream()
+						.anyMatch(answer -> answer.getQuesNum().equals(question.getQuesNum()));
+				questionAnswerMap.put(question.getQuesNum(), hasAnswer);
+			}
+			model.addAttribute("comQuestionList", comQuestionList);
+			model.addAttribute("questionAnswerMap", questionAnswerMap);
+			return "company/company_question";
+		}
+
+		// 접근할 수 없는 경우, 에러 페이지 또는 다른 페이지로 리다이렉트
+		return "redirect:/access_denied";
 	}
 
+	// 문의 등록
+	@PostMapping("/company/submit_question")
+	public String submitQuestion(@ModelAttribute ComQuestion comQuestion, HttpSession session) {
+		String memberId = (String) session.getAttribute("SID");
+		comQuestion.setMemberId(memberId);
+		log.info("Received cCode: {}", comQuestion.getCCode());
+		comQuestion.setQuesDate(LocalDate.now().toString());
+
+		companyService.addQuestion(comQuestion);
+
+		return "redirect:/map/map_main";
+	}
+
+	//업체 문의 삭제
+	@PostMapping("/company/company_question_delete")
+	public String deleteQuestion(@RequestParam("quesNum") String quesNum) {
+		companyService.deleteAnswersByQuesNum(quesNum);
+		companyService.deleteQuestion(quesNum);
+		return "redirect:company_question";
+	}
+
+	// 문의 답변
 	@GetMapping("/company/company_question_answer")
-	public String companyQuestionAnswer() {
-		//완
+	public String companyQuestionAnswer(@RequestParam("quesnum") String quesnum, Model model) {
+		ComQuestion question = companyService.getCompanyQuestionById(quesnum);
+		model.addAttribute("question", question);
 		return "company/company_question_answer";
+	}
+
+	@PostMapping("/company/submit_answer")
+	public String submitAnswer(ComQuestionAnswer comQuestionAnswer, HttpSession session) {
+		String memberId = (String)session.getAttribute("SID");
+		comQuestionAnswer.setMemberId(memberId);
+		// 새로운 qaCode 생성
+		companyService.addAnswer(comQuestionAnswer);
+		return "redirect:/company/company_question";
+	}
+
+	// 문의 답변 수정
+	@GetMapping("/company/company_question_answer_modify")
+	public String companyQuestionAnswerModify(@RequestParam("quesnum") String quesnum, Model model) {
+		ComQuestion question = companyService.getCompanyQuestionById(quesnum);
+		ComQuestionAnswer answer = companyService.getAnswerByQuesNum(quesnum);
+		log.info("answer: {}", answer);
+		model.addAttribute("question", question);
+		model.addAttribute("answer", answer);
+		return "company/company_question_answer_modify";
+	}
+
+	// 문의 답변 수정 post
+	@PostMapping("/company/update_answer")
+	public String updateAnswer(ComQuestionAnswer comQuestionAnswer, HttpSession session) {
+		// 세션에서 memberId를 가져옴
+		String memberId = (String) session.getAttribute("SID");
+		comQuestionAnswer.setMemberId(memberId);
+
+		// 답변 수정
+		companyService.updateAnswer(comQuestionAnswer);
+
+		return "redirect:/company/company_question";
 	}
 
 	@GetMapping("/company/company_review")
@@ -221,7 +310,7 @@ public class CompanyController {
 	}
 
 
-	@GetMapping("/company/company_send_alarm")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
+	@GetMapping("/company/company_send_alarm")
 	public String companySendAlarm() {
 
 		return "company/company_send_alarm";

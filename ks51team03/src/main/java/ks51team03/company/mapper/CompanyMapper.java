@@ -13,6 +13,24 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
 
+    // 문의 등록
+    void insertQuestion(ComQuestion comQuestion);
+
+    // 업체의 문의 삭제 전 답변부터 삭제
+    void deleteAnswersByQuesNum(String quesNum);
+
+    // 업체의 문의 삭제
+    void deleteQuestion(String comQuestion);
+
+    // 문의 답변 검색
+    ComQuestionAnswer getAnswerByQuesNum(String quesnum);
+
+    // 문의 답변 수정
+    void updateAnswer(ComQuestionAnswer comQuestionAnswer);
+
+    // 문의 답변 등록
+    void insertAnswer(ComQuestionAnswer comQuestionAnswer);
+
     // 마지막 숫자 알아내기 직원 신청
     String getLastStfCode();
 
@@ -22,11 +40,17 @@ public interface CompanyMapper {
     // 업체  수정
     int modifyCompany(Company company);
 
+    // 업체 문의 답변 리스트 가져오기
+    List<ComQuestionAnswer> getCompanyQuestionAnswer(@Param("cCode") String cCode);
+
     // 업체 문의 리스트 가져오기
     List<ComQuestion> getCompanyQuestion(@Param("cCode") String cCode);
 
     // 전체 업체 리스트 가져오기
     List<Company> getCompanyList();
+
+    // 특정 문의 조회
+    ComQuestion getCompanyQuestionById(@Param("quesnum") String quesnum);
 
     // 업체 운영 시간리스트 가져오기
     List<ComOperTime> getCompanyOperTime(String cCode);
@@ -75,5 +99,6 @@ public interface CompanyMapper {
  	
  	// 업체 대표 권한 변경
  	int updateCeo(Company company);
+
 
 }

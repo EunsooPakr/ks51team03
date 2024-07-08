@@ -39,8 +39,8 @@
                                 <div id="employee_count">직원 수: 알수없음</div>
                                 <div id="placeHours"></div>
                             </div>
-                            <a class="write-review-link" id="write-qeustion-link"
-                               th:href="@{map_write_question}">문의하기</a>
+                            <a class="write-review-link" id="write-question-link"
+                               th:href="@{'/map/map_write_question'(ccode=${place.cCode})}">문의하기</a>
                             <hr>
                             <div class="reviews">
                                 <div class="review-container">
