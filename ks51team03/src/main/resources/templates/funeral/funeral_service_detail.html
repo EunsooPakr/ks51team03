@@ -17,7 +17,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-5 col-lg-4 order-2" style=" position: sticky; top: 140px; height: fit-content;">
-                        <form id="reserveDetailForm" th:action="@{/funeral/funeral_service_detail}" method="POST">
+                        <form id="funeralReserveForm" th:action="@{/funeral/funeral_service_detail}" method="POST">
                             <div class="card border">
                                 <h2 class="card-header text-uppercase text-center bg-smoke border-bottom">
                                     반려 서비스 예약
@@ -32,7 +32,7 @@
                                                 <div class="col-xl-7">
                                                     <div class="form-group form-group-icon form-group-icon-category-2 mb-0">
                                                         <i class="far fa-calendar-alt" aria-hidden="true"></i>
-                                                        <input type="text" id="reserveStartDate" class="form-control daterange-picker-category-2" autocomplete="off" name="dateRange" value=""
+                                                        <input type="text" id="reserveStartDate" class="form-control daterange-picker-category-2" autocomplete="off" name="reserveStartDate" value=""
                                                                placeholder="MM/DD/YYYY">
                                                     </div>
                                                 </div>
@@ -46,7 +46,7 @@
                                                 <div class="col-xl-7">
                                                     <div class="form-group form-group-icon form-group-icon-category-2 mb-0">
                                                         <i class="far fa-calendar-alt" aria-hidden="true"></i>
-                                                        <input type="text"  class="form-control daterange-picker-category-2" autocomplete="off" name="dateRange" id="inputTime" value=""
+                                                        <input type="text"  class="form-control daterange-picker-category-2" autocomplete="off" name="reserveEndDate" id="inputTime" value=""
                                                                placeholder="MM/DD/YYYY">
                                                     </div>
                                                 </div>
@@ -60,15 +60,15 @@
                                                 <div class="col-xl-7">
                                                     <div class="form-group mb-0">
                                                         <div class="select-default select-category-2 timer">
-                                                            <select th:id="reserveTime" class="select-option">
-                                                                <option>9:00 AM</option>
-                                                                <option>10:00 AM</option>
-                                                                <option>11:00 AM</option>
-                                                                <option>12:00 AM</option>
-                                                                <option>13:00 AM</option>
-                                                                <option>14:00 AM</option>
-                                                                <option>15:00 AM</option>
-                                                                <option>16:00 AM</option>
+                                                            <select th:id="reserveTime" name="reserveTime" class="select-option">
+                                                                <option value="09:00:00">9:00 AM</option>
+                                                                <option value="10:00:00">10:00 AM</option>
+                                                                <option value="11:00:00">11:00 AM</option>
+                                                                <option value="12:00:00">12:00 PM</option>
+                                                                <option value="13:00:00">13:00 PM</option>
+                                                                <option value="14:00:00">14:00 PM</option>
+                                                                <option value="15:00:00">15:00 PM</option>
+                                                                <option value="16:00:00">16:00 PM</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -84,11 +84,12 @@
                                                 <div class="col-xl-7">
                                                     <div class="form-group mb-0">
                                                         <div class="select-default select-category-2">
-                                                            <select id="funeralserviceTitle" class="select-option" onchange="updateTotalPrice()">
+                                                            <select id="funeralserviceTitle" name="reserveServiceCode"  class="select-option" onchange="updateTotalPrice()">
                                                                 <option th:each="service : ${serviceListCcode}"
-                                                                        th:value="${service.getFuneralserviceTitle()}"
+                                                                        th:value="${service.getFuneralserviceCode()}"
                                                                         th:text="${service.getFuneralserviceTitle()}"
-                                                                        th:data-price="${service.getFuneralservicePrice()}"></option>
+                                                                        th:data-price="${service.getFuneralservicePrice()}"
+                                                                        th:attr="data-ccode=${service.getFuneralserviceCcode()}"></option>
 
                                                             </select>
                                                         </div>
@@ -117,9 +118,10 @@
                                         <span class="font-weight-bold text-primary h3 mb-0" id="totalPrice" th:te>$0</span>
                                     </div>
 
+                                    <input type="hidden" name="reserveCompanyCode" th:value="${reserveCompanyCode}" />
+
                                     <div class="d-grid text-center px-4">
-                                        <button type="button" onclick="location.href='/funeral/funeral_reserve_info';"
-                                                class="btn btn-hover btn-lg btn-outline-secondary text-uppercase">
+                                        <button type="submit" class="btn btn-hover btn-lg btn-outline-secondary text-uppercase">
                                             예약 하기 <span class="ms-4"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
                                         </button>
                                     </div>
@@ -141,6 +143,7 @@
                                     <h3 class="text-uppercase mb-6" th:text="${ml.funeralservicePrice}"></h3>
                                     <p class="mb-6">장례 서비스, 기본 유골함, 포포즈 어메니티</p>
                                 </div>
+                                <input type="hidden" th:value="${reserveCompanyCode}" th:attr="ml.funeralserviceCcode=${reserveCompanyCode}"/>
 
                             </div>
                         </div>
@@ -169,10 +172,42 @@
 <th:block layout:fragment="customJs">
     <script th:inline="javascript">
         $(document).ready(function (){
+            const reserveStartDate = $('input[name="reserveStartDate"]');
+            const reserveEndDate = $('input[name="reserveEndDate"]');
+
+            if (reserveStartDate.length !== 0) {
+                reserveStartDate.daterangepicker({
+                    autoUpdateInput: false,
+                    singleDatePicker: true,
+                    locale: {
+                        cancelLabel: 'Clear'
+                    }
+                });
+            }
+            if (reserveEndDate.length !== 0) {
+                reserveEndDate.daterangepicker({
+                    autoUpdateInput: false,
+                    singleDatePicker: true,
+                    locale: {
+                        cancelLabel: 'Clear'
+                    }
+                });
+            }
+
+            $('input[name="reserveStartDate"],input[name="reserveEndDate"]').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('YYYY-MM-DD'));
+            });
+
+            $('input[name="reserveStartDate"],input[name="reserveEndDate"]').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+
             $('#funeralserviceTitle').change(function (){
                 const selectedOption = $(this).find('option:selected');
                 const price = parseInt(selectedOption.data('price'));
+                const ccode = selectedOption.data('ccode');
                 $('#totalPrice').text(`$${price.toFixed(0)}`);
+                $('#reserveCompanyCode').val(ccode);
             });
         });
 
@@ -180,10 +215,9 @@
 
             let isSubmit = true;
 
-            $('#reserveDetailForm input, #reserveDetailForm select').each((idx, element) => {
-                const id = element.id;
-                const value = element.value;
-                if(value){
+            $('#funeralReserveForm input, #funeralReserveForm select').each((idx, element) => {
+                const value = element.value.trim();
+                if(!value){
                     alert('필수 입력 항목입니다.');
                     $(element).focus();
                     isSubmit = false;
@@ -191,7 +225,13 @@
                 }
             });
 
-            if(isSubmit) `${'#reserveDetailForm'}`.submit();
+            if (isSubmit) {
+                // Set ccode value from selected option
+                const selectedOption = $('#funeralserviceTitle').find('option:selected');
+                const ccode = selectedOption.data('ccode');
+                $('#reserveCompanyCode').val(ccode); // Update ccode value
+                $('#funeralReserveForm').submit(); // Submit the form
+            }
 
         });
     </script>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ks51team03.funeral.reserve.mapper.ReserveMapper">
+    <resultMap id="getFuneralReserve" type="ks51team03.funeral.reserve.dto.ReserveDto">
+        <id         column="frcode"             property="reserveCode"/>
+        <result     column="ccode"              property="reserveCompanyCode"/>
+        <result     column="fscode"             property="reserveServiceCode"/>
+        <result     column="id"                 property="reserveId"/>
+        <result     column="fr_start_date"      property="reserveStartDate"/>
+        <result     column="fr_end_date"        property="reserveEndDate"/>
+        <result     column="fr_phone"           property="reservePhone"/>
+        <result     column="fr_payment"         property="reservePayment"/>
+        <result     column="fr_confirm"         property="reserveConfirm"/>
+        <result     column="fr_reg_date"        property="reserveRegDate"/>
+        <result     column="fr_reseve_time"     property="reserveTime"/>
+    </resultMap>
+
+    <select id="getLastFuneralServiceCode" parameterType="String" resultType="String">
+        SELECT Max(frcode) FROM funeral_reserve
+    </select>
+
+    <insert id="funeralReserve" parameterType="Map" >
+        /* 장례 예약 */
+        INSERT INTO funeral_reserve
+        (   frcode,
+            ccode,
+            fscode,
+            id,
+            fr_start_date,
+            fr_end_date,
+            fr_phone,
+            fr_payment,
+            fr_confirm,
+            fr_reg_date,
+            fr_reserve_time)
+
+        VALUES (
+            #{reserveCode},
+            #{reserveCompanyCode},
+            #{reserveServiceCode},
+            #{reserveId},
+            CURDATE(),
+            CURDATE(),
+            #{reservePhone},
+            '결제 전',
+            '예약 대기',
+            CURDATE(),
+            #{reserveTime}
+        )
+
+    </insert>
+
+
+</mapper>

@@ -32,15 +32,10 @@ public class ServiceListService {
     /**
      * 회원가입 프로세스
      */
-    public void reserveDetail(ReserveDto.Funeral_reserve reserve){
+    public void funeralReserve(ReserveDto reserveDto){
 
-        int result = serviceListMapper.reserveDetail(reserve);
+        int result = serviceListMapper.funeralReserve(reserveDto);
     }
 
-
-//    public ServiceListDto getServiceInfoByCode(String funeralserviceCcode) {
-//
-//      return serviceListMapper.getServiceInfoByCode(funeralserviceCcode);
-//    }
 }
 

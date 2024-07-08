@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Slf4j
 public class ReserveController {
 
-    @PostMapping("/funeral/funeral_info")
-    public String reserveInfo(ReserveDto.Funeral_reserve reserve){
-
-        log.info("장례예약 reserve:{}", reserve);
-
-
-        return "funeral/funeral_reserve_payment";
-    }
+//    @PostMapping("/funeral/funeral_info")
+//    public String reserveInfo(ReserveDto.Funeral_reserve reserve){
+//
+//        log.info("장례예약 reserve:{}", reserve);
+//
+//
+//        return "funeral/funeral_reserve_payment";
+//    }
 
 
 

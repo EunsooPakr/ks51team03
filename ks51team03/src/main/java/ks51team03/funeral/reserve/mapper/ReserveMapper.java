@@ -4,7 +4,11 @@ import ks51team03.funeral.reserve.dto.ReserveDto;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public class ReserveMapper {
+public interface ReserveMapper {
 
-    //int funeralReserve(ReserveDto.Funeral_reserve reserve);
+    void funeralReserve(ReserveDto reserveDto);
+
+    //장례 예약 코드
+    String getLastFuneralServiceCode();
+
 }
