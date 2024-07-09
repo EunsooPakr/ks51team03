@@ -22,7 +22,7 @@ public class PetController {
 	
 	/*업체 등록*/
 	@PostMapping("/pet/insertPet")
-	public String insertCompany(Pet pet,HttpSession session) {
+	public String insertPet(Pet pet,HttpSession session) {
 		
 		Member member=(Member)session.getAttribute("SMEM");
 		log.info("반려동물등록 Company:{}", pet);
@@ -30,11 +30,13 @@ public class PetController {
 		memberService.insertMember(member);
 		petService.insertPet(pet,member.getMemberId());
 		
+		session.invalidate();
+		
 		return "redirect:/member/member_main";
 	}
 	
 	@GetMapping("/pet/insertPet")
-	public String insertCompany(Model model) {
+	public String insertPet(Model model) {
 		
 		model.addAttribute("title", "업체등록");
 		

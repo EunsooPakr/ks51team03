@@ -174,6 +174,17 @@ public class MemberController {
 		return "member/member_mypage_main";
 	}
 	
+	@GetMapping("/member_mypage_memberinfo")
+	public String userMyPageMemberInfo(Model model,HttpSession session)
+	{
+		String memberId=(String) session.getAttribute("SID");
+		Member memberInfo = memberService.getMemberInfoById(memberId);
+		
+		model.addAttribute("memberInfo",memberInfo);
+		
+		return "member/member_mypage_memberinfo";
+	}
+	
 	
 	@GetMapping("/member_login_terms_mem")
 	public String userTermsPageMem(Model model)

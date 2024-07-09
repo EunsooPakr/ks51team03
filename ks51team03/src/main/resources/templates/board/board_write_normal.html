@@ -11,42 +11,36 @@
 <th:block layout:fragment="customContent">
 	<body>
 		<div class="board-body">
-		<!-- 	<br><br><br><br><br><br><br><br><br><br><br><br><br>
-			<br><br><br><br><br><br><br><br><br><br><br><br><br>
-			<br><br><br><br><br><br><br><br><br><br><br><br><br>
-			<br><br><br><br><br><br><br><br><br><br><br><br><br> -->
 		    <div class="board_wrap">
 		        <div class="board_title">
 		            <strong>자유게시판</strong>
 		            <p>자유롭게 의견을 나누세요.</p>
 		        </div>
-		        <div class="board_write_wrap">
-		            <div class="board_write">
-		                <div class="title">
-		                    <dl>
-		                        <dt>제목</dt>
-		                        <dd><input type="text" placeholder="제목 입력"></dd>
-		                    </dl>
-		                </div>
-		                <div class="info">
-		                    <dl>
-		                        <dt>글쓴이</dt>
-		                        <dd><input type="text" placeholder="글쓴이 입력"></dd>
-		                    </dl>
-		                    <dl>
-		                        <dt>비밀번호</dt>
-		                        <dd><input type="password" placeholder="비밀번호 입력"></dd>
-		                    </dl>
-		                </div>
-		                <div class="cont">
-		                    <textarea placeholder="내용 입력"></textarea>
-		                </div>
-		            </div>
-		            <div class="bt_wrap">
-		                <a href="/board/board_list_normal" class="on">등록</a>
-		                <a href="/board/board_list_normal">취소</a>
-		            </div>
-		        </div>
+		        <form role="form" action="/board/board_write_normal" method="post">
+			        <div class="board_write_wrap">
+			            <div class="board_write">
+			                <div class="title">
+			                    <dl>
+			                        <dt>제목</dt>
+			                        <dd><input type="text" name="nboardTitle" placeholder="제목 입력"></dd>
+			                    </dl>
+			                </div>
+			                <div class="info">
+			                    <dl>
+			                        <dt>작성자</dt>
+			                        <dd><input type="text" id="memberId" name="memberId"  th:value="${session.SID}"></dd>
+			                    </dl>
+			                </div>
+			                <div class="cont">
+			                    <textarea name="nboardContent" placeholder="내용 입력"></textarea>
+			                </div>
+			            </div>
+			            <div class="board-list-btn">
+				            <button type="submit" class="board-list-write-btn">등록</button>
+				            <button type="reset" class="board-list-reset-btn">취소</button>
+			            </div>
+			        </div>
+		        </form>
 		    </div>
 	    </div>
 	</body>
