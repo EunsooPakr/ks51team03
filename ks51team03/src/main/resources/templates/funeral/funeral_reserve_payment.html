@@ -237,12 +237,21 @@
 </th:block>
 <!-- 사용자정의 javascript file -->
 <th:block layout:fragment="customJsFile">
-
+    <script th:src="@{https://cdn.iamport.kr/v1/iamport.js}"></script>
 </th:block>
 
-<!-- 사용자정의 javascript -->
-<th:block layout:fragment="customJs">
+<!-- 사용자정의 javascript -->0
+<th:block layout:fragment="customJs" th:each="l : ${reserveInfoList}">
+    <script th:inline="javascript" >
+    const response = await PortOne.requestPayment({
+        // Store ID 설정
+    storeId: "store-867d1a56-0dcf-4f7c-adbf-6b76defce016",
+    channelKey : "channel-key-eba90cc8-136a-4232-80b4-fefa415d54d0",
+    paymentId: `payment-${}`,
 
+
+    });
+    </script>
 </th:block>
 
 </html>
