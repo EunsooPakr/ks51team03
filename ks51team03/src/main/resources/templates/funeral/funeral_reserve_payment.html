@@ -188,8 +188,8 @@
                                     뒤로 가기
                                 </button>
 
-                                <button type="button" onclick="location.href='/funeral/funeral_reserve_confirm';" class="btn btn-primary text-uppercase">
-                                    다음 단계
+                                <button type="button" onclick="requestPayment()" class="btn btn-primary text-uppercase">
+                                    결제하기
                                 </button>
                             </div>
                         </form>
@@ -237,12 +237,34 @@
 </th:block>
 <!-- 사용자정의 javascript file -->
 <th:block layout:fragment="customJsFile">
-
+    <script type="text/javascript" th:src="@{https://cdn.portone.io/v2/browser-sdk.js}"></script>
 </th:block>
 
-<!-- 사용자정의 javascript -->
 <th:block layout:fragment="customJs">
+    <script th:inline="javascript">
 
+        const data = {
+            //storeId: 설정
+            storeId: 'store-867d1a56-0dcf-4f7c-adbf-6b76defce016',
+            //채널 키 설정
+            channelKey: 'channel-key-eba90cc8-136a-4232-80b4-fefa415d54d0',
+            //paymentId
+            paymentId: 'wodlr1310_V1',
+            orderName: '송재익패키지',
+            totalAmount: 1000,
+            currency: 'CURRENCY_KRW',
+            payMethod: "EASY_PAY",
+            easyPay: {
+                easyPayProvider: "KAKAOPAY",
+            }
+        };
+
+        async function requestPayment() {
+            const response = await PortOne.requestPayment(data);
+            console.log(response);
+        }
+
+    </script>
 </th:block>
 
 </html>
