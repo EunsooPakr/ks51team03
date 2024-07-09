@@ -16,6 +16,27 @@
 					<strong>자유 게시글</strong>
 					<p>자유롭게 의견을 나누세요.</p>
 				</div>
+				
+				
+				<!-- 게시판 검색 -->
+				<div id="search">
+					<select id="searchKey">
+						<option th:if="${cateList != null}"
+								th:each="l : ${cateList}"
+								th:value="${l.searchKey}"
+								th:text="${l.searchText}">
+						</option>
+						<!--/*  
+						<option value="memberId">회원아이디</option>		
+						<option value="memberName">회원이름</option>		
+						<option value="memberAddr">회원주소</option>
+						*/-->		
+					</select>
+					<input type="text" id="searchValue" placeholder="검색어를 입력해주세요"/>
+					<button type="button" id="searchBtn">검색</button>
+				</div>
+				
+				<!-- 게시판 말머리 -->
 				<div class="board_list_wrap">
 					<div class="board_list">
 						<div class="top">
@@ -26,17 +47,23 @@
 							<div class="count">조회</div>
 						</div>
 						
-						<div th:unless="${NoticeBoardList != null}"></div>
-						<div th:if="${NoticeBoardList != null}" class="board-list-item" th:each="board : ${NoticeBoardList}" th:inline="text">
-						     <div>
-						        <div class="num" th:text="${board.nboardCode}"></div>
-						        <div class="title">
-						        	 <a th:text="${board.nboardTitle}" th:href="'/board/board_view_normal?nboardCode=' + ${board.nboardCode}"></a>
-						        </div>
-						        <div class="writer" th:text="${board.memberId}"></div>
-						        <div class="date" th:text="${board.nboardRegistDate}"></div>
-						        <div class="count" th:text="${board.nboardView}"></div>
-						    </div>
+						<div th:if="${NoticeBoardList != null}">
+							<div class="title">
+							     <a>해당하는 게시물이 존재하지 않습니다.</a>
+							</div>
+						</div>
+						<div th:unless="${NoticeBoardList != null}">
+							<div th:if="${NoticeBoardList != null}" class="board-list-item" th:each="board : ${NoticeBoardList}" th:inline="text">
+							     <div>
+							        <div class="num" th:text="${board.nboardCode}"></div>
+							        <div class="title">
+							        	 <a th:text="${board.nboardTitle}" th:href="'/board/board_view_normal?nboardCode=' + ${board.nboardCode}"></a>
+							        </div>
+							        <div class="writer" th:text="${board.memberId}"></div>
+							        <div class="date" th:text="${board.nboardRegistDate}"></div>
+							        <div class="count" th:text="${board.nboardView}"></div>
+							    </div>
+							</div>
 						</div>
 					</div>
 					<div class="board_page">

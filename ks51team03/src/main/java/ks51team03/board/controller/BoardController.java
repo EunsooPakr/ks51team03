@@ -8,11 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
 import ks51team03.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -113,5 +115,15 @@ public class BoardController {
 		log.info("board_edit_normal");
 		boardService.updateNBoard(nboard);
 		return "redirect:/board/board_list_normal";
+	}
+	
+	/*자유 게시글 검색*/
+	@PostMapping("/board_search_list")
+	@ResponseBody
+	public List<NoticeBoard> getSearchList(@RequestBody NBoardSearch nbsearch){
+
+		log.info("nbsearch: {}", nbsearch);
+		
+		return boardService.getBoardSearchList(nbsearch);
 	}
 }

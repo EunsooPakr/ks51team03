@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
 
 @Mapper
@@ -21,7 +22,8 @@ public interface BoardMapper {
 	// 게시글 코드 도출
 	int getNBoardCode();
 	
-
+	//게시글 검색
+	List<NoticeBoard> getBoardSearchList(NBoardSearch nbsearch);
 	
 	// 게시글코드로 열람
 	NoticeBoard getNBoardByNBCode(String nboardCode);

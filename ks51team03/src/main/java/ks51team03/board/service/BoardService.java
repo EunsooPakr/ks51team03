@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
 import ks51team03.board.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
@@ -104,5 +105,25 @@ public class BoardService {
 	public void increaseRecByNBCode(String nboardCode)
 	{
 		boardMapper.increaseRecByNBCode(nboardCode);
+	}
+	
+	public List<NoticeBoard> getBoardSearchList(NBoardSearch nbsearch) {
+		String searchKey = nbsearch.getSearchKey();
+		String columnName = "";
+		switch (searchKey) {
+			case  "memberId" -> {
+				columnName = "id";
+			}
+			case  "nboardTitle" -> {
+				columnName = "nb_title";
+			}
+			case  "nboardContent" -> {
+				columnName = "nb_content";
+			}
+		}
+		nbsearch.setSearchKey(columnName);
+		log.info("nbsearch: {}", nbsearch);
+		
+		return boardMapper.getBoardSearchList(nbsearch);
 	}
 }

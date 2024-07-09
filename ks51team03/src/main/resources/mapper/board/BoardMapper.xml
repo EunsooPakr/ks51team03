@@ -130,4 +130,24 @@
 		 WHERE
         	nbcode = #{nboardCode};
 	</update>
+	
+	<select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
+		/*게시글 검색*/
+		SELECT
+			*
+		FROM
+			notice_board AS nb
+			INNER JOIN
+			board_category AS bc
+			ON
+			nb.bctcode=bc.bctcode
+		WHERE
+			bc.bct_value=#{boardCateValue}
+			AND
+			${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+		ORDER BY
+			CAST(SUBSTRING_INDEX(nb.nbcode, 'nb', -1) AS SIGNED)
+		LIMIT #{startRow}, #{rowPerPage};
+
+	</select>
 </mapper>
