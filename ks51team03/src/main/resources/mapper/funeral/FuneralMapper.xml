@@ -5,25 +5,27 @@
 <mapper namespace="ks51team03.funeral.serviceList.mapper.ServiceListMapper">
     <resultMap type="ks51team03.funeral.serviceList.dto.ServiceListDto" id="getServiceListMap">
         <id         column="fscode"         property="funeralserviceCode"/>
-        <result     column="fs_title"       property="funeralserviceTitle"/>
+        <result     column="ccode"          property="funeralserviceCcode"/>
         <result     column="fs_title"       property="funeralserviceTitle"/>
         <result     column="fs_price"       property="funeralservicePrice"/>
-        <result     column="ccode"          property="funeralserviceCcode"/>
+        <result     column="fs_weight"      property="funeralserviceWeight"/>
+        <result     column="id"             property="funeralserviceId"/>
         <result     column="fs_reg_date"    property="funeralserviceRegDate"/>
         <result     column="fs_state"       property="funeralserviceState"/>
     </resultMap>
 
     <resultMap id="getFureralReserve" type="ks51team03.funeral.reserve.dto.ReserveDto">
-        <id         column="frcode"         property="reserveCode"/>
-        <result     column="ccode"          property="reserveCompanyCode"/>
-        <result     column="fscode"         property="reserveServiceCode"/>
-        <result     column="id"             property="reserveId"/>
-        <result     column="fr_start_date"  property="reserveStartDate"/>
-        <result     column="fr_end_date"    property="reserveEndDate"/>
-        <result     column="fr_phone"       property="reservePhone"/>
-        <result     column="fr_payment"     property="reservePayment"/>
-        <result     column="fr_confirm"     property="reserveConfirm"/>
-        <result     column="fr_reg_date"    property="reserveRegDate"/>
+        <id         column="frcode"             property="reserveCode"/>
+        <result     column="ccode"              property="reserveCompanyCode"/>
+        <result     column="fscode"             property="reserveServiceCode"/>
+        <result     column="id"                 property="reserveId"/>
+        <result     column="fr_start_date"      property="reserveStartDate"/>
+        <result     column="fr_end_date"        property="reserveEndDate"/>
+        <result     column="fr_phone"           property="reservePhone"/>
+        <result     column="fr_payment"         property="reservePayment"/>
+        <result     column="fr_confirm"         property="reserveConfirm"/>
+        <result     column="fr_reg_date"        property="reserveRegDate"/>
+        <result     column="fr_reserve_time"    property="reserveTime"/>
     </resultMap>
 
     <!-- 장례 서비스 전체 조회 -->
@@ -33,6 +35,8 @@
             fs.ccode,
             fs.fs_title,
             fs.fs_price,
+            fs.fs_weight,
+            fs.id,
             fs.fs_reg_date,
             fs.fs_state
         FROM
@@ -43,9 +47,11 @@
     <select id="getServiceInfoByCode" parameterType="String" resultMap="getServiceListMap">
         SELECT
             fs.fscode,
-            fs.fs_title,
             fs.ccode,
+            fs.fs_title,
             fs.fs_price,
+            fs.fs_weight,
+            fs.id,
             fs.fs_reg_date,
             fs.fs_state
         FROM
@@ -54,8 +60,8 @@
         fs.ccode = #{funeralserviceCcode};
     </select>
 
-    <insert id="reserveDetail" parameterType="String" >
-        /* 회원 가입 */
+    <insert id="funeralReserve" parameterType="Map" >
+        /* 장례 예약 */
         INSERT INTO funeral_reserve
         (   frcode,
             ccode,
@@ -66,18 +72,22 @@
             fr_phone,
             fr_payment,
             fr_confirm,
-            fr_reg_date)
+            fr_reg_date,
+            fr_reserve_time)
+
         VALUES (
-                ${reserveCode},
-                ${reserveCompanyCode},
-                ${reserveServiceCode},
-                ${reserveId},
-                ${reserveStartDate},
-                ${reserveEndDate},
-                ${reservePhone},
-                ${reservePayment},
-                ${reserveConfirm},
-                CURDATE()
+                #{reserveCode},
+                #{reserveCompanyCode},
+                #{reserveServiceCode},
+                #{reserveId},
+                CURDATE(),
+                CURDATE(),
+                #{reservePhone},
+                '결제 전',
+                '예약 대기',
+                CURDATE(),
+                #{reserveTime}
+        )
 
     </insert>
 
