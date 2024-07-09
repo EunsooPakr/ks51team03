@@ -10,10 +10,12 @@ import ks51team03.member.dto.Member;
 import ks51team03.member.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -25,6 +27,15 @@ public class ReserveController {
     private final ServiceListService serviceListService;
     private final ReserveService reserveService;
     private final MemberServiceImpl memberService;
+
+    @PostMapping("funeral/funeral_reserve_payment")
+    public ResponseEntity<String> reservePayment(){
+
+        return ResponseEntity.ok("Success");
+
+    }
+
+
 
     @GetMapping("funeral/funeral_reserve_info")
     public String reserveInfo(Model model, HttpSession session, ReserveInfoDto reserveInfoDto, ReserveServiceInfoDto reserveServiceInfoDto) {

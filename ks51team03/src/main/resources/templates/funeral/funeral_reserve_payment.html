@@ -184,12 +184,12 @@
                             </div>
 
                             <div class="d-flex justify-content-between">
-                                <button type="button" onclick="location.href='/funeral/funeral_reserve_info';" class="btn btn-primary text-uppercase">
-                                    뒤로 가기
-                                </button>
+<!--                                <button type="button" onclick="location.href='/funeral/funeral_reserve_info';" class="btn btn-primary text-uppercase">-->
+<!--                                    뒤로 가기-->
+<!--                                </button>-->
 
-                                <button type="button" onclick="location.href='/funeral/funeral_reserve_confirm';" class="btn btn-primary text-uppercase">
-                                    다음 단계
+                                <button type="button" onclick="requestPayment()" class="btn btn-primary text-uppercase">
+                                    결제하기
                                 </button>
                             </div>
                         </form>
@@ -237,12 +237,50 @@
 </th:block>
 <!-- 사용자정의 javascript file -->
 <th:block layout:fragment="customJsFile">
-
-</th:block>
+<!--    <script type="text/javascript" th:src="@{/js/jquery-3.7.1.js}"></script>-->
+<!--    <script type="text/javascript" th:src="@{http://code.jquery.com/jquery-latest.min.js}" ></script>-->
+<!--    <script type="text/javascript" th:src="@{https://cdn.iamport.kr/js/iamport.payment-1.1.5.js}"></script>-->
+    <script type="text/javascript" th:src="@{https://cdn.portone.io/v2/browser-sdk.js}"></script>
+  </th:block>
 
 <!-- 사용자정의 javascript -->
 <th:block layout:fragment="customJs">
+    <script th:inline="javascript">
 
+        const data = {
+            //storeId: 설정
+            storeId: 'store-867d1a56-0dcf-4f7c-adbf-6b76defce016',
+            //채널 키 설정
+            channelKey: 'channel-key-eba90cc8-136a-4232-80b4-fefa415d54d0',
+            //paymentId
+            paymentId: 'wodlr1',
+            orderName: '송재익패키지',
+            totalAmount: 1000,
+            currency: 'CURRENCY_KRW',
+            payMethod: "EASY_PAY",
+            easyPay: {
+                easyPayProvider: "KAKAOPAY",
+            }
+        };
+
+        async function requestPayment() {
+            const response = await PortOne.requestPayment(data);
+            // 결제가 제대로 완료되지 않은 경우 에러 코드
+            if(response.code != null ) {
+                return alert(response.message("사용자가 결제 프로세스를 중단하였습니다."))
+            }
+            const validation = await axios({
+                // 결제 결과를 처리할 가맹점 백엔드 endpoint
+                url : MY_SERVER_URL + "/funeral/funeral_reserve_payment",
+                method: "POST",
+                body: {
+                    txId: response.txId,
+                    paymentId: response.paymentId,
+                }
+            });
+        }
+
+    </script>
 </th:block>
 
 </html>

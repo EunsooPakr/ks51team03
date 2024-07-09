@@ -3,6 +3,7 @@ package ks51team03.funeral.reserve.service;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveInfoDto;
 import ks51team03.funeral.reserve.dto.ReserveServiceInfoDto;
+import ks51team03.funeral.reserve.entity.Payment;
 import ks51team03.funeral.reserve.mapper.ReserveMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,13 @@ public class ReserveService {
     public List<ReserveServiceInfoDto> funeralReserveServiceInfo(ReserveServiceInfoDto reserveServiceInfoDto) {
         reserveMapper.funeralReserveServiceInfo(reserveServiceInfoDto);
         return  reserveMapper.funeralReserveServiceInfo(reserveServiceInfoDto);
+    }
+
+    // 결제 콜백 로직
+    public String processCallback(Payment entity){
+        try {
+
+        }
     }
 
 
