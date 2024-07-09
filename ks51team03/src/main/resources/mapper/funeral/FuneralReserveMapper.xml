@@ -135,7 +135,7 @@
         WHERE
          fr.id = #{reserveId}
         ORDER BY
-            fr.fr_reg_date desc
+        CAST(SUBSTRING(fr.frcode, 3) AS UNSIGNED) DESC
         LIMIT 1
     </select>
 
