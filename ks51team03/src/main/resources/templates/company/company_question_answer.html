@@ -88,6 +88,11 @@
 </head>
 
 <th:block layout:fragment="customContent">
+    <div th:if="${errorMessage != null}">
+        <script>
+            alert("[[${errorMessage}]]");
+        </script>
+    </div>
     <section class="bg-smoke py-12">
         <div class="form-container">
             <h2>답변 작성</h2>

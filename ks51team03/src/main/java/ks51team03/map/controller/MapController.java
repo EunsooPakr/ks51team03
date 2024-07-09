@@ -71,12 +71,16 @@ public class MapController {
 	}
 
 	@GetMapping("/map/map_write_question")
-	public String writeQuestion() {
+	public String writeQuestion(@RequestParam("cCode") String cCode, Model model) {
+		model.addAttribute("cCode", cCode);
+		log.info("문의 작성 대상 : {}", cCode);
 		return "map/map_write_question";
 	}
 
 	@GetMapping("/map/map_write_review")
-	public String writeReview() {
+	public String writeReview(@RequestParam("cCode") String cCode, Model model) {
+		model.addAttribute("cCode", cCode);
+		log.info("리뷰 작성 대상 : {}", cCode);
 		return "map/map_write_review";
 	}
 

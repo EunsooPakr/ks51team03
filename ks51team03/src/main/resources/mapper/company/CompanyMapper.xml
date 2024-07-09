@@ -77,7 +77,7 @@
 		<result column="rev_admin_date" property="revAdminDate" />
 		<result column="rev_update_date" property="revUpdateDate" />
 		<result column="rev_delete_date" property="revDeleteDate" />
-		<result column="rev_img" property="revImg" />
+		<!-- <result column="rev_img" property="revImg" /> -->
 		<result column="rev_scope" property="revScope" />
 		<result column="rev_content" property="revContent" />
 	</resultMap>
@@ -100,16 +100,37 @@
 		<result column="qa_update" property="qaUpdate" />
 	</resultMap>
 
-	<select id="getMaxQuesNum" resultType="String">
-		SELECT MAX(CAST(SUBSTRING_INDEX(quesnum, 'qa', -1) AS UNSIGNED)) FROM questions
+
+	<select id="getMaxRevCode" resultType="String">
+		SELECT MAX(CAST(SUBSTRING_INDEX(revcode, 'rev', -1) AS UNSIGNED)) FROM reviews
 	</select>
 
-	<insert id="insertQuestion" parameterType="ks51team03.company.dto.ComQuestion">
+	<insert id="insertReview" parameterType="ComReview">
+		<selectKey keyProperty="revCode" resultType="String" order="BEFORE">
+			SELECT
+			CASE
+			WHEN COUNT(*) = 0 THEN 'rev1'
+			ELSE CONCAT('rev', (MAX(CAST(SUBSTRING_INDEX(revcode, 'rev', -1) AS UNSIGNED)) + 1))
+			END
+			FROM service_reviews
+		</selectKey>
+		-- 리뷰 등록
+		INSERT INTO service_reviews
+		(revcode, id, ccode, rev_admin_date, rev_update_date, rev_delete_date, file_idx, rev_scope, rev_content)
+		VALUES
+		(#{revCode}, #{memberId}, #{cCode}, CURDATE(), null, null, #{revImg}, #{revScope}, #{revContent})
+	</insert>
+
+	<select id="getMaxQuesNum" resultType="String">
+		SELECT MAX(CAST(SUBSTRING_INDEX(quesnum, 'ques', -1) AS UNSIGNED)) FROM questions
+	</select>
+
+	<insert id="insertQuestion" parameterType="ComQuestion">
 		<selectKey keyProperty="quesNum" resultType="String" order="BEFORE">
 			SELECT
 			CASE
-			WHEN COUNT(*) = 0 THEN 'qa1'
-			ELSE CONCAT('qa', (MAX(CAST(SUBSTRING_INDEX(quesnum, 'qa', -1) AS UNSIGNED)) + 1))
+			WHEN COUNT(*) = 0 THEN 'ques1'
+			ELSE CONCAT('ques', (MAX(CAST(SUBSTRING_INDEX(quesnum, 'ques', -1) AS UNSIGNED)) + 1))
 			END
 			FROM questions
 		</selectKey>
@@ -219,20 +240,20 @@
 		SELECT
 			count(ccode)
 		FROM
-			service_review
+			service_reviews
 		WHERE
 			ccode = #{cCode}
 	</select>
 
-	<select id="getCompanyReview" resultMap="ComReviewResultMap">
-		-- 업체 리뷰 검색
+	<select id="getCompanyReview" parameterType="String" resultMap="ComReviewResultMap">
+		-- 업체 코드로 리뷰 검색
 		SELECT
-			revcode, id, rev_category, ccode, rev_admin_date, rev_update_date,
-			rev_delete_date, rev_img, rev_scope, rev_content
+		revcode, id, ccode, rev_admin_date, rev_update_date, rev_delete_date,
+		file_idx, rev_scope, rev_content
 		FROM
-			service_review
+		service_reviews
 		WHERE
-			ccode = #{ccode}
+		ccode = #{cCode}
 	</select>
 
 	<select id="getCompanyOperTime" resultMap="ComOperTimeResultMap">

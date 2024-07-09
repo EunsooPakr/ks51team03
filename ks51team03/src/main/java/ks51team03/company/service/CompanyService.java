@@ -3,6 +3,9 @@ package ks51team03.company.service;
 
 import ks51team03.company.dto.*;
 import ks51team03.company.mapper.CompanyMapper;
+import ks51team03.files.dto.FileRequest;
+import ks51team03.files.mapper.FileMapper;
+import ks51team03.files.util.FileUtils;
 import ks51team03.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,26 @@ import java.util.List;
 @Slf4j
 public class CompanyService {
     private final CompanyMapper companyMapper;
+    private final FileUtils fileUtils;
+    private final FileMapper fileMapper;
+
+    // 파일 업로드
+    public void addReviewWithFile(ComReview comReview) {
+
+        FileRequest fileRequest =  fileUtils.uploadFile(comReview.getRevImgFile());
+        log.info("fileRequest: {}", fileRequest);
+        if(fileRequest != null){
+            fileMapper.addFile(fileRequest);
+            comReview.setRevImg(fileRequest.getFileIdx());
+        }
+        addReview(comReview);
+
+    }
+
+    // 리뷰 등록하기
+    public void addReview(ComReview comReview) {
+        companyMapper.insertReview(comReview);
+    }
 
     // 문의 등록하기
     public void addQuestion(ComQuestion comQuestion) {

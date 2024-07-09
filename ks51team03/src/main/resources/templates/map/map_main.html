@@ -8,6 +8,11 @@
 <th:block layout:fragment="customContent">
     <div class="main-wrapper home-city">
         <section class="bg-smoke py-12">
+            <div th:if="${errorMessage != null}">
+                <script>
+                    alert("[[${errorMessage}]]");
+                </script>
+            </div>
             <div class="search_container">
                 <div class="search-container">
                     <form id="searchForm" method="get" th:action="@{/map/map_main}">
@@ -40,12 +45,13 @@
                                 <div id="placeHours"></div>
                             </div>
                             <a class="write-review-link" id="write-question-link"
-                               th:href="@{'/map/map_write_question'(ccode=${place.cCode})}">문의하기</a>
+                               th:href="@{/map_write_question}">문의하기</a>
                             <hr>
                             <div class="reviews">
                                 <div class="review-container">
                                     <div id="placeReviews">리뷰: 알수없음</div>
-                                    <a class="write-review-link" th:href="@{map_write_review}">리뷰 작성하기</a>
+                                    <a class="write-review-link" id="write-review-link"
+                                       th:href="@{/map_write_review}">리뷰 작성하기</a>
                                 </div>
                                 <div class="review_list">
                                     <div class="review">리뷰 1: 좋아요</div>
@@ -492,9 +498,11 @@
         function showDetails(index, isDB) {
             var infoWrap = document.getElementById('info_wrap');
             var menuWrap = document.getElementById('menu_wrap');
+            var cCode;
 
             if (isDB) {
                 var places = dbPlaces[index];
+                cCode = places.companyCode; // cCode 설정
                 document.getElementById('placeName').innerText = places.companyName;
                 document.getElementById('placeRating').innerText = '별점: ' + places.rating;
                 document.getElementById('parking').innerText = '주차장: ' + (places.companyParking ? 'O' : 'X');
@@ -504,6 +512,7 @@
                 document.getElementById('placeReviews').innerText = '리뷰: 알수없음';
             } else {
                 var places = allResults[index - dbPlaces.length];
+                cCode = places.id; // cCode 설정
                 document.getElementById('placeName').innerText = places.place_name;
                 document.getElementById('placeRating').innerText = '별점: 알수없음';
                 document.getElementById('parking').innerText = '주차장: 알수없음';
@@ -512,9 +521,13 @@
                 document.getElementById('employee_count').innerText = '직원 수: 알수없음';
                 document.getElementById('placeReviews').innerText = '리뷰: 알수없음';
             }
+
+            document.getElementById('write-question-link').setAttribute('href', '/map/map_write_question?cCode=' + cCode);
+            document.getElementById('write-review-link').setAttribute('href', '/map/map_write_review?cCode=' + cCode);
             menuWrap.style.display = 'none';
             infoWrap.style.display = 'block';
         }
+
 
         document.getElementById('returnMenu_wrap').onclick = function () {
             document.getElementById('info_wrap').style.display = 'none';

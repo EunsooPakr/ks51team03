@@ -8,16 +8,16 @@
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             margin: 0;
+            padding: 20px;
         }
 
         .form-container {
             max-width: 600px;
             margin: 0 auto;
+            padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            height: 600px; /* 높이 수정 */
-            padding: 20px;
         }
 
         .form-container h2 {
@@ -42,18 +42,22 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+        }
+
+        .form-group input, .form-group select {
             width: 100%;
         }
 
         .form-group textarea {
             height: 150px;
             resize: vertical;
+            width: 100%;
         }
 
         .form-group button {
             width: 100%;
             padding: 10px;
-            background-color: #007BFF;
+            background-color: #28a745;
             border: none;
             color: #fff;
             font-size: 16px;
@@ -62,56 +66,51 @@
         }
 
         .form-group button:hover {
-            background-color: #0056b3;
+            background-color: #218838;
         }
 
-        .form-group input[type="file"] {
-            padding: 3px;
-        }
-
-        .checkbox-container {
-            margin: 10px;
-            display: block;
+        .file-upload {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
         }
 
-        .checkbox-container label {
-            margin-bottom: 0;
-            margin-left: 10px;
-        }
-
-        .checkbox-container input[type="checkbox"] {
+        .file-upload input[type="file"] {
             width: auto;
-            margin-right: 10px;
+            margin-left: 10px;
         }
     </style>
 </head>
 
 <th:block layout:fragment="customContent">
     <section class="bg-smoke py-12">
-        <div th:if="${errorMessage != null}">
-            <script>
-                alert("[[${errorMessage}]]");
-            </script>
-        </div>
         <div class="form-container">
-            <h2>답변 수정</h2>
-            <form th:action="@{/company/update_answer}" method="post">
+            <h2>후기 작성</h2>
+            <form th:action="@{/company/submit_review}" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="question-content">문의 내용</label>
-                    <textarea id="question-content" name="quesContent" readonly th:text="${question.quesContent}"></textarea>
+                    <label for="revScope">별점</label>
+                    <select id="revScope" name="revScope" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="form-group file-upload">
+                    <label for="revImg">이미지 첨부</label>
+                    <input type="file" id="revImg" name="revImg" accept="image/*">
                 </div>
                 <div class="form-group">
-                    <label for="inquiry-content">답변 내용</label>
-                    <textarea id="inquiry-content" name="qaContent" required th:text="${answer.qaContent}"></textarea>
+                    <label for="revContent">내용</label>
+                    <textarea id="revContent" name="revContent" required></textarea>
                 </div>
-                <input type="hidden" name="quesNum" th:value="${question.quesNum}" />
-                <input type="hidden" name="qaCode" th:value="${answer.qaCode}" />
                 <div class="form-group">
-                    <button type="submit">답변수정</button>
+                    <button type="submit">후기 제출</button>
                 </div>
             </form>
         </div>
     </section>
 </th:block>
+
 </html>
