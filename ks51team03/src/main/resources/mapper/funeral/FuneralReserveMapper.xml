@@ -20,17 +20,43 @@
     <resultMap id="getFuneralReserveInfo" type="ks51team03.funeral.reserve.dto.ReserveInfoDto">
         <id         column="id"                 property="reserveId"/>
         <result     column="name"               property="reserveName"/>
-        <result     column="p_name"             property="reservePname"/>
+        <result     column="p_name"             property="reservePetName"/>
         <result     column="phone"              property="reservePhone"/>
         <result     column="email"              property="reserveEmail"/>
+        <result     column="fr_reg_date"        property="reserveRegDate"/>
 
+    </resultMap>
+
+    <resultMap id="getFuneralReserveServiceInfo" type="ks51team03.funeral.reserve.dto.ReserveServiceInfoDto">
+        <id         column="id"                 property="reserveId"/>
+        <result     column="ccode"              property="reserveCompanyCode"/>
+        <result     column="fscode"             property="reserveServiceCode"/>
+        <result     column="fr_start_date"      property="reserveStartDate"/>
+        <result     column="fr_end_date"        property="reserveEndDate"/>
+        <result     column="fs_title"           property="funeralserviceTitle"/>
+        <result     column="fs_price"           property="funeralservicePrice"/>
+        <result     column="com_name"           property="companyName"/>
     </resultMap>
 
     <select id="getLastFuneralServiceCode" parameterType="String" resultType="String">
         SELECT Max(frcode) FROM funeral_reserve
     </select>
 
-    <insert id="funeralReserve" parameterType="Map" >
+    <insert id="funeralReserve" parameterType="Map">
+        <selectKey keyProperty="reserveCode" resultType="String" order="BEFORE">
+            /* 상품 자동 증가 코드 */
+            SELECT
+            CASE
+            WHEN COUNT(frcode) = 0 THEN 'fr1'
+            ELSE
+            CONCAT(
+            'fr',
+            LPAD(MAX(CAST(SUBSTRING_INDEX(frcode, 'fr', -1) AS UNSIGNED))+1, 3, '0')
+            )
+            END AS reserveCode
+            FROM
+            funeral_reserve;
+        </selectKey>
         /* 장례 예약 */
         INSERT INTO funeral_reserve
         (   frcode,
@@ -50,8 +76,8 @@
             #{reserveCompanyCode},
             #{reserveServiceCode},
             #{reserveId},
-            CURDATE(),
-            CURDATE(),
+            #{reserveStartDate},
+            #{reserveEndDate},
             #{reservePhone},
             '결제 전',
             '예약 대기',
@@ -60,5 +86,57 @@
         )
     </insert>
 
+    <!-- 장례 예약버튼 누른 후 인적사항 확인 -->
+    <select id="funeralReserveInfo" resultMap="getFuneralReserveInfo">
+        SELECT
+        fr.id,
+        p.p_name,
+        m.name,
+        m.phone,
+        m.email,
+        fr.fr_reg_date
+        FROM
+        funeral_reserve AS fr
+        INNER join
+        pet AS p
+        ON
+        p.id = fr.id
+        INNER join
+        member AS m
+        on
+        m.id = fr.id
+        WHERE
+        fr.id = #{reserveId}
+        ORDER BY
+        fr.fr_reg_date desc
+        LIMIT 1
+    </select>
+
+    <!-- 장례 예약버튼 누른 후 인적사항 확인 -->
+    <select id="funeralReserveServiceInfo" resultMap="getFuneralReserveServiceInfo">
+        SELECT
+            fs.ccode,
+            fs.fs_title,
+            fs.fs_price,
+            fr.fr_start_date,
+            fr.fr_end_date,
+            fr.id,
+            c.com_name
+        FROM
+            funeral_reserve AS fr
+            INNER join
+            funeral_service AS fs
+            ON
+            fs.ccode = fr.ccode
+            INNER join
+            company AS c
+            on
+            fs.ccode = c.ccode
+        WHERE
+         fr.id = #{reserveId}
+        ORDER BY
+            fr.fr_reg_date desc
+        LIMIT 1
+    </select>
 
 </mapper>
