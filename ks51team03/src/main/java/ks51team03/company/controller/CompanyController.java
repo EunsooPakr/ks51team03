@@ -483,7 +483,7 @@ public class CompanyController {
 			List<ComReview> comReviews = companyService.getCompanyReview(companyCode);
 			log.info("comReviews: {}", comReviews);
 			model.addAttribute("comReviews", comReviews);
-			zzzzzzzzzz 뷰에 comReviews 써야한다.
+
 		}
 
 		return "company/company_review";
