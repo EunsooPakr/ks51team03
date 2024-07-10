@@ -2,12 +2,11 @@ package ks51team03.funeral.reserve.service;
 
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveInfoDto;
+import ks51team03.funeral.reserve.dto.ReservePaymentDto;
 import ks51team03.funeral.reserve.dto.ReserveServiceInfoDto;
-import ks51team03.funeral.reserve.entity.Payment;
 import ks51team03.funeral.reserve.mapper.ReserveMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,11 +46,18 @@ public class ReserveService {
     }
 
     // 결제 콜백 로직
-    public String processCallback(Payment entity){
-        try {
+    public void handlePaymentCallback(ReservePaymentDto reservePaymentDto) {
+        // 결제 정보를 저장하는 로직
+        reserveMapper.insertPayment(reservePaymentDto);
 
-        }
+        // 필요한 추가 로직 구현 (예: 결제 상태 업데이트, 알림 전송 등)
     }
 
+    //fpcode 생성 메서드
+    public String generateFpcode(){
+        String lastFpcode = reserveMapper.getLastFpcode();
+        int newFpcdoe = (lastFpcode == null) ? 1 : Integer.parseInt(lastFpcode.substring(2)) + 1;
+        return "fp" + newFpcdoe;
+    }
 
 }

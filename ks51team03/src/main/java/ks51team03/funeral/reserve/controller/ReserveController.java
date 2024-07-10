@@ -1,8 +1,10 @@
 package ks51team03.funeral.reserve.controller;
 
 import jakarta.servlet.http.HttpSession;
+import ks51team03.funeral.payment.dto.PaymentDto;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveInfoDto;
+import ks51team03.funeral.reserve.dto.ReservePaymentDto;
 import ks51team03.funeral.reserve.dto.ReserveServiceInfoDto;
 import ks51team03.funeral.reserve.service.ReserveService;
 import ks51team03.funeral.serviceList.service.ServiceListService;
@@ -28,14 +30,31 @@ public class ReserveController {
     private final ReserveService reserveService;
     private final MemberServiceImpl memberService;
 
-    @PostMapping("funeral/funeral_reserve_payment")
-    public ResponseEntity<String> reservePayment(){
+    // 결제 콜백 처리
+    @PostMapping("/reserve/callback")
+    public String callbackRecevie(@RequestBody ReservePaymentDto reservePaymentDto, Model model){
+        try {
+            String txId = reservePaymentDto.getTxId();
+            String code = reservePaymentDto.getCode();
+            String message = reservePaymentDto.getMessage();
 
-        return ResponseEntity.ok("Success");
+            log.info("--- after payment receive ---");
+            log.info("txId: {}", txId);
+            log.info("error_code: {}", code);
+            log.info("error_message: {}", message);
 
+            // 결제 조회 API를 통해 가맹점이 의도한 금액과 결과 금액이 같은지 검증단계
+            reserveService.handlePaymentCallback(reservePaymentDto);
+
+            log.info("reserveService.handlePaymentCallback(reservePaymentDto): {}", reservePaymentDto);
+            model.addAttribute("reservePaymentDto", reservePaymentDto);
+            return "redirect:/funeral/funeral_reserve_payment"; //결제 확인 페이지
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "처리 실패 : 송중기에게 문의해 주세요");
+            return "redirect:/funeral/funeral_reserve_payment"; //결제 확인 페이지
+        }
     }
-
-
 
     @GetMapping("funeral/funeral_reserve_info")
     public String reserveInfo(Model model, HttpSession session, ReserveInfoDto reserveInfoDto, ReserveServiceInfoDto reserveServiceInfoDto) {
@@ -68,7 +87,13 @@ public class ReserveController {
     @GetMapping("funeral/funeral_reserve_payment")
     public String reservePayment(Model model, HttpSession session, ReserveInfoDto reserveInfoDto, ReserveServiceInfoDto reserveServiceInfoDto) {
 
+
+
         String memberId = (String) session.getAttribute("SID");
+
+        if(memberId == null) {
+            return "redirect:/member/member_login";
+        }
 
         log.info("장례 예약한 회원 아이디 memberId = {}", memberId);
 
@@ -90,6 +115,17 @@ public class ReserveController {
         log.info("reserveServiceInfoDtoList = {}", reserveServiceInfoDtoList);
         model.addAttribute("reserveInfoList", reserveInfoList);
         model.addAttribute("reserveServiceInfoDtoList", reserveServiceInfoDtoList);
+
+        // fpcode 생성
+        String fpcode = reserveService.generateFpcode();
+        model.addAttribute("fpcode", fpcode);
+
+        log.info("fpcode = {}", fpcode);
+
+        // 기타 필요한 데이터 설정
+        model.addAttribute("memberId", memberId);
+        model.addAttribute("reservePhone", reservePhone);
+
         return "funeral/funeral_reserve_payment";
     }
 
