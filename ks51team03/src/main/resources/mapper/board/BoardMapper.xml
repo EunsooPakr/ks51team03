@@ -31,24 +31,28 @@
 			ON
 			nb.bctcode=bc.bctcode
 		WHERE
-			bc.bct_value=#{boardCateValue}
+    		bc.bct_value = #{boardCateValue}
+	    <if test="searchKey != null and searchValue != null">
+	        AND nb.${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+	    </if>
 		ORDER BY
 			CAST(SUBSTRING_INDEX(nb.nbcode, 'nb', -1) AS SIGNED)
 		LIMIT #{startRow}, #{rowPerPage};
 	</select>
 	
 	<select id="getNoticeBoardListCnt" parameterType="String" resultType="int">
-		/* 게시글 테이블 행의 갯수 조회 */
 		SELECT
-			COUNT(1)
+    		COUNT(1)
 		FROM
-			notice_board AS nb
-			INNER JOIN
-			board_category AS bc
-			ON
-			nb.bctcode=bc.bctcode
+		    notice_board AS nb
+		    INNER JOIN
+		    board_category AS bc
+		    ON nb.bctcode = bc.bctcode
 		WHERE
-			bc.bct_value=#{boardCateValue};
+    		bc.bct_value = #{boardCateValue}
+	    <if test="searchKey != null and searchValue != null">
+	        AND nb.${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+	    </if>;
 	</select>
 	
 	<insert id="insertNBoard" parameterType="NoticeBoard">
@@ -131,7 +135,7 @@
         	nbcode = #{nboardCode};
 	</update>
 	
-	<select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
+	<!-- <select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
 		/*게시글 검색*/
 		SELECT
 			*
@@ -144,10 +148,8 @@
 		WHERE
 			bc.bct_value=#{boardCateValue}
 			AND
-			${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+			nb.${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
 		ORDER BY
-			CAST(SUBSTRING_INDEX(nb.nbcode, 'nb', -1) AS SIGNED)
-		LIMIT #{startRow}, #{rowPerPage};
-
-	</select>
+			CAST(SUBSTRING_INDEX(nb.nbcode, 'nb', -1) AS SIGNED);
+	</select> -->
 </mapper>

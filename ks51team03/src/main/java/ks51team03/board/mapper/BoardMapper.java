@@ -12,8 +12,8 @@ import ks51team03.board.dto.NoticeBoard;
 public interface BoardMapper {
 	//게시글 목록
 	//public List<NoticeBoard> getNoticeBoardList(String boardCateValue);
-	int getNoticeBoardListCnt(String boardCateValue);
-	List<Map<String, Object>> getNoticeBoardList(String boardCateValue,int startRow, int rowPerPage);
+	int getNoticeBoardListCnt(String boardCateValue,String searchKey,String searchValue);
+	List<Map<String, Object>> getNoticeBoardList(String boardCateValue,int startRow, int rowPerPage,String searchKey,String searchValue);
 	
 	
 	//게시글 등록

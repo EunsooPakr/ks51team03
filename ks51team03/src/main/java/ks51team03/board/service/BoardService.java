@@ -22,7 +22,7 @@ public class BoardService {
 	private final BoardMapper boardMapper;
 	
 	
-	public Map<String, Object> getNoticeBoardList(String boardCateValue,int currentPage)
+	public Map<String, Object> getNoticeBoardList(String boardCateValue,int currentPage,String searchKey,String searchValue)
 	{
 		// 보여줄 행의 갯수
 		int rowPerPage = 8;
@@ -34,12 +34,12 @@ public class BoardService {
 		int endPageNum = 10;
 
 	
-		log.info("getNoticeBoardList: {}", boardMapper.getNoticeBoardList(boardCateValue,startRow,rowPerPage));
+		log.info("getNoticeBoardList: {}", boardMapper.getNoticeBoardList(boardCateValue,startRow,rowPerPage,searchKey,searchValue));
 	
-		List<Map<String,Object>> NoticeBoardList = boardMapper.getNoticeBoardList(boardCateValue,startRow, rowPerPage);
+		List<Map<String,Object>> NoticeBoardList = boardMapper.getNoticeBoardList(boardCateValue,startRow, rowPerPage,searchKey,searchValue);
 
 		// 전체 행의 갯수 조회
-		double cnt = boardMapper.getNoticeBoardListCnt(boardCateValue);
+		double cnt = boardMapper.getNoticeBoardListCnt(boardCateValue,searchKey,searchValue);
 
 		// 마지막 페이지
 		int lastPage = (int)Math.ceil(cnt/rowPerPage);
@@ -107,23 +107,14 @@ public class BoardService {
 		boardMapper.increaseRecByNBCode(nboardCode);
 	}
 	
-	public List<NoticeBoard> getBoardSearchList(NBoardSearch nbsearch) {
-		String searchKey = nbsearch.getSearchKey();
-		String columnName = "";
-		switch (searchKey) {
-			case  "memberId" -> {
-				columnName = "id";
-			}
-			case  "nboardTitle" -> {
-				columnName = "nb_title";
-			}
-			case  "nboardContent" -> {
-				columnName = "nb_content";
-			}
-		}
-		nbsearch.setSearchKey(columnName);
-		log.info("nbsearch: {}", nbsearch);
-		
-		return boardMapper.getBoardSearchList(nbsearch);
-	}
+	/*
+	 * public List<NoticeBoard> getBoardSearchList(NBoardSearch nbsearch) { String
+	 * searchKey = nbsearch.getSearchKey(); String columnName = ""; switch
+	 * (searchKey) { case "memberId" -> { columnName = "id"; } case "nboardTitle" ->
+	 * { columnName = "nb_title"; } case "nboardContent" -> { columnName =
+	 * "nb_content"; } } nbsearch.setSearchKey(columnName); log.info("nbsearch: {}",
+	 * nbsearch);
+	 * 
+	 * return boardMapper.getBoardSearchList(nbsearch); }
+	 */
 }
