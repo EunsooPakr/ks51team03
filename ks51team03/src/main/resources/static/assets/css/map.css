@@ -24,11 +24,11 @@
     display: none;
 }
 
+
 .map_wrap, #info_wrap, .map_wrap * {
     margin: 0;
     padding: 0;
     font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
-    font-size: 12px;
 }
 
 .map_wrap a, .map_wrap a:hover, #info_wrap, .map_wrap a:active {
@@ -266,11 +266,6 @@
     margin: 10px 20px;
 }
 
-#placeName {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 10px 0;
-}
 
 #placeAddress, #placePhone, #employee_count {
     margin: 5px 0;
@@ -358,3 +353,9 @@ hr {
     background-color: #0056b3;
 }
 
+
+#placeNameContainer {
+    font-size: 24px !important;
+    font-weight: bold;
+    margin: 10px 0;
+}

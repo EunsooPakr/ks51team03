@@ -14,6 +14,11 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
 
+    // 업체 리뷰 별점 평균 반환
+    Double avgReviewScore(String companyCode);
+
+    // 업체의 리뷰 삭제
+    void deleteReview(String revCode);
 
     // 리뷰 등록
     void insertReview(ComReview comReview);
@@ -104,5 +109,6 @@ public interface CompanyMapper {
  	
  	// 업체 대표 권한 변경
  	int updateCeo(Company company);
+
 
 }

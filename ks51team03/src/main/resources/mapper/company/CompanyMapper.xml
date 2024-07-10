@@ -76,7 +76,6 @@
 		<result column="ccode" property="cCode" />
 		<result column="rev_admin_date" property="revAdminDate" />
 		<result column="rev_update_date" property="revUpdateDate" />
-		<result column="rev_delete_date" property="revDeleteDate" />
 		<!-- <result column="rev_img" property="revImg" /> -->
 		<result column="rev_scope" property="revScope" />
 		<result column="rev_content" property="revContent" />
@@ -101,6 +100,16 @@
 	</resultMap>
 
 
+
+	<delete id="deleteReview" parameterType="ComReview" >
+		-- 업체 문의 삭제
+		DELETE
+		FROM
+		service_reviews
+		WHERE
+		revcode = #{revCode}
+	</delete>
+
 	<select id="getMaxRevCode" resultType="String">
 		SELECT MAX(CAST(SUBSTRING_INDEX(revcode, 'rev', -1) AS UNSIGNED)) FROM reviews
 	</select>
@@ -116,9 +125,9 @@
 		</selectKey>
 		-- 리뷰 등록
 		INSERT INTO service_reviews
-		(revcode, id, ccode, rev_admin_date, rev_update_date, rev_delete_date, file_idx, rev_scope, rev_content)
+		(revcode, id, ccode, rev_admin_date, rev_update_date, file_idx, rev_scope, rev_content)
 		VALUES
-		(#{revCode}, #{memberId}, #{cCode}, CURDATE(), null, null, #{revImg}, #{revScope}, #{revContent})
+		(#{revCode}, #{memberId}, #{cCode}, CURDATE(), null, #{revImg}, #{revScope}, #{revContent})
 	</insert>
 
 	<select id="getMaxQuesNum" resultType="String">
@@ -235,6 +244,14 @@
 		(#{qaCode}, #{memberId}, #{quesNum}, #{qaContent}, CURDATE(), NULL)
 	</insert>
 
+	<select id="avgReviewScore" resultType="Double" parameterType="String">
+		-- 리뷰 별점 평균
+		SELECT AVG(rev_scope)
+		FROM service_reviews
+		WHERE ccode = #{cCode}
+		GROUP BY ccode
+	</select>
+
 	<select id="getCompanyReviewCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
 		-- 업체 리뷰수 검색
 		SELECT
@@ -248,7 +265,7 @@
 	<select id="getCompanyReview" parameterType="String" resultMap="ComReviewResultMap">
 		-- 업체 코드로 리뷰 검색
 		SELECT
-		revcode, id, ccode, rev_admin_date, rev_update_date, rev_delete_date,
+		revcode, id, ccode, rev_admin_date, rev_update_date,
 		file_idx, rev_scope, rev_content
 		FROM
 		service_reviews

@@ -24,6 +24,11 @@ public class CompanyService {
     private final FileUtils fileUtils;
     private final FileMapper fileMapper;
 
+    // 업체 리뷰 삭제
+    public void deleteReview(String revCode){
+        companyMapper.deleteReview(revCode);
+    }
+
     // 파일 업로드
     public void addReviewWithFile(ComReview comReview) {
 
@@ -148,6 +153,13 @@ public class CompanyService {
     }
 
 
+    // 별점 평균 반환
+    public Double getAvgReviewScore(String companyCode) {
+        Double avgScore = companyMapper.avgReviewScore(companyCode);
+        return (avgScore != null) ? avgScore : 0.0;
+    }
+
+
     // 업체 리뷰 반환
     public List<ComReview> getCompanyReview(String companyCode) {
         log.info("Getting ComReview for cCode: {}", companyCode);
@@ -197,6 +209,7 @@ public class CompanyService {
     	int update=companyMapper.updateCeo(company);
 		int result = companyMapper.insertCompany(company);
 	}
+
 
 
 }

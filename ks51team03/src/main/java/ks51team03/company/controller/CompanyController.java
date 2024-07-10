@@ -456,6 +456,13 @@ public class CompanyController {
 		return "redirect:/company/company_question";
 	}
 
+	@PostMapping("/company/review_delete")
+	public String deleteReview(@RequestParam("revCode")String revCode){
+		log.info("revCode: {}", revCode);
+		companyService.deleteReview(revCode);
+		return "redirect:company_review";
+	}
+
 	@GetMapping("/company/company_review")
 	public String companyReview(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");

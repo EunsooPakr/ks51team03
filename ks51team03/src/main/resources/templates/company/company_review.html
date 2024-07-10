@@ -69,7 +69,6 @@
                     <th>작성자 아이디</th>
                     <th>내용</th>
                     <th>작성일</th>
-                    <th>답변</th>
                     <th>삭제</th>
                 </tr>
                 </thead>
@@ -80,13 +79,8 @@
                     <td th:text="${r.revContent}"></td>
                     <td th:text="${r.revAdminDate}"></td>
                     <td>
-                        <form th:action="@{/company/review/reply}" method="post">
-                            <input type="hidden" name="reviewId" th:value="${r.memberId}" />
-                            <button type="submit" class="reply-btn">답변하기</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form th:action="@{/company/review/delete}" method="post">
+                        <form th:action="@{/company/review_delete}" method="post">
+                            <input type="hidden" name="revCode" th:value="${r.revCode}" />
                             <button type="submit" class="delete-btn">삭제하기</button>
                         </form>
                     </td>

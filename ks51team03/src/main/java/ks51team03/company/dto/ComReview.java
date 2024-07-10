@@ -10,7 +10,6 @@ public class ComReview {
     private String cCode;
     private String revAdminDate;
     private String revUpdateDate;
-    private String revDeleteDate;
     private String revImg;
     private MultipartFile revImgFile;
     private int revScope;
