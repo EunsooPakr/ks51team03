@@ -16,39 +16,170 @@
 					<strong>자유 게시글</strong>
 					<p>자유롭게 의견을 나누세요.</p>
 				</div>
+				
+				
+				<!-- 게시판 검색 -->
+				<div id="search" class="board-list-search">
+					<select id="searchKey">
+						<option th:if="${searchCate != null}"
+								th:each="l : ${searchCate}"
+								th:value="${l.searchKey}"
+								th:text="${l.searchText}">
+						</option>	
+					</select>
+					<input type="text" id="searchValue" placeholder="검색어를 입력해주세요"/>
+					<button type="button" id="searchBtn">검색</button>
+				</div>
+				
+				<!-- 게시판 말머리 -->
 				<div class="board_list_wrap">
 					<div class="board_list">
 						<div class="top">
 							<div class="num">번호</div>
 							<div class="title">제목</div>
-							<div class="writer">글쓴이</div>
+							<div class="writer">작성자</div>
 							<div class="date">작성일</div>
 							<div class="count">조회</div>
 						</div>
 						
-						<div class="board-list-item" th:each="board : ${normalList}" th:inline="text">
-						     <div>
-						        <div class="num" th:text="${board.nboardCode}"></div>
-						        <div class="title" th:text="${board.nboardTitle}"></div>
-						        <div class="writer" th:text="${board.memberId}"></div>
-						        <div class="date" th:text="${board.nboardRegistDate}"></div>
-						        <div class="count" th:text="${board.nboardView}"></div>
-						    </div>
+						<div id="board-list-body">
+							<div th:if="${NoticeBoardList == null}">
+								<div class="title">
+								     <a>해당하는 게시물이 존재하지 않습니다.</a>
+								</div>
+							</div>
+							<div th:unless="${NoticeBoardList == null}">
+								<div class="board-list-item" th:each="board : ${NoticeBoardList}" th:inline="text">
+								     <div>
+								        <div class="num" th:text="${board.nboardCode}"></div>
+								        <div class="title">
+								        	 <a th:text="${board.nboardTitle}" th:href="'/board/board_view_normal?nboardCode=' + ${board.nboardCode}"></a>
+								        </div>
+								        <div class="writer" th:text="${board.memberId}"></div>
+								        <div class="date" th:text="${board.nboardRegistDate}"></div>
+								        <div class="count" th:text="${board.nboardView}"></div>
+								    </div>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="board_page">
-						<a href="#" class="bt first"><<</a> <a href="#" class="bt prev"><</a>
-						<a href="#" class="num on">1</a> <a href="#" class="num">2</a> <a
-							href="#" class="num">3</a> <a href="#" class="num">4</a> <a
-							href="#" class="num">5</a> <a href="#" class="bt next">></a> <a
-							href="#" class="bt last">>></a>
+					
+						<a th:href="@{/board/board_list_normal}" class="bt first" th:utext="${'<<'}"></a>
+						<a th:if="${currentPage > 1}" class="bt prev"
+						   th:href="@{/board/board_list_normal(currentPage=${currentPage - 1})}" th:utext="${'<'}"></a>
+						<a th:unless="${currentPage > 1}" class="bt prev" th:utext="${'<'}"></a>
+						<th:block class="num" th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+						    <a th:if="${currentPage == num}" class="num on" th:text="|${num}|"></a>
+						    <a th:unless="${currentPage == num}" class="num" th:href="@{/board/board_list_normal(currentPage=${num})}" th:text="|${num}|"></a>
+						</th:block>
+						<a th:if="${currentPage < lastPage}" class="bt next" th:href="@{/board/board_list_normal(currentPage=${currentPage + 1})}" th:utext="${'>'}"></a>
+						<a th:unless="${currentPage < lastPage}" class="bt next" th:utext="${'>'}"></a>
+						<a th:href="@{/board/board_list_normal(currentPage=${lastPage})}" th:utext="${'>>'}"></a>
 					</div>
 					<div class="bt_wrap">
-						<a href="/board/board_write_normal" class="on">등록</a>
+						<button type="button" id="nBoardWriteBtn" class="board-list-normal-btn" th:href="@{/board/board_write_normal}">등록</button>
 						<!--<a href="#">수정</a>-->
 					</div>
 				</div>
 			</div>
 		</div>
 	</body>
+			
+	<script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+	<script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
+	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js}"></script>
+	<script th:inline="javascript">
+		$('#nBoardWriteBtn').click(function() {
+			let isProcess=true;
+			const sId=[[${session.SID}]];
+			if(sId==null)
+			{
+				isProcess=false;
+				alert('로그인 후 이용해 주세요.');
+				//location.reload();
+			}
+			else
+			{
+				 console.log('로그인 사용자: ' + sId);
+				 window.location.href = $('#nBoardWriteBtn').attr('href'); // href 속성의 URL로 이동
+			}
+		});
+		
+		
+		
+		//post방식 검색
+		/* $('#searchBtn').click(function(){
+			const searchKey = $('#searchKey').val();
+			const searchValue = $('#searchValue').val();
+			const boardCateValue='자유 게시글';
+			const searchObj = {searchKey, searchValue,boardCateValue};
+			console.log(searchObj);
+			const request = $.ajax({
+				url : '/board/board_search_list',
+				method : 'POST',
+				contentType: 'application/json; charset=utf-8',
+				data : JSON.stringify(searchObj),
+				dataType : 'json'
+			});
+			request.done(function(data){
+				console.log(data);
+				
+				const parseArr = data.map(item => {
+					const nboardCode = item.nboardCode; 
+					const memberId = item.memberId; 
+					const nboardTitle = item.nboardTitle; 
+					const nboardContent = item.nboardContent;
+					const nboardRegistDate = item.nboardRegistDate;
+					const nboardView = item.nboardView;
+					const nboardRec = item.nboardRec;
+					return { 	nboardCode, 
+								memberId,
+								nboardTitle,
+								nboardContent,
+								nboardRegistDate,
+								nboardView,
+								nboardRec }
+				});
+				
+				$('#board-list-body').empty();
+				data.forEach(item => {
+		            // 각 게시물 항목을 구성하는 HTML 생성
+		            const $boardItem = $('<div class="board-list-item"></div>');
+					const $boardItem_div= $('<div></div>');
+		            // 게시물 번호
+		            const $numDiv = $('<div class="num"></div>').text(item.nboardCode);
+		            $boardItem_div.append($numDiv);
+
+		            // 제목
+		            const $titleDiv = $('<div class="title"></div>');
+		            const $titleLink = $('<a></a>').text(item.nboardTitle).attr('href', '/board/board_view_normal?nboardCode=' + item.nboardCode);
+		            $titleDiv.append($titleLink);
+		            $boardItem_div.append($titleDiv);
+
+		            // 작성자
+		            const $writerDiv = $('<div class="writer"></div>').text(item.memberId);
+		            $boardItem_div.append($writerDiv);
+
+		            // 등록일
+		            const $dateDiv = $('<div class="date"></div>').text(item.nboardRegistDate);
+		            $boardItem_div.append($dateDiv);
+
+		            // 조회수
+		            const $countDiv = $('<div class="count"></div>').text(item.nboardView);
+		            $boardItem_div.append($countDiv);
+
+		            
+		            $boardItem.append($boardItem_div);
+		            // board-list-body에 각 board-list-item을 추가
+		            $('#board-list-body').append($boardItem); 
+		        });
+		    });
+			request.fail(function(jqXHR, textStatus, error){
+				console.log(error);
+			});
+		}); */
+	</script>
+	</th:block>
+	
 </html>

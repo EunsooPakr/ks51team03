@@ -20,7 +20,7 @@
 		<result column="nb_rec" property="nboardRec"/>
 	</resultMap>
 
-	<select id="getNoticeBoardList" parameterType="String" resultMap="nBoardResultMap">
+	<select id="getNoticeBoardList" resultMap="nBoardResultMap">
 		/*게시글 목록 조회*/
 		SELECT
 			*
@@ -31,9 +31,29 @@
 			ON
 			nb.bctcode=bc.bctcode
 		WHERE
-			bc.bct_value=#{boardCateValue};
+    		bc.bct_value = #{boardCateValue}
+	    <if test="searchKey != null and searchValue != null">
+	        AND nb.${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+	    </if>
+		ORDER BY
+			CAST(SUBSTRING_INDEX(nb.nbcode, 'nb', -1) AS SIGNED)
+		LIMIT #{startRow}, #{rowPerPage};
 	</select>
 	
+	<select id="getNoticeBoardListCnt" parameterType="String" resultType="int">
+		SELECT
+    		COUNT(1)
+		FROM
+		    notice_board AS nb
+		    INNER JOIN
+		    board_category AS bc
+		    ON nb.bctcode = bc.bctcode
+		WHERE
+    		bc.bct_value = #{boardCateValue}
+	    <if test="searchKey != null and searchValue != null">
+	        AND nb.${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+	    </if>;
+	</select>
 	
 	<insert id="insertNBoard" parameterType="NoticeBoard">
 	/*게시글 작성*/
@@ -73,4 +93,63 @@
 		FROM 
 	    	notice_board;
 	</select>
+	
+	<select id="getNBoardByNBCode" parameterType="String" resultMap="nBoardResultMap">
+		/* 게시글 코드에 맞는 게시글 열람*/
+		SELECT
+			*
+		FROM
+			notice_board AS nb
+		WHERE 
+			nb.nbcode=#{nboardCode};
+	</select>
+	
+	<update id="increaseViewByNBCode" parameterType="String">
+		/* 게시글 코드에 맞는 조회수 증가*/
+		UPDATE
+			notice_board
+		SET
+			nb_view=nb_view+1
+		WHERE
+			nbcode=#{nboardCode};
+	</update>
+	
+	<update id="increaseRecByNBCode" parameterType="String">
+		/* 게시글 코드에 맞는 추천수 증가*/
+		UPDATE
+			notice_board
+		SET
+			nb_rec=nb_rec+1	
+		WHERE
+			nbcode=#{nboardCode};	
+	</update>
+	
+	<update id="updateNBoard" parameterType="NoticeBoard">
+		/* 게시글 수정*/
+		UPDATE
+			notice_board
+		SET
+			nb_title=#{nboardTitle},
+			nb_content=#{nboardContent}
+		 WHERE
+        	nbcode = #{nboardCode};
+	</update>
+	
+	<!-- <select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
+		/*게시글 검색*/
+		SELECT
+			*
+		FROM
+			notice_board AS nb
+			INNER JOIN
+			board_category AS bc
+			ON
+			nb.bctcode=bc.bctcode
+		WHERE
+			bc.bct_value=#{boardCateValue}
+			AND
+			nb.${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+		ORDER BY
+			CAST(SUBSTRING_INDEX(nb.nbcode, 'nb', -1) AS SIGNED);
+	</select> -->
 </mapper>
