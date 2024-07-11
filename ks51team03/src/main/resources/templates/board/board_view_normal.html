@@ -46,7 +46,7 @@
 						</div>
 					</div>
 					<div class="bt_wrap">
-						<a href="/board/board_list_normal" class="on">목록</a>
+						<a href="/board/board_list_normal?currentPage=1&boardCateValue=자유%20게시글" class="on">목록</a>
 						<a th:if="${session.SID == noticeBoard.memberId}" th:href="'/board/board_edit_normal?nboardCode=' + ${noticeBoard.nboardCode}">수정</a>
 						<a th:unless="${session.SID == noticeBoard.memberId}" href="#" id="nBoardRecBtn">추천</a>
 					</div>

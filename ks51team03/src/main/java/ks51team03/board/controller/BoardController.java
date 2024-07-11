@@ -1,5 +1,6 @@
 package ks51team03.board.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriUtils;
 
 import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
@@ -113,7 +115,9 @@ public class BoardController {
 	public String boardWriteNormalPage(NoticeBoard nboard, RedirectAttributes rttr) {
 		log.info("board_write_normal");
 		boardService.insertNBoard(nboard);
-		return "redirect:/board/board_list_normal";
+		// 직접 URL 인코딩을 수행하여 파라미터를 추가
+	    String encodedBoardCateValue = UriUtils.encodeQueryParam("자유 게시글", StandardCharsets.UTF_8);
+	    return "redirect:/board/board_list_normal?currentPage=1&boardCateValue=" + encodedBoardCateValue;
 	}
 
 	@GetMapping("/board_write_normal")
@@ -159,7 +163,9 @@ public class BoardController {
 		log.info("board_edit_normal");
 		boardService.updateNBoard(nboard);
 
-		return "redirect:/board/board_list_normal";
+		// 직접 URL 인코딩을 수행하여 파라미터를 추가
+	    String encodedBoardCateValue = UriUtils.encodeQueryParam("자유 게시글", StandardCharsets.UTF_8);
+	    return "redirect:/board/board_list_normal?currentPage=1&boardCateValue=" + encodedBoardCateValue;
 	}
 
 	/*
