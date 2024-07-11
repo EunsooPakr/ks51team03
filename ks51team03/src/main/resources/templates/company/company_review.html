@@ -78,6 +78,7 @@
                     <td th:text="${r.memberId}"></td>
                     <td th:text="${r.revContent}"></td>
                     <td th:text="${r.revAdminDate}"></td>
+                    <td><img src="/attachment/240711/e292027f753f4b23ae50019b661c6c33.png" alt=""></td>
                     <td>
                         <form th:action="@{/company/review_delete}" method="post">
                             <input type="hidden" name="revCode" th:value="${r.revCode}" />
