@@ -188,44 +188,40 @@
                                     뒤로 가기
                                 </button>
 
-                                <button type="button" onclick="location.href='/funeral/funeral_reserve_confirm';" class="btn btn-primary text-uppercase">
-                                    다음 단계
+                                <button type="button" onclick="requestPayment()" class="btn btn-primary text-uppercase">
+                                    결제하기
                                 </button>
                             </div>
                         </form>
                     </div>
 
-                    <div class="col-md-5 col-lg-4">
-                        <h3 class="mb-5">Booking Details</h3>
-                        <div class="card bg-smoke mb-6 mb-md-0">
+                    <div class="col-md-5 col-lg-4" th:if="${reserveServiceInfoDtoList != null}" th:each="l : ${reserveServiceInfoDtoList}">
+                        <h3 class="mb-5">장례 서비스 상세 확인</h3>
+                        <div class="card bg-smoke mb-6 mb-md-0" >
                             <img class="card-img-top lazyestload" th:data-src="@{/assets/img/booking/booking.jpg}" th:src="@{/assets/img/booking/booking.jpg}" alt="Card image cap">
                             <div class="card-body">
-                                <h6 class="card-title text-dark">Maldives Tour</h6>
+                                <h6 class="card-title text-dark" th:text="${l.funeralserviceTitle}"></h6>
 
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item bg-transparent border-top-0 px-0 py-4">
-                                        <span><i class="far fa-calendar-alt me-1" aria-hidden="true"></i>From:</span>
-                                        <span class="text-gray-color">25 Mar, 2019</span>
+                                    <li class="list-group-item bg-transparent border-top-0 px-0 py-2" >
+                                        <span><i class="far fa-calendar-alt me-1" aria-hidden="true"></i>예약일:</span>
+                                        <input type="text" class="form-control border-0 bg-smoke" th:value="${l.reserveStartDate}">
                                     </li>
 
-                                    <li class="list-group-item bg-transparent px-0 py-4 border-off-white">
-                                        <span><i class="far fa-calendar-alt me-1" aria-hidden="true"></i>To:</span>
-                                        <span class="text-gray-color">28 Mar, 2019</span>
-                                    </li>
-
-                                    <li class="list-group-item bg-transparent px-0 py-4 border-off-white">
-                                        <span><i class="fa fa-user me-1" aria-hidden="true"></i>Guests:</span>
-                                        <span class="text-gray-color">2 Adults, 1Child</span>
+                                    <li class="list-group-item bg-transparent px-0 py-2 border-off-white">
+                                        <span><i class="far fa-calendar-alt me-1" aria-hidden="true"></i>종료일:</span>
+                                        <input type="text" class="form-control border-0 bg-smoke" th:value="${l.reserveEndDate}">
                                     </li>
 
                                     <li class="list-group-item bg-transparent px-0 py-4 d-none"></li>
                                 </ul>
                             </div>
 
-                            <div class="card-footer mt-6">
+                            <div class="card-footer mt-2">
                                 <h2 class="mb-0">
-                                    <span>Total:</span>
-                                    <span class="text-primary font-weight-bold">$6,500</span>
+                                    <span>결제 금액:</span>
+                                    <input type="text" class="card-footer mt-1" th:value="${l.funeralservicePrice}">
+
                                 </h2>
                             </div>
                         </div>
@@ -241,12 +237,34 @@
 </th:block>
 <!-- 사용자정의 javascript file -->
 <th:block layout:fragment="customJsFile">
-
+    <script type="text/javascript" th:src="@{https://cdn.portone.io/v2/browser-sdk.js}"></script>
 </th:block>
 
-<!-- 사용자정의 javascript -->
 <th:block layout:fragment="customJs">
+    <script th:inline="javascript">
 
+        const data = {
+            //storeId: 설정
+            storeId: 'store-867d1a56-0dcf-4f7c-adbf-6b76defce016',
+            //채널 키 설정
+            channelKey: 'channel-key-eba90cc8-136a-4232-80b4-fefa415d54d0',
+            //paymentId
+            paymentId: 'wodlr1310_V1',
+            orderName: '송재익패키지',
+            totalAmount: 1000,
+            currency: 'CURRENCY_KRW',
+            payMethod: "EASY_PAY",
+            easyPay: {
+                easyPayProvider: "KAKAOPAY",
+            }
+        };
+
+        async function requestPayment() {
+            const response = await PortOne.requestPayment(data);
+            console.log(response);
+        }
+
+    </script>
 </th:block>
 
 </html>

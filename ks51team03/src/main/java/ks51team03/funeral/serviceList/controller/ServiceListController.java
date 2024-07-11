@@ -43,12 +43,12 @@ public class ServiceListController {
 
 		log.info("과연 어디서 막히는 지 보자111");
 		// 새로운 frcode 생성하기
-		String getLastFuneralServiceCode = reserveService.getLastFuneralServiceCode();
+		//String getLastFuneralServiceCode = reserveService.getLastFuneralServiceCode();
 
 		log.info("과연 어디서 막히는 지 보자222");
 
 
-		reserveDto.setReserveCode(getLastFuneralServiceCode);
+		//reserveDto.setReserveCode(getLastFuneralServiceCode);
 		reserveDto.setReserveId(memberId);
 		reserveDto.setReservePhone(reservePhone);
 

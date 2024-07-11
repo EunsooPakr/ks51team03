@@ -2,12 +2,15 @@ package ks51team03.funeral.reserve.service;
 
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveInfoDto;
+import ks51team03.funeral.reserve.dto.ReserveServiceInfoDto;
 import ks51team03.funeral.reserve.mapper.ReserveMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -31,8 +34,15 @@ public class ReserveService {
     }
 
     // 장례 예약자 인적사항 확인 맵핑
-    public void funeralReserveInfo(ReserveInfoDto reserveInfoDto) {
+    public List<ReserveInfoDto> funeralReserveInfo(ReserveInfoDto reserveInfoDto) {
         reserveMapper.funeralReserveInfo(reserveInfoDto);
+        return  reserveMapper.funeralReserveInfo(reserveInfoDto);
+    }
+
+    // 장례 예약 내역 확인
+    public List<ReserveServiceInfoDto> funeralReserveServiceInfo(ReserveServiceInfoDto reserveServiceInfoDto) {
+        reserveMapper.funeralReserveServiceInfo(reserveServiceInfoDto);
+        return  reserveMapper.funeralReserveServiceInfo(reserveServiceInfoDto);
     }
 
 
