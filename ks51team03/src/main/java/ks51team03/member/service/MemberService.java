@@ -3,11 +3,15 @@ package ks51team03.member.service;
 import java.util.List;
 import java.util.Map;
 
+import ks51team03.company.dto.ComQuestion;
 import ks51team03.member.dto.Member;
 import ks51team03.member.dto.MemberLevel;
 import ks51team03.member.dto.Search;
 
 public interface MemberService {
+
+	// 회원 문의 리스트 조회
+	List<ComQuestion> getQuestionById(String memberId);
 
 	// 로그인 이력 조회
 	Map<String, Object> getLoginHistory(int currentPage);

@@ -30,6 +30,25 @@
 		<id 	column="level" 			property="level" />
 		<result column="level_name" 	property="levelName" />
 	</resultMap>
+
+	<resultMap id="QuestionResultMap" type="ComQuestion">
+		<id column="quesnum" property="quesNum" />
+		<result column="ccode" property="cCode" />
+		<result column="qctenum" property="qcteNum" />
+		<result column="id" property="memberId" />
+		<result column="ques_content" property="quesContent" />
+		<result column="ques_date" property="quesDate" />
+	</resultMap>
+
+	<select id="getQuestionById" parameterType="String" resultMap="QuestionResultMap">
+		-- 특정 문의 회원 아이디로 검색
+		SELECT
+		quesnum, ccode, qctenum, id, ques_content, ques_date
+		FROM
+		questions
+		WHERE
+		id = #{memberId}
+	</select>
 	
 	<sql id="memberSearch">
 		SELECT 

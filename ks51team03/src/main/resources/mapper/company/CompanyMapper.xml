@@ -182,7 +182,6 @@
 		quesnum = #{quesnum}
 	</select>
 
-
 	<select id="getCompanyQuestionAnswer" resultMap="QuestionAnswerResultMap">
 		-- 업체 문의 답변 검색
 		SELECT

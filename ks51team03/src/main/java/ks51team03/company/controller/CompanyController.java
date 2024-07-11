@@ -39,7 +39,7 @@ public class CompanyController {
 	public String companyInfo(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
 
 		String memberId = (String) session.getAttribute("SID");
-		String ccode = (String) session.getAttribute("CCODE");
+		String cCode = (String) session.getAttribute("CCODE");
 		// 세션 아이디로 직원 테이블에서 업체 코드 찾기
 		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
 		log.info("companyCode : {}", companyCode);
@@ -56,7 +56,7 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/map/map_main"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 
 		// 직원일 경우
@@ -81,8 +81,8 @@ public class CompanyController {
 			// 세션 아이디로 업체 정보 불러오기
 			List<Company> companyInfoById = companyService.getCompanyInfoById(memberId);
 			// 현재 요일 가져오기
-			List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(ccode);
-			int companyReviewCount = companyService.getCompanyReviewCount(ccode);
+			List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(cCode);
+			int companyReviewCount = companyService.getCompanyReviewCount(cCode);
 
 			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
 			String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
@@ -136,7 +136,7 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/map/map_main"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 		List<Company> companyListById = companyService.getCompanyInfoById(memberId);
 		model.addAttribute("companyListById", companyListById);
@@ -145,8 +145,8 @@ public class CompanyController {
 
 	@PostMapping("/company/modify_Company")
 	public String modifyCompany(Company company, HttpSession session) {
-		String ccode = (String) session.getAttribute("CCODE");
-		company.setCompanyCode(ccode);
+		String cCode = (String) session.getAttribute("CCODE");
+		company.setCompanyCode(cCode);
 
 		log.info("업체수정 company:{}", company);
 		companyService.modifyCompany(company);
@@ -169,14 +169,14 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/map/map_main"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 
 		// 직원 등록 요청 목록을 가져와서 모델에 추가
 
-		String ccode = (String) session.getAttribute("CCODE");
-		List<ComStaff> staffRequests = companyService.getStaffSingList(ccode);
-		List<ComStaff> staffList = companyService.getStaffList(ccode);
+		String cCode = (String) session.getAttribute("CCODE");
+		List<ComStaff> staffRequests = companyService.getStaffSingList(cCode);
+		List<ComStaff> staffList = companyService.getStaffList(cCode);
 
 		model.addAttribute("staffRequests", staffRequests);
 		model.addAttribute("staffList", staffList);
@@ -199,7 +199,7 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/map/map_main"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 		// 직원 해고 로직
 		companyService.deleteStaff(requestId);
@@ -221,7 +221,7 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/map/map_main"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 		// 직원 등록 요청 수락 로직
 		companyService.acceptStaff(requestId,memberId);
@@ -243,7 +243,7 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/map/map_main"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 		// 직원 등록 요청 거절 로직
 		companyService.deleteStaff(requestId);
@@ -302,7 +302,7 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/map/map_main"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 		// 세션 아이디로 직원 테이블에서 업체 코드 찾기
 		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
@@ -402,7 +402,7 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/map/map_main"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 		ComQuestion question = companyService.getCompanyQuestionById(quesnum);
 		model.addAttribute("question", question);
@@ -433,7 +433,7 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/map/map_main"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 		ComQuestion question = companyService.getCompanyQuestionById(quesnum);
 		ComQuestionAnswer answer = companyService.getAnswerByQuesNum(quesnum);
@@ -479,7 +479,7 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/map/map_main"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 		// 세션 아이디로 직원 테이블에서 업체 코드 찾기
 		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
