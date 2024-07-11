@@ -84,7 +84,6 @@
 
 	<resultMap id="QuestionResultMap" type="ComQuestion">
 		<id column="quesnum" property="quesNum" />
-		<result column="ques_kind" property="quesKind" />
 		<result column="ccode" property="cCode" />
 		<result column="qctenum" property="qcteNum" />
 		<result column="id" property="memberId" />
@@ -92,15 +91,128 @@
 		<result column="ques_date" property="quesDate" />
 	</resultMap>
 
+	<resultMap id="QuestionAnswerResultMap" type="ComQuestionAnswer">
+		<id column="qacode" property="qaCode" />
+		<result column="id" property="memberId" />
+		<result column="quesnum" property="quesNum" />
+		<result column="qa_content" property="qaContent" />
+		<result column="qa_reg" property="qaReg" />
+		<result column="qa_update" property="qaUpdate" />
+	</resultMap>
+
+	<select id="getMaxQuesNum" resultType="String">
+		SELECT MAX(CAST(SUBSTRING_INDEX(quesnum, 'qa', -1) AS UNSIGNED)) FROM questions
+	</select>
+
+	<insert id="insertQuestion" parameterType="ks51team03.company.dto.ComQuestion">
+		<selectKey keyProperty="quesNum" resultType="String" order="BEFORE">
+			SELECT
+			CASE
+			WHEN COUNT(*) = 0 THEN 'qa1'
+			ELSE CONCAT('qa', (MAX(CAST(SUBSTRING_INDEX(quesnum, 'qa', -1) AS UNSIGNED)) + 1))
+			END
+			FROM questions
+		</selectKey>
+		-- 문의 등록
+		INSERT INTO questions
+		(quesnum, ccode, qctenum, id, ques_content, ques_date)
+		VALUES
+		(#{quesNum}, #{cCode}, #{qcteNum}, #{memberId}, #{quesContent}, #{quesDate})
+	</insert>
+
+
+	<select id="getAnswerByQuesNum" parameterType="String" resultMap="QuestionAnswerResultMap">
+		-- 문의 답변 조회
+		SELECT
+			qa.qacode, qa.id, qa.quesnum, qa.qa_content, qa.qa_reg, qa.qa_update
+		FROM
+			questions_answer as qa
+		WHERE
+			quesnum = #{quesnum}
+	</select>
+
+	<update id="updateAnswer" parameterType="ComQuestionAnswer">
+		-- 문의 답변 수정
+		UPDATE
+			questions_answer
+		SET
+			qa_content = #{qaContent},
+			qa_update = CURDATE()
+		WHERE
+			qacode = #{qaCode}
+	</update>
+
+	<select id="getCompanyQuestionById" parameterType="String" resultMap="QuestionResultMap">
+		-- 특정 문의 검색
+		SELECT
+		quesnum, ccode, qctenum, id, ques_content, ques_date
+		FROM
+		questions
+		WHERE
+		quesnum = #{quesnum}
+	</select>
+
+
+	<select id="getCompanyQuestionAnswer" resultMap="QuestionAnswerResultMap">
+		-- 업체 문의 답변 검색
+		SELECT
+			qa.qacode, qa.id, qa.quesnum, qa.qa_content, qa.qa_reg, qa.qa_update
+		FROM
+			questions_answer AS qa
+		INNER JOIN
+			questions AS q
+		ON
+			qa.quesnum = q.quesnum
+		WHERE
+			q.ccode =  #{cCode}
+	</select>
+
 	<select id="getCompanyQuestion" resultMap="QuestionResultMap">
 		-- 업체 문의 검색
 		SELECT
-			quesnum, ques_kind, ccode, qctenum, id, ques_content, ques_date
+			quesnum, ccode, qctenum, id, ques_content, ques_date
 		FROM
 			questions
 		WHERE
 			ccode = #{cCode}
 	</select>
+
+	<delete id="deleteAnswersByQuesNum" parameterType="ComQuestion" >
+		-- 업체 문의 삭제전 답변부터 삭제
+		DELETE FROM
+			questions_answer
+		WHERE
+			quesnum = #{quesNum}
+	</delete>
+
+	<delete id="deleteQuestion" parameterType="ComQuestion" >
+		-- 업체 문의 삭제
+		DELETE
+		FROM
+		questions
+		WHERE
+		quesnum = #{quesNum}
+	</delete>
+
+	<insert id="insertAnswer" parameterType="ks51team03.company.dto.ComQuestionAnswer">
+		<selectKey keyProperty="qaCode" resultType="String" order="BEFORE">
+			SELECT
+			CASE
+			WHEN COUNT(qacode) = 0 THEN 'qa1'
+			ELSE
+			CONCAT(
+			'qa',
+			(MAX(CAST(SUBSTRING_INDEX(qacode, 'qa', -1) AS UNSIGNED)) + 1)
+			)
+			END AS qaCode
+			FROM
+			questions_answer;
+		</selectKey>
+		INSERT INTO questions_answer
+		(qacode, id, quesnum, qa_content, qa_reg, qa_update)
+		VALUES
+		(#{qaCode}, #{memberId}, #{quesNum}, #{qaContent}, CURDATE(), NULL)
+	</insert>
 
 	<select id="getCompanyReviewCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
 		-- 업체 리뷰수 검색
@@ -154,8 +266,36 @@
 			company
 	</select>
 
-	<select id="getCompanyListById" resultMap="CompanyResultMap">
-		-- 업체 검색
+	<select id="getCompanyCodeByMemberId" parameterType="String" resultType="String">
+		-- 아이디로 직원 여부 및 업체 코드 반환
+		SELECT ccode FROM staff WHERE id = #{memberId}
+	</select>
+
+	<select id="getCompanyInfoByCcode" resultMap="CompanyResultMap">
+		-- ccode로 업체 정보 검색
+		SELECT
+			ccode,
+			com_class,
+			com_name,
+			com_ceo,
+			com_addr,
+			com_addr_detail,
+			com_phone,
+			com_stfcount,
+			com_email,
+			com_parking,
+			com_page,
+			com_reg_date,
+			id,
+			com_post_num
+		FROM
+			company
+		WHERE
+			ccode = #{companyCode}
+	</select>
+
+	<select id="getCompanyInfoById" resultMap="CompanyResultMap">
+		-- 업체 회원 아이디로 검색
 		SELECT
 			ccode,
 			com_class,
@@ -196,6 +336,15 @@
 		WHERE
 		id = #{requestId}
 	</update>
+
+	<delete id="deleteStaff" parameterType="String" >
+		/* 업체 직원 해고 */
+		DELETE
+		FROM
+			staff
+		WHERE
+			id = #{requestId}
+	</delete>
 
 	<update id="modifyCompany" parameterType="Company" >
 		/* 업체 수정 */
@@ -245,6 +394,40 @@
 			s.id = m.id
 		WHERE
 			s.stf_check = 0 AND s.ccode = #{cCode}
+	</select>
+
+	<select id="getLastStfCode" resultType="String">
+		-- 직원 신청 기본키 숫자 찾기
+		SELECT MAX(stfcode) FROM staff
+	</select>
+
+	<insert id="insertStaff" parameterType="ComStaff">
+		INSERT INTO staff
+			(stfcode, id, ccode, `level`, stf_phone, stf_check, stf_appro_id, stf_date)
+		VALUES
+			(#{stfCode}, #{memberId}, #{cCode}, #{level}, #{stfPhone}, #{stfCheck}, #{stfApproId}, #{stfDate})
+	</insert>
+
+	<select id="getStaffList" resultMap="ComStaffResultMap">
+		-- 직원 리스트
+		SELECT
+		s.id, s.stf_phone, m.name, s.ccode
+		FROM
+		staff AS s
+		INNER JOIN
+		member AS m
+		ON
+		s.id = m.id
+		WHERE
+		s.stf_check = 1 AND s.ccode = #{cCode}
+	</select>
+	<select id="addStaff" resultMap="ComStaffResultMap">
+		-- 직원 신청 로직
+		INSERT INTO staff
+		(stfcode, id, ccode, `level`, stf_phone, stf_check, stf_appro_id, stf_date)
+		VALUES
+		('stf3', 'id7', 'ccode3', 'level3', '010-0000-0007', 0, '', null)
+
 	</select>
 
 

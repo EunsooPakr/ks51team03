@@ -58,20 +58,27 @@
                     <th>문의 내용</th>
                     <th>문의 등록일</th>
                     <th>답변</th>
+                    <th>삭제</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="q : ${comQuestionList}">
-                    <td th:text="${q.getQcteNum}"></td>
-                    <td th:text="${q.getMemberId}"></td>
-                    <td th:text="${q.getQuesContent}"></td>
-                    <td th:text="${q.getQuesDate}"></td>
+                    <td th:text="${q.qcteNum}"></td>
+                    <td th:text="${q.memberId}"></td>
+                    <td th:text="${q.quesContent}"></td>
+                    <td th:text="${q.quesDate}"></td>
                     <td>
-                        <form th:action="@{/company/inquiry/reply}" method="post">
-                            <input type="hidden" name="quesnum" th:value="${q.getMemberId}" />
-                            <a th:href="@{/company/company_question_answer}">답변하기</a>
-                            <a th:href="@{/company/company_question_answer}">/수정하기</a>
-                            <a th:href="@{/company/company_question_answer}">/삭제하기</a>
+                        <span th:if="${questionAnswerMap[q.quesNum]}">
+                            <a th:href="@{/company/company_question_answer_modify(quesnum=${q.quesNum})}">답변수정하기</a>
+                        </span>
+                        <span th:unless="${questionAnswerMap[q.quesNum]}">
+                            <a th:href="@{/company/company_question_answer(quesnum=${q.quesNum})}">답변하기</a>
+                        </span>
+                    </td>
+                    <td>
+                        <form th:action="@{/company/company_question_delete}" method="post">
+                            <input type="hidden" name="quesNum" th:value="${q.quesNum}" />
+                            <button type="submit">삭제하기</button>
                         </form>
                     </td>
                 </tr>

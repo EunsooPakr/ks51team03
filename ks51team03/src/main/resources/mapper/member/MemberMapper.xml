@@ -156,6 +156,7 @@
 			sms_check,
 			email_check,
 			regist_date
+
 		FROM
 			member
 		WHERE 

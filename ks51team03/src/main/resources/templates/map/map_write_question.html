@@ -17,7 +17,6 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             height: 500px;
-
         }
 
         .form-container h2 {
@@ -69,12 +68,6 @@
             padding: 3px;
         }
 
-        .checkbox-container {
-            margin: 10px;
-            display: block;
-            align-items: center;
-        }
-
         .checkbox-container label {
             margin-bottom: 0; /* 라벨의 기본 하단 여백 제거 */
             margin-left: 10px; /* 체크박스와 라벨 사이의 간격 */
@@ -91,24 +84,17 @@
     <section class="bg-smoke py-12">
         <div class="form-container">
             <h2>문의 작성</h2>
-            <form>
+            <form th:action="@{/company/submit_question}" method="post">
+                <input type="hidden" name="cCode" th:value="${param.ccode}">
                 <div class="form-group">
-                    <label for="inquiry-type">문의 종류</label>
-                    <select id="inquiry-type" name="inquiry-type" required>
+                    <label for="qcteNum">문의 종류</label>
+                    <select id="qcteNum" name="qcteNum" required>
                         <!-- JavaScript로 옵션이 동적으로 추가됩니다 -->
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="inquiry-content">문의 내용</label>
-                    <textarea id="inquiry-content" name="inquiry-content" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="file-upload">파일 업로드</label>
-                    <input type="file" id="file-upload" name="file-upload" accept="image/*">
-                </div>
-                <div class="form-group checkbox-container">
-                    <label for="is-public">공개하기</label>
-                    <input type="checkbox" id="is-public" name="is-public">
+                    <label for="quesContent">문의 내용</label>
+                    <textarea id="quesContent" name="quesContent" required></textarea>
                 </div>
                 <div class="form-group">
                     <button type="submit">문의작성</button>
@@ -118,7 +104,7 @@
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const inquiryTypeSelect = document.getElementById('inquiry-type');
+            const inquiryTypeSelect = document.getElementById('qcteNum');
             const databaseValue = '병원'; // 이 값은 데이터베이스에서 받아온 값으로 대체됩니다
 
             const options = {

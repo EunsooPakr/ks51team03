@@ -40,6 +40,9 @@
             max-width: 600px;
             margin: 0 auto;
         }
+        #table2{
+            margin-top: 100px;
+        }
     </style>
 </head>
 
@@ -47,7 +50,6 @@
     <section class="bg-smoke py-12">
         <div class="settingContainer">
             <h2>직원 등록 요청 관리</h2>
-            <h2>업체 대표 세션으로 업데이트문 수정해야함</h2>
             <table>
                 <thead>
                 <tr>
@@ -75,6 +77,34 @@
                         </div>
                     </td>
                 </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="settingContainer" id="table2">
+            <h2>현제 업체 직원 목록</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>회원 아이디</th>
+                        <th>회원 전화번호</th>
+                        <th>회원 이름</th>
+                        <th>액션</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="sl : ${staffList}">
+                        <td th:text="${sl.memberId}"></td>
+                        <td th:text="${sl.stfPhone}"></td>
+                        <td th:text="${sl.memberName}"></td>
+                        <td>
+                            <div class="action-buttons">
+                                <form th:action="@{/company/staff/delete}" method="post">
+                                    <input type="hidden" name="requestId" th:value="${sl.memberId}" />
+                                    <button type="submit" class="accept-btn">해고</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
