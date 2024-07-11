@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
 import ks51team03.board.service.BoardService;
-import ks51team03.member.dto.Search;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,95 +27,87 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardController {
 	private final BoardService boardService;
 
-	/*
-	 * 자유 게시글 목록
-	 * 
-	 * @GetMapping("/board_list_normal") public String boardListNormalPage(
-	 * 
-	 * @RequestParam(value = "currentPage", required = false, defaultValue = "1")
-	 * int currentPage, Model model) { // 게시글 불러오기 String boardCateValue = "자유 게시글";
-	 * log.info("board_list_normal"); Map<String, Object> resultMap =
-	 * boardService.getNoticeBoardList(boardCateValue, currentPage);
-	 * 
-	 * // 페이징
-	 * 
-	 * @SuppressWarnings("unchecked") List<Map<String, Object>> NoticeBoardList =
-	 * (List<Map<String, Object>>) resultMap.get("NoticeBoardList"); int lastPage =
-	 * (int) resultMap.get("lastPage"); int startPageNum = (int)
-	 * resultMap.get("startPageNum"); int endPageNum = (int)
-	 * resultMap.get("endPageNum");
-	 * 
-	 * log.info("currentPage: {}", currentPage); log.info("startPageNum: {}",
-	 * startPageNum); log.info("endPageNum: {}", endPageNum);
-	 * log.info("lastPage: {}", lastPage);
-	 * 
-	 * model.addAttribute("NoticeBoardList", NoticeBoardList);
-	 * model.addAttribute("currentPage", currentPage);
-	 * model.addAttribute("lastPage", lastPage); model.addAttribute("startPageNum",
-	 * startPageNum); model.addAttribute("endPageNum", endPageNum);
-	 * 
-	 * // 검색 키워드 List<NBoardSearch> searchCate = new ArrayList<NBoardSearch>();
-	 * NBoardSearch search1 = new NBoardSearch(); search1.setSearchKey("memberId");
-	 * search1.setSearchText("회원아이디"); NBoardSearch search2 = new NBoardSearch();
-	 * search2.setSearchKey("nboardTitle"); search2.setSearchText("제목");
-	 * NBoardSearch search3 = new NBoardSearch();
-	 * search3.setSearchKey("nboardContent"); search3.setSearchText("내용");
-	 * searchCate.add(search1); searchCate.add(search2); searchCate.add(search3);
-	 * model.addAttribute("searchCate", searchCate);
-	 * 
-	 * return "/board/board_list_normal"; }
-	 */
-
-	//기본값 수정필요 실행하고 콘솔창 sql확인하면 뭔말알인지 암
-	/* 자유 게시글 목록 */
 	@GetMapping("/board_list_normal")
-	public String boardListNormalPage(
-			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
-			@RequestParam(value = "searchType", required = false, defaultValue = "1") String searchKey,
-			@RequestParam(value = "searchKeyword", required = false, defaultValue = "1") String searchValue,
-			Model model) {
-		// 게시글 불러오기
-		String boardCateValue = "자유 게시글";
-		log.info("board_list_normal");
-		Map<String, Object> resultMap = boardService.getNoticeBoardList(boardCateValue, currentPage,searchKey,searchValue);
+    public String getNoticeBoardList(Model model,
+                                     @RequestParam(name = "currentPage", defaultValue = "1") int currentPage,
+                                     @RequestParam(name = "searchType", required = false, defaultValue = "nb_title") String searchType,
+                                     @RequestParam(name = "searchKeyword", required = false, defaultValue = "") String searchKeyword,
+                                     @RequestParam(name = "boardCateValue") String boardCateValue) {
 
-		// 페이징
-		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> NoticeBoardList = (List<Map<String, Object>>) resultMap.get("NoticeBoardList");
-		int lastPage = (int) resultMap.get("lastPage");
-		int startPageNum = (int) resultMap.get("startPageNum");
-		int endPageNum = (int) resultMap.get("endPageNum");
+		String boardTitle = "자유 게시글"; // 기본값 설정
 
-		log.info("currentPage: {}", currentPage);
-		log.info("startPageNum: {}", startPageNum);
-		log.info("endPageNum: {}", endPageNum);
-		log.info("lastPage: {}", lastPage);
+        // 서비스 메서드 호출
+        Map<String, Object> resultMap = boardService.getNoticeBoardList(boardCateValue, currentPage, searchType, searchKeyword);
 
-		model.addAttribute("NoticeBoardList", NoticeBoardList);
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("startPageNum", startPageNum);
-		model.addAttribute("endPageNum", endPageNum);
+        // 결과를 모델에 담아서 뷰로 전달
+        model.addAttribute("NoticeBoardList", resultMap.get("NoticeBoardList"));
+        model.addAttribute("startPageNum", resultMap.get("startPageNum"));
+        model.addAttribute("endPageNum", resultMap.get("endPageNum"));
+        model.addAttribute("lastPage", resultMap.get("lastPage"));
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
+        
+        // 검색 키워드 설정
+        List<NBoardSearch> searchCate = new ArrayList<>();
+        NBoardSearch search1 = new NBoardSearch();
+        search1.setSearchKey("memberId");
+        search1.setSearchText("회원아이디");
+        NBoardSearch search2 = new NBoardSearch();
+        search2.setSearchKey("nboardTitle");
+        search2.setSearchText("제목");
+        NBoardSearch search3 = new NBoardSearch();
+        search3.setSearchKey("nboardContent");
+        search3.setSearchText("내용");
+        searchCate.add(search1);
+        searchCate.add(search2);
+        searchCate.add(search3);
+        model.addAttribute("searchCate", searchCate);
 
-		// 검색 키워드
-		List<NBoardSearch> searchCate = new ArrayList<NBoardSearch>();
-		NBoardSearch search1 = new NBoardSearch();
-		search1.setSearchKey("memberId");
-		search1.setSearchText("회원아이디");
-		NBoardSearch search2 = new NBoardSearch();
-		search2.setSearchKey("nboardTitle");
-		search2.setSearchText("제목");
-		NBoardSearch search3 = new NBoardSearch();
-		search3.setSearchKey("nboardContent");
-		search3.setSearchText("내용");
-		searchCate.add(search1);
-		searchCate.add(search2);
-		searchCate.add(search3);
-		model.addAttribute("searchCate", searchCate);
+        return "board/board_list_normal"; // 뷰 이름 리턴
+    }
 
-		return "/board/board_list_normal";
-	}
-	
+    @GetMapping("/board_list_normal_search")
+    public String searchNoticeBoardList(Model model,
+                                        @RequestParam(name = "currentPage", required = false, defaultValue = "1") int currentPage,
+                                        @RequestParam(name = "searchType", required = false) String searchType,
+                                        @RequestParam(name = "searchKeyword", required = false) String searchKeyword,
+    									@RequestParam(name = "boardCateValue") String boardCateValue){
+
+
+    	String boardTitle = "자유 게시글"; // 기본값 설정
+    	
+        // 서비스 메서드 호출
+        Map<String, Object> resultMap = boardService.getNoticeBoardList(boardCateValue, currentPage, searchType, searchKeyword);
+
+        // 결과를 모델에 담아서 뷰로 전달
+        model.addAttribute("NoticeBoardList", resultMap.get("NoticeBoardList"));
+        model.addAttribute("startPageNum", resultMap.get("startPageNum"));
+        model.addAttribute("endPageNum", resultMap.get("endPageNum"));
+        model.addAttribute("lastPage", resultMap.get("lastPage"));
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
+        
+        // 검색 키워드 설정
+        List<NBoardSearch> searchCate = new ArrayList<>();
+        NBoardSearch search1 = new NBoardSearch();
+        search1.setSearchKey("memberId");
+        search1.setSearchText("회원아이디");
+        NBoardSearch search2 = new NBoardSearch();
+        search2.setSearchKey("nboardTitle");
+        search2.setSearchText("제목");
+        NBoardSearch search3 = new NBoardSearch();
+        search3.setSearchKey("nboardContent");
+        search3.setSearchText("내용");
+        searchCate.add(search1);
+        searchCate.add(search2);
+        searchCate.add(search3);
+        model.addAttribute("searchCate", searchCate);
+        
+        
+        return "board/board_list_normal"; // 뷰 이름 리턴
+    }
+
+    
 	/* 자유게시글 작성 */
 	@PostMapping("/board_write_normal")
 	public String boardWriteNormalPage(NoticeBoard nboard, RedirectAttributes rttr) {
