@@ -48,6 +48,11 @@
 
 <th:block layout:fragment="customContent">
     <section class="bg-smoke py-12">
+        <div th:if="${errorMessage != null}">
+            <script>
+                alert("[[${errorMessage}]]");
+            </script>
+        </div>
         <div class="settingContainer">
             <h2>직원 등록 요청 관리</h2>
             <table>

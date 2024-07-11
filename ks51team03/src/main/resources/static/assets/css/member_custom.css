@@ -10,7 +10,7 @@
 	list-style: none;
 }
  */
- 
+
  
 /*//////////////////////////////////////////////////////////////////
 [ member_login_terms ]*/
@@ -885,59 +885,28 @@ a{
 [ member_mypage_main ]*/
 
 .mypage-box {
-	width: 2100px; /* 컨테이너 전체 너비 */
-    unicode-bidi: isolate;
-	display: flex; /* Flexbox 레이아웃 설정 */
-    /* justify-content: space-between; 요소들을 양 끝으로 정렬 */
+    display: flex; /* Flexbox 레이아웃 설정 */
+    justify-content: space-between; /* 요소들을 양 끝으로 정렬 */
     align-items: flex-start; /* 요소들을 상단으로 정렬 */
 }
 
-.mypage-contents-box{
-	display: inline-block; /* 인라인 블록 요소로 설정 */
-	box-sizing: border-box;
-	border-radius: 10px !important; /* 둥근 모서리 설정 */
+.mypage-contents-box, .left-sidebar-list {
+    display: inline-block; /* 인라인 블록 요소로 설정 */
+    box-sizing: border-box;
+    border-radius: 10px !important; /* 둥근 모서리 설정 */
     border: 1px solid #ccc; /* 테두리 설정 */
-	width:800px;
-	height:600px;
-	border-width:5px;
-	border-radius:var(--vs-border-radius);
-	padding-top:1.88rem;
-	padding:1rem;
-	margin-bottom:1.88rem;
-	margin-left:10px;
-	
-	--bs-border-opacity: 1;
- 	border-color: rgba(var(--bs-primary-rgb), var(--bs-border-opacity)) !important;
-	border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-	border-left: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-	border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-	
-	--bs-bg-opacity:1;
-	background-color:white;
-	
+    padding: 1rem;
+    margin-bottom: 1.88rem;
+    background-color: white; /* 배경색 설정 */
 }
 
-.left-sidebar-list{
-	display: inline-block; /* 인라인 블록 요소로 설정 */
-	box-sizing: border-box;
-	border-radius: 10px !important; /* 둥근 모서리 설정 */
-    border: 1px solid #ccc; /* 테두리 설정 */
-	width:250px;
-	border-width:5px;
-	border-radius:var(--vs-border-radius);
-	padding-top:1.88rem;
-	padding:1rem;
-	margin-bottom:1.88rem;
-	margin-left:400px;
-	
-	--bs-border-opacity: 1;
- 	border-color: rgba(var(--bs-primary-rgb), var(--bs-border-opacity)) !important;
-	border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-	border-left: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-	border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-	
-	--bs-bg-opacity:1;
-	background-color:white;
+.mypage-contents-box {
+    flex: 1;
+    margin-left: 10px; /* 왼쪽 여백 설정 */
+}
+
+.left-sidebar-list {
+    width: 250px;
 }
 
 

@@ -29,6 +29,41 @@
             position: relative;
         }
 
+        .edit-button, .delete-button, .role-edit-button {
+            position: absolute;
+            top: 10px;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .edit-button {
+            background-color: #007BFF;
+        }
+
+        .delete-button {
+            background-color: #007BFF;
+            right: 10px;
+        }
+
+        .role-edit-button {
+            background-color: #28a745;
+            top: 50px;
+            margin: 10px 0px 10px 0px;
+        }
+
+        .edit-button:hover, .delete-button:hover, .role-edit-button:hover {
+            background-color: #0056b3;
+        }
+
+        .role-edit-button:hover {
+            background-color: #218838;
+        }
+
         .content-section {
             padding: 20px;
         }
@@ -58,7 +93,6 @@
         }
 
         .details ul li {
-            display: flex;
             align-items: center;
             margin-bottom: 10px;
         }
@@ -107,34 +141,93 @@
             font-size: 24px;
             margin-bottom: 5px;
         }
+
+        /* Accordion CSS */
+        .accordion-button {
+            background: none;
+            border: none;
+            color: blue;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+            margin-left: 5px;
+            font-size: 14px;
+        }
+
+        .accordion-content {
+            display: none;
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .accordion-content li {
+            margin-bottom: 5px;
+        }
+
     </style>
 </head>
 
 <th:block layout:fragment="customContent">
     <section class="bg-smoke py-12">
-    <div class="infocontainer">
-        <div class="image-section" th:style="|background-image: url('${imageUrl}');|"></div>
-        <div class="content-section">
-
-            <h1 th:text="${businessName}">늘채움</h1>
-            <p>
-                <span th:text="${category}">한식</span> ·
-                후기 <span th:text="${reviewCount}">3.3</span> ·
-                리뷰 <span th:text="${reviewTotal}">318</span>
-            </p>
-            <div class="details">
-                <h2>상세정보</h2>
-                <ul>
-                    <li><i class="fas fa-map-marker-alt"></i><strong>주소:</strong> <span th:text="${address}"></span></li>
-                    <li><i class="fas fa-road"></i><strong>지번:</strong> <span th:text="${jibun}">덕진동2가 200-5</span></li>
-                    <li><i class="fas fa-clock"></i><strong>영업중:</strong> <span th:text="${openingHours}">화-토 11:30 ~ 21:00</span></li>
-                    <li><i class="fas fa-link"></i><strong>웹사이트:</strong> <a th:href="${website}" th:text="${website}">app.catchtable.co.kr/ct/shop/always_filling_up</a></li>
-                    <li><i class="fas fa-phone-alt"></i><strong>전화:</strong> <span th:text="${phone}">010-6409-0658</span></li>
-                </ul>
+        <div th:if="${errorMessage != null}">
+            <script>
+                alert("[[${errorMessage}]]");
+            </script>
+        </div>
+        <div class="infocontainer" th:each="c : ${companyInfoById}">
+            <div class="image-section" th:style="|background-image: url('${imageUrl}');|"></div>
+            <div class="content-section">
+                <h1 th:text="${c.companyName}"></h1>
+                <p>
+                    <span th:text="${c.companyClass}"></span> ·
+                    후기수: <span th:text="${companyReviewCount}"></span> ·
+                    직원수: <span th:text="${c.companyStfCount}"></span>
+                </p>
+                <div class="details">
+                    <h2>상세정보</h2>
+                    <ul>
+                        <li><i class="fas fa-road"></i><strong>주소:</strong> <span th:text="${c.companyAddr}"></span> <span th:text="${c.companyAddrDetail}"></span></li>
+                        <li th:each="o : ${companyOperTime}">
+                            <i class="fas fa-clock"></i><strong>영업중: 금일</strong>
+                            <span th:text="${openingHours}"></span>
+                            <button type="button" class="accordion-button">더보기</button>
+                            <ul class="accordion-content">
+                                <li><strong>월요일:</strong> <span th:text="${o.otMon}"></span></li>
+                                <li><strong>화요일:</strong> <span th:text="${o.otTue}"></span></li>
+                                <li><strong>수요일:</strong> <span th:text="${o.otWed}"></span></li>
+                                <li><strong>목요일:</strong> <span th:text="${o.otThu}"></span></li>
+                                <li><strong>금요일:</strong> <span th:text="${o.otFri}"></span></li>
+                                <li><strong>토요일:</strong> <span th:text="${o.otSat}"></span></li>
+                                <li><strong>일요일:</strong> <span th:text="${o.otSun}"></span></li>
+                                <li><strong>공휴일:</strong> <span th:text="${o.otHoliday}"></span></li>
+                                <li><strong>정기 휴일:</strong> <span th:text="${o.otRegularHoliday}"></span></li>
+                                <li><strong>브레이크 타임:</strong> <span th:text="${o.otBreakTime}"></span></li>
+                            </ul>
+                        </li>
+                        <li><i class="fas fa-link"></i><strong>웹사이트:</strong> <a th:href="${c.companyPage}" th:text="${c.companyPage}"></a></li>
+                        <li><i class="fas fa-phone-alt"></i><strong>전화:</strong> <span th:text="${c.companyPhone}"></span></li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+
+            accordionButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    if (content.style.display === "none" || content.style.display === "") {
+                        content.style.display = "block";
+                    } else {
+                        content.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
 </th:block>
 
 </html>

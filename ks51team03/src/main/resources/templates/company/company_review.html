@@ -31,6 +31,13 @@
             padding: 5px 10px;
             cursor: pointer;
         }
+        .delete-btn {
+            background-color: #7c1212;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
         .settingContainer {
             max-width: 800px;
             margin: 0 auto;
@@ -48,6 +55,11 @@
 
 <th:block layout:fragment="customContent">
     <section class="bg-smoke py-13">
+        <div th:if="${errorMessage != null}">
+            <script>
+                alert("[[${errorMessage}]]");
+            </script>
+        </div>
         <div class="settingContainer">
             <h2>후기 리스트</h2>
             <table>
@@ -57,31 +69,19 @@
                     <th>작성자 아이디</th>
                     <th>내용</th>
                     <th>작성일</th>
-                    <th>답변</th>
+                    <th>삭제</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="review : ${reviewList}">
-                    <td th:text="${review.rating}"></td>
-                    <td th:text="${review.userId}"></td>
-                    <td th:text="${review.content}"></td>
-                    <td th:text="${review.regDate}"></td>
+                <tr th:each="r : ${comReviews}">
+                    <td th:text="${r.revScope}"></td>
+                    <td th:text="${r.memberId}"></td>
+                    <td th:text="${r.revContent}"></td>
+                    <td th:text="${r.revAdminDate}"></td>
                     <td>
-                        <form th:action="@{/company/review/reply}" method="post">
-                            <input type="hidden" name="reviewId" th:value="${review.reviewId}" />
-                            <button type="submit" class="reply-btn">답변하기</button>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>id07</td>
-                    <td>여기 개좋은듯</td>
-                    <td>2024-04-05</td>
-                    <td>
-                        <form th:action="@{/company/review/reply}" method="post">
-                            <input type="hidden" name="reviewId" />
-                            <button type="submit" class="reply-btn">삭제하기</button>
+                        <form th:action="@{/company/review_delete}" method="post">
+                            <input type="hidden" name="revCode" th:value="${r.revCode}" />
+                            <button type="submit" class="delete-btn">삭제하기</button>
                         </form>
                     </td>
                 </tr>

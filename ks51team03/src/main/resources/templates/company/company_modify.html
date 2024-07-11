@@ -75,6 +75,11 @@
 
 <th:block layout:fragment="customContent">
     <section class="bg-smoke py-13">
+        <div th:if="${errorMessage != null}">
+            <script>
+                alert("[[${errorMessage}]]");
+            </script>
+        </div>
     <div class="form-container">
         <h2>업체 정보 수정</h2>
         <form th:action="@{/company/modify_Company}" method="post" th:each="c : ${companyListById}">
