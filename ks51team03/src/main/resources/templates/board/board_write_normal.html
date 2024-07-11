@@ -28,7 +28,7 @@
 			                <div class="info">
 			                    <dl>
 			                        <dt>작성자</dt>
-			                        <dd><input type="text" id="memberId" name="memberId"  th:value="${session.SID}"></dd>
+			                        <dd><input type="text" id="memberId" name="memberId"  th:value="${session.SID}" readonly="readonly"></dd>
 			                    </dl>
 			                </div>
 			                <div class="cont">
@@ -36,8 +36,8 @@
 			                </div>
 			            </div>
 			            <div class="board-list-btn">
-				            <button type="submit" class="board-list-write-btn">등록</button>
-				            <button type="reset" class="board-list-reset-btn">취소</button>
+				            <button type="submit" class="board-list-normal-btn">등록</button>
+				            <button type="reset" class="board-list-normal-btn">취소</button>
 			            </div>
 			        </div>
 		        </form>

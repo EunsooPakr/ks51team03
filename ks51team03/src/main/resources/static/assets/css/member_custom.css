@@ -559,12 +559,47 @@ a{
     color: #fff;
 }
 
+.board-list-search {
+	text-align: right;
+	padding:10px;
+}
+
+.board-list-search > select {
+	 width: 200px;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    /* line-height: 16px; */
+}
+
+.board-list-search > input {
+	width:200px;
+	border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+}
+
+.board-list-search > button {
+	width:100px;
+	border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+}
+
 .board-list-btn {
 	padding:10px;
 	text-align: center;
 }
 
-.board-list-write-btn {
+.board-list-normal-btn {
+	font-size:1rem;
 	background: #000;
     color: #fff;
 	position: relative;
@@ -614,9 +649,14 @@ a{
     text-align: center;
     font-size: 1.4rem;
 } */
+.board_list > div > div > div {
+    padding: 10px 0 !important;
+    text-align: center;
+    font-size: 1rem;
+}
 
 .board_list > div > div {
-    padding: 10px 0;
+    padding: 10px 0 !important;
     text-align: center;
     font-size: 1rem;
 }
@@ -671,17 +711,18 @@ a{
     vertical-align: middle;
     border: 1px solid #ddd;
     border-left: 0;
-    line-height: 100%;
+    font-size: 1.4rem;
+    /* line-height: 100%; */
 }
 
 .board_page a.bt {
-    padding-top: 10px;
-    font-size: 1.2rem;
+    /* padding-top: 10px; */
+    font-size: 1.4rem;
     letter-spacing: -1px;
 }
 
 .board_page a.num {
-    padding-top: 9px;
+   /*  padding-top: 9px; */
     font-size: 1.4rem;
 }
 
@@ -703,7 +744,7 @@ a{
 .board_view .title {
     padding: 20px 15px;
     border-bottom: 1px dashed #ddd;
-    font-size: 2rem;
+    font-size: 1.1rem;
 }
 
 .board_view .info {
@@ -740,7 +781,7 @@ a{
 .board_view .info dl dt,
 .board_view .info dl dd {
     display: inline-block;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
 }
 
 .board_view .info dl dt {
@@ -753,10 +794,12 @@ a{
 }
 
 .board_view .cont {
+	min-width: 200px; /* 최소 너비 설정 */
+    min-height: 400px; /* 최소 높이 설정 */
     padding: 15px;
     border-bottom: 1px solid #000;
     line-height: 160%;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
 }
 
 .board_write {
