@@ -6,8 +6,10 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="main"/>
+		<item key="selection" value="textarea"/>
 		<list key="findhistory">
+			<item value="textarea"/>
+			<item value="cont"/>
 			<item value="main"/>
 			<item value="transition: all 0.4s"/>
 			<item value="transition: all 0.4s;"/>
@@ -21,8 +23,6 @@
 			<item value="mouse"/>
 			<item value="mousehover"/>
 			<item value="mouseho"/>
-			<item value="menu"/>
-			<item value="input"/>
 		</list>
 		<list key="replacehistory">
 		</list>
