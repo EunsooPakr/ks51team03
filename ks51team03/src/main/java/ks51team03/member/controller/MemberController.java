@@ -1,9 +1,16 @@
 package ks51team03.member.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,21 +19,13 @@ import jakarta.servlet.http.HttpSession;
 import ks51team03.company.dto.ComQuestion;
 import ks51team03.company.dto.Company;
 import ks51team03.company.service.CompanyService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import ks51team03.member.dto.Member;
 import ks51team03.member.dto.MemberLevel;
-import ks51team03.member.dto.Search;
 import ks51team03.member.mapper.MemberMapper;
 import ks51team03.member.service.MemberService;
+import ks51team03.pet.dto.Pet;
+import ks51team03.pet.mapper.PetMapper;
+import ks51team03.pet.service.PetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,6 +39,8 @@ public class MemberController {
 	private final MemberService memberService;
 	private final MemberMapper memberMapper;
 	private final CompanyService companyService;
+	private final PetService petService;
+	private final PetMapper petMapper;
 
 	@PostMapping("/login")
 	@ResponseBody
@@ -190,6 +191,27 @@ public class MemberController {
 		return "member/member_mypage_memberinfo";
 	}
 
+	@PostMapping("/updateMember")
+	public String modifyMember(Member member) {
+		log.info("회원수정 Member:{}", member);
+		memberService.updateMember(member);
+		return "redirect:/member/member_mypage_memberinfo";
+	}
+	
+	@GetMapping("/updateMember")
+	public String modifyMember(@RequestParam(value="memberId") String memberId
+							  ,Model model) {
+		log.info("수정화면 memberId:{}", memberId);
+		Member memberInfo = memberService.getMemberInfoById(memberId);
+		List<MemberLevel> memberLevelList = memberService.getMemberLevelList();
+		
+		model.addAttribute("title", "회원수정");
+		model.addAttribute("memberInfo", memberInfo);
+		model.addAttribute("levelList", memberLevelList);
+		
+		return "member/member_login_update_mem";
+	}
+	
 	@GetMapping("/member_mypage_myQandR")
 	public String userMyPageMyQandR(Model model,HttpSession session)
 	{
@@ -207,6 +229,16 @@ public class MemberController {
 		return "member/member_mypage_myQandR";
 	}
 	
+	@GetMapping("/member_mypage_list_pet")
+	public String userMyPageListPet(Model model,HttpSession session)
+	{
+		String memberId=(String) session.getAttribute("SID");
+		List<Pet> petInfoList = petService.getPetInfoByMemberId(memberId);
+		
+		model.addAttribute("petInfoList",petInfoList);
+		
+		return "member/member_mypage_list_pet";
+	}
 	
 	@GetMapping("/member_login_terms_mem")
 	public String userTermsPageMem(Model model)

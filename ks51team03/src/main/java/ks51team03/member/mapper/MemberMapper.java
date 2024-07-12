@@ -35,7 +35,7 @@ public interface MemberMapper {
 	int removeLoginHistoryById(String memberId);
 	
 	// 회원수정
-	int modifyMember(Member member);
+	int updateMember(Member member);
 	
 	// 특정회원정보조회
 	Member getMemberInfoById(String memberId);

@@ -282,6 +282,36 @@ a{
     margin-bottom: 5px;
 }
 
+.login-insert-img-button {
+	box-sizing: border-box; /* 박스 크기를 내용과 padding, border를 포함하여 계산 */
+    width: 150px; /* 부모 요소의 너비의 1/3로 설정 */
+    height: 45px; /* 버튼의 높이 설정 */
+    float: left; /* 좌우로 배치 */
+    border: 1px solid #ddd;
+    background-color: #fff;
+    outline: none; /* 포커스 시 테두리 없앰 */
+    cursor: pointer; /* 커서를 포인터로 변경 */
+    font-size: 14px; /* 글꼴 크기 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    transition: background-color 0.3s; /* 배경색 변화에 트랜지션 효과 추가 */
+	padding:10px;
+}
+
+.login-insert-img-box {
+	display:flex;
+}
+
+.login-insert-text-box {
+	display:flex;
+	flex-direction: column;
+	padding-left: 50px;
+}
+
+.login-insert-text-box a {
+	padding: 10px 0px;
+    margin: 10px 0px;
+}
+
 .login-insert-field-button-child {
     box-sizing: border-box; /* 박스 크기를 내용과 padding, border를 포함하여 계산 */
     width: calc(100% / 3); /* 부모 요소의 너비의 1/3로 설정 */
@@ -957,10 +987,10 @@ a{
 }
 
 .tftable {
-	font-size: 12px;
+	font-size: 14px;
 	color: #333333;
 	width: 100%;
-	border-width: 1px;
+	/* border-width: 1px; */
 	border-color: #729ea5;
 	border-collapse: collapse;
 }
@@ -968,7 +998,7 @@ a{
 .tftable th {
 	font-size: 12px;
 	background-color: #acc8cc;
-	border-width: 1px;
+	/* border-width: 1px; */
 	padding: 8px;
 	border-style: solid;
 	border-color: #729ea5;
@@ -986,8 +1016,8 @@ a{
 
 
 .tftable td {
-	font-size: 12px;
-	border-width: 1px;
+	font-size: 15px;
+	/* border-width: 1px; */
 	padding: 8px;
 	border-style: solid;
 	border-color: #729ea5;
@@ -1067,5 +1097,109 @@ a{
 }
 
 .delete-button:hover {
+    background-color: #c82333;
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ member_mypage_list_pet ]*/
+.member-mypage-list-pet-petbox-new {
+	display: flex;
+	position: relative;
+	transition: all 0.3s;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	margin:10px 0px;
+	width:100%;
+	
+}
+
+.member-mypage-list-pet-petbox-new img {
+	margin:auto;
+	width:50px;
+	height:50px;
+}
+
+.member-mypage-list-pet-petbox-new:hover {
+    background-color: #f0f0f0; /* 호버 상태일 때 배경색 변경 */
+}
+
+.petbox-dotline {
+	border: 8px dashed rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border-width: 4px;
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    display: flex; /* Flexbox를 사용하여 가운데 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+.member-mypage-list-pet-petbox {
+	display: flex;
+	position: relative;
+	transition: all 0.3s;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	margin:10px 0px;
+}
+
+.pet-info-box {
+	display: flex;
+    flex-direction: column;
+    padding-top:10px;
+    padding-left: 50px;
+	width:400px;
+}
+
+.pet-info-box-btn {
+	display: flex;
+    flex-direction: column;
+    padding-top:10px;
+}
+
+.pet-info-header {
+
+	height:40px;
+}
+
+.pet-info-header a {
+	font-size:20px;
+}
+
+.pet-info-content {
+	height:30px;
+}
+
+.pet-edit-button, .pet-delete-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    color: white;
+    height:50px;
+    width:100px;
+    margin:5px;
+}
+
+.pet-edit-button {
+    background-color: #28a745;
+}
+
+.pet-delete-button {
+    background-color: #dc3545;
+}
+
+.pet-edit-button:hover {
+    background-color: #218838;
+}
+
+.pet-delete-button:hover {
     background-color: #c82333;
 }

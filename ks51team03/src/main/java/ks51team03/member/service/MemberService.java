@@ -26,7 +26,7 @@ public interface MemberService {
 	Map<String, Object> checkMemberInfo(String memberId, String memberPw);
 	
 	// 회원 정보 수정
-	int modifyMember(Member member);
+	int updateMember(Member member);
 	
 	// 회원 정보 조회
 	Member getMemberInfoById(String memberId);

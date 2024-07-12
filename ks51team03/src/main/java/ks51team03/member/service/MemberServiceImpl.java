@@ -163,9 +163,9 @@ public class MemberServiceImpl implements MemberService{
 	 * 특정회원 수정
 	 */
 	@Override
-	public int modifyMember(Member member) {
+	public int updateMember(Member member) {
 		
-		return memberMapper.modifyMember(member);
+		return memberMapper.updateMember(member);
 	}
 	
 	/**
