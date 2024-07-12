@@ -46,9 +46,12 @@ public class ReserveService {
     }
 
     // 결제 콜백 로직
+    @Transactional
     public void handlePaymentCallback(ReservePaymentDto reservePaymentDto) {
         // 결제 정보를 저장하는 로직
+        log.info("Insering payment: {}", reservePaymentDto);
         reserveMapper.insertPayment(reservePaymentDto);
+        log.info("Paymenet inserted successfully");
 
         // 필요한 추가 로직 구현 (예: 결제 상태 업데이트, 알림 전송 등)
     }

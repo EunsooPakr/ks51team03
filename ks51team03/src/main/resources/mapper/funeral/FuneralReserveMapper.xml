@@ -44,7 +44,7 @@
         <result     column="code"                   property="code"/>
         <result     column="message"                property="message"/>
         <result     column="ccode"                  property="ccode"/>
-        <result     column="id"                     property="id"/>
+        <result     column="id"                     property="reserveId"/>
         <result     column="frcode"                 property="frcode"/>
         <result     column="fp_name"                 property="fpName"/>
         <result     column="fp_final"                property="fpFinal"/>
@@ -130,6 +130,8 @@
     <!-- 장례 예약버튼 누른 후 인적사항 확인 -->
     <select id="funeralReserveServiceInfo" resultMap="getFuneralReserveServiceInfo">
         SELECT
+            fr.frcode,
+            fr.fscode,
             fs.ccode,
             fs.fs_title,
             fs.fs_price,
@@ -154,7 +156,7 @@
         LIMIT 1
     </select>
 
-    <insert id="insertPayment" parameterType="Map">
+    <insert id="insertPayment" parameterType="ks51team03.funeral.reserve.dto.ReservePaymentDto">
         <selectKey keyProperty="fpcode" resultType="String" order="BEFORE">
             /* 결제 코드 자동 증가 코드 */
             SELECT
@@ -189,7 +191,7 @@
         #{message},
         #{fpcode},
         #{ccode},
-        #{id},
+        #{reserveId},
         #{frcode},
         #{fpName},
         #{fpFinal},
@@ -200,7 +202,12 @@
     </insert>
 
     <select id="getLastFpcode" resultType="String">
-        SELECT MAX(fpcode) FROM funeral_payment
+        SELECT
+            fpcode
+        FROM
+            funeral_payment
+        ORDER BY CAST(SUBSTRING(fpcode, 3) AS UNSIGNED) DESC
+        LIMIT 1;
     </select>
 
 </mapper>
