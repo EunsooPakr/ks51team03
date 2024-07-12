@@ -44,13 +44,28 @@
         <result     column="code"                   property="code"/>
         <result     column="message"                property="message"/>
         <result     column="ccode"                  property="ccode"/>
-        <result     column="id"                     property="id"/>
+        <result     column="id"                     property="reserveId"/>
         <result     column="frcode"                 property="frcode"/>
         <result     column="fp_name"                 property="fpName"/>
         <result     column="fp_final"                property="fpFinal"/>
         <result     column="fp_pay_date"              property="fpPayDate"/>
         <result     column="fp_method"               property="fpMethod"/>
         <result     column="fp_status"               property="fpStatus"/>
+    </resultMap>
+
+    <resultMap id="getConfirmPaymentInfo" type="ks51team03.funeral.payment.dto.PaymentDto">
+        <id         column="fpcode"             property="fpcode"/>
+        <result     column="ccode"              property="ccode"/>
+        <result     column="fscode"             property="fscode"/>
+        <result     column="frcode"             property="frcode"/>
+        <result     column="id"                 property="reserveId"/>
+        <result     column="fp_name"            property="fpName"/>
+        <result     column="fp_final"           property="fpFinal"/>
+        <result     column="fp_pay_date"        property="fpPayDate"/>
+        <result     column="fp_method"          property="fpMethod"/>
+        <result     column="fp_status"          property="fpStatus"/>
+        <result     column="com_name"           property="comName"/>
+        <result     column="p_name"             property="petName"/>
     </resultMap>
 
     <select id="getLastFuneralServiceCode" parameterType="String" resultType="String">
@@ -130,6 +145,8 @@
     <!-- 장례 예약버튼 누른 후 인적사항 확인 -->
     <select id="funeralReserveServiceInfo" resultMap="getFuneralReserveServiceInfo">
         SELECT
+            fr.frcode,
+            fr.fscode,
             fs.ccode,
             fs.fs_title,
             fs.fs_price,
@@ -146,7 +163,7 @@
             INNER join
             company AS c
             on
-            fs.ccode = c.ccode
+            fs.fscode = fr.fscode
         WHERE
          fr.id = #{reserveId}
         ORDER BY
@@ -154,7 +171,7 @@
         LIMIT 1
     </select>
 
-    <insert id="insertPayment" parameterType="Map">
+    <insert id="insertPayment" parameterType="ks51team03.funeral.reserve.dto.ReservePaymentDto">
         <selectKey keyProperty="fpcode" resultType="String" order="BEFORE">
             /* 결제 코드 자동 증가 코드 */
             SELECT
@@ -189,7 +206,7 @@
         #{message},
         #{fpcode},
         #{ccode},
-        #{id},
+        #{reserveId},
         #{frcode},
         #{fpName},
         #{fpFinal},
@@ -200,7 +217,51 @@
     </insert>
 
     <select id="getLastFpcode" resultType="String">
-        SELECT MAX(fpcode) FROM funeral_payment
+        SELECT
+            fpcode
+        FROM
+            funeral_payment
+        ORDER BY CAST(SUBSTRING(fpcode, 3) AS UNSIGNED) DESC
+        LIMIT 1;
     </select>
+
+
+    <select id="confirmPayment" resultMap="getConfirmPaymentInfo">
+        SELECT
+            fp.fpcode,
+            fp.ccode,
+            fr.fscode,
+            fp.frcode,
+            fr.id,
+            fp.fp_final,
+            c.com_name,
+            p.p_name,
+            fp.fp_method,
+            fp.fp_pay_date,
+            fp.fp_status,
+            fp.fp_name
+        FROM
+            funeral_reserve AS fr
+            INNER join
+            funeral_service AS fs
+            ON
+            fs.fscode = fr.fscode
+            INNER join
+            funeral_payment AS fp
+            ON
+            fp.frcode = fr.frcode
+            INNER join
+            pet AS p
+            on
+            fp.id = p.id
+            INNER join
+            company AS c
+            ON
+            c.ccode = fp.ccode
+        WHERE
+            fp.id = #{reserveId}
+    </select>
+
+
 
 </mapper>

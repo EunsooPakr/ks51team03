@@ -12,6 +12,7 @@ import ks51team03.member.dto.Member;
 import ks51team03.member.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,7 +35,10 @@ public class ReserveController {
 
     // 결제 콜백 처리
     @PostMapping("/reserve/callback")
-    public String callbackRecevie(@RequestBody ReservePaymentDto reservePaymentDto, Model model){
+    public ResponseEntity<?> callbackReceive(@RequestBody ReservePaymentDto reservePaymentDto) {
+
+        log.info("Received payment callBack: {}", reservePaymentDto);
+
         try {
             String txId = reservePaymentDto.getTxId();
             String code = reservePaymentDto.getCode();
@@ -46,13 +52,22 @@ public class ReserveController {
             // 결제 조회 API를 통해 가맹점이 의도한 금액과 결과 금액이 같은지 검증단계
             reserveService.handlePaymentCallback(reservePaymentDto);
 
+            log.info("여기는 handlePaymentCallback 받는 곳");
+            
             log.info("reserveService.handlePaymentCallback(reservePaymentDto): {}", reservePaymentDto);
-            model.addAttribute("reservePaymentDto", reservePaymentDto);
-            return "redirect:/funeral/funeral_reserve_payment"; //결제 확인 페이지
+
+            // 정상 처리 응답
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "성공");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("error", "처리 실패 : 송중기에게 문의해 주세요");
-            return "redirect:/funeral/funeral_reserve_payment"; //결제 확인 페이지
+            log.error("Exception during payment callback processing", e);
+
+            // 예외 처리 응답
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "실패");
+            response.put("message", "처리 실패 : 송중기에게 문의해 주세요");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

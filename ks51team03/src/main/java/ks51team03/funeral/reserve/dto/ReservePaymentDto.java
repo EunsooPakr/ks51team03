@@ -10,7 +10,7 @@ public class ReservePaymentDto {
     private String code; // 오류 코드
     private String message; // 오류 문구
     private String ccode;  // 업체 코드
-    private String id;     // 결제한 유저 ID
+    private String reserveId;     // 결제한 유저 ID
     private String frcode; // 결제한 예약 서비스 코드
     private String fpName; // 결제한 예약 서비스 명
     private String fpFinal;// 결제한 예약 서비스 가격
