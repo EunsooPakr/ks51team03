@@ -38,16 +38,112 @@
 		<result column="id" property="memberId" />
 		<result column="ques_content" property="quesContent" />
 		<result column="ques_date" property="quesDate" />
+		<result column="com_name" property="companyName" />
 	</resultMap>
+
+	<resultMap id="ComReviewResultMap" type="ComReview">
+		<id column="revcode" property="revCode" />
+		<result column="id" property="memberId" />
+		<result column="rev_category" property="revCategory" />
+		<result column="ccode" property="cCode" />
+		<result column="rev_admin_date" property="revAdminDate" />
+		<result column="rev_update_date" property="revUpdateDate" />
+		<result column="file_idx" property="revImg" />
+		<result column="rev_scope" property="revScope" />
+		<result column="rev_content" property="revContent" />
+		<result column="com_name" property="companyName" />
+		<result column="file_path" property="filePath" />
+	</resultMap>
+
+	<update id="memberReviewModify" parameterType="ComReview" >
+		-- 회원 리뷰 수정
+		UPDATE
+			questions
+		<set>
+			rev_update_date = NOW(),
+			file_idx = #{revImg},
+			rev_scope = #{revScope},
+			rev_content = #{revContent}
+		</set>
+		WHERE
+			revcode = #{revCode}
+	</update>
+
+	<select id="getCompanyReviewByRevCode" parameterType="String" resultMap="ComReviewResultMap">
+		-- 수정용 특정 회원 리뷰 조회
+		SELECT
+			r.revcode, r.id, c.com_name, r.rev_admin_date, r.rev_update_date, r.file_idx, r.rev_scope, r.rev_content, f.file_path
+		FROM
+			service_reviews AS r
+		inner JOIN
+			company AS c
+		ON
+			r.ccode = c.ccode
+		LEFT JOIN
+			files AS f
+		ON
+			r.file_idx = f.file_idx
+		WHERE
+			r.revcode = #{revCode}
+	</select>
+
+	<select id="getCompanyReview" parameterType="String" resultMap="ComReviewResultMap">
+		-- 회원 리뷰 조회
+		SELECT
+			r.revcode, r.id, c.com_name, r.rev_admin_date, r.rev_update_date, r.file_idx, r.rev_scope, r.rev_content, f.file_path
+		FROM
+			service_reviews AS r
+		inner JOIN
+			company AS c
+		ON
+			r.ccode = c.ccode
+		LEFT JOIN
+			files AS f
+		ON
+			r.file_idx = f.file_idx
+		WHERE
+			r.id = #{memberId}
+	</select>
+
+	<delete id="deleteAnswersByQuesNum" parameterType="String">
+		-- 답변부터 삭제
+		DELETE FROM questions_answer WHERE quesnum = #{quesNum}
+	</delete>
+
+	<delete id="memberQuestionDelete" parameterType="String" >
+		-- 회원 문의 삭제
+		DELETE
+		FROM
+		questions
+		WHERE
+		quesnum = #{quesNum}
+	</delete>
+
+	<update id="memberQuestionModify" parameterType="ComQuestion" >
+		-- 회원 문의 수정
+		UPDATE
+			questions
+		<set>
+			qctenum = #{qcteNum},
+			ques_content = #{quesContent},
+			ques_date= NOW()
+		</set>
+		WHERE
+			quesnum = #{quesNum}
+	</update>
 
 	<select id="getQuestionById" parameterType="String" resultMap="QuestionResultMap">
 		-- 특정 문의 회원 아이디로 검색
 		SELECT
-		quesnum, ccode, qctenum, id, ques_content, ques_date
+			q.quesnum, c.com_name, q.qctenum, q.id, q.ques_content, q.ques_date
 		FROM
-		questions
+			questions AS q
+		INNER JOIN
+			company AS c
+		ON
+			q.ccode = c.ccode
 		WHERE
-		id = #{memberId}
+			q.id= #{memberId}
 	</select>
 	
 	<sql id="memberSearch">

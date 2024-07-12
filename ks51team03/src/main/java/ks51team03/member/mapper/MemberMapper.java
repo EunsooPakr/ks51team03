@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import ks51team03.company.dto.ComQuestion;
+import ks51team03.company.dto.ComReview;
 import org.apache.ibatis.annotations.Mapper;
 
 import ks51team03.member.dto.Member;
@@ -12,6 +13,24 @@ import ks51team03.member.dto.Search;
 
 @Mapper
 public interface MemberMapper {
+
+	// 회원 리뷰 수정
+	int memberReviewModify(ComReview review);
+
+	// 회원 리뷰 수정을 위한 특정 리뷰 검색
+	ComReview getCompanyReviewByRevCode(String revCode);
+
+	// 회원 리뷰 검색
+	List<ComReview> getCompanyReview(String memberId);
+
+	// 회원 문의 답변 삭제
+	int deleteAnswersByQuesNum(String quesNum);
+
+	// 회원 문의 삭제
+	int memberQuestionDelete(ComQuestion question);
+
+	// 회원 문의 수정
+	int memberQuestionModify(ComQuestion question);
 
 	// 회원 문의 검색
 	List<ComQuestion> getQuestionById(String memberId);

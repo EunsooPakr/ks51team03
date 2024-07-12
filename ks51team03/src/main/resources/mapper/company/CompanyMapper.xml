@@ -88,6 +88,7 @@
 		<result column="id" property="memberId" />
 		<result column="ques_content" property="quesContent" />
 		<result column="ques_date" property="quesDate" />
+		<result column="com_name" property="companyName" />
 	</resultMap>
 
 	<resultMap id="QuestionAnswerResultMap" type="ComQuestionAnswer">
@@ -251,7 +252,7 @@
 		GROUP BY ccode
 	</select>
 
-	<select id="getCompanyReviewCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
+	<select id="getCompanyReviewCount" resultType="Integer" parameterType="String" >
 		-- 업체 리뷰수 검색
 		SELECT
 			count(ccode)

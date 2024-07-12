@@ -10,5 +10,6 @@ public class ComQuestion {
     private String memberId;
     private String quesContent;
     private String quesDate;
+    private String companyName;
 
 }

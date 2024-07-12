@@ -59,6 +59,9 @@ public interface CompanyMapper {
     // 전체 업체 리스트 가져오기
     List<Company> getCompanyList();
 
+    // 회원의 문의 조회
+
+
     // 특정 문의 조회
     ComQuestion getCompanyQuestionById(@Param("quesnum") String quesnum);
 

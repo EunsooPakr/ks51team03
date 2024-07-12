@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ks51team03.company.dto.ComQuestion;
+import ks51team03.company.dto.ComReview;
 import ks51team03.company.dto.Company;
 import ks51team03.company.service.CompanyService;
 import org.springframework.stereotype.Controller;
@@ -195,18 +196,83 @@ public class MemberController {
 	{
 		String memberId=(String) session.getAttribute("SID");
 		List<ComQuestion> memberQuestion = memberService.getQuestionById(memberId);
+		List<ComReview> comReviews = memberService.getCompanyReview(memberId);
 
-		Map<String, String> companyNameMap = new HashMap<String, String>();
-		for (ComQuestion question : memberQuestion) {
-			List<Company> companyList = companyService.getCompanyInfoByCcode(question.getCCode());
-			companyNameMap.put(question.getCCode(), " ");
-		}
 		log.info("memberQuestion: {}", memberQuestion);
+		log.info("comReviews: {}", comReviews);
 		model.addAttribute("memberQuestion",memberQuestion);
+		model.addAttribute("comReviews",comReviews);
+
 
 		return "member/member_mypage_myQandR";
 	}
-	
+
+	@GetMapping("/member_mypage_review_modify")
+	public String userReviewModify(@RequestParam("revcode") String revCode, Model model)
+	{
+		ComReview review = memberService.getCompanyReviewByRevCode(revCode);
+
+		log.info("review: {}", review);
+		model.addAttribute("review",review);
+
+		return "/member/member_mypage_review_modify";
+	}
+
+	@PostMapping("/member_review_modify")
+	public String userReviewModifyAction(ComReview review){
+		memberService.memberReviewModify(review);
+
+		return "redirect:/member/member_mypage_myQandR";
+
+	}
+
+	@GetMapping("/member_mypage_question_modify")
+	public String userQuestionModify(@RequestParam("quesnum") String quesNum, Model model)
+	{
+		ComQuestion question = companyService.getCompanyQuestionById(quesNum);
+
+		log.info("question: {}", question);
+		model.addAttribute("question",question);
+
+		return "/member/member_mypage_question_modify";
+	}
+
+	@PostMapping("/member_question_modify")
+	public String userQuestionModifyAction(ComQuestion question){
+		String qctenum = getQctenum(question.getQcteNum());
+		question.setQcteNum(qctenum);
+		memberService.memberQuestionModify(question);
+		return "redirect:/member/member_mypage_myQandR";
+
+	}
+	private String getQctenum(String qcteNum) {
+		Map<String, String> qctenumMap = new HashMap<>();
+		qctenumMap.put("병원이용", "qctc1");
+		qctenumMap.put("기타문의", "qctc11");
+//		qctenumMap.put("기타문의", "qctc10");
+//		qctenumMap.put("기타문의", "qctc12");
+		qctenumMap.put("진료관련", "qctc2");
+		qctenumMap.put("병원행정", "qctc3");
+		qctenumMap.put("약국행정", "qctc4");
+		qctenumMap.put("제품관련", "qctc5");
+		qctenumMap.put("처방문의", "qctc9");
+		qctenumMap.put("장례문의", "qctc7");
+		qctenumMap.put("비용문의", "qctc8");
+		qctenumMap.put("일정문의", "qctc9");
+
+		return qctenumMap.getOrDefault(qcteNum, "기타문의");
+	}
+
+	@GetMapping("/member_mypage_question_delete")
+	public String userQuestionDelete(@RequestParam("quesNum") String quesNum)
+	{
+		System.out.println("삭제 요청 도달. quesNum: " + quesNum);  // 로그 추가
+		ComQuestion question = new ComQuestion();
+		question.setQuesNum(quesNum);
+		memberService.memberQuestionDelete(question);
+
+		return "redirect:/member/member_mypage_myQandR";
+	}
 	
 	@GetMapping("/member_login_terms_mem")
 	public String userTermsPageMem(Model model)
