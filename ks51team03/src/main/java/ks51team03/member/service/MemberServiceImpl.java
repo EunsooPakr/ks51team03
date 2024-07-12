@@ -8,6 +8,9 @@ import ks51team03.company.dto.ComQuestion;
 import ks51team03.company.dto.ComReview;
 import ks51team03.company.dto.Company;
 import ks51team03.company.mapper.CompanyMapper;
+import ks51team03.files.dto.FileRequest;
+import ks51team03.files.mapper.FileMapper;
+import ks51team03.files.util.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,30 @@ public class MemberServiceImpl implements MemberService{
 	
 	private final MemberMapper memberMapper;
 	private final CompanyMapper companyMapper;
+	private final FileMapper fileMapper;
+
+
+	/**
+	 * 회원의 특정 리뷰 수정
+	 */
+	@Override
+	public int memberReviewModify(ComReview review, boolean deleteImage) {
+		FileUtils fileUtils = new FileUtils();
+		if (deleteImage) {
+			FileRequest fileRequest = fileMapper.getFileByRevCode(review.getRevCode());
+			if (fileRequest != null) {
+				fileUtils.deleteFile(fileRequest);
+				review.setRevImg(null);
+			}
+		} else if (review.getRevImgFile() != null && !review.getRevImgFile().isEmpty()) {
+			FileRequest fileRequest = fileUtils.uploadFile(review.getRevImgFile());
+			if (fileRequest != null) {
+				fileMapper.addFile(fileRequest);
+				review.setRevImg(fileRequest.getFileIdx());
+			}
+		}
+		return memberMapper.memberReviewModify(review);
+	}
 
 	/**
 	 * 회원의 특정 리뷰 수정

@@ -214,16 +214,18 @@ public class MemberController {
 
 		log.info("review: {}", review);
 		model.addAttribute("review",review);
+		model.addAttribute("revCode", revCode);
 
 		return "/member/member_mypage_review_modify";
 	}
 
 	@PostMapping("/member_review_modify")
-	public String userReviewModifyAction(ComReview review){
-		memberService.memberReviewModify(review);
+	public String userReviewModifyAction(@RequestParam("revCode") String revCode, ComReview review, @RequestParam(value = "deleteImage", required = false) boolean deleteImage) {
+		log.info("revCode: {}", revCode);
+		review.setRevCode(revCode);
+		memberService.memberReviewModify(review, deleteImage);
 
 		return "redirect:/member/member_mypage_myQandR";
-
 	}
 
 	@GetMapping("/member_mypage_question_modify")

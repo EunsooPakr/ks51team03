@@ -58,7 +58,7 @@
 	<update id="memberReviewModify" parameterType="ComReview" >
 		-- 회원 리뷰 수정
 		UPDATE
-			questions
+			service_reviews
 		<set>
 			rev_update_date = NOW(),
 			file_idx = #{revImg},
