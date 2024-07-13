@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/mypage_default}">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f5f5f5;
+			margin: 0;
+		}
+
+		.form-container {
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.form-container h2 {
+			text-align: center;
+			margin-bottom: 20px;
+			color: #333;
+		}
+
+		.form-group {
+			margin-bottom: 15px;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: bold;
+		}
+
+		.form-group input, .form-group select {
+			width: calc(100% - 20px);
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+
+		.form-group button {
+			width: 100%;
+			padding: 10px;
+			background-color: #007BFF;
+			border: none;
+			color: #fff;
+			font-size: 16px;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		#quesContent {
+			height: 500px;
+		}
+
+		.form-group button:hover {
+			background-color: #0056b3;
+		}
+		.mypage-contents-box {
+			flex: 1;
+			margin-left: 10px;
+			width: 800px;
+			height: 800px;
+		}
+	</style>
+</head>
+<th:block layout:fragment="customContent">
+	<section class="bg-smoke py-12">
+		<div class="mypage-contents-box">
+			<div class="form-container">
+				<h2>문의 수정</h2>
+				<form th:action="@{/member/member_question_modify}" th:each="q : ${question}" method="post">
+					<input type="hidden" name="quesNum" th:value="${param.quesNum}">
+					<div class="form-group">
+						<label for="qcteNum">문의 종류</label>
+						<select id="qcteNum" name="qcteNum" required>
+							<!-- JavaScript로 옵션이 동적으로 추가됩니다 -->
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="quesContent">문의 내용</label>
+						<input type="text" id="quesContent" name="quesContent" th:value="${q.quesContent}" required>
+					</div>
+					<div class="form-group">
+						<button type="submit" id="submitBtn">문의수정</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+	<script>
+		$('#submitBtn').click(function(){
+			alert("문의 제출 완료");
+		})
+		document.addEventListener('DOMContentLoaded', function() {
+			const inquiryTypeSelect = document.getElementById('qcteNum');
+			const databaseValue = '병원'; // 이 값은 데이터베이스에서 받아온 값으로 대체됩니다
+
+			const options = {
+				'병원': ['병원이용', '진료관련', '병원행정', '기타문의'],
+				'장례': ['장례문의', '비용문의', '일정문의', '기타문의'],
+				'약국': ['약국행정', '제품관련', '퍼방문의', '기타문의']
+			};
+
+			const selectedOptions = options[databaseValue] || [];
+
+			selectedOptions.forEach(option => {
+				const opt = document.createElement('option');
+				opt.value = option;
+				opt.textContent = option;
+				inquiryTypeSelect.appendChild(opt);
+			});
+		});
+	</script>
+</th:block>
+</html>

@@ -14,4 +14,6 @@ public class ComReview {
     private MultipartFile revImgFile;
     private int revScope;
     private String revContent;
+    private String companyName;
+    private String filePath;
 }

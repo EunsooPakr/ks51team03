@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/mypage_default}">
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f5f5f5;
+			margin: 0;
+		}
+
+		.form-container {
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.form-container h2 {
+			text-align: center;
+			margin-bottom: 20px;
+			color: #333;
+		}
+
+		.form-group {
+			margin-bottom: 15px;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: bold;
+		}
+
+		.form-group input, .form-group select {
+			width: calc(100% - 20px);
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+
+		.form-group button {
+			width: 100%;
+			padding: 10px;
+			background-color: #007BFF;
+			border: none;
+			color: #fff;
+			font-size: 16px;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		#revContent {
+			height: 300px;
+		}
+
+		.form-group button:hover {
+			background-color: #0056b3;
+		}
+
+		.form-group img {
+			max-width: 100%;
+			height: auto;
+			margin-top: 10px;
+		}
+
+		.form-group .delete-image-button {
+			background-color: red;
+			color: white;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 4px;
+			margin-top: 10px;
+		}
+		.mypage-contents-box {
+			flex: 1;
+			margin-left: 10px;
+			width: 800px;
+			height: 1200px;
+		}
+	</style>
+</head>
+<th:block layout:fragment="customContent">
+	<section class="bg-smoke py-12">
+		<div class="mypage-contents-box">
+			<div class="form-container">
+				<h2>후기 작성</h2>
+				<form th:action="@{/member/member_review_modify}" th:object="${review}" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="revCode" th:value="${review.revCode}">
+					<div class="form-group">
+						<label for="revScope">별점</label>
+						<select id="revScope" name="revScope" th:value="${review.revScope}" required>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+					</div>
+					<div class="form-group file-upload">
+						<label for="revImgFile">이미지 첨부</label>
+						<input type="file" id="revImgFile" name="revImgFile" accept="image/*">
+						<div th:if="${review.filePath != null}">
+							<img id="currentImage" th:src="@{${review.filePath}}" alt="현재 이미지">
+							<button type="button" class="delete-image-button" onclick="deleteImageFn()">이미지 삭제</button>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="revContent">내용</label>
+						<input type="text" id="revContent" name="revContent" th:value="${review.revContent}" required>
+					</div>
+					<div class="form-group">
+						<button type="submit">후기 제출</button>
+					</div>
+					<input type="hidden" name="deleteImage" id="deleteImage" value="false">
+				</form>
+			</div>
+		</div>
+	</section>
+	<script>
+		function deleteImageFn() {
+			document.getElementById('deleteImage').value = 'true';
+			document.getElementById('revImgFile').value = '';
+			const img = document.getElementById('currentImage');
+			if (img) {
+				img.style.display = 'none';
+			}
+			const button = document.querySelector('.delete-image-button');
+			if (button) {
+				button.style.display = 'none';
+			}
+		}
+	</script>
+</th:block>
+</html>

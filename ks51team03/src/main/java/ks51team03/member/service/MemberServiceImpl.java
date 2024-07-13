@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import ks51team03.company.dto.ComQuestion;
+import ks51team03.company.dto.ComReview;
 import ks51team03.company.dto.Company;
 import ks51team03.company.mapper.CompanyMapper;
+import ks51team03.files.dto.FileRequest;
+import ks51team03.files.mapper.FileMapper;
+import ks51team03.files.util.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,71 @@ public class MemberServiceImpl implements MemberService{
 	
 	private final MemberMapper memberMapper;
 	private final CompanyMapper companyMapper;
+	private final FileMapper fileMapper;
+
+
+	/**
+	 * 회원의 특정 리뷰 수정
+	 */
+	@Override
+	public int memberReviewModify(ComReview review, boolean deleteImage) {
+		FileUtils fileUtils = new FileUtils();
+		if (deleteImage) {
+			FileRequest fileRequest = fileMapper.getFileByRevCode(review.getRevCode());
+			if (fileRequest != null) {
+				fileUtils.deleteFile(fileRequest);
+				review.setRevImg(null);
+			}
+		} else if (review.getRevImgFile() != null && !review.getRevImgFile().isEmpty()) {
+			FileRequest fileRequest = fileUtils.uploadFile(review.getRevImgFile());
+			if (fileRequest != null) {
+				fileMapper.addFile(fileRequest);
+				review.setRevImg(fileRequest.getFileIdx());
+			}
+		}
+		return memberMapper.memberReviewModify(review);
+	}
+
+	/**
+	 * 회원의 특정 리뷰 수정
+	 */
+	@Override
+	public int memberReviewModify(ComReview review) {
+		return memberMapper.memberReviewModify(review);
+	}
+
+	/**
+	 * 회원의 특정 리뷰 검색
+	 */
+	@Override
+	public ComReview getCompanyReviewByRevCode(String revCode){
+		return memberMapper.getCompanyReviewByRevCode(revCode);
+	}
+
+	/**
+	 * 회원 리뷰 검색
+	 */
+	@Override
+	public List<ComReview> getCompanyReview(String memberId) {
+		return memberMapper.getCompanyReview(memberId);
+	}
+
+	/**
+	 * 회원 문의 삭제
+	 */
+	@Override
+	public int memberQuestionDelete(ComQuestion question){
+		memberMapper.deleteAnswersByQuesNum(question.getQuesNum());
+		return memberMapper.memberQuestionDelete(question);
+	}
+
+	/**
+	 * 회원 문의 수정
+	 */
+	@Override
+	public int memberQuestionModify(ComQuestion question){
+		return memberMapper.memberQuestionModify(question);
+	}
 
 	/**
 	 * 회원 문의 조회

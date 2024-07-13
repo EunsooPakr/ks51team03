@@ -12,6 +12,11 @@
         <result column="file_size" property="fileSize" />
         <result column="file_reg_date" property="fileRegDate" />
     </resultMap>
+    <select id="getFileByRevCode" resultMap="FileRequestResultMap">
+        SELECT file_idx, file_origin_name, file_new_name, file_path, file_size, file_reg_date
+        FROM files
+        WHERE file_idx = (SELECT file_idx FROM service_reviews WHERE revcode = #{revCode})
+    </select>
 
     <insert id="addFile" parameterType="FileRequest">
         -- 이미지 등록

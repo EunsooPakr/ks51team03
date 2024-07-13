@@ -83,6 +83,7 @@
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		var memberQuestions = /*[[${memberQuestion}]]*/ [];
+		var memberReviews = /*[[${comReviews}]]*/ [];
 		/*]]>*/
 	</script>
 </th:block>
@@ -95,129 +96,177 @@
 				let content = '';
 				switch (selectedValue) {
 					case 'inquiry':
-						const test = JSON.stringify(memberQuestions);
-						console.log("test: " + test);
 						content = memberQuestions.map(q => `
-							<div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
-								<div class="media-body">
-									<div class="row">
-										<div class="col-md-7 col-xl-8 position-relative">
-											<div class="post-header">
-												<h4>
-													<a class="post-title">${q.ccode}</a>
-												</h4>
-												<div class="post-date">
-													<span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 ${q.quesDate}</span>
-												</div>
-											</div>
-											<p class="post-content">${q.quesContent}</p>
-										</div>
-										<div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
-											<div class="action-buttons">
-												<button class="edit-button">수정</button>
-												<button class="delete-button">삭제</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						`).join('');
+                    <div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-md-7 col-xl-8 position-relative">
+                                    <div class="post-header">
+                                        <h4>
+                                            <a class="post-title">${q.companyName}</a>
+                                        </h4>
+                                        <div class="post-date">
+                                            <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 ${q.quesDate}</span>
+                                        </div>
+                                    </div>
+                                    <p class="post-content">${q.quesContent}</p>
+                                </div>
+                                <div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+                                    <div class="action-buttons">
+                                        <button class="edit-button" data-quesnum="${q.quesNum}" id="questionModifyBtn">수정</button>
+                                        <button class="delete-button" data-quesnum="${q.quesNum}" id="questionDeleteBtn">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
 						break;
 
 					case 'review':
-						content = `
-							<div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
-								<div class="media-body">
-									<div class="row">
-										<div class="col-md-7 col-xl-8 position-relative">
-											<div class="post-header">
-												<h4>
-													<a class="post-title">후기 제목</a>
-												</h4>
-												<div class="post-date">
-													<span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
-												</div>
-											</div>
-											<p class="post-content">후기 내용</p>
-											<p class="post-content">대상 업체</p>
-											<img src="/path/to/image.jpg" alt="후기 이미지" />
-										</div>
-										<div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
-											<div class="action-buttons">
-												<button class="edit-button">수정</button>
-												<button class="delete-button">삭제</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>`;
+						content = memberReviews.map(r => `
+                    <div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-md-7 col-xl-8 position-relative">
+                                    <div class="post-header">
+                                        <h4>
+                                            <a class="post-title">${r.companyName}</a>
+                                        </h4>
+                                        <div class="post-date">
+                                            <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 ${r.revAdminDate}</span>
+                                        </div>
+                                    </div>
+                                    <p class="post-content">${r.revContent}</p>
+                                    ${r.filePath ? `<a href="${r.filePath}"><img src="${r.filePath}" alt="이미지를 불러올 수 없습니다." style="width: 200px; height: auto;"></a>` : ''}
+                                </div>
+                                <div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+                                    <div class="action-buttons">
+                                        <button class="edit-button" data-revcode="${r.revCode}" id="reviewModifyBtn">수정</button>
+                                        <button class="delete-button" data-revcode="${r.revCode}" id="reviewModifyBtn">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
 						break;
 
 					case 'community':
 						content = `
-							<div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
-								<div class="media-body">
-									<div class="row">
-										<div class="col-md-7 col-xl-8 position-relative">
-											<div class="post-header">
-												<h4>
-													<a class="post-title">글 제목</a>
-												</h4>
-												<div class="post-date">
-													<span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
-												</div>
-											</div>
-											<p class="post-content">게시판 이름</p>
-											<p class="post-content">글 내용</p>
-											<p class="post-content">조회수: 123</p>
-											<p class="post-content">댓글 수: 10</p>
-										</div>
-										<div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
-											<div class="action-buttons">
-												<button class="edit-button">수정</button>
-												<button class="delete-button">삭제</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>`;
+                    <div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-md-7 col-xl-8 position-relative">
+                                    <div class="post-header">
+                                        <h4>
+                                            <a class="post-title">글 제목</a>
+                                        </h4>
+                                        <div class="post-date">
+                                            <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
+                                        </div>
+                                    </div>
+                                    <p class="post-content">게시판 이름</p>
+                                    <p class="post-content">글 내용</p>
+                                    <p class="post-content">조회수: 123</p>
+                                    <p class="post-content">댓글 수: 10</p>
+                                </div>
+                                <div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+                                    <div class="action-buttons">
+                                        <button class="edit-button">수정</button>
+                                        <button class="delete-button">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
 						break;
 
 					case 'comment':
 						content = `
-							<div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
-								<div class="media-body">
-									<div class="row">
-										<div class="col-md-7 col-xl-8 position-relative">
-											<div class="post-header">
-												<h4>
-													<a class="post-title">글 제목</a>
-												</h4>
-												<div class="post-date">
-													<span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
-												</div>
-											</div>
-											<p class="post-content">댓글 내용</p>
-										</div>
-										<div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
-											<div class="action-buttons">
-												<button class="edit-button">수정</button>
-												<button class="delete-button">삭제</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>`;
+                    <div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-md-7 col-xl-8 position-relative">
+                                    <div class="post-header">
+                                        <h4>
+                                            <a class="post-title">글 제목</a>
+                                        </h4>
+                                        <div class="post-date">
+                                            <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
+                                        </div>
+                                    </div>
+                                    <p class="post-content">댓글 내용</p>
+                                </div>
+                                <div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+                                    <div class="action-buttons">
+                                        <button class="edit-button">수정</button>
+                                        <button class="delete-button">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
 						break;
 				}
 
 				$('#postContent').html(content);
+
+				// 수정 버튼 클릭 이벤트 핸들러 추가
+				$('#questionModifyBtn').on('click', function() {
+					const quesNum = $(this).data('quesnum');
+					window.location.href = `/member/member_mypage_question_modify?quesnum=${quesNum}`;
+				});
+				$('#reviewModifyBtn').on('click', function() {
+					const revCode = $(this).data('revcode');
+					window.location.href = `/member/member_mypage_review_modify?revcode=${revCode}`;
+				});
+
+				// 삭제 버튼 클릭 이벤트 핸들러 추가
+				$('#questionDeleteBtn').on('click', function() {
+					const quesNum = $(this).data('quesnum');
+					if (confirm('정말 삭제하시겠습니까?')) {
+						$.ajax({
+							url: `/member/member_mypage_question_delete?quesnum=${quesNum}`,
+							type: 'GET',
+							success: function(response) {
+								console.log('삭제 요청 성공');
+								alert('삭제되었습니다.');
+								window.location.href = '/member/member_mypage_myQandR';
+							},
+							error: function(error) {
+								console.log('삭제 요청 실패', error);  // 로그 추가
+								alert('삭제 중 오류가 발생했습니다.');
+							}
+						});
+					}
+				});
+				$('#reviewDeleteBtn').on('click', function() {
+					const revCode = $(this).data('revcode');
+					if (confirm('정말 삭제하시겠습니까?')) {
+						$.ajax({
+							url: `/member/member_mypage_review_delete?revcode=${revCode}`,
+							type: 'GET',
+							success: function(response) {
+								console.log('삭제 요청 성공');
+								alert('삭제되었습니다.');
+								window.location.href = '/member/member_mypage_myQandR';
+							},
+							error: function(error) {
+								console.log('삭제 요청 실패', error);  // 로그 추가
+								alert('삭제 중 오류가 발생했습니다.');
+							}
+						});
+					}
+				});
 			}
+
 			// select 요소의 값 변경 시 이벤트 처리
 			$('#postType').on('change', updateContent);
 			// 페이지 로드 시 '내가 쓴 문의' 이벤트 발생
 			$('#postType').val('inquiry').trigger('change');
 		});
+
 	</script>
 </th:block>
 </html>

@@ -20,6 +20,15 @@ import java.util.UUID;
 public class FileUtils {
     private final String uploadPath = "/home/ks51team03/attachment";
 
+    public void deleteFile(FileRequest fileRequest) {
+        Path filePath = Paths.get(uploadPath, fileRequest.getFilePath());
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete file", e);
+        }
+    }
+
     /**
      * 다중 파일 업로드
      * @param multipartFiles - 파일 객체 List
