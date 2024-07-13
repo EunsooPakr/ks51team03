@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ks51team03.funeral.payment.mapper.PaymentMapper2">
+
+    <resultMap id="getConfirmPaymentInfo" type="ks51team03.funeral.payment.dto.PaymentDto">
+        <id         column="fpcode"             property="fpcode"/>
+        <result     column="ccode"              property="ccode"/>
+        <result     column="fscode"             property="fscode"/>
+        <result     column="frcode"             property="frcode"/>
+        <result     column="id"                 property="reserveId"/>
+        <result     column="fp_name"            property="fpName"/>
+        <result     column="fp_final"           property="fpFinal"/>
+        <result     column="fp_pay_date"        property="fpPayDate"/>
+        <result     column="fp_method"          property="fpMethod"/>
+        <result     column="fp_status"          property="fpStatus"/>
+        <result     column="com_name"           property="comName"/>
+        <result     column="p_name"             property="petName"/>
+    </resultMap>
+
+    <select id="confirmPayment" resultMap="getConfirmPaymentInfo">
+        SELECT
+            fp.fpcode,
+            fp.ccode,
+            fr.fscode,
+            fp.frcode,
+            fr.id,
+            fp.fp_final,
+            c.com_name,
+            p.p_name,
+            fp.fp_method,
+            fp.fp_pay_date,
+            fp.fp_status,
+            fp.fp_name
+        FROM
+            funeral_reserve AS fr
+            INNER join
+            funeral_service AS fs
+            ON
+            fs.fscode = fr.fscode
+            INNER join
+            funeral_payment AS fp
+            ON
+            fp.frcode = fr.frcode
+            INNER join
+            pet AS p
+            on
+            fp.id = p.id
+            INNER join
+            company AS c
+            ON
+            c.ccode = fp.ccode
+        WHERE
+            fp.id = #{reserveId}
+    </select>
+
+
+
+</mapper>

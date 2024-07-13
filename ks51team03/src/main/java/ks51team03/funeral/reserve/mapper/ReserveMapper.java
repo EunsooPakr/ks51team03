@@ -2,6 +2,7 @@ package ks51team03.funeral.reserve.mapper;
 
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveInfoDto;
+import ks51team03.funeral.reserve.dto.ReservePaymentDto;
 import ks51team03.funeral.reserve.dto.ReserveServiceInfoDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,4 +22,9 @@ public interface ReserveMapper {
     // 장례 예약 내역 확인하기
     List<ReserveServiceInfoDto> funeralReserveServiceInfo(ReserveServiceInfoDto reserveServiceInfoDto);
 
+    // 장례 예약 결제
+    void insertPayment(ReservePaymentDto reservePaymentDto);
+
+    //마지막 fpcode를 가져오는 메서드
+    String getLastFpcode();
 }

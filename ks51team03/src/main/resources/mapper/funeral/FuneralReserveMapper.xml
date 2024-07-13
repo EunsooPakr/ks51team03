@@ -24,11 +24,11 @@
         <result     column="phone"              property="reservePhone"/>
         <result     column="email"              property="reserveEmail"/>
         <result     column="fr_reg_date"        property="reserveRegDate"/>
-
     </resultMap>
 
     <resultMap id="getFuneralReserveServiceInfo" type="ks51team03.funeral.reserve.dto.ReserveServiceInfoDto">
         <id         column="id"                 property="reserveId"/>
+        <result     column="frcode"             property="reserveCode"/>
         <result     column="ccode"              property="reserveCompanyCode"/>
         <result     column="fscode"             property="reserveServiceCode"/>
         <result     column="fr_start_date"      property="reserveStartDate"/>
@@ -36,6 +36,36 @@
         <result     column="fs_title"           property="funeralserviceTitle"/>
         <result     column="fs_price"           property="funeralservicePrice"/>
         <result     column="com_name"           property="companyName"/>
+    </resultMap>
+
+    <resultMap id="insertPayment" type="ks51team03.funeral.reserve.dto.ReservePaymentDto">
+        <id         column="fpcode"                 property="fpcode"/>
+        <result     column="txId"                   property="txId"/>
+        <result     column="code"                   property="code"/>
+        <result     column="message"                property="message"/>
+        <result     column="ccode"                  property="ccode"/>
+        <result     column="id"                     property="reserveId"/>
+        <result     column="frcode"                 property="frcode"/>
+        <result     column="fp_name"                 property="fpName"/>
+        <result     column="fp_final"                property="fpFinal"/>
+        <result     column="fp_pay_date"              property="fpPayDate"/>
+        <result     column="fp_method"               property="fpMethod"/>
+        <result     column="fp_status"               property="fpStatus"/>
+    </resultMap>
+
+    <resultMap id="getConfirmPaymentInfo" type="ks51team03.funeral.payment.dto.PaymentDto">
+        <id         column="fpcode"             property="fpcode"/>
+        <result     column="ccode"              property="ccode"/>
+        <result     column="fscode"             property="fscode"/>
+        <result     column="frcode"             property="frcode"/>
+        <result     column="id"                 property="reserveId"/>
+        <result     column="fp_name"            property="fpName"/>
+        <result     column="fp_final"           property="fpFinal"/>
+        <result     column="fp_pay_date"        property="fpPayDate"/>
+        <result     column="fp_method"          property="fpMethod"/>
+        <result     column="fp_status"          property="fpStatus"/>
+        <result     column="com_name"           property="comName"/>
+        <result     column="p_name"             property="petName"/>
     </resultMap>
 
     <select id="getLastFuneralServiceCode" parameterType="String" resultType="String">
@@ -108,13 +138,15 @@
         WHERE
         fr.id = #{reserveId}
         ORDER BY
-            CAST(SUBSTRING(fr.frcode, 3) AS UNSIGNED) DESC
+        CAST(SUBSTRING(fr.frcode, 3) AS UNSIGNED) DESC
         LIMIT 1
     </select>
 
     <!-- 장례 예약버튼 누른 후 인적사항 확인 -->
     <select id="funeralReserveServiceInfo" resultMap="getFuneralReserveServiceInfo">
         SELECT
+            fr.frcode,
+            fr.fscode,
             fs.ccode,
             fs.fs_title,
             fs.fs_price,
@@ -131,12 +163,105 @@
             INNER join
             company AS c
             on
-            fs.ccode = c.ccode
+            fs.fscode = fr.fscode
         WHERE
          fr.id = #{reserveId}
         ORDER BY
-         CAST(SUBSTRING(fr.frcode, 3) AS UNSIGNED) DESC
+        CAST(SUBSTRING(fr.frcode, 3) AS UNSIGNED) DESC
         LIMIT 1
     </select>
+
+    <insert id="insertPayment" parameterType="ks51team03.funeral.reserve.dto.ReservePaymentDto">
+        <selectKey keyProperty="fpcode" resultType="String" order="BEFORE">
+            /* 결제 코드 자동 증가 코드 */
+            SELECT
+            CASE
+            WHEN COUNT(fpcode) = 0 THEN 'fp1'
+            ELSE
+            CONCAT(
+            'fp',
+            LPAD(MAX(CAST(SUBSTRING_INDEX(fpcode, 'fr', -1) AS UNSIGNED))+1, 3, '0')
+            )
+            END AS fpcode
+            FROM
+            funeral_payment;
+        </selectKey>
+        /* 장례 결제 */
+        INSERT INTO funeral_payment
+        (   txId,
+            code,
+            message,
+            fpcode,
+            ccode,
+            id,
+            frcode,
+            fp_name,
+            fp_final,
+            fp_pay_date,
+            fp_method,
+            fp_status)
+        VALUES (
+        #{txId},
+        #{code},
+        #{message},
+        #{fpcode},
+        #{ccode},
+        #{reserveId},
+        #{frcode},
+        #{fpName},
+        #{fpFinal},
+        CURDATE(),
+        #{fpMethod},
+        #{fpStatus}
+        )
+    </insert>
+
+    <select id="getLastFpcode" resultType="String">
+        SELECT
+            fpcode
+        FROM
+            funeral_payment
+        ORDER BY CAST(SUBSTRING(fpcode, 3) AS UNSIGNED) DESC
+        LIMIT 1;
+    </select>
+
+
+    <select id="confirmPayment" resultMap="getConfirmPaymentInfo">
+        SELECT
+            fp.fpcode,
+            fp.ccode,
+            fr.fscode,
+            fp.frcode,
+            fr.id,
+            fp.fp_final,
+            c.com_name,
+            p.p_name,
+            fp.fp_method,
+            fp.fp_pay_date,
+            fp.fp_status,
+            fp.fp_name
+        FROM
+            funeral_reserve AS fr
+            INNER join
+            funeral_service AS fs
+            ON
+            fs.fscode = fr.fscode
+            INNER join
+            funeral_payment AS fp
+            ON
+            fp.frcode = fr.frcode
+            INNER join
+            pet AS p
+            on
+            fp.id = p.id
+            INNER join
+            company AS c
+            ON
+            c.ccode = fp.ccode
+        WHERE
+            fp.id = #{reserveId}
+    </select>
+
+
 
 </mapper>
