@@ -3,6 +3,7 @@ package ks51team03.member.mapper;
 import java.util.List;
 import java.util.Map;
 
+import ks51team03.company.dto.ComQuestion;
 import org.apache.ibatis.annotations.Mapper;
 
 import ks51team03.member.dto.Member;
@@ -11,6 +12,9 @@ import ks51team03.member.dto.Search;
 
 @Mapper
 public interface MemberMapper {
+
+	// 회원 문의 검색
+	List<ComQuestion> getQuestionById(String memberId);
 
 	// 로그인 테이블 행의 갯수조회
 	int getLoginHistoryCnt();
@@ -31,7 +35,7 @@ public interface MemberMapper {
 	int removeLoginHistoryById(String memberId);
 	
 	// 회원수정
-	int modifyMember(Member member);
+	int updateMember(Member member);
 	
 	// 특정회원정보조회
 	Member getMemberInfoById(String memberId);

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ks51team03.company.dto.ComQuestion;
 import ks51team03.company.dto.Company;
 import ks51team03.company.mapper.CompanyMapper;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,14 @@ public class MemberServiceImpl implements MemberService{
 	
 	private final MemberMapper memberMapper;
 	private final CompanyMapper companyMapper;
+
+	/**
+	 * 회원 문의 조회
+	 */
+	@Override
+	public List<ComQuestion> getQuestionById(String memberId){
+		return memberMapper.getQuestionById(memberId);
+	}
 
 	/**
 	 * 로그인 이력 조회
@@ -154,9 +163,9 @@ public class MemberServiceImpl implements MemberService{
 	 * 특정회원 수정
 	 */
 	@Override
-	public int modifyMember(Member member) {
+	public int updateMember(Member member) {
 		
-		return memberMapper.modifyMember(member);
+		return memberMapper.updateMember(member);
 	}
 	
 	/**

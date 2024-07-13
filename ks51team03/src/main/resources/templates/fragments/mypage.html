@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block  th:fragment="mypageFragment">
+	<!-- ====================================
+  ——— LEFTSIDEBAR_LIST SECTION
+  ===================================== -->
+	<section class="bg-smoke py-12">
+		<div class="mypage-box">
+			<div class="left-sidebar-list">
+				<h4 class="text-uppercase font-weight-bold">마이페이지</h4>
+				<div class="accordion" id="accordionOne">
+					<div class="card">
+						<div class="card-header" id="headingOne">
+							<!-- <h5 class="icon-bg" data-bs-toggle="collapse" -->
+							<h5 class="icon-bg collapsed" data-bs-toggle="collapse"
+								data-bs-target="#collapseOne" aria-expanded="false"
+								aria-controls="collapseOne">
+								<span>계정 관리</span>
+							</h5>
+						</div>
+
+						<div id="collapseOne" class="collapsed"
+							 aria-labelledby="headingOne" data-bs-parent="#accordionOne">
+							<div class="card-body">
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{/member/member_mypage_memberinfo}">내 정보 </a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{/member/member_mypage_list_pet}">반려동물 정보 </a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a href="#">알림 정보 </a>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-header" id="headingTwo">
+							<h5 class="icon-bg collapsed" data-bs-toggle="collapse"
+								data-bs-target="#collapseTwo" aria-expanded="false"
+								aria-controls="collapseTwo">
+								<span>작성글 관리</span>
+							</h5>
+						</div>
+
+						<!-- <div id="collapseTwo" class="collapse show" -->
+						<div id="collapseTwo" class="collapsed"
+							 aria-labelledby="headingOne" data-bs-parent="#accordionOne">
+							<div class="card-body">
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{/member/member_mypage_myQandR}">내가 쓴 글</a>
+									</label>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-header" id="headingThree">
+							<h5 class="icon-bg collapsed" data-bs-toggle="collapse"
+								data-bs-target="#collapseThree" aria-expanded="false"
+								aria-controls="collapseThree">
+								<span>업체 관리</span>
+							</h5>
+						</div>
+
+						<div id="collapseThree" class="collapse"
+							 aria-labelledby="headingThree" data-bs-parent="#accordionOne">
+							<div class="card-body">
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{/company/company_info}">업체 정보 </a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{/company/company_staff_setting}">직원 관리</a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{/company/company_question}">문의 관리</a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{/company/company_review}">리뷰 관리</a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a href="#">알림 관리</a>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-header" id="headingFour">
+							<h5 class="icon-bg collapsed" data-bs-toggle="collapse"
+								data-bs-target="#collapseFour" aria-expanded="false"
+								aria-controls="collapseFour">
+								<span>이별 준비</span>
+							</h5>
+						</div>
+
+						<div id="collapseFour" class="collapse"
+							 aria-labelledby="headingFour" data-bs-parent="#accordionOne">
+							<div class="card-body">
+								<div class="form-check custom-form-check">
+									<label>
+										<a href="#">예약내역</a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a href="#">결제내역</a>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ====================================
+            ——— MAIN CONTENTS DIV
+            ===================================== -->
+
+		</div>
+
+	</section>
+
+
+</th:block>
+</html>

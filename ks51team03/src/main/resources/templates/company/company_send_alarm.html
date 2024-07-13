@@ -86,6 +86,11 @@
 
 <th:block layout:fragment="customContent">
     <section class="bg-smoke py-12">
+        <div th:if="${errorMessage != null}">
+            <script>
+                alert("[[${errorMessage}]]");
+            </script>
+        </div>
         <div class="form-container">
             <h2>알림 발송</h2>
             <form th:action="@{/company/send_alarm}" method="post">

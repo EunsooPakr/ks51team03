@@ -4,6 +4,7 @@ package ks51team03.company.mapper;
 import ks51team03.company.dto.*;
 import ks51team03.company.dto.ComMap;
 import ks51team03.company.dto.Company;
+import ks51team03.files.dto.FileRequest;
 import ks51team03.member.dto.Member;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
@@ -12,6 +13,15 @@ import java.util.List;
 
 @Mapper
 public interface CompanyMapper {
+
+    // 업체 리뷰 별점 평균 반환
+    Double avgReviewScore(String companyCode);
+
+    // 업체의 리뷰 삭제
+    void deleteReview(String revCode);
+
+    // 리뷰 등록
+    void insertReview(ComReview comReview);
 
     // 문의 등록
     void insertQuestion(ComQuestion comQuestion);

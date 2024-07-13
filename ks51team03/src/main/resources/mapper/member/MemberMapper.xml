@@ -30,6 +30,25 @@
 		<id 	column="level" 			property="level" />
 		<result column="level_name" 	property="levelName" />
 	</resultMap>
+
+	<resultMap id="QuestionResultMap" type="ComQuestion">
+		<id column="quesnum" property="quesNum" />
+		<result column="ccode" property="cCode" />
+		<result column="qctenum" property="qcteNum" />
+		<result column="id" property="memberId" />
+		<result column="ques_content" property="quesContent" />
+		<result column="ques_date" property="quesDate" />
+	</resultMap>
+
+	<select id="getQuestionById" parameterType="String" resultMap="QuestionResultMap">
+		-- 특정 문의 회원 아이디로 검색
+		SELECT
+		quesnum, ccode, qctenum, id, ques_content, ques_date
+		FROM
+		questions
+		WHERE
+		id = #{memberId}
+	</select>
 	
 	<sql id="memberSearch">
 		SELECT 
@@ -113,28 +132,58 @@
 			login_id = #{memberId};
 	</delete>
 	
-	<update id="modifyMember" parameterType="Member">
+	<update id="updateMember" parameterType="Member">
 		/* 회원수정 */
-		UPDATE tb_member
+		UPDATE member
 		<set>
 			<if test="memberPw != null and memberPw != ''">
-				m_pw = #{memberPw},
+				pw = #{memberPw},
 			</if>
 			<if test="memberName != null and memberName != ''">
-				m_name = #{memberName},
+				name = #{memberName},
 			</if>
-			<if test="memberLevel > 0">
-				m_level = #{memberLevel},
+			<if test="memberLevel != null and memberLevel != ''">
+				level = #{memberLevel},
 			</if>
-			<if test="memberAddr != null and memberAddr != ''">
-				m_addr = #{memberAddr},
+			<if test="memberGrade != null and memberGrade != ''">
+				grade = #{memberGrade},
+			</if>
+			<if test="memberGender != null and memberGender != ''">
+				gender = #{memberGender},
+			</if>
+			<if test="memberBirth != null and memberBirth != ''">
+				birth = #{memberBirth},
+			</if>
+			<if test="memberPhone != null and memberPhone != ''">
+				phone = #{memberPhone},
 			</if>
 			<if test="memberEmail != null and memberEmail != ''">
-				m_email = #{memberEmail}
+				email = #{memberEmail},
+			</if>
+			<if test="memberAddr != null and memberAddr != ''">
+				addr = #{memberAddr},
+			</if>
+			<if test="memberAddrDetail != null and memberAddrDetail != ''">
+				addr_detail = #{memberAddrDetail},
+			</if>
+			<if test="memberPostNum != null and memberPostNum != ''">
+				post_num = #{memberPostNum},
+			</if>
+			<if test="memberPet != null and memberPet != ''">
+				pet = #{memberPet},
+			</if>
+			<if test="memberSmsCheck != null and memberSmsCheck != ''">
+				sms_check = #{memberSmsCheck},
+			</if>
+			<if test="memberEmailCheck != null and memberEmailCheck != ''">
+				email_check = #{memberEmailCheck},
+			</if>
+			<if test="memberRgstDate != null and memberRgstDate != ''">
+				regist_date = #{memberRgstDate}
 			</if>
 		</set>
 		WHERE 
-			m_id = #{memberId}
+			id = #{memberId}
 	</update>
 	
 	<select id="getMemberInfoById" parameterType="String" resultMap="memberResultMap">

@@ -8,6 +8,11 @@
 <th:block layout:fragment="customContent">
     <div class="main-wrapper home-city">
         <section class="bg-smoke py-12">
+            <div th:if="${errorMessage != null}">
+                <script>
+                    alert("[[${errorMessage}]]");
+                </script>
+            </div>
             <div class="search_container">
                 <div class="search-container">
                     <form id="searchForm" method="get" th:action="@{/map/map_main}">
@@ -31,7 +36,10 @@
                                 <img alt="PAL 업체 등록 이미지" id="placeIcon" src="">
                             </div>
                             <div class="details">
-                                <a th:href="@{/map/map_company_info}" id="placeName"></a>
+                                <div id="placeNameContainer">
+                                    <a id="placeNameDb" style="display:none;" th:href="@{/map/map_company_info}"></a>
+                                    <span id="placeNameKakao" style="display:none;"></span>
+                                </div>
                                 <div id="placeRating">별점: 알수없음</div>
                                 <div id="parking">주차장: 알수없음</div>
                                 <div id="placeAddress"></div>
@@ -39,18 +47,15 @@
                                 <div id="employee_count">직원 수: 알수없음</div>
                                 <div id="placeHours"></div>
                             </div>
-                            <a class="write-review-link" id="write-question-link"
-                               th:href="@{'/map/map_write_question'(ccode=${place.cCode})}">문의하기</a>
+                            <a class="write-review-link" id="write-question-link">문의하기</a>
                             <hr>
                             <div class="reviews">
                                 <div class="review-container">
                                     <div id="placeReviews">리뷰: 알수없음</div>
-                                    <a class="write-review-link" th:href="@{map_write_review}">리뷰 작성하기</a>
+                                    <a class="write-review-link" id="write-review-link">리뷰 작성하기</a>
                                 </div>
                                 <div class="review_list">
-                                    <div class="review">리뷰 1: 좋아요</div>
-                                    <div class="review">리뷰 2: 싫어요</div>
-                                    <!-- 더 많은 리뷰를 추가할 수 있습니다 -->
+                                    <!-- 리뷰가 여기 표시됩니다. -->
                                 </div>
                             </div>
                         </div>
@@ -71,7 +76,6 @@
         var resultsPerPage = 15; // 페이지당 표시할 결과 수
         var dbPlaces = []; // 데이터베이스 검색 결과를 저장할 배열
         var comMapList = /*[[${comMapList}]]*/ [];
-
 
         // 현재 위치에 마커 찍는 메서드
         function onGeoOkay(position) {
@@ -336,7 +340,7 @@
                 var el = document.createElement('li'),
                     itemStr = '<span class="markerbg2"></span>' +
                         '<div class="info" onclick="showDetails(' + listIdx + ', true)">' +
-                        '   <a th:href="/map/map_company_info">' + dbPlace.companyName + '</a>';
+                        '   <h5>' + dbPlace.companyName + '<h5>';
 
                 if (dbPlace.road_address_name) {
                     itemStr += '    <span>' + dbPlace.road_address_name + '</span>' +
@@ -492,26 +496,76 @@
         function showDetails(index, isDB) {
             var infoWrap = document.getElementById('info_wrap');
             var menuWrap = document.getElementById('menu_wrap');
+            var cCode;
+
+            var placeNameDb = document.getElementById('placeNameDb');
+            var placeNameKakao = document.getElementById('placeNameKakao');
 
             if (isDB) {
                 var places = dbPlaces[index];
-                document.getElementById('placeName').innerText = places.companyName;
-                document.getElementById('placeRating').innerText = '별점: ' + places.rating;
+                cCode = places.companyCode; // cCode 설정
+                placeNameDb.innerText = places.companyName;
+                placeNameDb.href = "/map/map_company_info?cCode=" + cCode;
+                placeNameDb.style.display = 'block';
+                placeNameKakao.style.display = 'none';
+
                 document.getElementById('parking').innerText = '주차장: ' + (places.companyParking ? 'O' : 'X');
                 document.getElementById('placeAddress').innerText = places.companyAddr;
                 document.getElementById('placePhone').innerText = places.companyPhone;
                 document.getElementById('employee_count').innerText = '직원 수: ' + places.companyStfCount;
-                document.getElementById('placeReviews').innerText = '리뷰: 알수없음';
+
+                document.getElementById('write-question-link').setAttribute('href', '/map/map_write_question?cCode=' + cCode);
+                document.getElementById('write-review-link').setAttribute('href', '/map/map_write_review?cCode=' + cCode);
+                document.getElementById('write-question-link').style.display = 'block';
+                document.getElementById('write-review-link').style.display = 'block';
+
+                // AJAX 요청으로 리뷰 데이터 가져오기
+                $.ajax({
+                    url: "/map/getCompanyInfo",
+                    type: "GET",
+                    data: { cCode: cCode },
+                    success: function(response) {
+                        document.getElementById('placeRating').innerText = '별점: ' + (response.avgReviewScore !== null ? response.avgReviewScore : '없음');
+                        document.getElementById('placeReviews').innerText = '리뷰 수: ' + (response.reviewCount !== null ? response.reviewCount : '없음');
+
+                        var reviewList = document.querySelector('.review_list');
+                        reviewList.innerHTML = ''; // 기존 리뷰 목록 초기화
+                        if (response.reviews && response.reviews.length > 0) {
+                            response.reviews.forEach(function(review) {
+                                var reviewDiv = document.createElement('div');
+                                reviewDiv.className = 'review';
+                                reviewDiv.innerText = review.memberId + ': ' + review.revContent;
+                                reviewList.appendChild(reviewDiv);
+                            });
+                        } else {
+                            reviewList.innerText = '리뷰 없음';
+                        }
+                    },
+                    error: function(error) {
+                        console.error("Error fetching company info", error);
+                    }
+                });
+
             } else {
                 var places = allResults[index - dbPlaces.length];
-                document.getElementById('placeName').innerText = places.place_name;
-                document.getElementById('placeRating').innerText = '별점: 알수없음';
+                cCode = places.id; // cCode 설정
+                placeNameKakao.innerText = places.place_name;
+                placeNameDb.style.display = 'none';
+                placeNameKakao.style.display = 'block';
+
                 document.getElementById('parking').innerText = '주차장: 알수없음';
                 document.getElementById('placeAddress').innerText = places.address_name;
                 document.getElementById('placePhone').innerText = places.phone;
                 document.getElementById('employee_count').innerText = '직원 수: 알수없음';
-                document.getElementById('placeReviews').innerText = '리뷰: 알수없음';
+
+                document.getElementById('write-question-link').style.display = 'none';
+                document.getElementById('write-review-link').style.display = 'none';
+                document.getElementById('placeRating').innerText = '별점: 알수없음';
+                document.getElementById('placeReviews').innerText = '리뷰 수: 알수없음';
+                var reviewList = document.querySelector('.review_list');
+                reviewList.innerHTML = '리뷰 없음'; // 기존 리뷰 목록 초기화
             }
+
             menuWrap.style.display = 'none';
             infoWrap.style.display = 'block';
         }

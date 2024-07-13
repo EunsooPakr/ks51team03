@@ -10,5 +10,6 @@ public class ReserveInfoDto {
     private String reservePetName;
     private String reservePhone;
     private String reserveEmail;
+    private String reserveRegDate;
 
 }

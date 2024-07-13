@@ -67,4 +67,29 @@
 		FROM 
 	    	pet;
 	</select>
+	
+	<select id="getPetInfoByMemberId" parameterType="String" resultMap="petResultMap">
+		/* 특정회원 정보조회 */
+		SELECT 
+			pcode,
+			id,
+			p_name,
+			p_gender,
+			p_birth,
+			p_class,
+			p_species,
+			p_breed,
+			p_weight,
+			p_neuter,
+			p_operation,
+			p_medicine,
+			p_note,
+			p_url,
+			p_regist_date
+		FROM
+			pet
+		WHERE 
+			id = #{memberId};
+	</select>
+	
 </mapper>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/mypage_default}">
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
+</head>
+<th:block layout:fragment="customContent">
+	<section class="bg-smoke py-12" style="width: 1000px">
+		<section>
+			<div class="main-wrapper cars-list">
+				<section class="page-title">
+					<div class="page-title-img bg-img bg-overlay-darken" style="background-image: url(/assets/img/pages/page-title-bg15.jpg);">
+						<div class="container">
+							<div class="row align-items-center justify-content-center" style="height: 200px;">
+								<div class="col-lg-6">
+									<div class="page-title-content">
+										<div class="title-border">
+											<h2 class="text-uppercase text-white font-weight-bold">내가 쓴 글</h2>
+										</div>
+										<p class="text-white mb-0"></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</section>
+
+		<section class="bg-smoke">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="mb-md-6">
+							<div class="row align-items-center">
+								<div class="col-md-6 col-xl-4">
+									<div class="form-group mb-5 mb-md-0 bg-white">
+										<div class="select-default select-category-2">
+											<select class="select-option" id="postType">
+												<option value="inquiry">내가 쓴 문의</option>
+												<option value="review">내가 쓴 후기</option>
+												<option value="community">내가 쓴 커뮤니티</option>
+												<option value="comment">내가 쓴 댓글</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="bg-smoke" style="padding-bottom: 6.25rem !important;">
+			<div id="postContent">
+			</div>
+		</section>
+
+		<section class="pt-5 pt-md-7">
+			<div class="container">
+				<nav aria-label="Page navigation">
+					<ul class="pagination justify-content-center align-items-center">
+						<li class="page-item">
+							<a class="page-link" href="javascript:void(0)" tabindex="-1">
+								<i class="fas fa-long-arrow-alt-left d-none d-md-inline-block me-md-1" aria-hidden="true"></i> Previous
+							</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link">1</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="javascript:void(0)">Next
+								<i class="fas fa-long-arrow-alt-right d-none d-md-inline-block ms-md-1" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</section>
+	</section>
+	<!-- Thymeleaf 데이터를 JSON으로 변환하여 JavaScript에서 사용 -->
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var memberQuestions = /*[[${memberQuestion}]]*/ [];
+		/*]]>*/
+	</script>
+</th:block>
+<th:block layout:fragment="customJs">
+	<script>
+		$(document).ready(function() {
+			function updateContent() {
+				const selectedValue = $('#postType').val();
+				console.log("postType changed:", selectedValue);
+				let content = '';
+				switch (selectedValue) {
+					case 'inquiry':
+						const test = JSON.stringify(memberQuestions);
+						console.log("test: " + test);
+						content = memberQuestions.map(q => `
+							<div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+								<div class="media-body">
+									<div class="row">
+										<div class="col-md-7 col-xl-8 position-relative">
+											<div class="post-header">
+												<h4>
+													<a class="post-title">${q.ccode} 그냥 DTO 하나 추가해서 쿼리 조인 수정 해야할듯</a>
+												</h4>
+												<div class="post-date">
+													<span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 ${q.quesDate}</span>
+												</div>
+											</div>
+											<p class="post-content">${q.quesContent}</p>
+										</div>
+										<div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+											<div class="action-buttons">
+												<button class="edit-button">수정</button>
+												<button class="delete-button">삭제</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						`).join('');
+						break;
+
+					case 'review':
+						content = `
+							<div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+								<div class="media-body">
+									<div class="row">
+										<div class="col-md-7 col-xl-8 position-relative">
+											<div class="post-header">
+												<h4>
+													<a class="post-title">후기 제목</a>
+												</h4>
+												<div class="post-date">
+													<span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
+												</div>
+											</div>
+											<p class="post-content">후기 내용</p>
+											<p class="post-content">대상 업체</p>
+											<img src="/path/to/image.jpg" alt="후기 이미지" />
+										</div>
+										<div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+											<div class="action-buttons">
+												<button class="edit-button">수정</button>
+												<button class="delete-button">삭제</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>`;
+						break;
+
+					case 'community':
+						content = `
+							<div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+								<div class="media-body">
+									<div class="row">
+										<div class="col-md-7 col-xl-8 position-relative">
+											<div class="post-header">
+												<h4>
+													<a class="post-title">글 제목</a>
+												</h4>
+												<div class="post-date">
+													<span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
+												</div>
+											</div>
+											<p class="post-content">게시판 이름</p>
+											<p class="post-content">글 내용</p>
+											<p class="post-content">조회수: 123</p>
+											<p class="post-content">댓글 수: 10</p>
+										</div>
+										<div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+											<div class="action-buttons">
+												<button class="edit-button">수정</button>
+												<button class="delete-button">삭제</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>`;
+						break;
+
+					case 'comment':
+						content = `
+							<div class="media post-list media-list-fullwidth media-border flex-column flex-md-row align-items-stretch mb-5">
+								<div class="media-body">
+									<div class="row">
+										<div class="col-md-7 col-xl-8 position-relative">
+											<div class="post-header">
+												<h4>
+													<a class="post-title">글 제목</a>
+												</h4>
+												<div class="post-date">
+													<span><i class="far fa-calendar-alt" aria-hidden="true"></i> 작성일 <span>2024-06-23</span></span>
+												</div>
+											</div>
+											<p class="post-content">댓글 내용</p>
+										</div>
+										<div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
+											<div class="action-buttons">
+												<button class="edit-button">수정</button>
+												<button class="delete-button">삭제</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>`;
+						break;
+				}
+
+				$('#postContent').html(content);
+			}
+			// select 요소의 값 변경 시 이벤트 처리
+			$('#postType').on('change', updateContent);
+			// 페이지 로드 시 '내가 쓴 문의' 이벤트 발생
+			$('#postType').val('inquiry').trigger('change');
+		});
+	</script>
+</th:block>
+</html>

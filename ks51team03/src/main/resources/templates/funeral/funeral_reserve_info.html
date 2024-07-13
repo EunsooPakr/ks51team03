@@ -62,40 +62,47 @@
                     <div class="col-md-7 col-lg-8 order-1 order-md-0">
                         <h3 class="text-capitalize mb-5">회원 정보</h3>
 
-                        <form action="" method="post" target="_blank">
-                            <div class="row">
+                        <form action="" method="get" target="_blank">
+                            <div class="row" th:if="${reserveInfoList != null}" th:each="r : ${reserveInfoList}">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label for="inputName">회원 아이디</label>
-                                        <input type="text" id="inputName" class="form-control border-0 bg-smoke">
+                                        <label for="inputName" >회원 아이디</label>
+                                        <input type="text" id="inputName" class="form-control border-0 bg-smoke" th:value="${r.getReserveId()}">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="inputName">성함</label>
-                                        <input type="text" class="form-control border-0 bg-smoke">
+                                        <input type="text" class="form-control border-0 bg-smoke" th:value="${r.getReserveName()}">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="inputName">반려동물 이름</label>
-                                        <input type="text" class="form-control border-0 bg-smoke">
+                                        <input type="text" class="form-control border-0 bg-smoke" th:value="${r.getReservePetName()}">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="inputName">핸드폰 번호</label>
-                                        <input type="text" class="form-control border-0 bg-smoke">
+                                        <input type="text" class="form-control border-0 bg-smoke" th:value="${r.getReservePhone()}">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label for="inputName">이메일</label>
-                                        <input type="text" class="form-control border-0 bg-smoke">
+                                        <label for="inputName" >이메일</label>
+                                        <input type="text" class="form-control border-0 bg-smoke" th:value="${r.getReserveEmail()}">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="inputName">예약 등록일</label>
+                                        <input type="text" class="form-control border-0 bg-smoke" th:value="${r.getReserveRegDate()}">
                                     </div>
                                 </div>
 
@@ -121,37 +128,34 @@
                         </form>
                     </div>
 
-                    <div class="col-md-5 col-lg-4">
+
+                    <div class="col-md-5 col-lg-4" th:if="${reserveServiceInfoDtoList != null}" th:each="l : ${reserveServiceInfoDtoList}">
                         <h3 class="mb-5">장례 서비스 상세 확인</h3>
-                        <div class="card bg-smoke mb-6 mb-md-0">
+                        <div class="card bg-smoke mb-6 mb-md-0" >
                             <img class="card-img-top lazyestload" th:data-src="@{/assets/img/booking/booking.jpg}" th:src="@{/assets/img/booking/booking.jpg}" alt="Card image cap">
                             <div class="card-body">
-                                <h6 class="card-title text-dark">요람장 패키지</h6>
+                                <h6 class="card-title text-dark" th:text="${l.funeralserviceTitle}"></h6>
 
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item bg-transparent border-top-0 px-0 py-4">
+                                    <li class="list-group-item bg-transparent border-top-0 px-0 py-2" >
                                         <span><i class="far fa-calendar-alt me-1" aria-hidden="true"></i>예약일:</span>
-                                        <span class="text-gray-color">25 Mar, 2025</span>
+                                        <input type="text" class="form-control border-0 bg-smoke" th:value="${l.reserveStartDate}">
                                     </li>
 
-                                    <li class="list-group-item bg-transparent px-0 py-4 border-off-white">
+                                    <li class="list-group-item bg-transparent px-0 py-2 border-off-white">
                                         <span><i class="far fa-calendar-alt me-1" aria-hidden="true"></i>종료일:</span>
-                                        <span class="text-gray-color">28 Mar, 2019</span>
-                                    </li>
-
-                                    <li class="list-group-item bg-transparent px-0 py-4 border-off-white">
-                                        <span><i class="fa fa-user me-1" aria-hidden="true"></i>참여인원:</span>
-                                        <span class="text-gray-color">2명</span>
+                                        <input type="text" class="form-control border-0 bg-smoke" th:value="${l.reserveEndDate}">
                                     </li>
 
                                     <li class="list-group-item bg-transparent px-0 py-4 d-none"></li>
                                 </ul>
                             </div>
 
-                            <div class="card-footer mt-6">
+                            <div class="card-footer mt-2">
                                 <h2 class="mb-0">
                                     <span>결제 금액:</span>
-                                    <span class="text-primary font-weight-bold"></span>
+                                    <input type="text" class="card-footer mt-1" th:value="${l.funeralservicePrice}">
+
                                 </h2>
                             </div>
                         </div>

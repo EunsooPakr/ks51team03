@@ -2,6 +2,8 @@ package ks51team03.company.controller;
 import jakarta.servlet.http.HttpSession;
 import ks51team03.company.dto.*;
 import ks51team03.company.service.CompanyService;
+import ks51team03.files.dto.FileRequest;
+import ks51team03.files.util.FileUtils;
 import ks51team03.member.dto.Member;
 import ks51team03.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +34,30 @@ public class CompanyController {
 	private final MemberService memberService;
 	private final CompanyService companyService;
 
+
 	@GetMapping("/company/company_info")
-	public String companyInfo(HttpSession session, Model model) {
+	public String companyInfo(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
 
 		String memberId = (String) session.getAttribute("SID");
-		String ccode = (String) session.getAttribute("CCODE");
+		String cCode = (String) session.getAttribute("CCODE");
 		// 세션 아이디로 직원 테이블에서 업체 코드 찾기
 		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
 		log.info("companyCode : {}", companyCode);
+
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
 
 		// 직원일 경우
 		if (companyCode != null) {
@@ -63,8 +81,8 @@ public class CompanyController {
 			// 세션 아이디로 업체 정보 불러오기
 			List<Company> companyInfoById = companyService.getCompanyInfoById(memberId);
 			// 현재 요일 가져오기
-			List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(ccode);
-			int companyReviewCount = companyService.getCompanyReviewCount(ccode);
+			List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(cCode);
+			int companyReviewCount = companyService.getCompanyReviewCount(cCode);
 
 			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
 			String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
@@ -104,8 +122,22 @@ public class CompanyController {
 		}
 	}
 	@GetMapping("/company/company_modify")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
-	public String companyModify(Model model, HttpSession session) {
+	public String companyModify(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
 		List<Company> companyListById = companyService.getCompanyInfoById(memberId);
 		model.addAttribute("companyListById", companyListById);
 		return "company/company_modify";
@@ -113,12 +145,12 @@ public class CompanyController {
 
 	@PostMapping("/company/modify_Company")
 	public String modifyCompany(Company company, HttpSession session) {
-		String ccode = (String) session.getAttribute("CCODE");
-		company.setCompanyCode(ccode);
+		String cCode = (String) session.getAttribute("CCODE");
+		company.setCompanyCode(cCode);
 
 		log.info("업체수정 company:{}", company);
 		companyService.modifyCompany(company);
-		return "redirect:/company/company_info";
+		return "redirect:/map/map_main";
 	}
 
 	@GetMapping("/company/company_staff_setting")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
@@ -128,7 +160,7 @@ public class CompanyController {
 		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
 		if (memberId == null) {
 			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
-			return "redirect:/company/company_info"; // 로그인 페이지로 리다이렉트
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
 		}
 
 		// 사용자 정보 조회
@@ -137,14 +169,14 @@ public class CompanyController {
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-			return "redirect:/company/company_info"; // 에러 메시지를 보낼 페이지로 리다이렉트
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 
 		// 직원 등록 요청 목록을 가져와서 모델에 추가
 
-		String ccode = (String) session.getAttribute("CCODE");
-		List<ComStaff> staffRequests = companyService.getStaffSingList(ccode);
-		List<ComStaff> staffList = companyService.getStaffList(ccode);
+		String cCode = (String) session.getAttribute("CCODE");
+		List<ComStaff> staffRequests = companyService.getStaffSingList(cCode);
+		List<ComStaff> staffList = companyService.getStaffList(cCode);
 
 		model.addAttribute("staffRequests", staffRequests);
 		model.addAttribute("staffList", staffList);
@@ -153,22 +185,66 @@ public class CompanyController {
 	}
 
 	@PostMapping("/company/staff/delete")
-	public String deleteStaff(@RequestParam String requestId) {
+	public String deleteStaff(@RequestParam String requestId, HttpSession session, RedirectAttributes redirectAttributes) {
+		String memberId = (String) session.getAttribute("SID");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (member == null || !member.getMemberLevel().equals("level2")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
 		// 직원 해고 로직
 		companyService.deleteStaff(requestId);
 		return "redirect:/company/company_staff_setting";
 	}
 
 	@PostMapping("/company/staff/accept")
-	public String acceptStaff(@RequestParam String requestId, HttpSession session) {
-		// 직원 등록 요청 수락 로직
+	public String acceptStaff(@RequestParam String requestId, HttpSession session, RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (member == null || !member.getMemberLevel().equals("level2")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
+		// 직원 등록 요청 수락 로직
 		companyService.acceptStaff(requestId,memberId);
 		return "redirect:/company/company_staff_setting";
 	}
 
 	@PostMapping("/company/staff/reject")
-	public String rejectStaff(@RequestParam String requestId) {
+	public String rejectStaff(@RequestParam String requestId, HttpSession session, RedirectAttributes redirectAttributes) {
+		String memberId = (String) session.getAttribute("SID");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (member == null || !member.getMemberLevel().equals("level2")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
 		// 직원 등록 요청 거절 로직
 		companyService.deleteStaff(requestId);
 		return "redirect:/company/company_staff_setting";
@@ -211,10 +287,23 @@ public class CompanyController {
 
 	// 업체 문의 조회
 	@GetMapping("/company/company_question")
-	public String companyQuestion(Model model, HttpSession session) {
+	public String companyQuestion(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
 		String cCode = (String) session.getAttribute("CCODE");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
 
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
 		// 세션 아이디로 직원 테이블에서 업체 코드 찾기
 		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
 		if (companyCode == null) {
@@ -247,10 +336,45 @@ public class CompanyController {
 		String memberId = (String) session.getAttribute("SID");
 		comQuestion.setMemberId(memberId);
 		log.info("Received cCode: {}", comQuestion.getCCode());
+		log.info("Received qcteNum: {}", comQuestion.getQcteNum());
+
+		// qctcKind 값을 qctenum 값으로 변환
+		String qctenum = getQctenum(comQuestion.getQcteNum(), comQuestion.getCCode());
+		comQuestion.setQcteNum(qctenum);
 		comQuestion.setQuesDate(LocalDate.now().toString());
 
 		companyService.addQuestion(comQuestion);
 
+		return "redirect:/map/map_main?success=true";
+	}
+	private String getQctenum(String qcteNum, String comClass) {
+		Map<String, String> qctenumMap = new HashMap<>();
+		qctenumMap.put("병원이용", "qctc1");
+		qctenumMap.put("기타문의", "qctc11");
+//		qctenumMap.put("기타문의", "qctc10");
+//		qctenumMap.put("기타문의", "qctc12");
+		qctenumMap.put("진료관련", "qctc2");
+		qctenumMap.put("병원행정", "qctc3");
+		qctenumMap.put("약국행정", "qctc4");
+		qctenumMap.put("제품관련", "qctc5");
+		qctenumMap.put("처방문의", "qctc9");
+		qctenumMap.put("장례문의", "qctc7");
+		qctenumMap.put("비용문의", "qctc8");
+		qctenumMap.put("일정문의", "qctc9");
+
+		return qctenumMap.getOrDefault(qcteNum, "기타문의");
+	}
+
+	// 리뷰 등록
+	@PostMapping("/company/submit_review")
+	public String submitReview(@RequestParam("cCode")String cCode, ComReview comReview, HttpSession session) {
+		String memberId = (String) session.getAttribute("SID");
+		comReview.setMemberId(memberId);
+		comReview.setCCode(cCode);
+		log.info("comReview: {}", comReview);
+		companyService.addReviewWithFile(comReview);
+
+		//companyService.addReview(comReview);
 		return "redirect:/map/map_main";
 	}
 
@@ -264,7 +388,22 @@ public class CompanyController {
 
 	// 문의 답변
 	@GetMapping("/company/company_question_answer")
-	public String companyQuestionAnswer(@RequestParam("quesnum") String quesnum, Model model) {
+	public String companyQuestionAnswer(@RequestParam("quesnum") String quesnum, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		String memberId = (String) session.getAttribute("SID");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
 		ComQuestion question = companyService.getCompanyQuestionById(quesnum);
 		model.addAttribute("question", question);
 		return "company/company_question_answer";
@@ -274,14 +413,28 @@ public class CompanyController {
 	public String submitAnswer(ComQuestionAnswer comQuestionAnswer, HttpSession session) {
 		String memberId = (String)session.getAttribute("SID");
 		comQuestionAnswer.setMemberId(memberId);
-		// 새로운 qaCode 생성
 		companyService.addAnswer(comQuestionAnswer);
 		return "redirect:/company/company_question";
 	}
 
 	// 문의 답변 수정
 	@GetMapping("/company/company_question_answer_modify")
-	public String companyQuestionAnswerModify(@RequestParam("quesnum") String quesnum, Model model) {
+	public String companyQuestionAnswerModify(@RequestParam("quesnum") String quesnum, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		String memberId = (String)session.getAttribute("SID");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
 		ComQuestion question = companyService.getCompanyQuestionById(quesnum);
 		ComQuestionAnswer answer = companyService.getAnswerByQuesNum(quesnum);
 		log.info("answer: {}", answer);
@@ -303,9 +456,43 @@ public class CompanyController {
 		return "redirect:/company/company_question";
 	}
 
+	@PostMapping("/company/review_delete")
+	public String deleteReview(@RequestParam("revCode")String revCode){
+		log.info("revCode: {}", revCode);
+		companyService.deleteReview(revCode);
+		return "redirect:company_review";
+	}
+
 	@GetMapping("/company/company_review")
-	public String companyReview() {
-		//완
+	public String companyReview(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		String memberId = (String) session.getAttribute("SID");
+		String cCode = (String) session.getAttribute("CCODE");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
+		// 세션 아이디로 직원 테이블에서 업체 코드 찾기
+		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
+		if (companyCode == null) {
+			companyCode = cCode; // 업체 대표일 경우
+		}
+		if (companyCode != null) {
+			List<ComReview> comReviews = companyService.getCompanyReview(companyCode);
+			log.info("comReviews: {}", comReviews);
+			model.addAttribute("comReviews", comReviews);
+
+		}
+
 		return "company/company_review";
 	}
 

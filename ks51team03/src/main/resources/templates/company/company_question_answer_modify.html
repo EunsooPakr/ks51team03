@@ -89,6 +89,11 @@
 
 <th:block layout:fragment="customContent">
     <section class="bg-smoke py-12">
+        <div th:if="${errorMessage != null}">
+            <script>
+                alert("[[${errorMessage}]]");
+            </script>
+        </div>
         <div class="form-container">
             <h2>답변 수정</h2>
             <form th:action="@{/company/update_answer}" method="post">
