@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/mypage_default}">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
+
+</head>
+<th:block layout:fragment="customContent">
+	<section class="bg-smoke py-12">
+		<div class="mypage-contents-box">
+			<div class="member-info-form">
+                <div class="hover-profile mb-7 mb-lg-9">
+                    <h1 class="member-info-profile-top-textline">
+                        <span>반려동물 정보</span>
+                    </h1>
+					<div class="member-mypage-list-pet-petbox-list">
+						<div class="member-mypage-list-pet-petbox">
+						    <!-- 반려동물 리스트를 순회하면서 각각의 정보를 표시 -->
+						    <div th:each="pet : ${petInfoList}" class="login-insert-field profile">
+						        <div class="login-insert-img-box">
+						            <div class="member-info-profile-round-box" style="background: #BDBDBD;">
+						                <img id="profileImage" class="member-info-profile-round-box-img"
+						                     th:src="@{/assets/img/profile-no-img.png}">
+						            </div>
+						            <div class="pet-info-box">
+						                <div class="pet-info-header">
+						                    <a th:text="${pet.petName}">반려동물 이름</a>
+						                </div>
+						                <div class="pet-info-content">
+						                    <a th:text="'성별: ' + ${pet.petGender}">성별:</a>
+						                </div>
+						                <div class="pet-info-content">
+						                    <a th:text="'생년월일: ' + ${pet.petBirth}">생년월일:</a>
+						                </div>
+						                <div class="pet-info-content">
+						                    <a th:text="'종과목: ' + ${pet.petClass}">종과목:</a>
+						                </div>
+						            </div>
+						            <div class="pet-info-box-btn">
+						                <button class="pet-edit-button">수정</button>
+						                <button class="pet-delete-button">삭제</button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
+					</div>
+					<button class="member-mypage-list-pet-petbox-new">
+						<div class="petbox-dotline">
+							<img id="addPetInfoImage" th:src="@{/assets/img/pet-add-cross-img.png}">
+						</div>
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
+</th:block>
+</html>
