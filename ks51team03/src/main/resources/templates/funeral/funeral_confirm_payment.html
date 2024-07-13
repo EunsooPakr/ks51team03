@@ -12,54 +12,19 @@
     <section class="py-12">
         <div class="container">
             <!-- Table Section -->
-            <div class="table-dashboard mb-7">
+            <div class="table-dashboard mb-7" >
                 <div class="row">
                     <div class="col-12">
                         <h2 class="text-uppercase mb-3">이별내역 조회</h2>
                         <table class="table table-hover">
                             <tbody>
-                            <tr>
+                            <tr th:if="${paymentDtoList != null}" th:each="l : ${paymentDtoList}">
                                 <td class="second-child">
                                     <i class="fab fa-fort-awesome" aria-hidden="true"></i>
                                     <div>
-                                        <a href="" class="hover-text-primary">PAL 패키지 </a><br>
-                                        <p class="">비용 : 55,000원</p>
-                                        <p class="">결제 : 결제완료</p>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <ul class="list-unstyled">
-                                        <li class="">
-                                            <h5>예약일</h5>
-                                        </li>
-
-                                        <li>
-                                            <h6>2024-05-16</h6>
-                                        </li>
-
-                                        <li class="">
-                                            <h5>반려동물</h5>
-                                        </li>
-
-                                        <li>
-                                            <h6 class="mb-0">콩순이</h6>
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <div>
-                                        <a th:href="@{/funeral/funeral_confirm_payment_detail}" class="btn btn-xs btn-outline-secondary text-uppercase">상세 보기</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="second-child">
-                                    <i class="fab fa-fort-awesome" aria-hidden="true"></i>
-                                    <div>
-                                        <a href="" class="hover-text-primary">프리미엄 패키지 </a><br>
-                                        <p class="">비용 : 85,000원</p>
-                                        <p class="">결제 : 결제 전</p>
+                                        <a href="" class="hover-text-primary" th:text="${l.getFpName()}"></a><br>
+                                        <p th:text="'비용 : ' + ${l.getFpFinal()} + '원'">비용 : 55,000원</p>
+                                        <p >결제 : 결제완료</p>
                                     </div>
                                 </td>
 
@@ -95,7 +60,6 @@
             </div>
         </div>
     </section>
-
 
 </th:block>
 <!-- 사용자정의 javascript file -->
