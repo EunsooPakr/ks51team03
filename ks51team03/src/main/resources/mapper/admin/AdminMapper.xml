@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ks51team03.admin.mapper.AdminMapper">
+
+	<resultMap type="Member" id="AdminMemberResultMap">
+		<!-- pk, column -->
+		<id 	column="id" 			property="memberId"/>
+		<result column="pw" 			property="memberPw"/>
+		<result column="name" 			property="memberName"/>
+		<result column="level" 			property="memberLevel"/>
+		<result column="level_name" 	property="memberLevelName"/>
+		<result column="grade" 			property="memberGrade"/>
+		<result column="gender" 		property="memberGender"/>
+		<result column="birth" 			property="memberBirth"/>
+		<result column="phone" 			property="memberPhone"/>
+		<result column="email" 			property="memberEmail"/>
+		<result column="addr" 			property="memberAddr"/>
+		<result column="addr_detail" 	property="memberAddrDetail"/>
+		<result column="post_num" 		property="memberPostNum"/>
+		<result column="pet" 			property="memberPet"/>
+		<result column="sms_check" 		property="memberSmsCheck"/>
+		<result column="email_check" 	property="memberEmailCheck"/>
+		<result column="regist_date" 	property="memberRgstDate"/>
+		
+	</resultMap>
+
+	<resultMap type="MemberLevel" id="memberLevelResultMap">
+		<id 	column="level" 			property="level" />
+		<result column="level_name" 	property="levelName" />
+	</resultMap>
+
+	<resultMap id="QuestionResultMap" type="ComQuestion">
+		<id column="quesnum" property="quesNum" />
+		<result column="ccode" property="cCode" />
+		<result column="qctenum" property="qcteNum" />
+		<result column="id" property="memberId" />
+		<result column="ques_content" property="quesContent" />
+		<result column="ques_date" property="quesDate" />
+		<result column="com_name" property="companyName" />
+	</resultMap>
+
+	<resultMap id="ComReviewResultMap" type="ComReview">
+		<id column="revcode" property="revCode" />
+		<result column="id" property="memberId" />
+		<result column="rev_category" property="revCategory" />
+		<result column="ccode" property="cCode" />
+		<result column="rev_admin_date" property="revAdminDate" />
+		<result column="rev_update_date" property="revUpdateDate" />
+		<result column="file_idx" property="revImg" />
+		<result column="rev_scope" property="revScope" />
+		<result column="rev_content" property="revContent" />
+		<result column="com_name" property="companyName" />
+		<result column="file_path" property="filePath" />
+	</resultMap>
+
+	<select id="getAdminList" parameterType="String" resultMap="AdminMemberResultMap">
+		/* 회원 정보조회 */
+		SELECT
+			id,
+			pw,
+			name,
+			level,
+			grade,
+			gender,
+			birth,
+			phone,
+			email,
+			addr,
+			addr_detail,
+			post_num,
+			pet,
+			sms_check,
+			email_check,
+			regist_date
+		FROM
+			member
+
+	</select>
+
+
+</mapper>
