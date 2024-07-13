@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminPage_default}">
+<head>
+    <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}">
+    <style>
+        .admin_com_staff_list {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .admin_com_staff_list th, .admin_com_staff_list td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .admin_com_staff_list tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<th:block layout:fragment="customContent">
+    <section class="py-12">
+        <div class="admin-com-staff-body">
+            <div class="admin_com_staff_wrap">
+                <div class="admin_com_staff_title">
+                    <strong id="admin_com_staff_title">관리자 직원 목록</strong>
+                    <p>관리자 직원 정보를 확인하세요.</p>
+                </div>
+
+                <!-- 관리자 직원 목록 -->
+                <div class="admin_com_staff_list_wrap">
+                    <table class="admin_com_staff_list">
+                        <thead>
+                        <tr>
+                            <th>직원 코드</th>
+                            <th>회원 아이디</th>
+                            <th>업체 코드</th>
+                            <th>직급</th>
+                            <th>전화번호</th>
+                            <th>확인 여부</th>
+                            <th>승인자 아이디</th>
+                            <th>등록일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="staff : ${comStaffList}">
+                            <td th:text="${staff.stfCode}"></td>
+                            <td th:text="${staff.memberId}"></td>
+                            <td th:text="${staff.cCode}"></td>
+                            <td th:text="${staff.level}"></td>
+                            <td th:text="${staff.stfPhone}"></td>
+                            <td th:text="${staff.stfCheck == 1 ? 'Yes' : 'No'}"></td>
+                            <td th:text="${staff.stfApproId}"></td>
+                            <td th:text="${staff.stfDate}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+</html>
