@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block  th:fragment="adminPageFragment">
+	<!-- ====================================
+  ——— LEFTSIDEBAR_LIST SECTION
+  ===================================== -->
+	<section class="bg-smoke py-12">
+		<div class="mypage-box">
+			<div class="left-sidebar-list">
+				<h4 class="text-uppercase font-weight-bold">관리자 페이지</h4>
+				<div class="accordion" id="accordionOne">
+					<div class="card">
+						<div class="card-header" id="headingOne">
+							<!-- <h5 class="icon-bg" data-bs-toggle="collapse" -->
+							<h5 class="icon-bg collapsed" data-bs-toggle="collapse"
+								data-bs-target="#collapseOne" aria-expanded="false"
+								aria-controls="collapseOne">
+								<span>회원 관리</span>
+							</h5>
+						</div>
+
+						<div id="collapseOne" class="collapsed"
+							 aria-labelledby="headingOne" data-bs-parent="#accordionOne">
+							<div class="card-body">
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{/member/member_mypage_memberinfo}">회원 리스트 </a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{#}">회원 로그인 기록 </a>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-header" id="headingTwo">
+							<h5 class="icon-bg collapsed" data-bs-toggle="collapse"
+								data-bs-target="#collapseTwo" aria-expanded="false"
+								aria-controls="collapseTwo">
+								<span>반려 동물 관리</span>
+							</h5>
+						</div>
+
+						<!-- <div id="collapseTwo" class="collapse show" -->
+						<div id="collapseTwo" class="collapsed"
+							 aria-labelledby="headingOne" data-bs-parent="#accordionOne">
+							<div class="card-body">
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{#}">전체 반려 동물 리스트</a>
+									</label>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-header" id="headingThree">
+							<h5 class="icon-bg collapsed" data-bs-toggle="collapse"
+								data-bs-target="#collapseThree" aria-expanded="false"
+								aria-controls="collapseThree">
+								<span>업체 관리</span>
+							</h5>
+						</div>
+
+						<div id="collapseThree" class="collapse"
+							 aria-labelledby="headingThree" data-bs-parent="#accordionOne">
+							<div class="card-body">
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{#}">전체 업체 리스트 </a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a th:href="@{#}">전체 직원 리스트</a>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-header" id="headingFour">
+							<h5 class="icon-bg collapsed" data-bs-toggle="collapse"
+								data-bs-target="#collapseFour" aria-expanded="false"
+								aria-controls="collapseFour">
+								<span>게시판 관리</span>
+							</h5>
+						</div>
+
+						<div id="collapseFour" class="collapse"
+							 aria-labelledby="headingFour" data-bs-parent="#accordionOne">
+							<div class="card-body">
+								<div class="form-check custom-form-check">
+									<label>
+										<a href="#">게시판 등록</a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a href="#">게시판 카테고리 등록</a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check">
+									<label>
+										<a href="#">게시판 리스트</a>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ====================================
+            ——— MAIN CONTENTS DIV
+            ===================================== -->
+
+		</div>
+
+	</section>
+
+
+</th:block>
+</html>
