@@ -12,27 +12,31 @@
     <section class="py-12">
         <div class="container">
             <div class="bg-smoke p-2 p-md-6 pb-6 pb-md-8 mb-9 rounded">
-                <div class="row">
+                <div class="row" th:if="${paymentDetail != null}">
                     <div class="col-12">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <h3 class="text-uppercase mb-3">예약 상세 확인</h3>
+                                    <h3 class="text-uppercase mb-3">결제 정보 상세 확인</h3>
                                     <p class="text-primary mb-0">회원 정보</p>
                                 </div>
 
                                 <form action="" method="">
                                     <div class="form-group mb-4">
-                                        <input type="password" class="form-control form-control-lg rounded border-0" required="" placeholder="회원아이디">
+                                        <p>회원 아이디 </p>
+                                        <input type="text" class="form-control form-control-lg rounded border-0" readonly th:value="${paymentDetail.reserveId}">
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <input type="password" class="form-control form-control-lg rounded border-0" required="" placeholder="반려동물">
+                                        <p>회원 성함 </p>
+                                        <input type="text" class="form-control form-control-lg rounded border-0" readonly th:value="${paymentDetail.name}">
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <input type="password" class="form-control form-control-lg rounded border-0" required="" placeholder="결제 상태">
+                                        <p>반려동물 명 </p>
+                                        <input type="text" class="form-control form-control-lg rounded border-0" readonly th:value="${paymentDetail.petName}">
                                     </div>
+
                                 </form>
                             </div>
                         </div>
@@ -47,27 +51,22 @@
 
                                 <form action="" method="">
                                     <div class="form-group mb-4">
-                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
-                                               placeholder="장례 업체">
+                                        <p>장례 업체 </p>
+                                        <input type="text" class="form-control form-control-lg rounded border-0" readonly th:value="${paymentDetail.comName}">
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
-                                               placeholder="장례 서비스명">
+                                        <p>장례 서비스 </p>
+                                        <input type="text" class="form-control form-control-lg rounded border-0" readonly th:value="${paymentDetail.fpName}">
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
-                                               placeholder="장례 서비스 설명">
-                                    </div>
-
-                                    <div class="form-group mb-4">
-                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
-                                               placeholder="예약일">
+                                        <p>장례 서비스 예약일 </p>
+                                        <input type="text" class="form-control form-control-lg rounded border-0" readonly th:value="${paymentDetail.getReserveStartDate()}">
                                     </div>
 
                                     <div class="pt-2">
-                                        <button type="submit" class="btn btn-primary text-uppercase font-size-15 px-2 px-md-6">장례 서비스 수정</button>
+                                        <button type="button" class="btn btn-primary text-uppercase font-size-15 px-2 px-md-6">장례 서비스 날짜 수정</button>
                                     </div>
                                 </form>
                             </div>
@@ -83,23 +82,22 @@
 
                                 <form action="" method="">
                                     <div class="form-group mb-4">
-                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
-                                               placeholder="결제 수단">
+                                        <p>결제 방법 </p>
+                                        <input type="text" class="form-control form-control-lg rounded border-0" readonly th:value="${paymentDetail.fpMethod}">
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
-                                               placeholder="결제액">
+                                        <p>결제 금액 </p>
+                                        <input type="text" class="form-control form-control-lg rounded border-0" readonly th:value="${paymentDetail.fpFinal}">
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <input type="email" class="form-control form-control-lg rounded border-0" required=""
-                                               placeholder="결제일">
+                                        <p>결제일 </p>
+                                        <input type="text" class="form-control form-control-lg rounded border-0" readonly th:value="${paymentDetail.fpPayDate}">
                                     </div>
-
 
                                     <div class="pt-2">
-                                        <button type="submit" class="btn btn-primary text-uppercase font-size-15 px-2 px-md-6">결제 취소</button>
+                                        <button type="button" class="btn btn-primary text-uppercase font-size-15 px-2 px-md-6">결제 취소</button>
                                     </div>
                                 </form>
                             </div>

@@ -35,7 +35,7 @@
                                         </li>
 
                                         <li>
-                                            <h6>2024-05-16</h6>
+                                            <p th:text="${l.getReserveRegDate()}"></p>
                                         </li>
 
                                         <li class="">
@@ -43,13 +43,13 @@
                                         </li>
 
                                         <li>
-                                            <h6 class="mb-0">콩순이</h6>
+                                            <p th:text="${l.getPetName()}">콩순이</p>
                                         </li>
                                     </ul>
                                 </td>
                                 <td>
                                     <div>
-                                        <a th:href="@{/funeral/funeral_confirm_payment_detail}" class="btn btn-xs btn-outline-secondary text-uppercase">상세 보기</a>
+                                        <a th:href="@{/funeral/funeral_confirm_payment_detail(fpcode=${l.getFpcode()})}" class="btn btn-xs btn-outline-secondary text-uppercase">상세 보기</a>
                                     </div>
                                 </td>
                             </tr>

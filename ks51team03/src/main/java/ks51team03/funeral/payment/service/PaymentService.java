@@ -22,4 +22,13 @@ public class PaymentService {
 
       return paymentMapper.confirmPayment(paymentDto);
     }
+
+    // 결제 상세 내역 가져오기 위한 업체 코드 조회
+    public PaymentDto getPaymentDetail(String fpcode) {
+
+        log.info("fpcode: {}", fpcode);
+
+        return paymentMapper.getPaymentDetail(fpcode);
+    }
+
 }
