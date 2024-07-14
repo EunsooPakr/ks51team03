@@ -51,4 +51,10 @@ public interface MemberMapper {
 
 	// 회원목록 조회
 	List<Member> getMemberList();
+	
+	// 회원의 반려동물 수 추가
+	public void IncreasePetByMemberId(String memberId);
+	
+	//회원의 반려동물 수 감소
+	public void DeclinePetByMemberId(String memberId);
 }

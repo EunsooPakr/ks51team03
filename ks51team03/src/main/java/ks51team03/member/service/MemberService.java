@@ -41,4 +41,8 @@ public interface MemberService {
 	List<Member> getMemberList();
 
 	String getCompanyCodeByMemberId(String memberId);
+	
+	void IncreasePetByMemberId(String memberId);
+	
+	void DeclinePetByMemberId(String memberId);
 }

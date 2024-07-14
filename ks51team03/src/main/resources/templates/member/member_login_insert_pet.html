@@ -259,21 +259,22 @@
 			$('#insertPetForm input, select').each( (idx, element) => {
 				const id = element.id;
 				const value = element.value;
-				if(!value){
-					if(element.text!=null)
-						alert(element.text);
-					else
-						alert('필수입력 항목입니다.');
-					$(element).focus() ;
-					isSubmit = false;
-					return false;
-				}
+				if (!value && id !== 'petMedicine') {
+			        if (element.text != null) {
+			            alert(element.text);
+			        } else {
+			            alert('필수입력 항목입니다.');
+			        }
+			        $(element).focus();
+			        isSubmit = false;
+			        return false;
+			    }
 			});
 			
 			//회원정보를 담은 폼 전송
 			if(isSubmit)
 			{
-				alert('회원가입이 완료되었습니다.');
+				alert('반려동물등록이 완료되었습니다.');
 				$('#insertPetForm').submit();
 			}
 		});

@@ -132,6 +132,28 @@
 			login_id = #{memberId};
 	</delete>
 	
+	<update id="IncreasePetByMemberId" parameterType="String">
+	/*회원 반려동물 수 추가*/
+		UPDATE
+			member
+		SET
+			pet=pet+1
+		WHERE
+			id=#{memberId};
+	
+	</update>
+	
+	<update id="DeclinePetByMemberId" parameterType="String">
+	/*회원 반려동물 수 감소*/
+		UPDATE
+			member
+		SET
+			pet=pet-1
+		WHERE
+			id=#{memberId};
+	
+	</update>
+	
 	<update id="updateMember" parameterType="Member">
 		/* 회원수정 */
 		UPDATE member

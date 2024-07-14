@@ -16,4 +16,13 @@ public interface PetMapper {
  	
  	// 회원 아이디로 반려동물 검색 
  	public List<Pet> getPetInfoByMemberId(String memberId);
+ 	
+ 	//펫코드로 반려동물 검색
+    public Pet getPetInfoByPetCode(String petCode);
+    
+    //펫코드로 반려동물 수정
+    public int updatePet(Pet pet);
+    
+    //펫코드로 반려동물 삭제
+    public void removePet(String petCode);
 }
