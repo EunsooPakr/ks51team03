@@ -92,4 +92,87 @@
 			id = #{memberId};
 	</select>
 	
+	<select id="getPetInfoByPetCode" parameterType="String" resultMap="petResultMap">
+		/* 펫코드에 따라 특정 반려동물 정보조회 */
+		SELECT 
+			pcode,
+			id,
+			p_name,
+			p_gender,
+			p_birth,
+			p_class,
+			p_species,
+			p_breed,
+			p_weight,
+			p_neuter,
+			p_operation,
+			p_medicine,
+			p_note,
+			p_url,
+			p_regist_date
+		FROM
+			pet
+		WHERE 
+			pcode = #{petCode};
+	</select>
+	
+	<update id="updatePet" parameterType="Pet">
+		/* 반려동물수정 */
+		UPDATE pet
+		<set>
+			<if test="petCode != null and petCode != ''">
+				pcode = #{petCode},
+			</if>
+			<if test="memberId != null and memberId != ''">
+				id = #{memberId}
+			</if>
+			<if test="petName != null and petName != ''">
+				p_name = #{petName},
+			</if>
+			<if test="petGender != null and petGender != ''">
+				p_gender = #{petGender},
+			</if>
+			<if test="petBirth != null and petBirth != ''">
+				p_birth = #{petBirth},
+			</if>
+			<if test="petClass != null and petClass != ''">
+				p_class = #{petClass},
+			</if>
+			<if test="petSpecies != null and petSpecies != ''">
+				p_species = #{petSpecies},
+			</if>
+			<if test="petBreed != null and petBreed != ''">
+				p_breed = #{petBreed},
+			</if>
+			<if test="petWeight != null and petWeight != ''">
+				p_weight = #{petWeight},
+			</if>
+			p_neuter = #{petNeuter},
+			p_operation = #{petOperation},
+			<if test="petMedicine != null">
+				p_medicine = #{petMedicine},
+			</if>
+			<if test="petNote != null and petNote != ''">
+				p_note = #{petNote},
+			</if>
+			<if test="petUrl != null and petUrl != ''">
+				p_url = #{petUrl},
+			</if>
+			<if test="petRegistDate != null and petRegistDate != ''">
+				p_regies_date = #{petRegistDate},
+			</if>
+		</set>
+		WHERE 
+			pcode = #{petCode}
+	</update>
+	
+	<delete id="removePet" parameterType="String">
+		/*펫코드로 반려동물 삭제*/
+		DELETE
+		FROM
+			pet
+		WHERE
+			pcode=#{petCode};
+	</delete>
+	
 </mapper>

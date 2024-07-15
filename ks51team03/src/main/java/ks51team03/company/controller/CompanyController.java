@@ -206,6 +206,7 @@ public class CompanyController {
 		return "redirect:/company/company_staff_setting";
 	}
 
+	// 직원 신청 승인 로직
 	@PostMapping("/company/staff/accept")
 	public String acceptStaff(@RequestParam String requestId, HttpSession session, RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
@@ -224,6 +225,7 @@ public class CompanyController {
 			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 		// 직원 등록 요청 수락 로직
+		companyService.updateLevel(requestId);
 		companyService.acceptStaff(requestId,memberId);
 		return "redirect:/company/company_staff_setting";
 	}
@@ -258,27 +260,17 @@ public class CompanyController {
 		return "company/company_staff_signUp";
 	}
 
-	// 직원 신청 승인
-	@PostMapping("/company/staff/sign")
-	public String signStaff(@RequestParam("companyCode") String companyCode, HttpSession session) {
+	// 직원 신청
+	@PostMapping("/company/staff/signUp")
+	public String signStaff(@RequestParam("companyCode") String companyCode, HttpSession session, ComStaff comStaff) {
 		String memberId = (String) session.getAttribute("SID");
 
 		// 회원 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
 		String phone = member.getMemberPhone();
-
-		// 새로운 stfcode 생성 (가장 높은 숫자 찾아 1 더하기)
-		String newStfCode = companyService.getNewStfCode();
-
-		ComStaff comStaff = new ComStaff();
-		comStaff.setStfCode(newStfCode);
 		comStaff.setMemberId(memberId);
-		comStaff.setCCode(companyCode);
-		comStaff.setLevel("level3");
 		comStaff.setStfPhone(phone);
-		comStaff.setStfCheck("0");
-		comStaff.setStfApproId("");
-		comStaff.setStfDate(null);
+		comStaff.setCCode(companyCode);
 
 		companyService.insertStaff(comStaff);
 
@@ -498,10 +490,37 @@ public class CompanyController {
 
 
 	@GetMapping("/company/company_send_alarm")
-	public String companySendAlarm() {
+	public String companySendAlarm(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		String memberId = (String) session.getAttribute("SID");
+		String cCode = (String) session.getAttribute("CCODE");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
 
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+		log.info("memberLevel: {}", member.getMemberLevel());
+		// 사용자 레벨 확인
+		if (!member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
+		// 세션 아이디로 직원 테이블에서 업체 코드 찾기
+		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
+		if (companyCode == null) {
+			companyCode = cCode; // 업체 대표일 경우
+		}
+		if (companyCode != null) {
+			List<ComLike> comLikes = companyService.getCompanyLikeMemberByCcode(companyCode);
+			log.info("comLikes: {}", comLikes);
+			model.addAttribute("comLikes", comLikes);
+
+		}
 		return "company/company_send_alarm";
 	}
+
 	
 	/*업체 등록*/
 	@PostMapping("/company/insertCompany")

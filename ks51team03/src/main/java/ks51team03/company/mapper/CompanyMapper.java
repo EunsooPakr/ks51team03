@@ -14,6 +14,9 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
 
+    // 업체 구독자 리스트
+    List<ComLike> getCompanyLikeMemberByCcode(String cCode);
+
     // 업체 리뷰 별점 평균 반환
     Double avgReviewScore(String companyCode);
 
@@ -59,9 +62,6 @@ public interface CompanyMapper {
     // 전체 업체 리스트 가져오기
     List<Company> getCompanyList();
 
-    // 회원의 문의 조회
-
-
     // 특정 문의 조회
     ComQuestion getCompanyQuestionById(@Param("quesnum") String quesnum);
 
@@ -88,6 +88,9 @@ public interface CompanyMapper {
 
     // 직원 리스트 가져오기
     List<ComStaff> getStaffList(String cCode);
+
+    // 직원 승인 전 회원 레벨 변경
+    int updateLevel(String memberId);
 
     // 직원 승인
     int acceptStaff(String requestId, String memberId);

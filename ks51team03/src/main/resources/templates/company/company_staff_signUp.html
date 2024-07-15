@@ -59,7 +59,7 @@
                     <td th:text="${company.companyAddr} + ' ' + ${company.companyAddrDetail}" style="width: 400px"></td>
                     <td th:text="${company.companyPhone}" style="width: 150px"></td>
                     <td>
-                        <form th:action="@{/company/staff/sign}" method="post">
+                        <form th:action="@{/company/staff/signUp}" method="post">
                             <input type="hidden" name="companyCode" th:value="${company.companyCode}" />
                             <button type="submit" class="apply-btn">신청</button>
                         </form>

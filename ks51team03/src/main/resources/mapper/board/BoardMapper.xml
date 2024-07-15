@@ -55,7 +55,7 @@
 	    </if>;
 	</select>
 	
-	<insert id="insertNBoard" parameterType="NoticeBoard">
+	<insert id="insertNBoard" parameterType="NoticeBoard" >
 	/*게시글 작성*/
 	INSERT INTO notice_board
 	( 	nbcode,

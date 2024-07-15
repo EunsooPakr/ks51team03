@@ -48,13 +48,13 @@ public class MemberServiceImpl implements MemberService{
 			FileRequest fileRequest = fileMapper.getFileByRevCode(review.getRevCode());
 			if (fileRequest != null) {
 				fileUtils.deleteFile(fileRequest);
-				review.setRevImg(null);
+				review.setFileIdx(null);
 			}
 		} else if (review.getRevImgFile() != null && !review.getRevImgFile().isEmpty()) {
 			FileRequest fileRequest = fileUtils.uploadFile(review.getRevImgFile());
 			if (fileRequest != null) {
 				fileMapper.addFile(fileRequest);
-				review.setRevImg(fileRequest.getFileIdx());
+				review.setFileIdx(fileRequest.getFileIdx());
 			}
 		}
 		return memberMapper.memberReviewModify(review);
@@ -309,6 +309,18 @@ public class MemberServiceImpl implements MemberService{
 	public String getCompanyCodeByMemberId(String memberId) {
 		Company company = companyMapper.getCompanyByMemberId(memberId);
 		return company != null ? company.getCompanyCode() : null;
+	}
+	
+	@Override
+	public void IncreasePetByMemberId(String memberId)
+	{
+		memberMapper.IncreasePetByMemberId(memberId);
+	}
+	
+	@Override
+	public void DeclinePetByMemberId(String memberId)
+	{
+		memberMapper.DeclinePetByMemberId(memberId);
 	}
 }
 

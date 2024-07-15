@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/mypage_default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}"
+          type="text/css">
+</head>
+<th:block layout:fragment="customContent">
+    <section class="bg-smoke py-12">
+        <div class="mypage-contents-box">
+            <div class="member-info-form">
+                <div class="hover-profile">
+                    <h1 class="member-info-profile-top-textline">
+                        <span>반려동물 정보</span>
+                    </h1>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-7 col-xl-8">
+                        	<div class="member-mypage-list-pet-petbox-scalebox">
+	                            <div class="member-info-profile-top-card">
+	                                <div class="member-info-profile-round-box" style="background: #BDBDBD;">
+	                                    <img class="member-info-profile-round-box-img"
+	                                         th:src="@{/assets/img/profile-no-img.png}">
+	                                </div>
+	
+	                                <!-- 반려동물 이름 -->
+	                                <div class="mb-6 mb-md-4 mb-lg-6">
+	                                    <h2 class="text-uppercase font-weight-bold" th:text="${petInfo.petName}"></h2>
+	                                    <p class="mb-0" th:text="${petInfo.memberId}"></p>
+	                                </div>
+	
+	                                <!-- 수정하기 아이콘 -->
+	                                <div class="icon-setting">
+	                                    <a th:href="@{/pet/updatePet(petCode=${petInfo.petCode})}">
+	                                    	<i aria-hidden="true" class="fas fa-pencil-alt"></i>
+	                                    </a>
+	                                </div>
+	                            </div>
+	
+	                            <table class="tftable">
+	                                <tr>
+	                                    <td class="td-head">성별</td>
+	                                    <td><span th:text="${petInfo.petGender}"></span></td>
+	                                </tr>
+	                                <tr>
+	                                    <td>생년월일</td>
+	                                    <td><span th:text="${petInfo.petBirth}"></span></td>
+	                                </tr>
+	                                <tr>
+	                                    <td>종과목</td>
+	                                    <td><span th:text="${petInfo.petClass}+' '+${petInfo.petSpecies}+' '+${petInfo.petBreed}"></span></td>
+	                                </tr>
+	                                <tr>
+	                                    <td>몸무게(kg)</td>
+	                                    <td><span th:text="${petInfo.petWeight}+' kg'"></span></td>
+	                                </tr>
+	                                <tr>
+	                                    <td>중성화 여부</td>
+	                                    <td><span th:text="${petInfo.petNeuter==0?'없음':'있음'}"></span></td>
+	                                </tr>
+	                                 <tr>
+	                                    <td>수술 여부</td>
+	                                    <td><span th:text="${petInfo.petOperation==0?'없음':'있음'}"></span></td>
+	                                </tr>
+	                                 <tr>
+	                                    <td>복용중인 약</td>
+	                                    <td><span th:text="${petInfo.petMedicine}"></span></td>
+	                                </tr>
+	                                 <tr>
+	                                    <td>기타</td>
+	                                    <td><span th:text="${petInfo.petNote}"></span></td>
+	                                </tr>
+	                            </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</th:block>
+</html>
