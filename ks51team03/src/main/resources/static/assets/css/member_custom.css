@@ -1202,3 +1202,40 @@ a{
     background-color: gray;
     color:white;
 }
+
+
+/*//////////////////////////////////////////////////////////////////
+[ member_main ]*/
+
+
+.banner {
+    height: 400px;
+    background-color: #ccc;
+}
+
+.carousel-item img {
+    height: 100%; /* 배너 높이에 맞게 이미지 크기 조정 */
+    object-fit: cover; /* 이미지 비율 유지 */
+}
+
+
+.main-slide-banner {
+    margin-top: 170px;
+    display: inline-block;
+}
+
+.carousel-inner {
+	height: 100%; /* 배너 높이 */
+}
+
+.card {
+	height: 100%; /* 카드 높이 조정 */
+}
+
+.carousel-indicators button {
+	background-color: gray;
+}
+
+.carousel-caption {
+	z-index: 1; /* 캡션이 점 위에 표시되지 않도록 */
+}
