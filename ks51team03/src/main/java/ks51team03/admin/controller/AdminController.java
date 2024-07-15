@@ -5,6 +5,7 @@ import ks51team03.admin.service.AdminService;
 import ks51team03.company.dto.ComStaff;
 import ks51team03.company.dto.Company;
 import ks51team03.member.dto.Member;
+import ks51team03.member.dto.Search;
 import ks51team03.member.service.MemberService;
 import ks51team03.pet.dto.Pet;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller

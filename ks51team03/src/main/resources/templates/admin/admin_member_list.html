@@ -17,6 +17,19 @@
         .admin_member_list tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #searchKey, #searchValue, #searchBtn {
+            font-size: 16px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        #searchBtn {
+            cursor: pointer;
+        }
     </style>
 </head>
 <th:block layout:fragment="customContent">
@@ -29,7 +42,7 @@
                 </div>
 
                 <!-- 검색 -->
-                <div id="search" class="admin-member-list-search">
+                <div class="search-container">
                     <select id="searchKey">
                         <option value="id">아이디</option>
                         <option value="level">레벨</option>
@@ -89,26 +102,26 @@
                 const searchKey = $('#searchKey').val();
                 const searchValue = $('#searchValue').val();
 
-                console.log("자 여기는 서치키가 잘 잘동하는 지 확인 해보는 곳");
+                console.log("자 여기는 서치키가 잘 작동하는 지 확인 해보는 곳");
                 console.log("Search Key:", searchKey); // 디버그 로그
                 console.log("Search Value:", searchValue); // 디버그 로그
 
                 let serverSearchKey;
                 switch (searchKey) {
-                    case 'memberId':
+                    case 'id':
                         serverSearchKey = 'id';
                         break;
-                    case 'memberLevel':
+                    case 'level':
                         serverSearchKey = 'level';
                         break;
-                    case 'memberName':
+                    case 'name':
                         serverSearchKey = 'name';
                         break;
                     default:
                         serverSearchKey = 'id';
                 }
 
-                console.log("여기는 switch문 이후, 잘 나오는 지 체크해보자")
+                console.log("여기는 switch문 이후, 잘 나오는 지 체크해보자");
                 const url = '/admin/admin_member_list?searchType=' + serverSearchKey + '&searchKeyword=' + searchValue;
                 console.log("Redirecting to:", url); // 디버그 로그
                 window.location.href = url;

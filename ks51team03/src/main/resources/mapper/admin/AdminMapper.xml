@@ -153,10 +153,11 @@
 				name LIKE CONCAT('%', #{searchKeyword}, '%')
 			</if>
 			<if test="searchType == 'level'">
-				CAST(level AS CHAR) LIKE CONCAT('%', #{searchKeyword}, '%')
+				level LIKE CONCAT('%', #{searchKeyword}, '%')
 			</if>
 		</where>
 	</select>
+
 	<select id="getPetList" resultMap="petResultMap">
 		SELECT
 		p.pcode AS pcode,
