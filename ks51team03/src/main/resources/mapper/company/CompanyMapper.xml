@@ -100,7 +100,54 @@
 		<result column="qa_update" property="qaUpdate" />
 	</resultMap>
 
+	<resultMap id="ComLikeResultMap" type="ComLike">
+		<id column="lkcode" property="lkCode" />
+		<result column="id" property="memberId" />
+		<result column="ccode" property="cCode" />
+		<result column="lk_alarm" property="lkAlarm" />
+		<result column="lk_date" property="lkDate" />
+		<result column="lk_state" property="lkState" />
+		<result column="name" property="memberName" />
+	</resultMap>
 
+	<resultMap id="ComInformResultMap" type="ComInform">
+		<id column="informcode" property="informCode" />
+		<result column="id" property="memberId" />
+		<result column="inform_datetime" property="informDateTime" />
+		<result column="inform_cycle" property="informCycle" />
+		<result column="inform_value" property="informValue" />
+		<result column="inform_contents" property="informContents" />
+	</resultMap>
+
+	<insert id="insertComInform" parameterType="ComInform">
+		<selectKey keyProperty="informCode" resultType="String" order="BEFORE">
+			SELECT
+			CASE
+			WHEN COUNT(*) = 0 THEN 'inform1'
+			ELSE CONCAT('inform', (MAX(CAST(SUBSTRING_INDEX(informcode, 'inform', -1) AS UNSIGNED)) + 1))
+			END
+			FROM inform
+		</selectKey>
+		-- 알림 등록
+		INSERT INTO inform
+			(informcode, id, inform_datetime, inform_cycle, inform_value, inform_contents)
+		VALUES
+			(#{informCode}, #{memberId}, NOW(), '수시 알림', #{}, '')
+	</insert>
+
+	<select id="getCompanyLikeMemberByCcode" parameterType="String" resultMap="ComLikeResultMap">
+		-- 업체 구독자 조회
+		SELECT
+			l.lkcode, m.name, l.ccode, l.lk_alarm, l.lk_date, l.lk_state
+		FROM
+			`like` AS l
+		INNER JOIN
+			member AS m
+		ON
+			l.id = m.id
+		WHERE
+			l.ccode = #{memberId} AND l.lk_alarm = 1
+	</select>
 
 	<delete id="deleteReview" parameterType="ComReview" >
 		-- 업체 문의 삭제
@@ -110,10 +157,6 @@
 		WHERE
 		revcode = #{revCode}
 	</delete>
-
-	<select id="getMaxRevCode" resultType="String">
-		SELECT MAX(CAST(SUBSTRING_INDEX(revcode, 'rev', -1) AS UNSIGNED)) FROM reviews
-	</select>
 
 	<insert id="insertReview" parameterType="ComReview">
 		<selectKey keyProperty="revCode" resultType="String" order="BEFORE">
@@ -131,10 +174,6 @@
 		(#{revCode}, #{memberId}, #{cCode}, CURDATE(), null, #{revImg}, #{revScope}, #{revContent})
 	</insert>
 
-	<select id="getMaxQuesNum" resultType="String">
-		SELECT MAX(CAST(SUBSTRING_INDEX(quesnum, 'ques', -1) AS UNSIGNED)) FROM questions
-	</select>
-
 	<insert id="insertQuestion" parameterType="ComQuestion">
 		<selectKey keyProperty="quesNum" resultType="String" order="BEFORE">
 			SELECT
@@ -150,7 +189,6 @@
 		VALUES
 		(#{quesNum}, #{cCode}, #{qcteNum}, #{memberId}, #{quesContent}, #{quesDate})
 	</insert>
-
 
 	<select id="getAnswerByQuesNum" parameterType="String" resultMap="QuestionAnswerResultMap">
 		-- 문의 답변 조회
@@ -365,6 +403,16 @@
 			id = #{memberId}
 	</select>
 
+	<update id="updateLevel" parameterType="String">
+		-- 업체 직원 승인 전 회원 레벨 변경
+		UPDATE member
+		<set>
+		`level`='level3'
+		</set>
+		WHERE
+		id= #{memberId}
+	</update>
+
 	<update id="acceptStaff" parameterType="String" >
 		/* 업체 직원 승인 */
 		UPDATE staff
@@ -383,6 +431,53 @@
 		WHERE
 			id = #{requestId}
 	</delete>
+
+	<select id="getStaffSignList" resultMap="ComStaffResultMap">
+		-- 직원 등록 신청 리스트
+		SELECT
+			s.id, s.stf_phone, m.name, s.ccode
+		FROM
+			staff AS s
+		INNER JOIN
+			member AS m
+		ON
+			s.id = m.id
+		WHERE
+			s.stf_check = 0 AND s.ccode = #{cCode}
+	</select>
+
+	<insert id="insertStaff" parameterType="ComStaff">
+		<selectKey keyProperty="stfCode" resultType="String" order="BEFORE">
+			-- 직원 신청 insert
+			SELECT
+			CASE
+			WHEN
+			COUNT(*) = 0 THEN 'stf1'
+			ELSE
+			CONCAT('stf', (MAX(CAST(SUBSTRING_INDEX(stfcode, 'stf', -1) AS UNSIGNED)) + 1))
+			END
+			FROM
+			staff
+		</selectKey>
+		INSERT INTO staff
+		(stfcode, id, ccode, `level`, stf_phone, stf_check, stf_appro_id, stf_date)
+		VALUES
+		(#{stfCode}, #{memberId}, #{cCode}, 'level3', #{stfPhone}, 0, null, null)
+	</insert>
+
+	<select id="getStaffList" resultMap="ComStaffResultMap">
+		-- 직원 리스트
+		SELECT
+		s.id, s.stf_phone, m.name, s.ccode
+		FROM
+		staff AS s
+		INNER JOIN
+		member AS m
+		ON
+		s.id = m.id
+		WHERE
+		s.stf_check = 1 AND s.ccode = #{cCode}
+	</select>
 
 	<update id="modifyCompany" parameterType="Company" >
 		/* 업체 수정 */
@@ -419,54 +514,6 @@
 		WHERE
 		ccode = #{companyCode}
 	</update>
-
-	<select id="getStaffSignList" resultMap="ComStaffResultMap">
-		-- 직원 등록 신청 리스트
-		SELECT
-			s.id, s.stf_phone, m.name, s.ccode
-		FROM
-			staff AS s
-		INNER JOIN
-			member AS m
-		ON
-			s.id = m.id
-		WHERE
-			s.stf_check = 0 AND s.ccode = #{cCode}
-	</select>
-
-	<select id="getLastStfCode" resultType="String">
-		-- 직원 신청 기본키 숫자 찾기
-		SELECT MAX(stfcode) FROM staff
-	</select>
-
-	<insert id="insertStaff" parameterType="ComStaff">
-		INSERT INTO staff
-			(stfcode, id, ccode, `level`, stf_phone, stf_check, stf_appro_id, stf_date)
-		VALUES
-			(#{stfCode}, #{memberId}, #{cCode}, #{level}, #{stfPhone}, #{stfCheck}, #{stfApproId}, #{stfDate})
-	</insert>
-
-	<select id="getStaffList" resultMap="ComStaffResultMap">
-		-- 직원 리스트
-		SELECT
-		s.id, s.stf_phone, m.name, s.ccode
-		FROM
-		staff AS s
-		INNER JOIN
-		member AS m
-		ON
-		s.id = m.id
-		WHERE
-		s.stf_check = 1 AND s.ccode = #{cCode}
-	</select>
-	<select id="addStaff" resultMap="ComStaffResultMap">
-		-- 직원 신청 로직
-		INSERT INTO staff
-		(stfcode, id, ccode, `level`, stf_phone, stf_check, stf_appro_id, stf_date)
-		VALUES
-		('stf3', 'id7', 'ccode3', 'level3', '010-0000-0007', 0, '', null)
-
-	</select>
 
 
 	<select id="getCompanyListByKeyWord" resultMap="CompanyResultMap">

@@ -24,6 +24,11 @@ public class CompanyService {
     private final FileUtils fileUtils;
     private final FileMapper fileMapper;
 
+    // 업체 구독자 리스트
+    public List<ComLike> getCompanyLikeMemberByCcode(String cCode){
+        return companyMapper.getCompanyLikeMemberByCcode(cCode);
+    }
+
     // 업체 리뷰 삭제
     public void deleteReview(String revCode){
         companyMapper.deleteReview(revCode);
@@ -36,7 +41,7 @@ public class CompanyService {
         log.info("fileRequest: {}", fileRequest);
         if(fileRequest != null){
             fileMapper.addFile(fileRequest);
-            comReview.setRevImg(fileRequest.getFileIdx());
+            comReview.setFileIdx(fileRequest.getFileIdx());
         }
         addReview(comReview);
 
@@ -52,12 +57,6 @@ public class CompanyService {
         companyMapper.insertQuestion(comQuestion);
     }
 
-    // 직원 신청 insert 작업시 기본키 숫자 알아내기
-    public String getNewStfCode() {
-        String lastStfCode = companyMapper.getLastStfCode();
-        int newCodeNumber = Integer.parseInt(lastStfCode.substring(3)) + 1;
-        return "stf" + newCodeNumber;
-    }
 
     // 직원 신청 insert 작업
     public void insertStaff(ComStaff comStaff) {
@@ -183,6 +182,12 @@ public class CompanyService {
     public List<ComStaff> getStaffList(String cCode){
         log.info("Getting Staff List: {}", companyMapper.getStaffList(cCode));
         return companyMapper.getStaffList(cCode);
+    }
+
+    // 직원 승인 전 회원 레벨 변경
+    public int updateLevel(String memberId){
+        log.info("changing member Level: {}", companyMapper.updateLevel(memberId));
+        return companyMapper.updateLevel(memberId);
     }
 
     // 직원 승인

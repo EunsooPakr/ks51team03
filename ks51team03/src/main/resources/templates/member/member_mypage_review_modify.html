@@ -108,7 +108,7 @@
 						<input type="file" id="revImgFile" name="revImgFile" accept="image/*">
 						<div th:if="${review.filePath != null}">
 							<img id="currentImage" th:src="@{${review.filePath}}" alt="현재 이미지">
-							<button type="button" class="delete-image-button" onclick="deleteImageFn()">이미지 삭제</button>
+							<button type="button" class="delete-image-button">이미지 삭제</button>
 						</div>
 					</div>
 					<div class="form-group">
@@ -124,9 +124,8 @@
 		</div>
 	</section>
 	<script>
-		function deleteImageFn() {
+		$('.delete-image-button').click(function(){
 			document.getElementById('deleteImage').value = 'true';
-			document.getElementById('revImgFile').value = '';
 			const img = document.getElementById('currentImage');
 			if (img) {
 				img.style.display = 'none';
@@ -135,7 +134,13 @@
 			if (button) {
 				button.style.display = 'none';
 			}
-		}
+		})
+
+		$('#revImgFile').click(function(){
+			document.getElementById('deleteImage').value = 'false';
+		})
+
+
 	</script>
 </th:block>
 </html>

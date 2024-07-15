@@ -48,7 +48,7 @@
 		<result column="ccode" property="cCode" />
 		<result column="rev_admin_date" property="revAdminDate" />
 		<result column="rev_update_date" property="revUpdateDate" />
-		<result column="file_idx" property="revImg" />
+		<result column="file_idx" property="fileIdx" />
 		<result column="rev_scope" property="revScope" />
 		<result column="rev_content" property="revContent" />
 		<result column="com_name" property="companyName" />
@@ -61,7 +61,7 @@
 			service_reviews
 		<set>
 			rev_update_date = NOW(),
-			file_idx = #{revImg},
+			file_idx = #{fileIdx},
 			rev_scope = #{revScope},
 			rev_content = #{revContent}
 		</set>

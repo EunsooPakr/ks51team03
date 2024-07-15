@@ -48,13 +48,13 @@ public class MemberServiceImpl implements MemberService{
 			FileRequest fileRequest = fileMapper.getFileByRevCode(review.getRevCode());
 			if (fileRequest != null) {
 				fileUtils.deleteFile(fileRequest);
-				review.setRevImg(null);
+				review.setFileIdx(null);
 			}
 		} else if (review.getRevImgFile() != null && !review.getRevImgFile().isEmpty()) {
 			FileRequest fileRequest = fileUtils.uploadFile(review.getRevImgFile());
 			if (fileRequest != null) {
 				fileMapper.addFile(fileRequest);
-				review.setRevImg(fileRequest.getFileIdx());
+				review.setFileIdx(fileRequest.getFileIdx());
 			}
 		}
 		return memberMapper.memberReviewModify(review);

@@ -34,6 +34,7 @@
         }
 
         .form-group label {
+            width: 70px;
             margin-bottom: 5px;
             font-weight: bold;
         }
@@ -80,6 +81,7 @@
 
         .checkbox-item input {
             margin-left: 5px;
+            width: 50%;
         }
     </style>
 </head>
@@ -93,31 +95,24 @@
         </div>
         <div class="form-container">
             <h2>알림 발송</h2>
-            <form th:action="@{/company/send_alarm}" method="post">
+            <form th:action="@{/company/company_send_alarm}" method="post">
                 <div class="form-group">
                     <label>구독자 선택</label>
                     <div class="checkbox-group">
-                        <div class="checkbox-item" th:each="subscriber : ${subscribers}">
-                            <input type="checkbox" th:id="${subscriber.id}" th:name="subscriberIds" th:value="${subscriber.id}" />
-                            <label th:for="${subscriber.id}" th:text="${subscriber.name}"></label>
+                        <div class="checkbox-item" th:each="comLikes : ${comLikes}">
+                            <input type="checkbox" th:id="${comLikes.memberId}" name="memberId" th:value="${comLikes.memberId}" />
+                            <label th:for="${comLikes.memberName}" th:text="${comLikes.memberName}"></label>
                         </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="hong07" value="홍07" />
-                            <label for="hong07">홍07</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="hong08" value="홍08" />
-                            <label for="hong08">홍08</label>
-                        </div>
+
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="alarm-title">알림 제목</label>
-                    <input type="text" id="alarm-title" name="title" required />
+                    <input type="text" id="alarm-title" name="Title" required />
                 </div>
                 <div class="form-group">
                     <label for="alarm-content">알림 내용</label>
-                    <textarea id="alarm-content" name="content" required></textarea>
+                    <textarea id="alarm-content" name="conTent" required></textarea>
                 </div>
                 <div class="form-group">
                     <button type="submit">발송</button>
