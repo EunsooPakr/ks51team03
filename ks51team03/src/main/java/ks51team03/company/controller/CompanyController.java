@@ -521,6 +521,31 @@ public class CompanyController {
 		return "company/company_send_alarm";
 	}
 
+	// 업체 알림 등록
+	@PostMapping("/company/company_send_alarm")
+	public String sendAlarm(@ModelAttribute ComInform comInform, HttpSession session, RedirectAttributes redirectAttributes){
+		String memberId = (String) session.getAttribute("SID");
+		log.info("알림 발송자: {}", memberId);
+		log.info("알림 받을 회원 목록: {}", comInform.getMemberIds());
+		log.info("알림 제목: {}", comInform.getInformValue());
+		log.info("알림 내용: {}", comInform.getInformContents());
+		comInform.setMemberId(memberId);
+		if (comInform.getMemberIds() == null || comInform.getMemberIds().isEmpty()) {
+			redirectAttributes.addFlashAttribute("errorMessage", "최소 한 명 이상의 구독자를 선택해야 합니다.");
+			return "redirect:/company/company_send_alarm";
+		}
+		/*
+		for (String recipientId : comInform.getMemberIds()) {
+			comInform.setMemberId(recipientId);
+			comInform.setInformValue(comInform.getInformValue());
+			comInform.setInformContents(comInform.getInformContents());
+			companyService.insertComInform(comInform);
+		}
+		*/
+
+		return "redirect:/company/company_info";
+	}
+
 	
 	/*업체 등록*/
 	@PostMapping("/company/insertCompany")

@@ -113,8 +113,8 @@
                                 </div>
                                 <div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
                                     <div class="action-buttons">
-                                        <button class="edit-button" data-quesnum="${q.quesNum}" id="questionModifyBtn">수정</button>
-                                        <button class="delete-button" data-quesnum="${q.quesNum}" id="questionDeleteBtn">삭제</button>
+                                        <button class="edit-button questionModifyBtn" data-quesnum="${q.quesNum}" >수정</button>
+                                        <button class="delete-button questionDeleteBtn" data-quesnum="${q.quesNum}" >삭제</button>
                                     </div>
                                 </div>
                             </div>
@@ -142,8 +142,8 @@
                                 </div>
                                 <div class="col-md-5 col-xl-4 d-flex justify-content-end align-items-center">
                                     <div class="action-buttons">
-                                        <button class="edit-button" data-revcode="${r.revCode}" id="reviewModifyBtn">수정</button>
-                                        <button class="delete-button" data-revcode="${r.revCode}" id="reviewModifyBtn">삭제</button>
+                                        <button class="edit-button reviewModifyBtn" data-revcode="${r.revCode}" >수정</button>
+                                        <button class="delete-button reviewDeleteBtn" data-revcode="${r.revCode}" >삭제</button>
                                     </div>
                                 </div>
                             </div>
@@ -213,17 +213,17 @@
 				$('#postContent').html(content);
 
 				// 수정 버튼 클릭 이벤트 핸들러 추가
-				$('#questionModifyBtn').on('click', function() {
+				$('.questionModifyBtn').on('click', function() {
 					const quesNum = $(this).data('quesnum');
 					window.location.href = `/member/member_mypage_question_modify?quesnum=${quesNum}`;
 				});
-				$('#reviewModifyBtn').on('click', function() {
+				$('.reviewModifyBtn').on('click', function() {
 					const revCode = $(this).data('revcode');
 					window.location.href = `/member/member_mypage_review_modify?revcode=${revCode}`;
 				});
 
 				// 삭제 버튼 클릭 이벤트 핸들러 추가
-				$('#questionDeleteBtn').on('click', function() {
+				$('.questionDeleteBtn').on('click', function() {
 					const quesNum = $(this).data('quesnum');
 					if (confirm('정말 삭제하시겠습니까?')) {
 						$.ajax({
@@ -241,12 +241,12 @@
 						});
 					}
 				});
-				$('#reviewDeleteBtn').on('click', function() {
+				$('.reviewDeleteBtn').on('click', function() {
 					const revCode = $(this).data('revcode');
 					if (confirm('정말 삭제하시겠습니까?')) {
 						$.ajax({
-							url: `/member/member_mypage_review_delete?revcode=${revCode}`,
-							type: 'GET',
+							url: `/member/member_mypage_review_delete?revCode=${revCode}`,
+							type: 'POST',
 							success: function(response) {
 								console.log('삭제 요청 성공');
 								alert('삭제되었습니다.');
