@@ -145,8 +145,17 @@
 		regist_date
 		FROM
 		member
-		WHERE
-		${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
+		<where>
+			<if test="searchType == 'id'">
+				id LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test="searchType == 'name'">
+				name LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test="searchType == 'level'">
+				CAST(level AS CHAR) LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+		</where>
 	</select>
 	<select id="getPetList" resultMap="petResultMap">
 		SELECT

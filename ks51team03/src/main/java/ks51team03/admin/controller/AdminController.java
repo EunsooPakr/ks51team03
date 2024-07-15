@@ -40,7 +40,10 @@ public class AdminController {
     };
 
     @GetMapping("admin/admin_member_list")
-    public String adminMemberList(HttpSession session, Model model, RedirectAttributes redirectAttributes, @RequestParam(value = "searchType", required = false) String searchType, @RequestParam(value = "searchKeyword", required = false) String searchKeyword, Member member) {
+    public String adminMemberList(HttpSession session, Model model, RedirectAttributes redirectAttributes,
+                                  @RequestParam(value = "searchType", required = false) String searchType,
+                                  @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+                                  Member member) {
         String memberId = (String) session.getAttribute("SID");
 
         log.info("memberId: {}", memberId);

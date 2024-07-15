@@ -31,9 +31,9 @@
                 <!-- 검색 -->
                 <div id="search" class="admin-member-list-search">
                     <select id="searchKey">
-                        <option value="memberId">아이디</option>
-                        <option value="memberLevel">레벨</option>
-                        <option value="memberName">이름</option>
+                        <option value="id">아이디</option>
+                        <option value="level">레벨</option>
+                        <option value="name">이름</option>
                     </select>
                     <input type="text" id="searchValue" placeholder="검색어를 입력해주세요"/>
                     <button type="button" id="searchBtn">검색</button>
@@ -77,39 +77,43 @@
 <th:block layout:fragment="customJsFile">
     <script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
 </th:block>
-<script th:inline="javascript">
-    $(document).ready(function() {
-        $('#searchBtn').click(function(event) {
-            event.preventDefault();
-            const searchKey = $('#searchKey').val();
-            const searchValue = $('#searchValue').val();
 
-            console.log("Search Key:", searchKey); // 디버그 로그
-            console.log("Search Value:", searchValue); // 디버그 로그
-
-            let serverSearchKey;
-            switch (searchKey) {
-                case 'memberId':
-                    serverSearchKey = 'id';
-                    break;
-                case 'memberLevel':
-                    serverSearchKey = 'level';
-                    break;
-                case 'memberName':
-                    serverSearchKey = 'name';
-                    break;
-                default:
-                    serverSearchKey = 'id';
-            }
-
-            const url = '/admin/admin_member_list?searchType=' + serverSearchKey + '&searchKeyword=' + searchValue;
-            console.log("Redirecting to:", url); // 디버그 로그
-            window.location.href = url;
-        });
-    });
-</script>
 <!-- 사용자정의 javascript -->
 <th:block layout:fragment="customJs">
+    <script th:inline="javascript">
+        console.log("자 여기는 자바스크립트가 시작되는 곳이야");
 
+        $(document).ready(function() {
+            $('#searchBtn').click(function(event) {
+                event.preventDefault();
+                const searchKey = $('#searchKey').val();
+                const searchValue = $('#searchValue').val();
+
+                console.log("자 여기는 서치키가 잘 잘동하는 지 확인 해보는 곳");
+                console.log("Search Key:", searchKey); // 디버그 로그
+                console.log("Search Value:", searchValue); // 디버그 로그
+
+                let serverSearchKey;
+                switch (searchKey) {
+                    case 'memberId':
+                        serverSearchKey = 'id';
+                        break;
+                    case 'memberLevel':
+                        serverSearchKey = 'level';
+                        break;
+                    case 'memberName':
+                        serverSearchKey = 'name';
+                        break;
+                    default:
+                        serverSearchKey = 'id';
+                }
+
+                console.log("여기는 switch문 이후, 잘 나오는 지 체크해보자")
+                const url = '/admin/admin_member_list?searchType=' + serverSearchKey + '&searchKeyword=' + searchValue;
+                console.log("Redirecting to:", url); // 디버그 로그
+                window.location.href = url;
+            });
+        });
+    </script>
 </th:block>
 </html>
