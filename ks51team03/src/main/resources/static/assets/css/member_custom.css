@@ -454,7 +454,6 @@ a{
         padding: 0 30px;
         box-sizing: border-box;
     }
-
     .board_list .num,
     .board_list .writer,
     .board_list .count {
@@ -471,6 +470,17 @@ a{
 
     .board_list .top .title {
         text-indent: 0;
+    }
+    
+    .board-list-mini .title{
+    	text-indent: 10px;
+    	width:60%;
+    }
+    
+     .board-list-mini .writer,
+     .board-list-mini .date {
+     	text-indent: 10px;
+    	width:20%;
     }
 
     .board_page a {
@@ -528,6 +538,23 @@ a{
         width: 100%;
     }
 }
+
+.board-body-mini {
+	
+}
+
+.board-list-body div .title {
+  white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+  overflow: hidden; /* 넘치는 부분을 숨김 */
+  text-overflow: ellipsis; /* 넘치는 부분에 "..."을 추가하여 표시 */
+}
+
+.board-list-body div .title a {
+  display: inline-block; /* inline 요소를 block 요소로 변경하여 width 설정이 가능하게 함 */
+  width: 100%; /* 부모 요소의 너비를 100%로 설정하여 부모 너비에 맞게 설정 */
+  text-decoration: none; /* 링크 텍스트의 밑줄 제거 */
+}
+
 
 .board-body {
     padding: 200px 0px 0px 0px;
@@ -651,6 +678,73 @@ a{
 	text-align: center;
 	color: white;
 	margin:5px;
+}
+
+.board-list-mini {
+    width: 100%;
+    border-top: 2px solid #000;
+}
+
+.board-list-mini > div {
+    border-bottom: 1px solid #ddd;
+    font-size: 0;
+}
+
+.board-list-mini > div.top {
+    border-bottom: 1px solid #999;
+    padding: 5px 0;
+}
+
+.board-list-mini > div:last-child {
+    border-bottom: 1px solid #000;
+}
+
+.board-list-mini > div > div > div {
+    padding: 10px 0 !important;
+    text-align: center;
+    font-size: 1rem;
+    white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+  	overflow: hidden; /* 넘치는 부분을 숨김 */
+  	text-overflow: ellipsis; /* 넘치는 부분에 "..."을 추가하여 표시 */
+}
+
+.board-list-mini > div > div > div > a {
+	display: inline-block; /* inline 요소를 block 요소로 변경하여 width 설정이 가능하게 함 */
+  	width: 100%; /* 부모 요소의 너비를 100%로 설정하여 부모 너비에 맞게 설정 */
+  	text-decoration: none; /* 링크 텍스트의 밑줄 제거 */
+}
+
+.board-list-mini > div > div {
+    padding: 10px 0 !important;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.board-list-mini > div.top > div {
+    font-weight: 600;
+    display: inline-block;
+}
+
+.board-list-item > div{
+	display: flex;
+	width:100%;
+}
+
+.board-list-mini .title {
+    width: 60%;
+    text-align: left;
+}
+
+.board-list-mini .top .title {
+    text-align: center;
+}
+
+.board-list-mini .writer {
+    width: 20%;
+}
+
+.board-list-mini .date {
+    width: 20%;
 }
 
 
@@ -1238,4 +1332,78 @@ a{
 
 .carousel-caption {
 	z-index: 1; /* 캡션이 점 위에 표시되지 않도록 */
+}
+
+.media-img-cutting-main {
+	width: 100% !important; /* 부모 요소에 맞게 이미지를 100%로 설정 */
+	height: 0 !important; /* 초기 높이를 0으로 설정하여 비율을 유지 */
+	padding-top: 33.33% !important; /* 3:1 비율을 유지하기 위해 상단 패딩을 설정 */
+	position: relative !important; /* 상대 위치 설정 */
+	overflow: hidden !important; /* 넘치는 부분 숨김 처리 */
+}
+
+.media-img-cutting-img {
+	position: absolute !important;/* 절대 위치 설정 */
+	top: 0 !important;
+	left: 0 !important;
+	width: 100% !important; /* 이미지를 부모 요소에 맞게 100%로 설정 */
+	height: 100% !important; /* 이미지를 부모 요소에 맞게 100%로 설정 */
+	object-fit: cover !important; /* 이미지의 비율을 유지하며 부모 요소에 맞춤 */
+}
+
+.main-screen-mid-02 {
+	
+}
+
+.mini-board-list {
+	padding:10px;
+}
+
+.mini-board-title {
+	margin-bottom: 10px;
+}
+
+.board-body-mini-box {
+	border:1px solid black;
+	border-radius: 10px; /* 모든 모서리에 10px의 둥근 모서리 설정 */
+    padding: 10px 20px 0 20px;
+}
+
+.mini-board {
+    margin-bottom: 0px;
+}
+
+.mini-board .title {
+	border-top: 2px solid gray; /* 위쪽 테두리 설정 */
+	padding-top:25px;
+	font-weight: bold;
+	font-size:20px;
+	width:230px;
+}
+
+.mini-board .content {
+	width:230px;
+	height:150px;
+	
+}
+
+.mini-board .date {
+	border-bottom: 1px solid gray; /* 아래쪽 테두리 설정 */
+	padding-bottom: 20px;
+}
+
+.mini-board-top-textline{
+	position: relative;
+    border-bottom: 2px solid #ccc;
+    background-color: transparent;
+    transition: all 0.3s;
+    margin-bottom:5px;
+    padding:10px;
+}
+
+.mini-board-top-textline a {
+	font-size: 12px;
+    color: #969696;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
 }
