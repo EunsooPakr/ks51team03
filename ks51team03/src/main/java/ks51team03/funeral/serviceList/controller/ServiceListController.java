@@ -1,6 +1,7 @@
 package ks51team03.funeral.serviceList.controller;
 
 import jakarta.servlet.http.HttpSession;
+import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.service.ReserveService;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
@@ -117,5 +118,22 @@ public class ServiceListController {
 		return "funeral/funeral_service_detail";
 	}
 
+	@GetMapping("funeral/funeral_insert_service")
+	public String funeralInsertService(HttpSession session, Company company, Model model){
+		String memberId = (String) session.getAttribute("SID");
+
+		log.info("로그인한 회원 아이디 memberId={}", memberId);
+
+		if(memberId == null) {
+			return "redirect:/member/member_main";
+		}
+
+		List<Company> getCompanyInfoList = serviceListService.getCompanyInfo(company);
+
+		log.info("getCompanyInfoList:{}", getCompanyInfoList );
+		model.addAttribute("companyInfoList", getCompanyInfoList);
+
+		return "funeral/funeral_insert_service";
+	}
 
 }

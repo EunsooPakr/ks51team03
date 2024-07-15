@@ -1,5 +1,6 @@
 package ks51team03.funeral.serviceList.mapper;
 
+import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,5 +20,7 @@ public interface ServiceListMapper {
 
     //장례 예약
     int funeralReserve(ReserveDto reserveDto);
+
+    List<Company> getCompanyInfo(Company company);
 
 }

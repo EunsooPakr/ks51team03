@@ -1,5 +1,6 @@
 package ks51team03.funeral.serviceList.service;
 
+import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
@@ -35,6 +36,11 @@ public class ServiceListService {
     public void funeralReserve(ReserveDto reserveDto){
 
         int result = serviceListMapper.funeralReserve(reserveDto);
+    }
+
+    public List<Company> getCompanyInfo(Company company){
+
+        return serviceListMapper.getCompanyInfo(company);
     }
 
 }
