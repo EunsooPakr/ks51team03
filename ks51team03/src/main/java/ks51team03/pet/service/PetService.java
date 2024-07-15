@@ -1,5 +1,7 @@
 package ks51team03.pet.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,5 +26,11 @@ public class PetService {
     	pet.setPetUrl("notFound");
     	
 		int result = petMapper.insertPet(pet);
+	}
+    
+    // 회원 아이디로 반려동물 검색
+    public List<Pet> getPetInfoByMemberId(String memberId) {
+		
+		return petMapper.getPetInfoByMemberId(memberId);
 	}
 }

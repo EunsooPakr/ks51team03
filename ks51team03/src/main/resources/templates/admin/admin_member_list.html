@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminPage_default}">
+<head>
+    <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}">
+    <style>
+        .admin_member_list {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .admin_member_list th, .admin_member_list td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .admin_member_list tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<th:block layout:fragment="customContent">
+    <section class="py-12">
+        <div class="admin-member-body">
+            <div class="admin_member_wrap">
+                <div class="admin_member_title">
+                    <strong id="admin_member_title">관리자 회원 목록</strong>
+                    <p>관리자 회원 정보를 확인하세요.</p>
+                </div>
+
+                <!-- 검색 -->
+                <div id="search" class="admin-member-list-search">
+                    <select id="searchKey">
+                        <option value="id">아이디</option>
+                        <option value="level">레벨</option>
+                        <option value="name">이름</option>
+                    </select>
+                    <input type="text" id="searchValue" placeholder="검색어를 입력해주세요"/>
+                    <button type="button" id="searchBtn">검색</button>
+                </div>
+
+                <!-- 관리자 회원 목록 -->
+                <div class="admin_member_list_wrap">
+                    <table class="admin_member_list">
+                        <thead>
+                        <tr>
+                            <th class="num">번호</th>
+                            <th class="id">아이디</th>
+                            <th class="name">이름</th>
+                            <th class="level">레벨</th>
+                            <th class="email">이메일</th>
+                            <th class="regist_date">등록일</th>
+                        </tr>
+                        </thead>
+                        <tbody id="admin-member-list-body">
+                        <tr th:if="${adminMemberList == null}">
+                            <td colspan="6" class="title">
+                                <a>해당하는 회원이 존재하지 않습니다.</a>
+                            </td>
+                        </tr>
+                        <tr th:each="member, iterStat : ${adminMemberList}" th:unless="${adminMemberList == null}">
+                            <td class="num" th:text="${iterStat.count}"></td>
+                            <td class="id" th:text="${member.memberId}"></td>
+                            <td class="name" th:text="${member.memberName}"></td>
+                            <td class="level" th:text="${member.memberLevel}"></td>
+                            <td class="email" th:text="${member.memberEmail}"></td>
+                            <td class="regist_date" th:text="${member.memberRgstDate}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+<!-- 사용자정의 javascript file -->
+<th:block layout:fragment="customJsFile">
+    <script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+</th:block>
+
+<!-- 사용자정의 javascript -->
+<th:block layout:fragment="customJs">
+    <script th:inline="javascript">
+        console.log("자 여기는 자바스크립트가 시작되는 곳이야");
+
+        $(document).ready(function() {
+            $('#searchBtn').click(function(event) {
+                event.preventDefault();
+                const searchKey = $('#searchKey').val();
+                const searchValue = $('#searchValue').val();
+
+                console.log("자 여기는 서치키가 잘 잘동하는 지 확인 해보는 곳");
+                console.log("Search Key:", searchKey); // 디버그 로그
+                console.log("Search Value:", searchValue); // 디버그 로그
+
+                let serverSearchKey;
+                switch (searchKey) {
+                    case 'memberId':
+                        serverSearchKey = 'id';
+                        break;
+                    case 'memberLevel':
+                        serverSearchKey = 'level';
+                        break;
+                    case 'memberName':
+                        serverSearchKey = 'name';
+                        break;
+                    default:
+                        serverSearchKey = 'id';
+                }
+
+                console.log("여기는 switch문 이후, 잘 나오는 지 체크해보자")
+                const url = '/admin/admin_member_list?searchType=' + serverSearchKey + '&searchKeyword=' + searchValue;
+                console.log("Redirecting to:", url); // 디버그 로그
+                window.location.href = url;
+            });
+        });
+    </script>
+</th:block>
+</html>

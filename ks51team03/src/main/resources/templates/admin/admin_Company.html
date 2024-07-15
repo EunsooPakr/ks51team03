@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminPage_default}">
+<head>
+    <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}">
+    <style>
+        .admin_company_list {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .admin_company_list th, .admin_company_list td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .admin_company_list tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<th:block layout:fragment="customContent">
+    <section class="py-12">
+        <div class="admin-company-body">
+            <div class="admin_company_wrap">
+                <div class="admin_company_title">
+                    <strong id="admin_company_title">관리자 업체 목록</strong>
+                    <p>관리자 업체 정보를 확인하세요.</p>
+                </div>
+
+                <!-- 관리자 업체 목록 -->
+                <div class="admin_company_list_wrap">
+                    <table class="admin_company_list">
+                        <thead>
+                        <tr>
+                            <th>업체 코드</th>
+                            <th>업체 분류</th>
+                            <th>업체 이름</th>
+                            <th>대표 이름</th>
+                            <th>업체 주소</th>
+                            <th>상세 주소</th>
+                            <th>전화번호</th>
+                            <th>직원 수</th>
+                            <th>이메일</th>
+                            <th>주차 여부</th>
+                            <th>웹페이지</th>
+                            <th>등록일</th>
+                            <th>우편번호</th>
+                            <th>회원 아이디</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="company : ${companyList}">
+                            <td th:text="${company.companyCode}"></td>
+                            <td th:text="${company.companyClass}"></td>
+                            <td th:text="${company.companyName}"></td>
+                            <td th:text="${company.companyCeo}"></td>
+                            <td th:text="${company.companyAddr}"></td>
+                            <td th:text="${company.companyAddrDetail}"></td>
+                            <td th:text="${company.companyPhone}"></td>
+                            <td th:text="${company.companyStfCount}"></td>
+                            <td th:text="${company.companyEmail}"></td>
+                            <td th:text="${company.companyParking == 1 ? 'Yes' : 'No'}"></td>
+                            <td th:text="${company.companyPage}"></td>
+                            <td th:text="${company.companyRegDate}"></td>
+                            <td th:text="${company.comPostNum}"></td>
+                            <td th:text="${company.memberId}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+</html>

@@ -21,9 +21,21 @@
     <insert id="addFile" parameterType="FileRequest">
         -- 이미지 등록
         INSERT INTO files
-        (file_idx, file_origin_name, file_new_name, file_path, file_size, file_reg_date)
+	    (	file_idx, 
+	        file_origin_name, 
+	        file_new_name, 
+	        file_path, 
+	        file_size, 
+	        file_reg_date
+	    )
         VALUES
-        (#{fileIdx},#{fileOriginName} ,#{fileNewName} ,#{filePath} , #{fileSize}, NOW())
+        (	#{fileIdx},
+        	#{fileOriginName} ,
+        	#{fileNewName} ,
+        	#{filePath} , 
+        	#{fileSize}, 
+        	NOW()
+       	)
     </insert>
 
 

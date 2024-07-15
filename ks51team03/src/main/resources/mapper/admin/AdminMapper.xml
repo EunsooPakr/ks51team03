@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ks51team03.admin.mapper.AdminMapper">
+
+	<resultMap type="Member" id="AdminMemberResultMap">
+		<!-- pk, column -->
+		<id 	column="id" 			property="memberId"/>
+		<result column="pw" 			property="memberPw"/>
+		<result column="name" 			property="memberName"/>
+		<result column="level" 			property="memberLevel"/>
+		<result column="level_name" 	property="memberLevelName"/>
+		<result column="grade" 			property="memberGrade"/>
+		<result column="gender" 		property="memberGender"/>
+		<result column="birth" 			property="memberBirth"/>
+		<result column="phone" 			property="memberPhone"/>
+		<result column="email" 			property="memberEmail"/>
+		<result column="addr" 			property="memberAddr"/>
+		<result column="addr_detail" 	property="memberAddrDetail"/>
+		<result column="post_num" 		property="memberPostNum"/>
+		<result column="pet" 			property="memberPet"/>
+		<result column="sms_check" 		property="memberSmsCheck"/>
+		<result column="email_check" 	property="memberEmailCheck"/>
+		<result column="regist_date" 	property="memberRgstDate"/>
+		
+	</resultMap>
+
+	<resultMap type="MemberLevel" id="memberLevelResultMap">
+		<id 	column="level" 			property="level" />
+		<result column="level_name" 	property="levelName" />
+	</resultMap>
+
+	<resultMap id="QuestionResultMap" type="ComQuestion">
+		<id column="quesnum" property="quesNum" />
+		<result column="ccode" property="cCode" />
+		<result column="qctenum" property="qcteNum" />
+		<result column="id" property="memberId" />
+		<result column="ques_content" property="quesContent" />
+		<result column="ques_date" property="quesDate" />
+		<result column="com_name" property="companyName" />
+	</resultMap>
+
+	<resultMap id="ComReviewResultMap" type="ComReview">
+		<id column="revcode" property="revCode" />
+		<result column="id" property="memberId" />
+		<result column="rev_category" property="revCategory" />
+		<result column="ccode" property="cCode" />
+		<result column="rev_admin_date" property="revAdminDate" />
+		<result column="rev_update_date" property="revUpdateDate" />
+		<result column="file_idx" property="revImg" />
+		<result column="rev_scope" property="revScope" />
+		<result column="rev_content" property="revContent" />
+		<result column="com_name" property="companyName" />
+		<result column="file_path" property="filePath" />
+	</resultMap>
+
+	<resultMap type="Pet" id="petResultMap">
+		<id column="pcode" property="petCode"/>
+		<result column="id" property="memberId"/>
+		<result column="p_name" property="petName"/>
+		<result column="p_gender" property="petGender"/>
+		<result column="p_birth" property="petBirth"/>
+		<result column="p_class" property="petClass"/>
+		<result column="p_species" property="petSpecies"/>
+		<result column="p_breed" property="petBreed"/>
+		<result column="p_weight" property="petWeight"/>
+		<result column="p_neuter" property="petNeuter"/>
+		<result column="p_operation" property="petOperation"/>
+		<result column="p_medicine" property="petMedicine"/>
+		<result column="p_note" property="petNote"/>
+		<result column="p_url" property="petUrl"/>
+		<result column="p_regist_date" property="petRegistDate"/>
+	</resultMap>
+
+	<resultMap type="ks51team03.company.dto.Company" id="CompanyResultMap">
+		<id column="ccode" property="companyCode"/>
+		<result column="com_class" property="companyClass"/>
+		<result column="com_name" property="companyName"/>
+		<result column="com_ceo" property="companyCeo"/>
+		<result column="com_addr" property="companyAddr"/>
+		<result column="com_addr_detail" property="companyAddrDetail"/>
+		<result column="com_phone" property="companyPhone"/>
+		<result column="com_stfcount" property="companyStfCount"/>
+		<result column="com_email" property="companyEmail"/>
+		<result column="com_parking" property="companyParking"/>
+		<result column="com_page" property="companyPage"/>
+		<result column="com_reg_date" property="companyRegDate"/>
+		<result column="com_post_num" property="comPostNum"/>
+		<result column="id" property="memberId"/>
+	</resultMap>
+
+	<resultMap id="ComStaffResultMap" type="ks51team03.company.dto.ComStaff">
+		<id column="stfcode" property="stfCode"/>
+		<result column="id" property="memberId"/>
+		<result column="ccode" property="cCode"/>
+		<result column="level" property="level"/>
+		<result column="stf_phone" property="stfPhone"/>
+		<result column="stf_check" property="stfCheck"/>
+		<result column="stf_appro_id" property="stfApproId"/>
+		<result column="stf_date" property="stfDate"/>
+		<result column="name" property="memberName"/>
+	</resultMap>
+
+
+	<select id="getAdminList" parameterType="Member" resultMap="AdminMemberResultMap">
+		SELECT
+		id,
+		pw,
+		name,
+		level,
+		grade,
+		gender,
+		birth,
+		phone,
+		email,
+		addr,
+		addr_detail,
+		post_num,
+		pet,
+		sms_check,
+		email_check,
+		regist_date
+		FROM
+		member
+	</select>
+
+	<select id="searchAdminList" parameterType="map" resultMap="AdminMemberResultMap">
+		SELECT
+		id,
+		pw,
+		name,
+		level,
+		grade,
+		gender,
+		birth,
+		phone,
+		email,
+		addr,
+		addr_detail,
+		post_num,
+		pet,
+		sms_check,
+		email_check,
+		regist_date
+		FROM
+		member
+		<where>
+			<if test="searchType == 'id'">
+				id LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test="searchType == 'name'">
+				name LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test="searchType == 'level'">
+				CAST(level AS CHAR) LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+		</where>
+	</select>
+	<select id="getPetList" resultMap="petResultMap">
+		SELECT
+		p.pcode AS pcode,
+		p.id AS id,
+		p.p_gender AS p_gender,
+		p.p_birth AS p_birth,
+		p.p_class AS p_class,
+		p.p_species AS p_species,
+		p.p_breed AS p_breed,
+		p.p_weight AS p_weight,
+		p.p_neuter AS p_neuter,
+		p.p_operation AS p_operation,
+		p.p_medicine AS p_medicine,
+		p.p_note AS p_note,
+		p.p_url AS p_url,
+		p.p_regist_date AS p_regist_date
+		FROM
+		pet p
+
+	</select>
+
+	<select id="getCompanyList" resultMap="CompanyResultMap">
+		SELECT
+		ccode,
+		com_class,
+		com_name,
+		com_ceo,
+		com_addr,
+		com_addr_detail,
+		com_phone,
+		com_stfcount,
+		com_email,
+		com_parking,
+		com_page,
+		com_reg_date,
+		com_post_num,
+		id
+		FROM
+		company
+	</select>
+
+	<select id="getComStaffList" resultMap="ComStaffResultMap">
+		SELECT
+		stfcode,
+		id,
+		ccode,
+		level,
+		stf_phone,
+		stf_check,
+		stf_appro_id,
+		stf_date
+		FROM
+		staff
+	</select>
+
+
+</mapper>

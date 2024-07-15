@@ -30,8 +30,8 @@
 
                                 <!-- 수정하기 아이콘 -->
                                 <div class="icon-setting">
-                                    <a href="setting.html"> <i aria-hidden="true"
-                                                               class="fas fa-pencil-alt"></i>
+                                    <a th:href="@{/member/updateMember(memberId=${memberInfo.memberId})}">
+                                    	<i aria-hidden="true" class="fas fa-pencil-alt"></i>
                                     </a>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                 </li>
                             </ul> -->
 
-                            <table border="1" class="tftable">
+                            <table class="tftable">
                                 <tr>
                                     <td class="td-head">성별</td>
                                     <td><span th:text="${memberInfo.memberGender}"></span></td>

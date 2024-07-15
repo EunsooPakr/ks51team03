@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminPage_default}">
+<head>
+</head>
+<th:block layout:fragment="customContent">
+  <!-- ====================================
+——— USER SECTION
+===================================== -->
+  <section class="py-12">
+    <div class="container">
+      <div class="mb-7">
+        <h2 class="text-uppercase font-size-22 font-weight-semibold">관리자 페이지 입니다. <span class="text-primary" > Pet All Life!</span></h2>
+        <p>관리자 전용 페이지입니다. 회원 및 업체 관리, 업체 등록 현황을 확인 할 수 있습니다.</p>
+      </div>
+    </div>
+  </section>
+
+</th:block>
+<!-- 사용자정의 javascript file -->
+<th:block layout:fragment="customJsFile">
+
+</th:block>
+
+<!-- 사용자정의 javascript -->
+<th:block layout:fragment="customJs">
+
+</th:block>
+
+</html>

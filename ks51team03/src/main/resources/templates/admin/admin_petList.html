@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminPage_default}">
+<head>
+    <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}">
+    <style>
+        .admin_pet_list {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .admin_pet_list th, .admin_pet_list td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .admin_pet_list tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<th:block layout:fragment="customContent">
+    <section class="py-12">
+        <div class="admin-pet-body">
+            <div class="admin_pet_wrap">
+                <div class="admin_pet_title">
+                    <strong id="admin_pet_title">관리자 반려동물 목록</strong>
+                    <p>관리자 반려동물 정보를 확인하세요.</p>
+                </div>
+
+                <!-- 관리자 반려동물 목록 -->
+                <div class="admin_pet_list_wrap">
+                    <table class="admin_pet_list">
+                        <thead>
+                        <tr>
+                            <th>회원 아이디</th>
+                            <th>반려동물 명</th>
+                            <th>반려동물 성별</th>
+                            <th>반려동물 분류</th>
+                            <th>반려동물 종</th>
+                            <th>반려동물 과</th>
+                            <th>반려동물 무게</th>
+                            <th>반려동물 중성화 여부</th>
+                            <th>반려동물 수술 이력</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="pet : ${petList}">
+                            <td th:text="${pet.memberId}"></td>
+                            <td th:text="${pet.petName}"></td>
+                            <td th:text="${pet.petGender}"></td>
+                            <td th:text="${pet.petClass}"></td>
+                            <td th:text="${pet.petSpecies}"></td>
+                            <td th:text="${pet.petBreed}"></td>
+                            <td th:text="${pet.petWeight}"></td>
+                            <td th:text="${pet.petNeuter == 1 ? 'Yes' : 'No'}"></td>
+                            <td th:text="${pet.petOperation == 1 ? 'Yes' : 'No'}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+</html>
