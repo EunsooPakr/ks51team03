@@ -942,7 +942,8 @@ a{
     flex: 1;
     margin-left: 10px; /* 왼쪽 여백 설정 */
     width:800px;
-    height:600px;
+    /* height:600px; */
+    
 }
 
 .left-sidebar-list {
@@ -1102,6 +1103,14 @@ a{
 
 /*//////////////////////////////////////////////////////////////////
 [ member_mypage_list_pet ]*/
+.member-mypage-list-pet-petbox-list {
+	max-height: 450px; /* 원하는 높이로 조정 */
+	overflow-y: auto; /* 세로 스크롤 가능 */
+	border: 1px solid #ccc; /* 선택 사항: 경계선 추가 */
+	padding: 10px; /* 선택 사항: 패딩 추가 */
+	background: white; /* 선택 사항: 배경색 설정 */}
+
+
 .member-mypage-list-pet-petbox-new {
 	display: flex;
 	position: relative;
@@ -1175,31 +1184,58 @@ a{
 	height:30px;
 }
 
-.pet-edit-button, .pet-delete-button {
+.pet-list-button {
     padding: 5px 10px;
-    border: none;
+    border: 1px solid gray;
     border-radius: 4px;
     cursor: pointer;
     text-decoration: none;
     font-size: 14px;
-    color: white;
-    height:50px;
+    color: gray;
+    height:30px;
     width:100px;
     margin:5px;
+    
 }
 
-.pet-edit-button {
-    background-color: #28a745;
+.pet-list-button:hover {
+    background-color: gray;
+    color:white;
 }
 
-.pet-delete-button {
-    background-color: #dc3545;
+
+/*//////////////////////////////////////////////////////////////////
+[ member_main ]*/
+
+
+.banner {
+    height: 400px;
+    background-color: #ccc;
 }
 
-.pet-edit-button:hover {
-    background-color: #218838;
+.carousel-item img {
+    height: 100%; /* 배너 높이에 맞게 이미지 크기 조정 */
+    object-fit: cover; /* 이미지 비율 유지 */
 }
 
-.pet-delete-button:hover {
-    background-color: #c82333;
+
+.main-slide-banner {
+    margin-top: 170px;
+    display: inline-block;
+}
+
+.carousel-inner {
+	height: 100%; /* 배너 높이 */
+}
+
+.card {
+	height: 100%; /* 카드 높이 조정 */
+}
+
+.carousel-indicators button {
+	background-color: gray;
+}
+
+.carousel-caption {
+	z-index: 1; /* 캡션이 점 위에 표시되지 않도록 */
 }

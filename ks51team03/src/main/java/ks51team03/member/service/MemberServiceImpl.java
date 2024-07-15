@@ -310,6 +310,18 @@ public class MemberServiceImpl implements MemberService{
 		Company company = companyMapper.getCompanyByMemberId(memberId);
 		return company != null ? company.getCompanyCode() : null;
 	}
+	
+	@Override
+	public void IncreasePetByMemberId(String memberId)
+	{
+		memberMapper.IncreasePetByMemberId(memberId);
+	}
+	
+	@Override
+	public void DeclinePetByMemberId(String memberId)
+	{
+		memberMapper.DeclinePetByMemberId(memberId);
+	}
 }
 
 

@@ -15,9 +15,9 @@
                         <span>반려동물 정보</span>
                     </h1>
 					<div class="member-mypage-list-pet-petbox-list">
-						<div class="member-mypage-list-pet-petbox">
+						<div th:each="pet : ${petInfoList}" class="member-mypage-list-pet-petbox">
 						    <!-- 반려동물 리스트를 순회하면서 각각의 정보를 표시 -->
-						    <div th:each="pet : ${petInfoList}" class="login-insert-field profile">
+						    <div class="login-insert-field profile">
 						        <div class="login-insert-img-box">
 						            <div class="member-info-profile-round-box" style="background: #BDBDBD;">
 						                <img id="profileImage" class="member-info-profile-round-box-img"
@@ -34,25 +34,39 @@
 						                    <a th:text="'생년월일: ' + ${pet.petBirth}">생년월일:</a>
 						                </div>
 						                <div class="pet-info-content">
-						                    <a th:text="'종과목: ' + ${pet.petClass}">종과목:</a>
+						                    <a th:text="'종과목: ' + ${pet.petClass}+' '+${pet.petSpecies}+' '+${pet.petBreed}">종과목:</a>
 						                </div>
 						            </div>
 						            <div class="pet-info-box-btn">
-						                <button class="pet-edit-button">수정</button>
-						                <button class="pet-delete-button">삭제</button>
+										<button class="pet-list-button pet-info" id="PetInfoDetailBtn"
+											th:href="@{/pet/member_mypage_petinfo(petCode=${pet.petCode})}">상세보기</button>
+										<button class="pet-list-button pet-info" id="PetUpdateBtn"
+											th:href="@{/pet/updatePet(petCode=${pet.petCode})}">수정</button>
+						                <button class="pet-list-button pet-info" id="PetRemoveBtn"
+						                	th:href="@{/pet/removePet(petCode=${pet.petCode})}">삭제</button>
 						            </div>
 						        </div>
 						    </div>
 						</div>
-					</div>
-					<button class="member-mypage-list-pet-petbox-new">
+						<!-- 새로운 반려동물 등록 -->
+						<button class="member-mypage-list-pet-petbox-new pet-info" th:href="@{/pet/insertPet}">
 						<div class="petbox-dotline">
 							<img id="addPetInfoImage" th:src="@{/assets/img/pet-add-cross-img.png}">
 						</div>
 					</button>
+					</div>
+					
 				</div>
 			</div>
 		</div>
 	</section>
+	<script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+    <script th:inline="javascript">
+    $(document).ready(function() {
+        $('.pet-info').click(function() {
+            window.location.href = $(this).attr('href'); // 클릭한 버튼의 href 속성으로 이동
+        });
+    });
+    </script>
 </th:block>
 </html>
