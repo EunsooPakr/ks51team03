@@ -1,6 +1,7 @@
 package ks51team03.funeral.serviceList.controller;
 
 import jakarta.servlet.http.HttpSession;
+import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.service.ReserveService;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
@@ -13,9 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -117,5 +122,81 @@ public class ServiceListController {
 		return "funeral/funeral_service_detail";
 	}
 
+	@GetMapping("funeral/funeral_insert_service")
+	public String funeralInsertService(HttpSession session, Company company, Model model){
+		String memberId = (String) session.getAttribute("SID");
+
+		log.info("로그인한 회원 아이디 memberId={}", memberId);
+
+		if(memberId == null) {
+			return "redirect:/member/member_main";
+		}
+
+		company.setMemberId(memberId);
+
+		List<Company> getCompanyInfoList = serviceListService.getCompanyInfo(company);
+
+		if (getCompanyInfoList == null) {
+			getCompanyInfoList = new ArrayList<>();
+		}
+
+		log.info("getCompanyInfoList:{}", getCompanyInfoList );
+		model.addAttribute("getCompanyInfoList", getCompanyInfoList);
+
+		return "funeral/funeral_insert_service";
+	}
+
+	@PostMapping("funeral/funeral_insert_service")
+	public String funeralInsertService(@ModelAttribute ServiceListDto serviceListDto,
+									   HttpSession session, Model model,
+									   RedirectAttributes redirectAttributes) {
+		String memberId = (String) session.getAttribute("SID");
+		serviceListDto.setFuneralserviceId(memberId);
+
+		log.info("어디서 막히는 지 봅시다");
+
+		serviceListService.insertFuneralService(serviceListDto);
+
+		log.info("어디서 막히는 지 봅시다");
+
+		model.addAttribute("serviceListDto", serviceListDto);
+
+		// 메시지 설정
+		redirectAttributes.addFlashAttribute("message", "장례 서비스가 정상적으로 등록되었습니다.");
+
+		return "redirect:/funeral/funeral_insertService_confirm";
+	}
+
+	@GetMapping("funeral/funeral_insertService_confirm")
+	public String serviceConfirm(HttpSession session, Model model, RedirectAttributes redirectAttributes, ServiceListDto serviceListDto) {
+		String memberId = (String) session.getAttribute("SID");
+		serviceListDto.setFuneralserviceId(memberId);
+
+		model.addAttribute("serviceListDto", serviceListDto);
+
+		return "funeral/funeral_insertService_confirm";
+	}
+
+	@GetMapping("funeral/funeral_regService_List")
+	public String getRegServiceList(Model model, HttpSession session, ServiceListDto serviceListDto) {
+		String memberId = (String) session.getAttribute("SID");
+
+		log.info("로그인한 회원 아이디 memberId={}", memberId);
+
+		serviceListDto.setFuneralserviceId(memberId);
+
+		if(memberId == null) {
+			return "redirect:/member/member_main";
+		}
+
+		List<ServiceListDto> serviceList = serviceListService.getServiceList(serviceListDto);
+
+		log.info("getRegServiceList:{}", serviceList );
+
+		model.addAttribute("serviceListDto", serviceListDto);
+		model.addAttribute("serviceList", serviceList);
+
+		return "funeral/funeral_regService_List";
+	}
 
 }
