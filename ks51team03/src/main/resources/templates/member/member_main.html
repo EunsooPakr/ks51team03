@@ -64,10 +64,13 @@
 						<div class="board-body-mini-box">
 							<div class="board-body-mini">
 								<div class="mini-board-title">
-									<h1 class="mini-board-top-textline">
-										<strong id="board_title">자유게시글</strong>
-										<br><a>자유롭게 의견을 나누세요.</a>
-									</h1>
+									<div class="mini-board-title-text">
+										<h1 class="mini-board-top-textline">
+											<strong id="board_title">공지사항</strong>
+											<br><a>자유롭게 의견을 나누세요.</a>
+											<button class="mini-board-title-btn">+</button>
+										</h1>
+									</div>
 								</div>
 	
 								<div class="mini-board-list">
@@ -179,150 +182,248 @@
 				</div>
 			</div>
 		</section>
-
-		<!-- ====================================
-——— TOP DESTINATION SECTION
-===================================== -->
-		<section class="py-9 py-md-10">
-			<div class="container">
-				<div class="text-center section-title2">
-					<h2 class="text-uppercase font-weight-bold position-relative">
-						<span class="bg-white">갤러리 게시판&공지사항&추천게시판</span>
-					</h2>
-					<p class="text-center">Lorem ipsum dolor sit amet, consectetur
-						adipisicing elit.</p>
-				</div>
-
-				
-			</div>
-		</section>
-
-		<!-- ====================================
+<!-- ====================================
 ——— SALE SECTION
 ===================================== -->
-		<section class="dzsparallaxer auto-init use-loading sale-paralax">
-			<div class="bg-overlay-darken divimage dzsparallaxer--target"
-				style="height: 550px;"
-				th:data-src="@{/assets/img/home-destination/package-sale-bg.jpg}">
+<section class="dzsparallaxer auto-init use-loading sale-paralax">
+	<div class="bg-overlay-darken divimage dzsparallaxer--target"
+		style="height: 550px;"
+		th:data-src="@{/assets/img/home-destination/package-sale-bg.jpg}">
+	</div>
+
+	<div class="container paralax-container">
+		<div class="row">
+			<div class="col-md-8 col-lg-6">
+				<div class="content mb-7">
+					<h2 class="text-uppercase text-white font-weight-bold mb-2">
+						50% off sale</h2>
+
+					<h4 class="text-white font-weight-normal line-height-24">Lorem
+						ipsum dolor sit amet, consectetur adipisicing elit, sed do
+						eiusmod tempor.</h4>
+				</div>
+
+				<div class="d-flex justify-content-start">
+					<a href="booking-step-1.html"
+						class="btn btn-primary btn-sale text-white text-uppercase">Book
+						Now</a> <a href="single-package-right-sidebar.html"
+						class="btn btn-outline-primary btn-sale text-uppercase ms-3 ms-md-4 ms-lg-6">Explor
+						tour</a>
+				</div>
+
 			</div>
-
-			<div class="container paralax-container">
-				<div class="row">
-					<div class="col-md-8 col-lg-6">
-						<div class="content mb-7">
-							<h2 class="text-uppercase text-white font-weight-bold mb-2">
-								50% off sale</h2>
-
-							<h4 class="text-white font-weight-normal line-height-24">Lorem
-								ipsum dolor sit amet, consectetur adipisicing elit, sed do
-								eiusmod tempor.</h4>
-						</div>
-
-						<div class="d-flex justify-content-start">
-							<a href="booking-step-1.html"
-								class="btn btn-primary btn-sale text-white text-uppercase">Book
-								Now</a> <a href="single-package-right-sidebar.html"
-								class="btn btn-outline-primary btn-sale text-uppercase ms-3 ms-md-4 ms-lg-6">Explor
-								tour</a>
-						</div>
-
+		</div>
+	</div>
+</section>
+<!-- ====================================
+——— TOP DESTINATION SECTION
+===================================== -->
+<section class="py-3 py-md-5 mt-10">
+	<div class="container">
+		<div class="text-center section-title2 today-board-box-title-box">
+			<h2 class="text-uppercase font-weight-bold position-relative">
+				<span class="bg-white">커뮤니티&리뷰</span>
+			</h2>
+			<p class="text-center">오늘의 커뮤니티 반응과 최신 리뷰를 확인하세요.</p>
+		</div>
+	</div>
+</section>
+<!-- ====================================
+——— TOP DESTINATION SECTION
+===================================== -->
+		<section class="today-board-box">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="today-board tboard-01">
+						<p class="today-board-title">
+						오늘의 추천글
+						</p>
+						<ul class="today-board-list">
+							<li>
+								<span class="tb-list-title">추천수가 많은 글의 마지막에 닿으면 과연 표시가 제대로 되는지 테스트를 위한 글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">추천수가 많은 글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">추천수가 많은 글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">추천수가 많은 글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">추천수가 많은 글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">추천수가 많은 글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+				<div class="col-md-4">
+					<div class="today-board tboard-02">
+						<p class="today-board-title">
+						가장 많이 찾는 게시글
+						</p>
+						<ul class="today-board-list">
+							<li>
+								<span class="tb-list-title">조회수가 많은글의 마지막에 닿으면 과연 표시가 제대로 되는지 테스트를 위한 글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">조회수가 많은글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">조회수가 많은글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">조회수가 많은글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">조회수가 많은글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">조회수가 많은글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+				
+				<div class="col-md-4 mb-4">
+					<div class="today-board tboard-03">
+						<p class="today-board-title">
+						최신 게시글
+						</p>
+						<ul class="today-board-list">
+							<li>
+								<span class="tb-list-title">가장 최근 게시글의 마지막에 닿으면 과연 표시가 제대로 되는지 테스트를 위한 글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">가장 최근 게시글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">가장 최근 게시글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">가장 최근 게시글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">가장 최근 게시글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+							<li>
+								<span class="tb-list-title">가장 최근 게시글</span>
+								<span class="tb-list-date">2024-04-23</span>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</section>
 
-		<!-- ====================================
+
+
+
+<!-- ====================================
 ——— REVIEW SECTION
 ===================================== -->
-		<section class="dot-slider">
+	<section class="dot-slider">
+    <div class="container mt-5 review-box">
+        <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-md-4 mb-4 rb-min-height">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">리뷰 1</h5>
+                                    <p class="card-text">여기에 메모 내용을 입력하세요. 여기에 메모 내용을 입력하세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 rb-min-height">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">리뷰 2</h5>
+                                    <p class="card-text">여기에 메모 내용을 입력하세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 rb-min-height">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">리뷰 3</h5>
+                                    <p class="card-text">여기에 메모 내용을 입력하세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-4 mb-4 rb-min-height">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">리뷰 4</h5>
+                                    <p class="card-text">여기에 메모 내용을 입력하세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 rb-min-height">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">리뷰 5</h5>
+                                    <p class="card-text">여기에 메모 내용을 입력하세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 rb-min-height">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">리뷰 6</h5>
+                                    <p class="card-text">여기에 메모 내용을 입력하세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-			<div class="container mt-5">
-				<div id="carouselExample" class="carousel slide"
-					data-bs-ride="carousel">
-					<div class="carousel-inner">
-						<div class="carousel-item active">
-							<div class="row">
-								<div class="col-md-4 mb-4">
-									<div class="card text-center">
-										<div class="card-body">
-											<h5 class="card-title">리뷰 1</h5>
-											<p class="card-text">여기에 메모 내용을 입력하세요. 여기에 메모 내용을 입력하세요.
-												여기에 메모 내용을 입력하세요. 여기에 메모 내용을 입력하세요. 여기에 메모 내용을 입력하세요. 여기에 메모
-												내용을 입력하세요.</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 mb-4">
-									<div class="card text-center">
-										<div class="card-body">
-											<h5 class="card-title">리뷰 2</h5>
-											<p class="card-text">여기에 메모 내용을 입력하세요.</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 mb-4">
-									<div class="card text-center">
-										<div class="card-body">
-											<h5 class="card-title">리뷰 3</h5>
-											<p class="card-text">여기에 메모 내용을 입력하세요.</p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="carousel-item">
-							<div class="row">
-								<div class="col-md-4 mb-4">
-									<div class="card text-center">
-										<div class="card-body">
-											<h5 class="card-title">리뷰 4</h5>
-											<p class="card-text">여기에 메모 내용을 입력하세요.</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 mb-4">
-									<div class="card text-center">
-										<div class="card-body">
-											<h5 class="card-title">리뷰 5</h5>
-											<p class="card-text">여기에 메모 내용을 입력하세요.</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 mb-4">
-									<div class="card text-center">
-										<div class="card-body">
-											<h5 class="card-title">리뷰 6</h5>
-											<p class="card-text">여기에 메모 내용을 입력하세요.</p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">이전</span>
+            </button>
 
-					<button class="carousel-control-prev" type="button"
-						data-bs-target="#carouselExample" data-bs-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">이전</span>
-					</button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">다음</span>
+            </button>
 
-					<button class="carousel-control-next" type="button"
-						data-bs-target="#carouselExample" data-bs-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">다음</span>
-					</button>
-
-					<div class="carousel-indicators">
-						<button type="button" data-bs-target="#carouselExample"
-							data-bs-slide-to="0" class="active" aria-current="true"
-							aria-label="첫번째 슬라이드"></button>
-						<button type="button" data-bs-target="#carouselExample"
-							data-bs-slide-to="1" aria-label="두번째 슬라이드"></button>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- ====================================
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExample2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="첫번째 슬라이드"></button>
+                <button type="button" data-bs-target="#carouselExample2" data-bs-slide-to="1" aria-label="두번째 슬라이드"></button>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ====================================
 ——— BRAND SECTION
 ===================================== -->
 		<section class="py-8 bg-smoke">
@@ -379,8 +480,22 @@
 				</div>
 			</div>
 		</section>
+		<script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+		<script th:src="@{/assets/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+		
+	    <script th:inline="javascript">
+		// 인디케이터 버튼 클릭 시 해당 슬라이드로 이동
+		document.addEventListener('DOMContentLoaded', function () {
+		    var indicators = document.querySelectorAll('.carousel-indicators button');
+		    indicators.forEach(function (button, index) {
+		        button.addEventListener('click', function () {
+		            var carousel = new bootstrap.Carousel(document.getElementById('carouselExample'));
+		            carousel.to(index);
+		        });
+		    });
+		});
+		</script>
 	</div>
-	<!-- modal -->
 </th:block>
 
 

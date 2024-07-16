@@ -1364,7 +1364,7 @@ a{
 }
 
 .board-body-mini-box {
-	border:1px solid black;
+	/* border:1px solid black; */
 	border-radius: 10px; /* 모든 모서리에 10px의 둥근 모서리 설정 */
     padding: 10px 20px 0 20px;
 }
@@ -1406,4 +1406,73 @@ a{
     color: #969696;
     font-family: "Montserrat", sans-serif;
     font-weight: 400;
+}
+
+.mini-board-title-btn {
+	font-size:40px !important;
+	float:right;
+}
+
+.today-board-box-title-box {
+	border-top:1px solid gray;
+}
+
+.today-board-box-title-box h2 {
+	line-height: 1px;
+	margin-bottom: 30px;
+}
+
+.today-board-box {
+	max-width: 1170px;
+	--bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    width: 100%;
+    padding-right: calc(var(--bs-gutter-x)* 0.5);
+    padding-left: calc(var(--bs-gutter-x)* 0.5);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.today-board {
+	width: 100%;
+	border: 1px solid gray;
+	position: relative;
+	margin: 20px;
+	padding: 15px;
+	border-radius: 5px;
+}
+
+.today-board-title {
+	font-size: 20px;
+	border-bottom: 2px dashed;
+	line-height: 40px;
+	font-weight: 700;
+}
+
+.tb-list-title {
+	display: inline-block; /* 인라인 블록 요소로 설정 */
+    white-space: nowrap; /* 한 줄로 텍스트를 출력 */
+    overflow: hidden; /* 넘치는 부분 숨김 */
+    text-overflow: ellipsis; /* 넘치는 부분에 ... 표시 */
+     max-width: calc(100% - 120px); /* 최대 너비 설정, 여유 공간을 남기기 위해 조정 */
+    vertical-align: top; /* 상단 정렬 */
+}
+
+.tb-list-date {
+	display: inline-block; /* 인라인 블록 요소로 설정 */
+	vertical-align: top; /* 상단 정렬 */
+	float:right;
+	margin-right:2rem;
+}
+
+.today-board-list li{
+	list-style-type: disc !important;
+}
+
+.review-box {
+	height:200px !important;
+}
+
+.rb-min-height {
+	min-height: 100px;	
 }
