@@ -55,6 +55,15 @@
 		<result column="file_path" property="filePath" />
 	</resultMap>
 
+	<delete id="memberReviewDelete" parameterType="ComReview" >
+		-- 회원 리뷰 삭제
+		DELETE
+		FROM
+			service_reviews
+		WHERE
+			revcode=#{revCode}
+	</delete>
+
 	<update id="memberReviewModify" parameterType="ComReview" >
 		-- 회원 리뷰 수정
 		UPDATE

@@ -76,7 +76,7 @@
 		<result column="ccode" property="cCode" />
 		<result column="rev_admin_date" property="revAdminDate" />
 		<result column="rev_update_date" property="revUpdateDate" />
-		<!-- <result column="rev_img" property="revImg" /> -->
+		<result column="fileidx" property="fileIdx" />
 		<result column="rev_scope" property="revScope" />
 		<result column="rev_content" property="revContent" />
 	</resultMap>
@@ -119,6 +119,21 @@
 		<result column="inform_contents" property="informContents" />
 	</resultMap>
 
+	<insert id="insertComInformReciPient" parameterType="ComInformReciPient">
+		<selectKey keyProperty="irCode" resultType="String" order="BEFORE">
+			SELECT
+			CASE
+			WHEN COUNT(*) = 0 THEN 'ir1'
+			ELSE CONCAT('ir', (MAX(CAST(SUBSTRING_INDEX(ircode, 'ir', -1) AS UNSIGNED)) + 1))
+			END
+			FROM inform_recipient
+		</selectKey>
+		-- 알림 수신자 등록
+		INSERT INTO inform_recipient
+		(ircode, id, informcode, ircheck)
+		VALUES (#{irCode}, #{memberId}, #{informCode}, '0')
+	</insert>
+
 	<insert id="insertComInform" parameterType="ComInform">
 		<selectKey keyProperty="informCode" resultType="String" order="BEFORE">
 			SELECT
@@ -132,13 +147,13 @@
 		INSERT INTO inform
 			(informcode, id, inform_datetime, inform_cycle, inform_value, inform_contents)
 		VALUES
-			(#{informCode}, #{memberId}, NOW(), '수시 알림', '', '')
+			(#{informCode}, #{memberId}, NOW(), '수시 알림', #{informValue}, #{informContents})
 	</insert>
 
 	<select id="getCompanyLikeMemberByCcode" parameterType="String" resultMap="ComLikeResultMap">
 		-- 업체 구독자 조회
 		SELECT
-			l.lkcode, m.name, l.ccode, l.lk_alarm, l.lk_date, l.lk_state
+			l.lkcode, m.name, l.ccode, l.lk_alarm, l.lk_date, l.lk_state, l.id
 		FROM
 			`like` AS l
 		INNER JOIN
@@ -171,7 +186,7 @@
 		INSERT INTO service_reviews
 		(revcode, id, ccode, rev_admin_date, rev_update_date, file_idx, rev_scope, rev_content)
 		VALUES
-		(#{revCode}, #{memberId}, #{cCode}, CURDATE(), null, #{revImg}, #{revScope}, #{revContent})
+		(#{revCode}, #{memberId}, #{cCode}, CURDATE(), null, #{fileIdx}, #{revScope}, #{revContent})
 	</insert>
 
 	<insert id="insertQuestion" parameterType="ComQuestion">

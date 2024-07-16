@@ -4,8 +4,6 @@ package ks51team03.company.mapper;
 import ks51team03.company.dto.*;
 import ks51team03.company.dto.ComMap;
 import ks51team03.company.dto.Company;
-import ks51team03.files.dto.FileRequest;
-import ks51team03.member.dto.Member;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
 
@@ -13,6 +11,12 @@ import java.util.List;
 
 @Mapper
 public interface CompanyMapper {
+
+    // 업체 알림 수신자 등록
+    int insertComInformReciPient(ComInformReciPient comInformReciPient);
+
+    // 업체 알림 내용 저장
+    int insertComInform(ComInform comInform);
 
     // 업체 구독자 리스트
     List<ComLike> getCompanyLikeMemberByCcode(String cCode);

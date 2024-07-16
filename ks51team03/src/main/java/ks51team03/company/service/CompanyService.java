@@ -6,10 +6,8 @@ import ks51team03.company.mapper.CompanyMapper;
 import ks51team03.files.dto.FileRequest;
 import ks51team03.files.mapper.FileMapper;
 import ks51team03.files.util.FileUtils;
-import ks51team03.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +21,16 @@ public class CompanyService {
     private final CompanyMapper companyMapper;
     private final FileUtils fileUtils;
     private final FileMapper fileMapper;
+
+    // 업체 알림 수신자 등록
+    public int insertComInformReciPient(ComInformReciPient comInformReciPient){
+        return companyMapper.insertComInformReciPient(comInformReciPient);
+    }
+
+    // 업체 알림 내용 저장
+    public int insertComInform(ComInform comInform){
+        return companyMapper.insertComInform(comInform);
+    }
 
     // 업체 구독자 리스트
     public List<ComLike> getCompanyLikeMemberByCcode(String cCode){

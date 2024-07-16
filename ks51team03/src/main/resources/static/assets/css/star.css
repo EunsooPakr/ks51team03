@@ -17766,7 +17766,8 @@ img.fancybox-image {
 }
 @media (min-width: 1200px) {
   .media-hover-overlay .media-object .content {
-    top: 68%;
+    /* top: 68%; */
+    top:10%;
   }
 }
 .media-hover-overlay .media-img-overlay {

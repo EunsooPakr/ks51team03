@@ -2,6 +2,8 @@ package ks51team03.company.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ComInform {
     private String informCode;
@@ -10,4 +12,6 @@ public class ComInform {
     private String informCycle;
     private String informValue;
     private String informContents;
+    private List<String> memberIds;
+
 }

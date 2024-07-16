@@ -14,6 +14,9 @@ import ks51team03.member.dto.Search;
 @Mapper
 public interface MemberMapper {
 
+	// 회원 리뷰 삭제
+	int memberReviewDelete(ComReview review);
+
 	// 회원 리뷰 수정
 	int memberReviewModify(ComReview review);
 

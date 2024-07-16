@@ -11,6 +11,9 @@ import ks51team03.member.dto.Search;
 
 public interface MemberService {
 
+	// 회원 리뷰 삭제
+	int memberReviewDelete(ComReview review);
+
 	// 이미지 삭제
 	int memberReviewModify(ComReview review, boolean deleteImage);
 

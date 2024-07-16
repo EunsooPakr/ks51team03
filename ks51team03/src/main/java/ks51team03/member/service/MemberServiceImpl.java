@@ -37,6 +37,19 @@ public class MemberServiceImpl implements MemberService{
 	private final CompanyMapper companyMapper;
 	private final FileMapper fileMapper;
 
+	/**
+	 * 회원의 리뷰 삭제
+	 */
+	@Override
+	public int memberReviewDelete(ComReview review) {
+		FileUtils fileUtils = new FileUtils();
+		FileRequest fileRequest = fileMapper.getFileByRevCode(review.getRevCode());
+		if (fileRequest != null) {
+			fileUtils.deleteFile(fileRequest);
+			review.setFileIdx(null);
+		}
+		return memberMapper.memberReviewDelete(review);
+	}
 
 	/**
 	 * 회원의 특정 리뷰 수정

@@ -76,7 +76,7 @@
 			<div class="form-container">
 				<h2>문의 수정</h2>
 				<form th:action="@{/member/member_question_modify}" th:each="q : ${question}" method="post">
-					<input type="hidden" name="quesNum" th:value="${param.quesNum}">
+					<input type="hidden" name="quesNum" th:value="${q.quesNum}">
 					<div class="form-group">
 						<label for="qcteNum">문의 종류</label>
 						<select id="qcteNum" name="qcteNum" required>

@@ -501,13 +501,29 @@
             var placeNameDb = document.getElementById('placeNameDb');
             var placeNameKakao = document.getElementById('placeNameKakao');
 
+            // 기존 정보를 초기화합니다.
+            placeNameDb.innerText = '';
+            placeNameDb.href = '';
+            placeNameDb.style.display = 'none';
+            placeNameKakao.innerText = '';
+            placeNameKakao.style.display = 'none';
+
+            document.getElementById('parking').innerText = '주차장: 알수없음';
+            document.getElementById('placeAddress').innerText = '';
+            document.getElementById('placePhone').innerText = '';
+            document.getElementById('employee_count').innerText = '직원 수: 알수없음';
+            document.getElementById('placeRating').innerText = '별점: 알수없음';
+            document.getElementById('placeReviews').innerText = '리뷰: 알수없음';
+            document.querySelector('.review_list').innerHTML = '';
+            document.getElementById('write-question-link').style.display = 'none';
+            document.getElementById('write-review-link').style.display = 'none';
+
             if (isDB) {
                 var places = dbPlaces[index];
                 cCode = places.companyCode; // cCode 설정
                 placeNameDb.innerText = places.companyName;
                 placeNameDb.href = "/map/map_company_info?cCode=" + cCode;
                 placeNameDb.style.display = 'block';
-                placeNameKakao.style.display = 'none';
 
                 document.getElementById('parking').innerText = '주차장: ' + (places.companyParking ? 'O' : 'X');
                 document.getElementById('placeAddress').innerText = places.companyAddr;
@@ -550,18 +566,11 @@
                 var places = allResults[index - dbPlaces.length];
                 cCode = places.id; // cCode 설정
                 placeNameKakao.innerText = places.place_name;
-                placeNameDb.style.display = 'none';
                 placeNameKakao.style.display = 'block';
 
-                document.getElementById('parking').innerText = '주차장: 알수없음';
                 document.getElementById('placeAddress').innerText = places.address_name;
                 document.getElementById('placePhone').innerText = places.phone;
-                document.getElementById('employee_count').innerText = '직원 수: 알수없음';
 
-                document.getElementById('write-question-link').style.display = 'none';
-                document.getElementById('write-review-link').style.display = 'none';
-                document.getElementById('placeRating').innerText = '별점: 알수없음';
-                document.getElementById('placeReviews').innerText = '리뷰 수: 알수없음';
                 var reviewList = document.querySelector('.review_list');
                 reviewList.innerHTML = '리뷰 없음'; // 기존 리뷰 목록 초기화
             }
@@ -569,6 +578,7 @@
             menuWrap.style.display = 'none';
             infoWrap.style.display = 'block';
         }
+
 
         document.getElementById('returnMenu_wrap').onclick = function () {
             document.getElementById('info_wrap').style.display = 'none';
