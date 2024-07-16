@@ -3,13 +3,63 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns=""
       layout:decorate="~{layout/default}">
 <head>
+    <style>
+        .service-card {
+            display: flex; /* Flexbox 사용 */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .service-card img {
+            width: 40%; /* 이미지의 너비 설정 */
+            height: auto;
+        }
+
+        .service-card-content {
+            padding: 16px;
+            width: 60%; /* 콘텐츠의 너비 설정 */
+            display: flex;
+            flex-direction: column; /* 세로 정렬 */
+            justify-content: center; /* 중앙 정렬 */
+        }
+
+        .service-card h2, .service-card h3, .service-card p {
+            margin-bottom: 8px;
+        }
+
+        .service-card h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .service-card h3 {
+            font-size: 1.25rem;
+            color: #555;
+        }
+
+        .service-card p {
+            font-size: 1rem;
+            color: #777;
+        }
+
+        .service-card .label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .service-card-divider {
+            border-top: 1px solid #ddd;
+            margin: 16px 0;
+        }
+    </style>
+
 </head>
 <th:block layout:fragment="customContent">
 
     <div class="main-wrapper single-hotel-right-sidebar">
-
-
-
         <!-- ====================================
         ———	PACKAGES SECTION
         ===================================== -->
@@ -76,8 +126,6 @@
                                             </div>
                                         </div>
 
-
-
                                         <div class="form-group mb-5">
                                             <div class="row">
                                                 <label for="funeralserviceTitle" class="col-xl-5 col-form-label text-center text-xl-end px-2">반려 서비스 선택:</label>
@@ -132,35 +180,32 @@
 
                     <div class="col-md-7 col-lg-8">
                         <div class="col-md-12 col-lg-12" th:if="${serviceListCcode != null}" th:each="ml : ${serviceListCcode}">
+                            <div class="service-card">
+                                <img class="lazyestload" th:data-src="@{/assets/img/holets/hotel-slider-01.jpg}" th:src="@{assets/img/holets/hotel-slider-01.jpg}" alt="image">
+                                <div class="service-card-content">
+                                    <div class="service-detail">
+                                        <h2 th:text="${ml.funeralserviceTitle}"></h2>
 
-                            <div id="package-slider1" class="owl-carousel owl-theme package-slider">
-
-                                <div class="item">
-                                    <img class="lazyestload" th:data-src="@{/assets/img/holets/hotel-slider-01.jpg}" th:src="@{assets/img/holets/hotel-slider-01.jpg}" alt="image">
+                                    </div>
+                                    <div class="service-detail">
+                                        <span class="label">장례 서비스 가격:</span>
+                                        <h3 th:text="${ml.funeralservicePrice}"></h3>
+                                    </div>
+                                    <div class="service-card-divider"></div>
+                                    <div class="service-detail">
+                                        <span class="label">코멘트:</span>
+                                        <p th:text="${ml.getFuneralserviceComment()}"></p>
+                                    </div>
                                 </div>
-                                <div class="mt-8">
-                                    <h2 class="text-uppercase mb-5" th:text="${ml.funeralserviceTitle}"></h2>
-                                    <h3 class="text-uppercase mb-6" th:text="${ml.funeralservicePrice}"></h3>
-                                    <p class="mb-6" th:value="${ml.getFuneralserviceComment()}"></p>
-                                </div>
-                                <input type="hidden" th:value="${reserveCompanyCode}" th:attr="ml.funeralserviceCcode=${reserveCompanyCode}"/>
-
                             </div>
-                        </div>
 
+                        </div>
                     </div>
 
                 </div>
             </div>
         </section>
-
-
-
-
-
-
     </div><!-- element wrapper ends -->
-
 
 </th:block>
 <!-- 사용자정의 javascript file -->
@@ -236,6 +281,4 @@
         });
     </script>
 </th:block>
-
-
 </html>

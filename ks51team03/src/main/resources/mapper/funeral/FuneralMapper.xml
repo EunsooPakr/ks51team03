@@ -69,6 +69,7 @@
         fs.ccode,
         fs.fs_title,
         fs.fs_price,
+        fs_comment,
         fs.fs_weight,
         fs.id,
         fs.fs_reg_date,
