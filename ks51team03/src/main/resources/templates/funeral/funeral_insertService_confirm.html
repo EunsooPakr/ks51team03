@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+</head>
+
+<th:block layout:fragment="customContent">
+    <div class="main-wrapper booking-step-3">
+
+
+        <!-- ====================================
+        ———	BOOKING SECTION
+        ===================================== -->
+        <section class="py-12">
+            <div class="container">
+                <div class="alert alert-success alert-dismissible alert-confirm fade show mb-7" role="alert">
+                    <a href="javascript-void(0)" class="close" data-bs-dismiss="alert" aria-label="Close">
+                        <button type="button" onclick="location.href='/funeral/funeral_regService_List';" class="btn btn-primary text-uppercase" style="background-color: #009688">
+                            등록된 장례 서비스 확인
+                        </button>
+                    </a>
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    <span><strong>등록 완료!</strong> 장례 서비스가 정상적으로 등록되었습니다.</span>
+                </div>
+
+                <div class="card mb-6 mb-md-0">
+                    <img class="card-img-top rounded lazyestload" th:data-src="@{/assets/img/booking/booking-complete.jpg}" th:src="@{/assets/img/booking/booking-complete.jpg}" alt="Card image cap">
+
+                </div>
+        </section>
+
+
+
+    </div><!-- element wrapper ends -->
+
+
+</th:block>
+<!-- 사용자정의 javascript file -->
+<th:block layout:fragment="customJsFile">
+
+</th:block>
+
+<!-- 사용자정의 javascript -->
+<th:block layout:fragment="customJs">
+
+</th:block>
+
+</html>

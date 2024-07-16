@@ -1,5 +1,6 @@
 package ks51team03.funeral.serviceList.service;
 
+import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
@@ -36,6 +37,21 @@ public class ServiceListService {
 
         int result = serviceListMapper.funeralReserve(reserveDto);
     }
+
+    public List<Company> getCompanyInfo(Company company){
+
+        return serviceListMapper.getCompanyInfo(company);
+    }
+
+    public void insertFuneralService(ServiceListDto serviceListDto){
+
+        serviceListMapper.insertFuneralService(serviceListDto);
+    };
+
+    // 장례 업체에 등록된 장례 서비스를 가져오기 위한 company 코드
+    public List<ServiceListDto> getServiceList(ServiceListDto serviceListDto){
+        return serviceListMapper.getServiceList(serviceListDto);
+    };
 
 }
 

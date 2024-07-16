@@ -8,6 +8,7 @@
         <result     column="ccode"          property="funeralserviceCcode"/>
         <result     column="fs_title"       property="funeralserviceTitle"/>
         <result     column="fs_price"       property="funeralservicePrice"/>
+        <result     column="fs_comment"     property="funeralserviceComment"/>
         <result     column="fs_weight"      property="funeralserviceWeight"/>
         <result     column="id"             property="funeralserviceId"/>
         <result     column="fs_reg_date"    property="funeralserviceRegDate"/>
@@ -26,6 +27,24 @@
         <result     column="fr_confirm"         property="reserveConfirm"/>
         <result     column="fr_reg_date"        property="reserveRegDate"/>
         <result     column="fr_reserve_time"    property="reserveTime"/>
+    </resultMap>
+
+    <resultMap id="getCompanyInfo" type="ks51team03.company.dto.Company">
+        <id 	column="ccode" property="companyCode" />
+        <result column="com_class" property="companyClass" />
+        <result column="com_name" property="companyName" />
+        <result column="com_ceo" property="companyCeo" />
+        <result column="com_addr" property="companyAddr" />
+        <result column="com_addr_detail" property="companyAddrDetail" />
+        <result column="com_phone" property="companyPhone" />
+        <result column="com_stfcount" property="companyStfCount" />
+        <result column="com_email" property="companyEmail" />
+        <result column="com_parking" property="companyParking" />
+        <result column="com_page" property="companyPage" />
+        <result column="com_reg_date" property="companyRegDate" />
+        <result column="com_post_num" property="comPostNum" />
+        <result column="id" property="memberId" />
+        <result column="com_post_num" property="comPostNum" />
     </resultMap>
 
     <!-- 장례 서비스 전체 조회 -->
@@ -90,6 +109,80 @@
         )
 
     </insert>
+
+    <!-- 장례 서비스 등록시 회사 정보 확인 -->
+    <select id="getCompanyInfo" resultMap="getCompanyInfo">
+        SELECT
+        c.ccode,
+        c.com_class,
+        c.com_name,
+        c.com_ceo,
+        c.com_addr,
+        c.com_phone,
+        c.com_stfcount,
+        c.id,
+        c.com_parking,
+        c.com_reg_date
+        FROM
+        company AS c
+        WHERE
+        c.id = #{memberId}
+    </select>
+
+    <insert id="insertFuneralService" parameterType="Map">
+        <selectKey keyProperty="funeralserviceCode" resultType="String" order="BEFORE">
+            SELECT
+            CASE
+            WHEN COUNT(fscode) = 0 THEN 'fs1'
+            ELSE
+            CONCAT(
+            'fr',
+            LPAD(MAX(CAST(SUBSTRING(fscode, 3) AS UNSIGNED))+1, 3, '0')
+            )
+            END AS funeralserviceCode
+            FROM
+            funeral_service;
+        </selectKey>
+
+        INSERT INTO funeral_service (
+        fscode,
+        ccode,
+        fs_title,
+        fs_comment,
+        fs_price,
+        fs_weight,
+        id,
+        fs_reg_date,
+        fs_state
+        ) VALUES (
+        #{funeralserviceCode},
+        #{funeralserviceCcode},
+        #{funeralserviceTitle},
+        #{funeralserviceComment},
+        #{funeralservicePrice},
+        #{funeralserviceWeight},
+        #{funeralserviceId},
+        CURDATE(),
+        '활성화'
+        );
+    </insert>
+
+    <select id="getServiceList" resultMap="getServiceListMap">
+        SELECT
+            fscode,
+            ccode,
+            fs_title,
+            fs_price,
+            fs_comment,
+            fs_weight,
+            id,
+            fs_reg_date,
+            fs_state
+            FROM
+            funeral_service
+        WHERE
+        id = #{funeralserviceId}
+    </select>
 
 
 </mapper>
