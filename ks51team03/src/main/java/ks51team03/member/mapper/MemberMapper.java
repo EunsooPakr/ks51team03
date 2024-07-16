@@ -3,6 +3,8 @@ package ks51team03.member.mapper;
 import java.util.List;
 import java.util.Map;
 
+import ks51team03.company.dto.ComInform;
+import ks51team03.company.dto.ComInformReciPient;
 import ks51team03.company.dto.ComQuestion;
 import ks51team03.company.dto.ComReview;
 import org.apache.ibatis.annotations.Mapper;
@@ -10,9 +12,16 @@ import org.apache.ibatis.annotations.Mapper;
 import ks51team03.member.dto.Member;
 import ks51team03.member.dto.MemberLevel;
 import ks51team03.member.dto.Search;
+import org.springframework.data.repository.query.Param;
 
 @Mapper
 public interface MemberMapper {
+
+	// 회원 알림 내용 조회
+	List<ComInformReciPient> getInform(String memberId);
+
+	// 회원 알림 수 조회
+	Integer getInformCount(String memberId);
 
 	// 회원 리뷰 삭제
 	int memberReviewDelete(ComReview review);
@@ -79,4 +88,7 @@ public interface MemberMapper {
 	
 	//회원의 반려동물 수 감소
 	public void DeclinePetByMemberId(String memberId);
+
+	// 회원의 알림 확인
+	void updateInformStatus(String informId);
 }

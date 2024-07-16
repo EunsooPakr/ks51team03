@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ks51team03.company.dto.ComInformReciPient;
 import ks51team03.company.dto.ComReview;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,12 +56,18 @@ public class MemberController {
 		boolean isCheck = (boolean) checkMap.get("isCheck");
 		if(isCheck) {
 			Member memberInfo = (Member) checkMap.get("memberInfo");
+			int informCount = memberService.getInformCount(memberInfo.getMemberId());
+			List<ComInformReciPient> getInform = memberService.getInform(memberInfo.getMemberId());
+			log.info("getInform: {}", getInform);
 
 			// 1. session
 			//HttpSession requestGetSession = request.getSession();  이렇게 가져올 수도 있다.
 			session.setAttribute("SID", memberInfo.getMemberId());
 			session.setAttribute("SNAME", memberInfo.getMemberName());
 			session.setAttribute("SLEVEL", memberInfo.getMemberLevel());
+			session.setAttribute("SINFOCOUNT", informCount);
+			session.setAttribute("SINFORM", getInform);
+
 
 			String ccode = memberService.getCompanyCodeByMemberId(memberInfo.getMemberId());
 			session.setAttribute("CCODE", ccode);
@@ -91,7 +96,7 @@ public class MemberController {
 		cookie.setHttpOnly(true);
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);
-		return "redirect:/member/member_main";
+		return "redirect:/";
 	}
 
 	
@@ -121,7 +126,7 @@ public class MemberController {
 	@PostMapping("/insertMember")
 	public String insertMember(Member member,HttpSession session) {
 		
-		String nextPage="redirect:/member/member_main";
+		String nextPage="redirect:/";
 
 		//반려동물이 있는 경우
 		if(member.getMemberPet()>0)
@@ -164,13 +169,13 @@ public class MemberController {
     }
 	
 	
-	@GetMapping("/member_main")
+	@GetMapping("/index")
 	public String userMainPage(Model model, @RequestParam(value="alertMsg", required = false) String alertMsg)
 	{
 		model.addAttribute("title","PAL");
 		if(alertMsg != null) model.addAttribute("alertMsg", alertMsg);
 		
-		return "member/member_main";
+		return "index";
 	}
 	
 	@GetMapping("/member_mypage_main")
@@ -349,5 +354,15 @@ public class MemberController {
 		model.addAttribute("title","PAL");
 		
 		return "member/member_login_insert_pet";
+	}
+
+	@PutMapping("/disable/{informId}")
+	public ResponseEntity<Void> disableNotification(@PathVariable String informId) {
+		try {
+			memberService.disableNotification(informId);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 }

@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ks51team03.company.dto.ComQuestion;
-import ks51team03.company.dto.ComReview;
-import ks51team03.company.dto.Company;
+import ks51team03.company.dto.*;
 import ks51team03.company.mapper.CompanyMapper;
 import ks51team03.files.dto.FileRequest;
 import ks51team03.files.mapper.FileMapper;
@@ -36,6 +34,24 @@ public class MemberServiceImpl implements MemberService{
 	private final MemberMapper memberMapper;
 	private final CompanyMapper companyMapper;
 	private final FileMapper fileMapper;
+
+
+	/**
+	 * 회원의 알림 조회
+	 */
+	@Override
+	public List<ComInformReciPient> getInform(String memberId) {
+		return memberMapper.getInform(memberId);
+	}
+
+	/**
+	 * 회원의 알림 수 조회
+	 */
+	@Override
+	public int getInformCount(String memberId) {
+		Integer count = memberMapper.getInformCount(memberId);
+		return count != null ? count : 0;
+	}
 
 	/**
 	 * 회원의 리뷰 삭제
@@ -334,6 +350,12 @@ public class MemberServiceImpl implements MemberService{
 	public void DeclinePetByMemberId(String memberId)
 	{
 		memberMapper.DeclinePetByMemberId(memberId);
+	}
+
+	// 알림 확인
+	@Override
+	public void disableNotification(String informId) {
+		memberMapper.updateInformStatus(informId);
 	}
 }
 

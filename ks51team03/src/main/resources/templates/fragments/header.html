@@ -23,40 +23,31 @@
 							          <li class="nav-item dropdown nav-item-left">
 							            <a href="#" class="nav-link" id="navbarDropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
 							              aria-expanded="false">
-							              <i class="fa fa-bell text-gray-color icon" aria-hidden="true"></i> <span class="badge-pill bg-primary text-white">2</span>
+							              <i class="fa fa-bell text-gray-color icon" aria-hidden="true"></i> <span class="badge-pill bg-primary text-white" th:text="${session.SINFOCOUNT}"></span>
 							            </a>
-							      
-							            <div class="dropdown-menu dropdown-menu-end dropdown-left">
-							              <ul class="list-unstyled list-group list-group-flush">
-							                <li class="">
-							                  <a href="javascript:void(0)" class="list-group-item rounded-0 border-bottom first-child">
-							                    <h3 class="text-dark mb-0">알림</h3>
-							                  </a>
-							                </li>
-							      
-							                <li>
-							                  <a href="javascript:void(0)" class="list-group-item border-bottom border-off-white rounded-0">
-							                    <h5 class="fon-size-15 text-dark">Maldive Tour Packages</h5>
-							                    <small class="text-gray-color">6 Hours Ago</small>
-							                  </a>
-							                </li>
-							      
-							                <li>
-							                  <a href="javascript:void(0)" class="list-group-item border-bottom border-off-white rounded-0">
-							                    <h5 class="fon-size-15 text-dark">London Tour Booking</h5>
-							                    <small class="text-gray-color">15 Hours Ago</small>
-							                  </a>
-							                </li>
-							      
-							                <li class="">
-							                  <a href="javascript:void(0)" class="list-group-item border-off-white border-bottom-0 rounded-0 last-child">
-							                    <h5 class="fon-size-15 text-dark">Paris Tour Booking</h5>
-							                    <small class="text-gray-color">15 Hours Ago</small>
-							                  </a>
-							                </li>
-							              </ul>
-							            </div>
-							          </li>
+
+										  <div class="dropdown-menu dropdown-menu-end dropdown-left">
+											  <ul class="list-unstyled list-group list-group-flush">
+												  <li class="">
+													  <a href="javascript:void(0)" class="list-group-item rounded-0 border-bottom first-child">
+														  <h3 class="text-dark mb-0">알림</h3>
+													  </a>
+												  </li>
+
+												  <li th:each="inform : ${session.SINFORM}">
+													  <a href="javascript:void(0)" class="list-group-item border-bottom border-off-white rounded-0">
+														  <div class="d-flex justify-content-between align-items-center">
+															  <h5 class="fon-size-15 text-dark">제목: <span th:text="${inform.informValue}"></span></h5>
+															  <button class="btn btn-outline-danger btn-small" th:attr="data-ircode=${inform.irCode}">X</button>
+														  </div>
+														  <h6 class="fon-size-13 text-dark">내용: <span th:text="${inform.informContent}"></span></h6>
+														  <small class="text-gray-color">발신자: <span th:text="${inform.sendId}"></span></small>
+													  </a>
+												  </li>
+											  </ul>
+										  </div>
+
+									  </li>
 							      
 							      	
 							          <li class="nav-item dropdown nav-item-left">
@@ -117,7 +108,7 @@
 				<nav class="limiter-menu-desktop container">
 					
 					<!-- 로고 -->		
-					<a href="/member/member_main" class="logo">
+					<a href="/" class="logo">
 						<img th:src="@{/assets/img/pal_logo.png}" alt="IMG-LOGO">
 					</a>
 
@@ -173,46 +164,73 @@
 				</nav>
 			</div>	
 		</div>
-		<script th:inline="javascript">
-		/*알림 아이콘 버튼을 이용하려하는 경우 */
-		document.getElementById('navbarDropdown').addEventListener('click', function() {
-		       var sessionName = /*[[${session.SNAME}]]*/ null;
-		       var dropdownMenu = document.querySelector('.dropdown-menu.show');
-		       
-		       //로그인한 상태가 아니라면
-		       if (sessionName == null)
-		       {
-		           alert('로그인 후 이용해 주세요.');
-		        	// 초기화할 때 리스트 숨김 처리
-		           dropdownMenuList.style.display = 'none';
-		           dropdownMenu.style.display = 'none';
-		       }
-		       else
-		       {
-		    	   
-		           console.log('로그인 사용자: ' + sessionName);
-		       }
+	<script th:inline="javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+			document.getElementById('navbarDropdown').addEventListener('click', function() {
+				var sessionName = /*[[${session.SNAME}]]*/ null;
+				var dropdownMenu = document.querySelector('.dropdown-menu.show');
+
+				//로그인한 상태가 아니라면
+				if (sessionName == null) {
+					alert('로그인 후 이용해 주세요.');
+					// 초기화할 때 리스트 숨김 처리
+					dropdownMenuList.style.display = 'none';
+					dropdownMenu.style.display = 'none';
+				} else {
+					console.log('로그인 사용자: ' + sessionName);
+				}
 			});
-		
-		
-		 /*회원정보 아이콘 버튼을 이용하려하는 경우 */
-    	document.getElementById('dropdownMemberMenuButton').addEventListener('click', function() {
-	       var sessionName = /*[[${session.SNAME}]]*/ null;
-	       var dropdownMenu = document.querySelector('.dropdown-menu.show');
-	       
-	       //로그인한 상태가 아니라면
-	       if (sessionName == null)
-	       {
-	           alert('로그인 후 이용해 주세요.');
-	        	// 초기화할 때 리스트 숨김 처리
-	           dropdownMenuList.style.display = 'none';
-	           dropdownMenu.style.display = 'none';
-	       }
-	       else
-	       {
-	           console.log('로그인 사용자: ' + sessionName);
-	       }
+
+			document.getElementById('dropdownMemberMenuButton').addEventListener('click', function() {
+				var sessionName = /*[[${session.SNAME}]]*/ null;
+				var dropdownMenu = document.querySelector('.dropdown-menu.show');
+
+				//로그인한 상태가 아니라면
+				if (sessionName == null) {
+					alert('로그인 후 이용해 주세요.');
+					// 초기화할 때 리스트 숨김 처리
+					dropdownMenuList.style.display = 'none';
+					dropdownMenu.style.display = 'none';
+				} else {
+					console.log('로그인 사용자: ' + sessionName);
+				}
+			});
+
+			document.querySelectorAll('.btn-small').forEach(function(button) {
+				button.addEventListener('click', function() {
+					var irCode = button.getAttribute('data-ircode');
+					disableNotification(button, irCode);
+				});
+			});
 		});
+
+		function disableNotification(button, irCode) {
+			console.log("X 버튼 클릭됨, irCode:", irCode); // 디버깅을 위한 로그 추가
+			// 서버로 업데이트 요청을 보냅니다.
+			fetch('/member/disable/' + irCode, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+					.then(response => {
+						if (response.ok) {
+							console.log("알림 비활성화 성공"); // 디버깅을 위한 로그 추가
+							// 업데이트가 성공하면 화면에서 알림을 제거합니다.
+							var liElement = button.closest('li');
+							if (liElement) {
+								liElement.style.display = 'none';
+							}
+						} else {
+							alert('알림 비활성화에 실패했습니다.');
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert('알림 비활성화 중 오류가 발생했습니다.');
+					});
+		}
 	</script>
+
 </header>
 </html>
