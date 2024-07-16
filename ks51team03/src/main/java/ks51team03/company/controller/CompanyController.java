@@ -11,12 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Map;
@@ -523,27 +523,33 @@ public class CompanyController {
 
 	// 업체 알림 등록
 	@PostMapping("/company/company_send_alarm")
-	public String sendAlarm(@ModelAttribute ComInform comInform, HttpSession session, RedirectAttributes redirectAttributes){
+	public ResponseEntity<String> sendAlarm(@RequestBody ComInform comInform, HttpSession session,
+											RedirectAttributes redirectAttributes, ComInformReciPient comInformReciPient) {
 		String memberId = (String) session.getAttribute("SID");
 		log.info("알림 발송자: {}", memberId);
 		log.info("알림 받을 회원 목록: {}", comInform.getMemberIds());
 		log.info("알림 제목: {}", comInform.getInformValue());
 		log.info("알림 내용: {}", comInform.getInformContents());
+
 		comInform.setMemberId(memberId);
 		if (comInform.getMemberIds() == null || comInform.getMemberIds().isEmpty()) {
-			redirectAttributes.addFlashAttribute("errorMessage", "최소 한 명 이상의 구독자를 선택해야 합니다.");
-			return "redirect:/company/company_send_alarm";
+			return ResponseEntity.badRequest().body("최소 한 명 이상의 구독자를 선택해야 합니다.");
 		}
-		/*
-		for (String recipientId : comInform.getMemberIds()) {
-			comInform.setMemberId(recipientId);
-			comInform.setInformValue(comInform.getInformValue());
-			comInform.setInformContents(comInform.getInformContents());
-			companyService.insertComInform(comInform);
-		}
-		*/
 
-		return "redirect:/company/company_info";
+		comInform.setInformValue(comInform.getInformValue());
+		comInform.setInformContents(comInform.getInformContents());
+		companyService.insertComInform(comInform);
+		log.info("comInform기본키 찾기: {}", comInform);
+
+		for (String recipientId : comInform.getMemberIds()) {
+			comInformReciPient.setInformCode(comInform.getInformCode());
+			comInformReciPient.setMemberId(recipientId);
+			companyService.insertComInformReciPient(comInformReciPient);
+
+		}
+
+
+		return ResponseEntity.ok("알림이 성공적으로 발송되었습니다.");
 	}
 
 	

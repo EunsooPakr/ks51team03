@@ -5,6 +5,7 @@
 
 <head>
     <title>알림 발송</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,12 +96,12 @@
         </div>
         <div class="form-container">
             <h2>알림 발송</h2>
-            <form th:action="@{/company/company_send_alarm}" method="post">
+            <form id="alarmForm">
                 <div class="form-group">
                     <label>구독자 선택</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item" th:each="comLikes : ${comLikes}">
-                            <input type="checkbox" th:id="${comLikes.memberId}" name="memberIds" th:value="${comLikes.memberId}" />
+                            <input type="checkbox" th:id="${comLikes.memberId}" class="member-checkbox" th:value="${comLikes.memberId}" />
                             <label th:for="${comLikes.memberId}" th:text="${comLikes.memberName}"></label>
                         </div>
                     </div>
@@ -114,10 +115,51 @@
                     <textarea id="alarm-content" name="informContents" required></textarea>
                 </div>
                 <div class="form-group">
-                    <button type="submit">발송</button>
+                    <button type="button" id="sendAlarmBtn">발송</button>
                 </div>
             </form>
         </div>
     </section>
+
+    <script>
+        $(document).ready(function() {
+            $('#sendAlarmBtn').click(function() {
+                var selectedMembers = [];
+                $('.member-checkbox:checked').each(function() {
+                    console.log($(this).val());
+                    selectedMembers.push($(this).val());
+                });
+
+                if (selectedMembers.length === 0) {
+                    alert('최소 한 명 이상의 구독자를 선택해야 합니다.');
+                    return;
+                }
+
+                var data = {
+                    informValue: $('#alarm-title').val(),
+                    informContents: $('#alarm-content').val(),
+                    memberIds: selectedMembers
+                };
+
+                console.log('보낼 데이터:', data);
+
+                $.ajax({
+                    url: '/company/company_send_alarm',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        console.log('서버 응답 성공:', response);
+                        alert('알림이 성공적으로 발송되었습니다.');
+                        window.location.href = '/company/company_send_alarm';
+                    },
+                    error: function(error) {
+                        console.log('서버 응답 실패:', error);
+                        alert('알림 발송에 실패했습니다.');
+                    }
+                });
+            });
+        });
+    </script>
 </th:block>
 </html>

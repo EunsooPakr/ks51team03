@@ -12,6 +12,9 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
 
+    // 업체 알림 수신자 등록
+    int insertComInformReciPient(ComInformReciPient comInformReciPient);
+
     // 업체 알림 내용 저장
     int insertComInform(ComInform comInform);
 

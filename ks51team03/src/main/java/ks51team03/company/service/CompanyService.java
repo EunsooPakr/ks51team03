@@ -22,6 +22,11 @@ public class CompanyService {
     private final FileUtils fileUtils;
     private final FileMapper fileMapper;
 
+    // 업체 알림 수신자 등록
+    public int insertComInformReciPient(ComInformReciPient comInformReciPient){
+        return companyMapper.insertComInformReciPient(comInformReciPient);
+    }
+
     // 업체 알림 내용 저장
     public int insertComInform(ComInform comInform){
         return companyMapper.insertComInform(comInform);

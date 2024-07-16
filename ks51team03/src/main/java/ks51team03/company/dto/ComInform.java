@@ -13,4 +13,5 @@ public class ComInform {
     private String informValue;
     private String informContents;
     private List<String> memberIds;
+
 }
