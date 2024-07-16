@@ -135,6 +135,20 @@
         	nbcode = #{nboardCode};
 	</update>
 	
+	<select id="getBCTValueNameByBCTCode" parameterType="NoticeBoard" resultType="String">
+		SELECT
+			bct_value
+		FROM
+			notice_board AS nb
+			INNER JOIN
+			board_category AS bc
+			ON
+			nb.bctcode=bc.bctcode
+		WHERE 
+			nb.nbcode=#{nboardCode};
+	</select>
+	
+	
 	<!-- <select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
 		/*게시글 검색*/
 		SELECT

@@ -36,7 +36,7 @@ public class BoardController {
                                      @RequestParam(name = "searchKeyword", required = false, defaultValue = "") String searchKeyword,
                                      @RequestParam(name = "boardCateValue") String boardCateValue) {
 
-		String boardTitle = "자유 게시글"; // 기본값 설정
+		String boardTitle = boardCateValue; // 기본값 설정
 
         // 서비스 메서드 호출
         Map<String, Object> resultMap = boardService.getNoticeBoardList(boardCateValue, currentPage, searchType, searchKeyword);
@@ -67,6 +67,9 @@ public class BoardController {
 
         return "board/board_list_normal"; // 뷰 이름 리턴
     }
+	
+	
+	
 
     @GetMapping("/board_list_normal_search")
     public String searchNoticeBoardList(Model model,
@@ -76,7 +79,7 @@ public class BoardController {
     									@RequestParam(name = "boardCateValue") String boardCateValue){
 
 
-    	String boardTitle = "자유 게시글"; // 기본값 설정
+    	String boardTitle = boardCateValue; // 기본값 설정
     	
         // 서비스 메서드 호출
         Map<String, Object> resultMap = boardService.getNoticeBoardList(boardCateValue, currentPage, searchType, searchKeyword);
@@ -109,6 +112,7 @@ public class BoardController {
         return "board/board_list_normal"; // 뷰 이름 리턴
     }
 
+    //이거 작성할때 게시판 이름에 맞는 게시판 코드 조합해서 넣어야함!!!!!!!
     
 	/* 자유게시글 작성 */
 	@PostMapping("/board_write_normal")
@@ -116,22 +120,30 @@ public class BoardController {
 		log.info("board_write_normal");
 		boardService.insertNBoard(nboard);
 		// 직접 URL 인코딩을 수행하여 파라미터를 추가
-	    String encodedBoardCateValue = UriUtils.encodeQueryParam("자유 게시글", StandardCharsets.UTF_8);
+		String BoardCateValueName=boardService.getBCTValueNameByBCTCode(nboard);
+		
+	    String encodedBoardCateValue = UriUtils.encodeQueryParam(BoardCateValueName, StandardCharsets.UTF_8);
 	    return "redirect:/board/board_list_normal?currentPage=1&boardCateValue=" + encodedBoardCateValue;
 	}
 
 	@GetMapping("/board_write_normal")
-	public String boardWriteNormalPage(Model model) {
+	public String boardWriteNormalPage(Model model,@RequestParam(name = "boardCateValue") String boardCateValue) {
+		
+		String boardTitle = boardCateValue; // 기본값 설정
+		model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
 		return "/board/board_write_normal";
 	}
 
 	/* 자유 게시글 열람 */
 	@GetMapping("/board_view_normal")
-	public String boardViewNormalPage(@RequestParam(value = "nboardCode") String nboardCode, Model model) {
+	public String boardViewNormalPage(@RequestParam(value = "nboardCode") String nboardCode,
+			@RequestParam(name = "boardCateValue") String boardCateValue, Model model) {
 		log.info("board_view_normal");
 
 		// 게시글 코드를 숫자만 분리해서 넘기기
 		// int nbcode=Integer.parseInt(nboardCode.replaceAll("[^\\d]", ""));
+		String boardTitle = boardCateValue; // 기본값 설정
+		model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
 		model.addAttribute("noticeBoard", boardService.getNBoardByNBCode(nboardCode));
 		// 조회수 증가
 		boardService.increaseViewByNBCode(nboardCode);
@@ -161,10 +173,16 @@ public class BoardController {
 	@PostMapping("/board_edit_normal")
 	public String boardEditNormalPage(NoticeBoard nboard, RedirectAttributes rttr) {
 		log.info("board_edit_normal");
+		
+		String BoardCateValueName=boardService.getBCTValueNameByBCTCode(nboard);
+		
 		boardService.updateNBoard(nboard);
-
 		// 직접 URL 인코딩을 수행하여 파라미터를 추가
-	    String encodedBoardCateValue = UriUtils.encodeQueryParam("자유 게시글", StandardCharsets.UTF_8);
+		/*
+		 * String encodedBoardCateValue = UriUtils.encodeQueryParam("자유 게시글",
+		 * StandardCharsets.UTF_8);
+		 */
+	    String encodedBoardCateValue = UriUtils.encodeQueryParam(BoardCateValueName, StandardCharsets.UTF_8);
 	    return "redirect:/board/board_list_normal?currentPage=1&boardCateValue=" + encodedBoardCateValue;
 	}
 

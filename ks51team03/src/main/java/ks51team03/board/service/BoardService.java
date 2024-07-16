@@ -118,5 +118,10 @@ public class BoardService {
 
 		return boardMapper.getBoardSearchList(nbsearch);
 	}
+	
+	public String getBCTValueNameByBCTCode(NoticeBoard nboard)
+	{
+		return boardMapper.getBCTValueNameByBCTCode(nboard);
+	}
 
 }

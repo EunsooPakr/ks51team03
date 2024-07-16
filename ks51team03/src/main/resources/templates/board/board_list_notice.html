@@ -15,7 +15,7 @@
 	            <div class="board_title">
 	                <!-- strong id="board_title">자유 게시글</strong> -->
 	                <strong id="board_title" th:text="${boardTitle}">게시판 이름</strong>
-	                <p>자유롭게 의견을 나누세요.</p>
+	                <p>게시된 공시사항을 확인해주세요.</p>
 	                <h1 class="member-info-profile-top-textline"></h1>
 	            </div>
 	            
@@ -54,7 +54,7 @@
 	                                <div>
 	                                    <div class="num" th:text="${board.nboardCode}"></div>
 	                                    <div class="title">
-	                                        <a th:text="${board.nboardTitle}" th:href="@{/board/board_view_normal(nboardCode=${board.nboardCode},boardCateValue=${boardTitle})}"></a>
+	                                        <a th:text="${board.nboardTitle}" th:href="@{/board/board_view_normal(nboardCode=${board.nboardCode})}"></a>
 	                                    </div>
 	                                    <div class="writer" th:text="${board.memberId}"></div>
 	                                    <div class="date" th:text="${board.nboardRegistDate}"></div>
@@ -79,7 +79,7 @@
 						<a href="#" th:attr="onclick='changePage(\'' + ${lastPage} + '\')'" th:utext="${'>>'}"></a>
 					</div>
 	                <div class="bt_wrap">
-	                    <a id="nBoardWriteBtn" class="board-list-normal-btn" th:href="@{/board/board_write_normal(boardCateValue=${boardTitle})}">등록</a>
+	                    <a id="nBoardWriteBtn" class="board-list-normal-btn" th:href="@{/board/board_write_normal}">등록</a>
 	                </div>
 	            </div>
 	        </div>
