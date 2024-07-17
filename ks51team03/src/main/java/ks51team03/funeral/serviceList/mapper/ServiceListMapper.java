@@ -5,6 +5,7 @@ import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveMemberPet;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,6 +34,6 @@ public interface ServiceListMapper {
     List<Company> getCompanyInfoList();
 
     //장례 예약 전 회원 반려동물 정보 가져오기
-    List<ReserveMemberPet> getMemberPet();
+    List<ReserveMemberPet> getMemberPet(@Param("memberId") String memberId);
 
 }

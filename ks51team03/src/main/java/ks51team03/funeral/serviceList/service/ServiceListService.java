@@ -60,8 +60,8 @@ public class ServiceListService {
     }
 
     // 장례 예약 전 회원 반려동물 가져오기 위한 코드
-    public List<ReserveMemberPet> getMemberPet(){
-        return serviceListMapper.getMemberPet();
+    public List<ReserveMemberPet> getMemberPet(String memberId){
+        return serviceListMapper.getMemberPet(memberId);
     }
 
 }
