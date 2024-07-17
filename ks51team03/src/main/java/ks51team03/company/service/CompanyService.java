@@ -42,16 +42,36 @@ public class CompanyService {
         companyMapper.deleteReview(revCode);
     }
 
-    // 파일 업로드
+    // 리뷰 파일 업로드
     public void addReviewWithFile(ComReview comReview) {
 
-        FileRequest fileRequest =  fileUtils.uploadFile(comReview.getRevImgFile());
-        log.info("fileRequest: {}", fileRequest);
+        FileRequest fileRequest =  fileUtils.uploadFile(comReview.getRevImgFile(), "리뷰");
         if(fileRequest != null){
+            fileRequest.setFileCate("리뷰");
+            log.info("fileRequest: {}", fileRequest);
             fileMapper.addFile(fileRequest);
             comReview.setFileIdx(fileRequest.getFileIdx());
         }
         addReview(comReview);
+
+    }
+
+    // 업체 대표 이미지 업로드
+    public void addCompanyWithFile(CompanyImg companyimg, String companyCode) {
+
+        FileRequest fileRequest =  fileUtils.uploadFile(companyimg.getRevImgFile(), companyCode);
+        if(fileRequest != null){
+            fileRequest.setFileCate("업체이미지");
+            log.info("fileRequest: {}", fileRequest);
+            fileMapper.addFile(fileRequest);
+            companyimg.setFileIdx(fileRequest.getFileIdx());
+        }
+        addCompanyImg(companyimg);
+
+    }
+    // 업체 대표 이미지 등록하기
+    public void addCompanyImg(CompanyImg companyimg){
+        companyMapper.insertCompanyImg(companyimg);
 
     }
 

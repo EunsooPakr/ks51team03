@@ -119,6 +119,21 @@
 		<result column="inform_contents" property="informContents" />
 	</resultMap>
 
+	<insert id="insertCompanyImg" parameterType="CompanyImg">
+		<selectKey keyProperty="ciCode" resultType="String" order="BEFORE">
+			SELECT
+			CASE
+			WHEN COUNT(*) = 0 THEN 'ci1'
+			ELSE CONCAT('ci', (MAX(CAST(SUBSTRING_INDEX(cicode, 'ci', -1) AS UNSIGNED)) + 1))
+			END
+			FROM company_img
+		</selectKey>
+		-- 업체 대표이미지 등록
+		INSERT INTO company_img
+		(cicode, ccode, file_idx)
+		VALUES (#{ciCode}, #{cCode}, #{fileIdx})
+	</insert>
+
 	<insert id="insertComInformReciPient" parameterType="ComInformReciPient">
 		<selectKey keyProperty="irCode" resultType="String" order="BEFORE">
 			SELECT
@@ -386,7 +401,7 @@
 	</select>
 
 	<select id="getCompanyInfoById" resultMap="CompanyResultMap">
-		-- 업체 회원 아이디로 검색
+		-- 업체 정보 회원 아이디로 검색
 		SELECT
 			ccode,
 			com_class,

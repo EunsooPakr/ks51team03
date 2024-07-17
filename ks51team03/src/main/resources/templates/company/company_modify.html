@@ -82,7 +82,11 @@
         </div>
     <div class="form-container">
         <h2>업체 정보 수정</h2>
-        <form th:action="@{/company/modify_Company}" method="post" th:each="c : ${companyListById}">
+        <form th:action="@{/company/modify_Company}" method="post" th:each="c : ${companyListById}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="revImgFile">업체 대표이미지</label>
+                <input type="file" id="revImgFile" name="revImgFile" accept="image/*">
+            </div>
             <div class="form-group">
                 <label for="business-type">업체 종류</label>
                 <select id="business-type" name="business-type">

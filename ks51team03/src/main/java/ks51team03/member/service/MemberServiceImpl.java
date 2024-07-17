@@ -80,7 +80,7 @@ public class MemberServiceImpl implements MemberService{
 				review.setFileIdx(null);
 			}
 		} else if (review.getRevImgFile() != null && !review.getRevImgFile().isEmpty()) {
-			FileRequest fileRequest = fileUtils.uploadFile(review.getRevImgFile());
+			FileRequest fileRequest = fileUtils.uploadFile(review.getRevImgFile(), "리뷰");
 			if (fileRequest != null) {
 				fileMapper.addFile(fileRequest);
 				review.setFileIdx(fileRequest.getFileIdx());

@@ -70,6 +70,11 @@ public class MemberController {
 
 
 			String ccode = memberService.getCompanyCodeByMemberId(memberInfo.getMemberId());
+			if(ccode == null) {
+				ccode = companyService.getCompanyCodeByMemberId(memberInfo.getMemberId());
+			}
+			log.info("ccode 1: {}", ccode);
+
 			session.setAttribute("CCODE", ccode);
 			log.info("Session CCODE set: {}", ccode);
 

@@ -23,6 +23,7 @@ import java.util.Map;
 
 import ks51team03.company.dto.ComStaff;
 import ks51team03.company.dto.Company;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -133,22 +134,34 @@ public class CompanyController {
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
 		log.info("memberLevel: {}", member.getMemberLevel());
+		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
 		// 사용자 레벨 확인
-		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
+		if (!member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
 			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
-		List<Company> companyListById = companyService.getCompanyInfoById(memberId);
-		model.addAttribute("companyListById", companyListById);
+		// 직원일경우
+		if (companyCode != null) {
+			List<Company> companyListById = companyService.getCompanyInfoByCcode(companyCode);
+			model.addAttribute("companyListById", companyListById);
+		}
+		else {
+			List<Company> companyListById = companyService.getCompanyInfoById(memberId);
+			model.addAttribute("companyListById", companyListById);
+		}
+
 		return "company/company_modify";
 	}
 
 	@PostMapping("/company/modify_Company")
-	public String modifyCompany(Company company, HttpSession session) {
+	public String modifyCompany(Company company, HttpSession session, @RequestParam("revImgFile") MultipartFile multipartFile) {
+		CompanyImg companyImg = new CompanyImg();
+		companyImg.setRevImgFile(multipartFile);
 		String cCode = (String) session.getAttribute("CCODE");
 		company.setCompanyCode(cCode);
-
+		companyImg.setCCode(cCode);
 		log.info("업체수정 company:{}", company);
+		companyService.addCompanyWithFile(companyImg, company.getCompanyCode());
 		companyService.modifyCompany(company);
 		return "redirect:/map/map_main";
 	}

@@ -34,13 +34,13 @@ public class FileUtils {
      * @param multipartFiles - 파일 객체 List
      * @return DB에 저장할 파일 정보 List
      */
-    public List<FileRequest> uploadFiles(final List<MultipartFile> multipartFiles) {
+    public List<FileRequest> uploadFiles(final List<MultipartFile> multipartFiles, String cate) {
         List<FileRequest> files = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             if (multipartFile.isEmpty()) {
                 continue;
             }
-            files.add(uploadFile(multipartFile));
+            files.add(uploadFile(multipartFile, cate));
         }
         return files;
     }
@@ -50,7 +50,7 @@ public class FileUtils {
      * @param multipartFile - 파일 객체
      * @return DB에 저장할 파일 정보
      */
-    public FileRequest uploadFile(final MultipartFile multipartFile) {
+    public FileRequest uploadFile(final MultipartFile multipartFile, String cate) {
 
         if (multipartFile.isEmpty()) {
             return null;
@@ -60,7 +60,9 @@ public class FileUtils {
         String fileNewName = generateSaveFilename(multipartFile.getOriginalFilename());
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")).toString();
         String fileRegDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toString();
-        String uploadPath = getUploadPath(today) + File.separator + fileNewName;
+        String cateDirPath = makeCateDirectories(uploadPath + File.separator + cate); // 리뷰까지 경로
+        String uploadPath =  getUploadPath(cateDirPath,today) + File.separator + fileNewName;
+
 
         // 파일의 업로드 경로 설정
         byte[] bytes;
@@ -107,8 +109,8 @@ public class FileUtils {
      * @param addPath - 추가 경로
      * @return 업로드 경로
      */
-    private String getUploadPath(final String addPath) {
-        return makeDirectories(uploadPath + File.separator + addPath);
+    private String getUploadPath(String cateDirPath, final String addPath) {
+        return makeDirectories(cateDirPath + File.separator + addPath);
     }
 
     /**
@@ -117,6 +119,21 @@ public class FileUtils {
      * @return 업로드 경로
      */
     private String makeDirectories(final String path) {
+        String staticPath = Paths.get(path).toString();
+        System.out.println(staticPath);
+        File dir = new File(staticPath);
+        if (dir.exists() == false) {
+            dir.mkdirs();
+        }
+        return dir.getPath();
+    }
+
+    /**
+     * 카테고리 폴더(디렉터리) 생성
+     * @param path - 업로드 경로
+     * @return 업로드 경로
+     */
+    private String makeCateDirectories(final String path) {
         String staticPath = Paths.get(path).toString();
         System.out.println(staticPath);
         File dir = new File(staticPath);

@@ -2,6 +2,7 @@ package ks51team03.company.dto;
 
 import ks51team03.member.dto.Member;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class Company {
@@ -19,5 +20,7 @@ public class Company {
     private String companyRegDate;
     private String memberId;
     private String comPostNum;
+
+
 
 }

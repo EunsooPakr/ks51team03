@@ -27,6 +27,9 @@ public interface CompanyMapper {
     // 업체의 리뷰 삭제
     void deleteReview(String revCode);
 
+    // 업체 대표 이미지 등록
+    void insertCompanyImg(CompanyImg companyImg);
+
     // 리뷰 등록
     void insertReview(ComReview comReview);
 
