@@ -129,7 +129,7 @@ public class ServiceListController {
 		log.info("로그인한 회원 아이디 memberId={}", memberId);
 
 		if(memberId == null) {
-			return "redirect:/member/member_main";
+			return "redirect:/";
 		}
 
 		company.setMemberId(memberId);
@@ -186,7 +186,7 @@ public class ServiceListController {
 		serviceListDto.setFuneralserviceId(memberId);
 
 		if(memberId == null) {
-			return "redirect:/member/member_main";
+			return "redirect:/";
 		}
 
 		List<ServiceListDto> serviceList = serviceListService.getServiceList(serviceListDto);
