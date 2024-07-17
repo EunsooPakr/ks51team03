@@ -234,7 +234,7 @@ public class MemberController {
 		log.info("question: {}", question);
 		model.addAttribute("question", question);
 
-		return "/member/member_mypage_question_modify";
+		return "member/member_mypage_question_modify";
 	}
 
 	@PostMapping("/member_question_modify")
@@ -278,7 +278,7 @@ public class MemberController {
 		log.info("review: {}", review);
 		model.addAttribute("review", review);
 
-		return "/member/member_mypage_review_modify";
+		return "member/member_mypage_review_modify";
 	}
 
 	@PostMapping("/member_review_modify")

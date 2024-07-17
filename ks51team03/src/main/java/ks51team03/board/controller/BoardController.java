@@ -141,7 +141,7 @@ public class BoardController {
 		
 		model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
 		model.addAttribute("boardInfo", boardInfo); // boardTitle 변수를 모델에 추가
-		return "/board/board_write_normal";
+		return "board/board_write_normal";
 	}
 
 	/* 자유 게시글 열람 */
@@ -160,7 +160,7 @@ public class BoardController {
 		model.addAttribute("noticeBoard", boardService.getNBoardByNBCode(nboardCode));
 		// 조회수 증가
 		boardService.increaseViewByNBCode(nboardCode);
-		return "/board/board_view_normal";
+		return "board/board_view_normal";
 	}
 
 	/* 자유 게시글 추천 */
@@ -186,7 +186,7 @@ public class BoardController {
 		model.addAttribute("boardInfo", boardInfo); // boardTitle 변수를 모델에 추가
 		model.addAttribute("noticeBoard", boardService.getNBoardByNBCode(nboardCode));
 
-		return "/board/board_edit_normal";
+		return "board/board_edit_normal";
 	}
 
 	/* 자유 게시글 수정 */
