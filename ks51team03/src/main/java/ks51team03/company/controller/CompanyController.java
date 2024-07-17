@@ -561,7 +561,7 @@ public class CompanyController {
 		
 		companyService.insertCompany(company);
 		
-		return "redirect:/member/member_main";
+		return "redirect:/";
 	}
 	
 	@GetMapping("/company/insertCompany")

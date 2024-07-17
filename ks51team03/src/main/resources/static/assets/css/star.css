@@ -21706,3 +21706,10 @@ img.lazyestload {
 .footer-2 h6, .footer-2 .h6 {
   font-weight: 400;
 }
+
+.btn-small {
+  padding: 2px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}

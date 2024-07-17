@@ -48,9 +48,6 @@ public interface CompanyMapper {
     // 문의 답변 등록
     void insertAnswer(ComQuestionAnswer comQuestionAnswer);
 
-    // 마지막 숫자 알아내기 직원 신청
-    String getLastStfCode();
-
     // 직원 신청 로직
     void insertStaff(ComStaff comStaff);
 

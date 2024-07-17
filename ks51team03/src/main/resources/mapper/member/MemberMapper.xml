@@ -55,6 +55,48 @@
 		<result column="file_path" property="filePath" />
 	</resultMap>
 
+	<resultMap id="ComInformReciPientResultMap" type="ComInformReciPient">
+		<id column="ircode" property="irCode" />
+		<result column="id" property="memberId" />
+		<result column="informcode" property="informCode" />
+		<result column="ircheck" property="irCheck" />
+		<result column="inform_contents" property="informContent" />
+		<result column="sendid" property="sendId" />
+		<result column="inform_value" property="informValue" />
+		<result column="inform_datetime" property="dateTime" />
+	</resultMap>
+
+	<update id="updateInformStatus">
+		-- 알림 확인 상태 수정
+		UPDATE inform_recipient
+		SET ircheck = 1
+		WHERE ircode = #{informId}
+	</update>
+
+	<select id="getInform" parameterType="String" resultMap="ComInformReciPientResultMap">
+		-- 회원 알림 내용 조회
+		SELECT
+			ir.ircode, ir.id, i.inform_contents, ir.ircheck, i.id AS sendid, i.inform_value, i.inform_datetime
+		FROM
+			inform_recipient AS ir
+		INNER JOIN
+			inform AS i
+		ON
+			ir.informcode = i.informcode
+		WHERE
+			ir.id = #{memberId} AND ir.ircheck = 0
+	</select>
+
+	<select id="getInformCount" parameterType="String" resultType="int">
+		-- 회원 알림 수 조회
+		SELECT
+			count(ircode)
+		FROM
+			inform_recipient
+		WHERE
+			id = #{memberId} AND ircheck = 0
+	</select>
+
 	<delete id="memberReviewDelete" parameterType="ComReview" >
 		-- 회원 리뷰 삭제
 		DELETE

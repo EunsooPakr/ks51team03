@@ -3,6 +3,8 @@ package ks51team03.member.service;
 import java.util.List;
 import java.util.Map;
 
+import ks51team03.company.dto.ComInform;
+import ks51team03.company.dto.ComInformReciPient;
 import ks51team03.company.dto.ComQuestion;
 import ks51team03.company.dto.ComReview;
 import ks51team03.member.dto.Member;
@@ -10,6 +12,12 @@ import ks51team03.member.dto.MemberLevel;
 import ks51team03.member.dto.Search;
 
 public interface MemberService {
+
+	// 회원 알림 내용 조회
+	List<ComInformReciPient> getInform(String memberId);
+
+	// 회원 알림 수 조회
+	int getInformCount(String memberId);
 
 	// 회원 리뷰 삭제
 	int memberReviewDelete(ComReview review);
@@ -67,4 +75,7 @@ public interface MemberService {
 	void IncreasePetByMemberId(String memberId);
 	
 	void DeclinePetByMemberId(String memberId);
+
+	// 알림 상태 수정
+	void disableNotification(String informId);
 }

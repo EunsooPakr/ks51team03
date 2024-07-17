@@ -8,4 +8,9 @@ public class ComInformReciPient {
     private String memberId;
     private String informCode;
     private int irCheck;
+    private String informContent;
+    private String sendId;
+    private String informValue;
+    private String dateTime;
+
 }

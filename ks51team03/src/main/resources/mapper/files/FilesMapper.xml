@@ -26,7 +26,8 @@
 	        file_new_name, 
 	        file_path, 
 	        file_size, 
-	        file_reg_date
+	        file_reg_date,
+            file_cate
 	    )
         VALUES
         (	#{fileIdx},
@@ -34,7 +35,8 @@
         	#{fileNewName} ,
         	#{filePath} , 
         	#{fileSize}, 
-        	NOW()
+        	NOW(),
+            ''
        	)
     </insert>
 

@@ -12,4 +12,5 @@ public class FileRequest {
     private String filePath;
     private long fileSize;
     private String fileRegDate;
+    private String fileCate;
 }
