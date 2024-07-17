@@ -73,10 +73,6 @@ public class BoardService {
 
 		nboard.setNboardCode(nbcode);
 
-		/* 여기 알아서 읽어넣을 수 있도록 수정 */
-		nboard.setBoardCode("b3");
-		nboard.setBoardCateCode("bct3");
-
 		nboard.setNboardView(0);
 		nboard.setNboardRec(0);
 
@@ -118,5 +114,29 @@ public class BoardService {
 
 		return boardMapper.getBoardSearchList(nbsearch);
 	}
+	
+	public String getBCTValueNameByBCTCode(NoticeBoard nboard)
+	{
+		return boardMapper.getBCTValueNameByBCTCode(nboard);
+	}
+	
+	public String getBoardCateCodeByBCTValue(NoticeBoard nboard)
+	{
+		return boardMapper.getBoardCateCodeByBCTValue(nboard);
+	}
+	
+	public String getBoardCodeByNBoard(NoticeBoard nboard)
+	{
+		return boardMapper.getBoardCodeByNBoard(nboard);
+	}
 
+	public String getBoardCodeByBCTValue(String bctCodeValue)
+	{
+		return boardMapper.getBoardCodeByBCTValue(bctCodeValue);
+	}
+	
+	public String getBoardInfoByBCTValue(String bctCodeValue)
+	{
+		return boardMapper.getBoardInfoByBCTValue(bctCodeValue);
+	}
 }

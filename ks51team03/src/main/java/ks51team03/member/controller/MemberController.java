@@ -370,5 +370,13 @@ public class MemberController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
+
+	@GetMapping("/member_main2")
+	public String userTestPage(Model model)
+	{
+		model.addAttribute("title","PAL");
+		
+		return "member/member_main2";
+
 	}
 }

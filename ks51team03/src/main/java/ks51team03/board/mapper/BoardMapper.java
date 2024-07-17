@@ -36,4 +36,19 @@ public interface BoardMapper {
 	
 	// 게시글 수정
 	public int updateNBoard(NoticeBoard nboard);
+	
+	// 게시글로 게시글 카테고리 이름 도출
+	public String getBCTValueNameByBCTCode(NoticeBoard nboard);
+	
+	// 게시글로 게시글 카테고리 코드 도출
+	public String getBoardCateCodeByBCTValue(NoticeBoard nboard);
+		
+	// 게시글로 게시글 보드 코드 도출
+	public String getBoardCodeByNBoard(NoticeBoard nboard);
+	
+	// 게시글 게시글 카테고리 이름으로 게시글 보드 코드 도출
+	public String getBoardCodeByBCTValue(String bctCodeValue);
+	
+	// 게시글 게시글 카테고리 이름으로 게시글 설명 도출
+	public String getBoardInfoByBCTValue(String bctCodeValue);
 }
