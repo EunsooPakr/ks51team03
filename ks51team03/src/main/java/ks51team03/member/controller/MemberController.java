@@ -359,7 +359,7 @@ public class MemberController {
 	@PutMapping("/disable/{informId}")
 	public ResponseEntity<Void> disableNotification(@PathVariable String informId, HttpSession session) {
 		try {
-			String memberId=(String) session.getAttribute("SID");
+			String memberId = (String) session.getAttribute("SID");
 			memberService.disableNotification(informId);
 			List<ComInformReciPient> getInform = memberService.getInform(memberId);
 			int informCount = memberService.getInformCount(memberId);
@@ -370,7 +370,7 @@ public class MemberController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
-
+	}
 	@GetMapping("/member_main2")
 	public String userTestPage(Model model)
 	{
