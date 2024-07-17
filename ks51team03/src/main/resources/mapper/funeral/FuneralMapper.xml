@@ -69,6 +69,7 @@
         fs.ccode,
         fs.fs_title,
         fs.fs_price,
+        fs_comment,
         fs.fs_weight,
         fs.id,
         fs.fs_reg_date,
@@ -103,8 +104,8 @@
         #{reserveEndDate},
         #{reservePhone},
         '결제 전',
-        '예약 대기',
-        CURDATE(),
+        '예약 완료',
+        NOW(),
         #{reserveTime}
         )
 
