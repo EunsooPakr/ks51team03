@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -24,11 +25,12 @@ public class PaymentController {
 
 
     @GetMapping("funeral/funeral_confirm_payment")
-    public String confirmPayment(HttpSession session, Model model, PaymentDto paymentDto) {
+    public String confirmPayment(HttpSession session, Model model, PaymentDto paymentDto, RedirectAttributes redirectAttributes) {
         String memberId = (String) session.getAttribute("SID");
         log.info("memberId: {}", memberId);
 
         if(memberId == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인이 필요한 서비스입니다");
             return "redirect:/member/member_main";
         }
 

@@ -110,8 +110,8 @@
             #{reserveEndDate},
             #{reservePhone},
             '결제 전',
-            '예약 대기',
-            CURDATE(),
+            '예약 완료',
+            NOW(),
             #{reserveTime}
         )
     </insert>
@@ -180,26 +180,27 @@
             ELSE
             CONCAT(
             'fp',
-            LPAD(MAX(CAST(SUBSTRING_INDEX(fpcode, 'fr', -1) AS UNSIGNED))+1, 3, '0')
+            LPAD(MAX(CAST(SUBSTRING(fpcode, 3) AS UNSIGNED))+1, 2, '0')
             )
             END AS fpcode
             FROM
-            funeral_payment;
+            funeral_payment
+            FOR UPDATE;
         </selectKey>
         /* 장례 결제 */
         INSERT INTO funeral_payment
         (   txId,
-            code,
-            message,
-            fpcode,
-            ccode,
-            id,
-            frcode,
-            fp_name,
-            fp_final,
-            fp_pay_date,
-            fp_method,
-            fp_status)
+        code,
+        message,
+        fpcode,
+        ccode,
+        id,
+        frcode,
+        fp_name,
+        fp_final,
+        fp_pay_date,
+        fp_method,
+        fp_status)
         VALUES (
         #{txId},
         #{code},
@@ -210,11 +211,12 @@
         #{frcode},
         #{fpName},
         #{fpFinal},
-        CURDATE(),
+        NOW(),
         #{fpMethod},
         #{fpStatus}
         )
     </insert>
+
 
     <select id="getLastFpcode" resultType="String">
         SELECT
