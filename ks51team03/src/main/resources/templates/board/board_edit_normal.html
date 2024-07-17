@@ -14,7 +14,7 @@
 			<div class="board_wrap">
 				<div class="board_title">
 					<strong id="board_title" th:text="${boardTitle}">게시판 이름</strong>
-					<p>자유롭게 의견을 나누세요.</p>
+					<p id="board_info" th:text="${boardInfo}">게시판 설명</p>
 				</div>
 				<form role="form" action="/board/board_edit_normal" method="post">
 					<div class="board_write_wrap">

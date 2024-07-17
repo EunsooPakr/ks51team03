@@ -15,7 +15,7 @@
 	            <div class="board_title">
 	                <!-- strong id="board_title">자유 게시글</strong> -->
 	                <strong id="board_title" th:text="${boardTitle}">게시판 이름</strong>
-	                <p>자유롭게 의견을 나누세요.</p>
+	                <p id="board_info" th:text="${boardInfo}">게시판 설명</p>
 	                <h1 class="member-info-profile-top-textline"></h1>
 	            </div>
 	            
@@ -79,7 +79,10 @@
 						<a href="#" th:attr="onclick='changePage(\'' + ${lastPage} + '\')'" th:utext="${'>>'}"></a>
 					</div>
 	                <div class="bt_wrap">
-	                    <a id="nBoardWriteBtn" class="board-list-normal-btn" th:href="@{/board/board_write_normal(boardCateValue=${boardTitle})}">등록</a>
+	                   <!--  <a id="nBoardWriteBtn" class="board-list-normal-btn" th:href="@{/board/board_write_normal(boardCateValue=${boardTitle})}">등록</a> -->
+						<div th:if="${boardCode != 'b1' or (boardCode == 'b1' and session.SLEVEL == 'level1')}">
+						    <a id="nBoardWriteBtn" class="board-list-normal-btn" th:href="@{/board/board_write_normal(boardCateValue=${boardTitle})}">등록</a>
+						</div>
 	                </div>
 	            </div>
 	        </div>

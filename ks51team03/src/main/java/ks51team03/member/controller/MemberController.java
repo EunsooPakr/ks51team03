@@ -350,4 +350,12 @@ public class MemberController {
 		
 		return "member/member_login_insert_pet";
 	}
+	
+	@GetMapping("/member_main2")
+	public String userTestPage(Model model)
+	{
+		model.addAttribute("title","PAL");
+		
+		return "member/member_main2";
+	}
 }

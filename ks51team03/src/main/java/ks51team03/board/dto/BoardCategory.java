@@ -7,6 +7,7 @@ public class BoardCategory {
 	private String boardCode;
 	private String boardCateName;
 	private String boardCateValue;
+	private String boardInfo;
 	private String memberId;
 	private String boardCateRegistDate;
 	private int boardCateState;

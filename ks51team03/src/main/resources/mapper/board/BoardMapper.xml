@@ -148,6 +148,43 @@
 			nb.nbcode=#{nboardCode};
 	</select>
 	
+	<select id="getBoardCateCodeByBCTValue" parameterType="NoticeBoard" resultType="String">
+		SELECT
+			bctcode
+		FROM
+			board_category
+		WHERE 
+			bct_value=#{boardCateCode};
+	</select>
+	
+	<select id="getBoardCodeByNBoard" parameterType="NoticeBoard" resultType="String">
+		SELECT
+			bcode
+		FROM
+			board_category
+		WHERE 
+			bct_value=#{boardCateCode};
+	</select>
+	
+	<select id="getBoardCodeByBCTValue" parameterType="String" resultType="String">
+		SELECT
+			bcode
+		FROM
+			board_category
+		WHERE 
+			bct_value=#{boardCateCode};
+	</select>
+	
+	
+	<select id="getBoardInfoByBCTValue" parameterType="String" resultType="String">
+		/*게시글 게시글 카테고리 이름으로 게시글 설명 도출*/
+		SELECT
+			bct_info
+		FROM
+			board_category
+		WHERE 
+			bct_value=#{boardCateCode};
+	</select>
 	
 	<!-- <select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
 		/*게시글 검색*/
