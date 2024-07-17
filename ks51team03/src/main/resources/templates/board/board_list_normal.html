@@ -54,7 +54,8 @@
 	                                <div>
 	                                    <div class="num" th:text="${board.nboardCode}"></div>
 	                                    <div class="title">
-	                                        <a th:text="${board.nboardTitle}" th:href="@{/board/board_view_normal(nboardCode=${board.nboardCode},boardCateValue=${boardTitle})}"></a>
+	                                        <a th:text="${board.nboardTitle}" th:href="@{/board/board_view_normal(nboardCode=${board.nboardCode})}"></a>
+<!-- 	                                        <a th:text="${board.nboardTitle}" th:href="@{/board/board_view_normal(nboardCode=${board.nboardCode},boardCateValue=${boardTitle})}"></a> -->
 	                                    </div>
 	                                    <div class="writer" th:text="${board.memberId}"></div>
 	                                    <div class="date" th:text="${board.nboardRegistDate}"></div>

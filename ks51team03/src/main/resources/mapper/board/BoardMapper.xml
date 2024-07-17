@@ -186,6 +186,61 @@
 			bct_value=#{boardCateCode};
 	</select>
 	
+	<select id="getMainNoticeBoard" parameterType="String" resultMap="nBoardResultMap">
+		/* 게시글 코드에 맞는 게시판 최신순*/
+		SELECT
+			*
+		FROM
+			notice_board
+		WHERE
+			bcode=#{boardCode}
+		ORDER BY nb_reg DESC;
+	</select>
+	
+	<select id="getMainViewBoard" parameterType="String" resultMap="nBoardResultMap">
+		/* 게시판 조회순*/
+		SELECT
+			*
+		FROM
+			notice_board
+		ORDER BY nb_view DESC
+		LIMIT 10;
+	</select>
+	
+	<select id="getMainRecBoard" parameterType="String" resultMap="nBoardResultMap">
+		/* 게시판 추천순*/
+		SELECT
+			*
+		FROM
+			notice_board
+		ORDER BY nb_rec DESC
+		LIMIT 10;
+	</select>
+	
+	<select id="getMainLatestBoard" parameterType="String" resultMap="nBoardResultMap">
+		/* 게시판 최신순*/
+		SELECT
+			*
+		FROM
+			notice_board
+		ORDER BY nb_reg DESC
+		LIMIT 10;
+	</select>
+	
+	<select id="getBCTValueByNBCode" parameterType="String" resultType="String">
+		/* 게시글 코드로 게시판 이름 도출*/
+		SELECT
+			bc.bct_value
+		FROM
+			notice_board AS nb
+			INNER JOIN
+			board_category AS bc
+			ON
+			nb.bctcode=bc.bctcode
+		WHERE 
+			nb.nbcode=#{nboardCode};
+	</select>
+	
 	<!-- <select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
 		/*게시글 검색*/
 		SELECT
