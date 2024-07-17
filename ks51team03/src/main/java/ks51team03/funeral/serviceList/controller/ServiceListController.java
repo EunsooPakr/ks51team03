@@ -3,6 +3,7 @@ package ks51team03.funeral.serviceList.controller;
 import jakarta.servlet.http.HttpSession;
 import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
+import ks51team03.funeral.reserve.dto.ReserveMemberPet;
 import ks51team03.funeral.reserve.service.ReserveService;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
@@ -78,10 +79,12 @@ public class ServiceListController {
 
 		log.info("로그인한 회원 아이디 memberId={}", memberId);
 
-		List<ServiceListDto> serviceListDto = serviceListService.getServiceList();
+		List<Company> ComServiceListDto = serviceListService.getCompanyInfoList();
+
+		log.info("ComServiceListDto:{}", ComServiceListDto);
 
 		model.addAttribute("title", "장례 전체 서비스");
-		model.addAttribute("serviceListDto", serviceListDto);
+		model.addAttribute("ComServiceListDto", ComServiceListDto);
 
 		return "funeral/funeral_serviceList";
 	}
@@ -109,15 +112,21 @@ public class ServiceListController {
 
 		String memberId = (String) session.getAttribute("SID");
 
+
 		log.info("로그인한 회원 아이디 memberId={}", memberId);
 
 		List<ServiceListDto> serviceListCcode = serviceListService.getServiceInfoByCode(funeralserviceCcode);
 		//ServiceListDto serviceListCcode = serviceListService.getServiceInfoByCode(funeralserviceCcode);
 		//List<ServiceListDto> serviceListDto = serviceListService.getServiceList();
 
+		List<ReserveMemberPet> getMemberPetList = serviceListService.getMemberPet();
+
+		log.info("getMemberPetList:{}", getMemberPetList);
+
 		model.addAttribute("reserveCompanyCode", funeralserviceCcode);
 		//model.addAttribute("serviceListDto", serviceListDto);
 		model.addAttribute("serviceListCcode", serviceListCcode);
+		model.addAttribute("getMemberPetList", getMemberPetList);
 
 		return "funeral/funeral_service_detail";
 	}
@@ -129,7 +138,7 @@ public class ServiceListController {
 		log.info("로그인한 회원 아이디 memberId={}", memberId);
 
 		if(memberId == null) {
-			return "redirect:/member/member_main";
+			return "redirect:/";
 		}
 
 		company.setMemberId(memberId);
@@ -186,7 +195,7 @@ public class ServiceListController {
 		serviceListDto.setFuneralserviceId(memberId);
 
 		if(memberId == null) {
-			return "redirect:/member/member_main";
+			return "redirect:/";
 		}
 
 		List<ServiceListDto> serviceList = serviceListService.getServiceList(serviceListDto);

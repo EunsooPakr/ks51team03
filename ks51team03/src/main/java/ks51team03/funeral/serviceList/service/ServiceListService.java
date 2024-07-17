@@ -2,6 +2,7 @@ package ks51team03.funeral.serviceList.service;
 
 import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
+import ks51team03.funeral.reserve.dto.ReserveMemberPet;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,16 @@ public class ServiceListService {
     public List<ServiceListDto> getServiceList(ServiceListDto serviceListDto){
         return serviceListMapper.getServiceList(serviceListDto);
     };
+
+    // 장례 회사 정보를 가져오기 위한 조회
+    public List<Company> getCompanyInfoList(){
+        return serviceListMapper.getCompanyInfoList();
+    }
+
+    // 장례 예약 전 회원 반려동물 가져오기 위한 코드
+    public List<ReserveMemberPet> getMemberPet(){
+        return serviceListMapper.getMemberPet();
+    }
 
 }
 

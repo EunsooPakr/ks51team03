@@ -107,7 +107,7 @@ public class ReserveController {
         String memberId = (String) session.getAttribute("SID");
 
         if(memberId == null) {
-            return "redirect:/member/member_login";
+            return "redirect:/";
         }
 
         log.info("장례 예약한 회원 아이디 memberId = {}", memberId);
