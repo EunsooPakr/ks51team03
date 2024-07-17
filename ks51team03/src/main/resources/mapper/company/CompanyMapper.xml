@@ -161,7 +161,7 @@
 		ON
 			l.id = m.id
 		WHERE
-			l.ccode = #{memberId} AND l.lk_alarm = 1
+			l.ccode = #{memberId} AND l.lk_alarm = 1 AND l.lk_state = 1
 	</select>
 
 	<delete id="deleteReview" parameterType="ComReview" >

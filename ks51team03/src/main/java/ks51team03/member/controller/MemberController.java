@@ -357,9 +357,15 @@ public class MemberController {
 	}
 
 	@PutMapping("/disable/{informId}")
-	public ResponseEntity<Void> disableNotification(@PathVariable String informId) {
+	public ResponseEntity<Void> disableNotification(@PathVariable String informId, HttpSession session) {
 		try {
+			String memberId=(String) session.getAttribute("SID");
 			memberService.disableNotification(informId);
+			List<ComInformReciPient> getInform = memberService.getInform(memberId);
+			int informCount = memberService.getInformCount(memberId);
+			session.setAttribute("SINFORM", getInform);
+			session.setAttribute("SINFOCOUNT", informCount);
+			log.info("informCount: {}", informCount);
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

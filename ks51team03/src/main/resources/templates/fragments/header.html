@@ -21,7 +21,7 @@
 							<div class="right-top-bar flex-w h-full">
 								<ul class="list-unstyled d-flex align-items-center mb-0">
 							          <li class="nav-item dropdown nav-item-left">
-							            <a href="#" class="nav-link" id="navbarDropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
+							            <a href="#" class="nav-link" id="navbarDropdown" role="button" aria-haspopup="true"
 							              aria-expanded="false">
 							              <i class="fa fa-bell text-gray-color icon" aria-hidden="true"></i> <span class="badge-pill bg-primary text-white" th:text="${session.SINFOCOUNT}"></span>
 							            </a>
@@ -48,14 +48,14 @@
 										  </div>
 
 									  </li>
-							      
-							      	
+
+
 							          <li class="nav-item dropdown nav-item-left">
-							            <a href="#" class="dropdown-toggle" id="dropdownMemberMenuButton" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
+							            <a href="#" class="dropdown-toggle" id="dropdownMemberMenuButton" role="button" aria-haspopup="true"
 							              aria-expanded="false">
 							              <i class="zmdi zmdi-account"></i>
 							            </a>
-							      
+
 							            <div class="dropdown-menu dropdown-menu-end dropdown-left">
 							              <ul class="list-unstyled list-group list-group-flush" id="dropdownMenuList">
 							                <li class="">
@@ -66,13 +66,13 @@
 							                    </h5>
 							                  </a>
 							                </li>
-							      
+
 							                <li>
 							                  <a href="/member/member_mypage_memberinfo" class="list-group-item border-bottom border-off-white rounded-0">
 							                    <h5 class="fon-size-15 text-dark text-capitalize">마이페이지</h5>
 							                  </a>
 							                </li>
-							      
+
 							                <li class="">
 							                  <a href="javascript:void(0)" class="list-group-item border-off-white border-bottom-0 rounded-0 last-child">
 							                    <h5 class="fon-size-15 text-dark">업체페이지</h5>
@@ -106,8 +106,8 @@
 			<!-- 상단 고정 메인 메뉴바 -->
 			<div class="wrap-menu-desktop">
 				<nav class="limiter-menu-desktop container">
-					
-					<!-- 로고 -->		
+
+					<!-- 로고 -->
 					<a href="/" class="logo">
 						<img th:src="@{/assets/img/pal_logo.png}" alt="IMG-LOGO">
 					</a>
@@ -160,39 +160,75 @@
 								</ul>
 							</li>
 						</ul>
-					</div>	
+					</div>
 				</nav>
-			</div>	
+			</div>
 		</div>
 	<script th:inline="javascript">
 		document.addEventListener('DOMContentLoaded', function() {
-			document.getElementById('navbarDropdown').addEventListener('click', function() {
+			document.getElementById('navbarDropdown').addEventListener('click', function(e) {
+				e.preventDefault();
 				var sessionName = /*[[${session.SNAME}]]*/ null;
-				var dropdownMenu = document.querySelector('.dropdown-menu.show');
+				var dropdownMenu = this.nextElementSibling; // 바로 다음 형제 요소로 드롭다운 메뉴를 선택
 
-				//로그인한 상태가 아니라면
+				// 로그인한 상태가 아니라면
 				if (sessionName == null) {
 					alert('로그인 후 이용해 주세요.');
 					// 초기화할 때 리스트 숨김 처리
-					dropdownMenuList.style.display = 'none';
 					dropdownMenu.style.display = 'none';
 				} else {
 					console.log('로그인 사용자: ' + sessionName);
+					// 드롭다운 메뉴 토글
+					if (dropdownMenu.classList.contains('show')) {
+						dropdownMenu.classList.remove('show');
+						dropdownMenu.style.display = 'none';
+					} else {
+						// 다른 열려있는 메뉴 닫기
+						document.querySelectorAll('.dropdown-menu.show').forEach(function(openMenu) {
+							openMenu.classList.remove('show');
+							openMenu.style.display = 'none';
+						});
+						dropdownMenu.classList.add('show');
+						dropdownMenu.style.display = 'block';
+					}
 				}
 			});
 
-			document.getElementById('dropdownMemberMenuButton').addEventListener('click', function() {
+			document.getElementById('dropdownMemberMenuButton').addEventListener('click', function(e) {
+				e.preventDefault();
 				var sessionName = /*[[${session.SNAME}]]*/ null;
-				var dropdownMenu = document.querySelector('.dropdown-menu.show');
+				var dropdownMenu = this.nextElementSibling; // 바로 다음 형제 요소로 드롭다운 메뉴를 선택
 
-				//로그인한 상태가 아니라면
+				// 로그인한 상태가 아니라면
 				if (sessionName == null) {
 					alert('로그인 후 이용해 주세요.');
 					// 초기화할 때 리스트 숨김 처리
-					dropdownMenuList.style.display = 'none';
 					dropdownMenu.style.display = 'none';
 				} else {
 					console.log('로그인 사용자: ' + sessionName);
+					// 드롭다운 메뉴 토글
+					if (dropdownMenu.classList.contains('show')) {
+						dropdownMenu.classList.remove('show');
+						dropdownMenu.style.display = 'none';
+					} else {
+						// 다른 열려있는 메뉴 닫기
+						document.querySelectorAll('.dropdown-menu.show').forEach(function(openMenu) {
+							openMenu.classList.remove('show');
+							openMenu.style.display = 'none';
+						});
+						dropdownMenu.classList.add('show');
+						dropdownMenu.style.display = 'block';
+					}
+				}
+			});
+
+			// 문서 클릭 시 드롭다운 메뉴 닫기
+			document.addEventListener('click', function(e) {
+				if (!e.target.closest('.nav-item')) {
+					document.querySelectorAll('.dropdown-menu.show').forEach(function(openMenu) {
+						openMenu.classList.remove('show');
+						openMenu.style.display = 'none';
+					});
 				}
 			});
 
@@ -221,6 +257,8 @@
 							if (liElement) {
 								liElement.style.display = 'none';
 							}
+							// 알림 수 업데이트
+							updateNotificationCount();
 						} else {
 							alert('알림 비활성화에 실패했습니다.');
 						}
@@ -230,6 +268,15 @@
 						alert('알림 비활성화 중 오류가 발생했습니다.');
 					});
 		}
+
+		function updateNotificationCount() {
+			var notificationCountElement = document.querySelector('#navbarDropdown .badge-pill');
+			var currentCount = parseInt(notificationCountElement.textContent, 10);
+			if (currentCount > 0) {
+				notificationCountElement.textContent = currentCount - 1;
+			}
+		}
+
 	</script>
 
 </header>
