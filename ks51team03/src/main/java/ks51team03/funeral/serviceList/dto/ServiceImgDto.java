@@ -6,9 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class ServiceImgDto {
 
-    private String funeralServiceImgCode;
-    private String funeralserviceCcode; // 업체코드
-    private String funeralserviceCode;
+    private String fsicode;
+    private String ccode; // 업체코드
+    private String fscode;
     private String funeralserviceId; // 등록자 아이디
     private String fileIdx;
     private String fileCate;

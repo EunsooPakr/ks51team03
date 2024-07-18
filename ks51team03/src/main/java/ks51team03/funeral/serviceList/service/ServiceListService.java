@@ -50,10 +50,10 @@ public class ServiceListService {
         return serviceListMapper.getCompanyInfo(company);
     }
 
-    public void insertFuneralService(ServiceListDto serviceListDto){
-
+    public String insertFuneralService(ServiceListDto serviceListDto){
         serviceListMapper.insertFuneralService(serviceListDto);
-    };
+        return serviceListDto.getFuneralserviceCode(); // 생성된 fscode 반환
+    }
 
     // 장례 업체에 등록된 장례 서비스를 가져오기 위한 company 코드
     public List<ServiceListDto> getServiceList(ServiceListDto serviceListDto){
@@ -71,7 +71,7 @@ public class ServiceListService {
     }
 
     // 장례 예약 서비스 이미지 업로드
-    public void addFuneralServiceFile(ServiceImgDto serviceImgDto, String companyCode){
+    public void addFuneralServiceImg(ServiceImgDto serviceImgDto, String companyCode){
 
         FileRequest fileRequest = fileUtils.uploadFile(serviceImgDto.getFurImgFile(), companyCode);
         if(fileRequest == null){
@@ -80,7 +80,7 @@ public class ServiceListService {
             fileMapper.addFile(fileRequest);
             serviceImgDto.setFileIdx(fileRequest.getFileIdx());
         }
-        addFuneralServiceImg(serviceImgDto);
+        //serviceListMapper.insertFuneralServiceImg(serviceImgDto);
     }
 
     // 장례 예약 서비스 이미지 등록하기

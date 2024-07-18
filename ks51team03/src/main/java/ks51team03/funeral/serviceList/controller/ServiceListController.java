@@ -5,6 +5,7 @@ import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveMemberPet;
 import ks51team03.funeral.reserve.service.ReserveService;
+import ks51team03.funeral.serviceList.dto.ServiceImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
 import ks51team03.funeral.serviceList.service.ServiceListService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
@@ -130,18 +132,24 @@ public class ServiceListController {
 
 		List<Company> getCompanyInfoList = serviceListService.getCompanyInfo(company);
 
-		if (getCompanyInfoList == null) {
+		if (getCompanyInfoList == null || getCompanyInfoList.isEmpty()) {
 			getCompanyInfoList = new ArrayList<>();
+		} else {
+			// ccode를 세션에 저장
+			String ccode = getCompanyInfoList.get(0).getCompanyCode();
+			session.setAttribute("ccode", ccode);
 		}
 
-		log.info("getCompanyInfoList:{}", getCompanyInfoList );
+		log.info("getCompanyInfoList:{}", getCompanyInfoList);
 		model.addAttribute("getCompanyInfoList", getCompanyInfoList);
 
 		return "funeral/funeral_insert_service";
 	}
 
+
 	@PostMapping("funeral/funeral_insert_service")
 	public String funeralInsertService(@ModelAttribute ServiceListDto serviceListDto,
+									   @RequestParam("furImgFile") MultipartFile multipartFile,
 									   HttpSession session, Model model,
 									   RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
@@ -149,17 +157,37 @@ public class ServiceListController {
 
 		log.info("어디서 막히는 지 봅시다");
 
+
+		String ccode = (String) session.getAttribute("ccode");
+
+		if (ccode == null) {
+			log.error("ccode is null");
+			throw new IllegalStateException("ccode should not be null");
+		}
+
+		serviceListDto.setFuneralserviceCcode(ccode);
+		//String fscode = serviceListService.insertFuneralService(serviceListDto);
+
+		ServiceImgDto serviceImgDto = new ServiceImgDto();
+		serviceImgDto.setFurImgFile(multipartFile);
+		serviceImgDto.setCcode(ccode);
+		//serviceImgDto.setFscode(fscode);
+
 		serviceListService.insertFuneralService(serviceListDto);
+		serviceListService.addFuneralServiceImg(serviceImgDto, serviceListDto.getFuneralserviceCcode());
 
 		log.info("어디서 막히는 지 봅시다");
 
 		model.addAttribute("serviceListDto", serviceListDto);
+		model.addAttribute("ccode", ccode);
+		model.addAttribute("serviceImgDto", serviceImgDto);
 
 		// 메시지 설정
 		redirectAttributes.addFlashAttribute("message", "장례 서비스가 정상적으로 등록되었습니다.");
 
 		return "redirect:/funeral/funeral_insertService_confirm";
 	}
+
 
 	@GetMapping("funeral/funeral_insertService_confirm")
 	public String serviceConfirm(HttpSession session, Model model, RedirectAttributes redirectAttributes, ServiceListDto serviceListDto) {
