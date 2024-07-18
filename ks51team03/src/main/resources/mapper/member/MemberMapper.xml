@@ -443,8 +443,37 @@
 		/* 회원조회 */
 		<include refid="memberSearch"></include>
 		ORDER BY m.id;
-			
 	</select>
+	
+	<select id="getMemberIdByNameEmail" parameterType="Member" resultType="String">
+		SELECT 
+		    m.id
+		FROM
+		    member AS m
+		WHERE
+		    m.name = #{memberName} AND m.email = #{memberEmail};
+	</select>
+	
+	<select id="getMemberPwByNameEmail" parameterType="Member" resultType="String">
+		SELECT 
+		    m.pw
+		FROM
+		    member AS m
+		WHERE
+		    m.id = #{memberId} AND m.email = #{memberEmail};
+	</select>
+	
+	<update id="updateMemberPw" parameterType="Member">
+		/* 회원비밀번호수정 */
+		UPDATE member
+		<set>
+			<if test="memberPw != null and memberPw != ''">
+				pw = #{memberPw}
+			</if>
+		</set>
+		WHERE 
+			id = #{memberId}
+	</update>
 	
 	<!-- application.properties에서 패키지 미리지정 -> mybatis.type-aliases-package=ksmart.mybatis.*.dto -->
 	<!-- ksmart.mybatis.member.dto.Member => Member -->

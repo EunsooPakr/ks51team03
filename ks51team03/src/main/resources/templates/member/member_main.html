@@ -67,28 +67,23 @@
 									<div class="mini-board-title-text">
 										<h1 class="mini-board-top-textline">
 											<strong id="board_title">공지사항</strong>
-											<br><a>자유롭게 의견을 나누세요.</a>
+											<br><a>공지사항을 확인해주세요.</a>
 											<button class="mini-board-title-btn">+</button>
 										</h1>
 									</div>
 								</div>
 	
 								<div class="mini-board-list">
-									<div class="row">
-										<div class="col-md-4 mb-5 mini-board">
-											<div class="title">이것을 테스트 공지사항 글귀 입니다</div>
-											<div class="content">이것은 테스트 공지사항 컨텐츠용 글귀입니다.</div>
-											<div class="date">2024-03-23</div>
-										</div>
-										<div class="col-md-4 mb-5 mini-board">
-											<div class="title">이것을 테스트 공지사항 글귀 입니다</div>
-											<div class="content">이것은 테스트 공지사항 컨텐츠용 글귀입니다.</div>
-											<div class="date">2024-03-23</div>
-										</div>
-										<div class="col-md-4 mb-5 mini-board">
-											<div class="title">이것을 테스트 공지사항 글귀 입니다</div>
-											<div class="content">이것은 테스트 공지사항 컨텐츠용 글귀입니다.</div>
-											<div class="date">2024-03-23</div>
+									<div th:if="${mainNBList==null}">
+			                            <div class="title">등록된 게시글이 존재하지 않습니다.</div>
+			                            <div class="content"></div>
+			                            <div class="date">///</div>
+			                        </div>
+									<div th:unless="${mainNBList==null}" class="row">
+										<div class="col-md-4 mb-5 mini-board" th:each="board, iterStat : ${mainNBList}" th:if="${iterStat.index < 3}">
+											<div class="title" th:text="${board.nboardTitle}"></div>
+											<div class="content" th:text="${board.nboardContent}"></div>
+											<div class="date" th:text="${board.nboardRegistDate}"></div>
 										</div>
 									</div>
 								</div>

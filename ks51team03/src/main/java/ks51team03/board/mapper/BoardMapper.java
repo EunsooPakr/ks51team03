@@ -46,9 +46,24 @@ public interface BoardMapper {
 	// 게시글로 게시글 보드 코드 도출
 	public String getBoardCodeByNBoard(NoticeBoard nboard);
 	
+	//게시글코드로 게시판 이름 도출
+	public String getBCTValueByNBCode(String nbCode);
+	
 	// 게시글 게시글 카테고리 이름으로 게시글 보드 코드 도출
 	public String getBoardCodeByBCTValue(String bctCodeValue);
 	
 	// 게시글 게시글 카테고리 이름으로 게시글 설명 도출
 	public String getBoardInfoByBCTValue(String bctCodeValue);
+
+	//보드코드로 최신순으로 가져오기
+	public List<NoticeBoard> getMainNoticeBoard(String bCode);
+	
+	//조회순으로 가져오기
+	public List<NoticeBoard> getMainViewBoard(String bCode);
+	
+	//추천순으로 가져오기
+	public List<NoticeBoard> getMainRecBoard(String bCode);
+	
+	//추천순으로 가져오기
+	public List<NoticeBoard> getMainLatestBoard(String bCode);
 }

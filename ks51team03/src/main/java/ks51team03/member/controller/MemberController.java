@@ -4,20 +4,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ks51team03.company.dto.ComInformReciPient;
-import ks51team03.company.dto.ComReview;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import ks51team03.company.dto.ComInformReciPient;
 import ks51team03.company.dto.ComQuestion;
-import ks51team03.company.dto.Company;
+import ks51team03.company.dto.ComReview;
 import ks51team03.company.service.CompanyService;
 import ks51team03.member.dto.Member;
 import ks51team03.member.dto.MemberLevel;
@@ -42,6 +47,7 @@ public class MemberController {
 	private final PetService petService;
 	private final PetMapper petMapper;
 
+	
 	@PostMapping("/login")
 	@ResponseBody
 	public boolean login(@RequestParam(value = "memberId") String memberId
@@ -292,7 +298,7 @@ public class MemberController {
 		log.info("question: {}", question);
 		model.addAttribute("question", question);
 
-		return "/member/member_mypage_question_modify";
+		return "member/member_mypage_question_modify";
 	}
 
 	@PostMapping("/member_question_modify")
@@ -336,7 +342,7 @@ public class MemberController {
 		log.info("review: {}", review);
 		model.addAttribute("review", review);
 
-		return "/member/member_mypage_review_modify";
+		return "member/member_mypage_review_modify";
 	}
 
 	@PostMapping("/member_review_modify")
@@ -430,6 +436,36 @@ public class MemberController {
 		model.addAttribute("title","PAL");
 		
 		return "member/member_main2";
-
+	}
+	
+	@GetMapping("/member_login_find_id")
+	public String userFindMemberIdPage(Model model)
+	{
+		return "member/member_login_find_id";
+	}
+	
+	@GetMapping("/member_login_find_pw")
+	public String userFindMemberPwPage(Model model)
+	{
+		return "member/member_login_find_pw";
+	}
+	
+	@ResponseBody
+	@PostMapping("/updatePw")
+	public ResponseEntity<Boolean> updatePw(String memberId,String memberPw) {
+		Member member=new Member();
+		member.setMemberId(memberId);
+		member.setMemberPw(memberPw);
+		
+		log.info("비밀번호수정 Member:{}", member);
+		
+		boolean isUpdated = memberService.updateMemberPw(member);
+	
+        if (isUpdated)
+        {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
 	}
 }

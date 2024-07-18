@@ -139,4 +139,29 @@ public class BoardService {
 	{
 		return boardMapper.getBoardInfoByBCTValue(bctCodeValue);
 	}
+	
+	public String getBCTValueByNBCode(String nbCode)
+	{
+		return boardMapper.getBCTValueByNBCode(nbCode);
+	}
+	
+	public List<NoticeBoard> getMainNoticeBoard(String bCode)
+	{
+		return boardMapper.getMainNoticeBoard(bCode);
+	}
+	
+	public List<NoticeBoard> getMainViewBoard(String bCode)
+	{
+		return boardMapper.getMainViewBoard(bCode);
+	}
+	
+	public List<NoticeBoard> getMainRecBoard(String bCode)
+	{
+		return boardMapper.getMainRecBoard(bCode);
+	}
+	
+	public List<NoticeBoard> getMainLatestBoard(String bCode)
+	{
+		return boardMapper.getMainLatestBoard(bCode);
+	}
 }

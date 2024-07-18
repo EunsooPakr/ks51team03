@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<title>PAL_회원아이디_찾기</title>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}" >
+</head>
+<body>
+    <div class="member-insert-form-body">
+	<form class="member-insert-form" id="insertCompanyForm" th:action="@{/company/insertCompany}" method="post">
+       <!-- 로고 -->		
+		<a href="/" class="logo-single">
+			<img th:src="@{/assets/img/pal_logo.png}" alt="IMG-LOGO">
+		</a>
+
+		<!-- 1. 비밀번호 찾기-이름 -->
+        <h2>아이디 찾기</h2>
+        <br><br>
+        <div class="login-insert-field-addr" role="form" method="post" th:object="${memberFormDto}">
+	          <b>이름</b>
+            	<input type="text" id="memberName" name="memberName" maxlength="25" required>	
+	          <b>가입시 기입한 이메일 인증</b>
+	          <div class="confirm-group">
+	              <input type="email"  id=memberEmail name="memberEmail" placeholder="이메일 입력">
+	              <input type="button" id="sendBtn" onclick="sendNumber()" value="인증번호 받기">
+	          </div>
+	          <div id="confirmEmailNum">
+	              <input type="text" id="confirmNum" placeholder="인증번호 입력">
+	              <input type="button" id="confirmBtn" onclick="confirmNumber()" value="인증번호 확인">
+	          </div>
+	          <div class="login-insert-field">
+	          	<a id="confirmResult">이메일 인증을 진행해주세요.</a>
+	          </div>
+	          
+	          <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
+	          <input type="text" id="ConfirmId" name="ConfirmId" style="display: none" value="">
+        
+        	  <div class="login-insert-findId-showbox">
+        	  	<h3>회원님의 아이디: </h5>
+        	  	<h1 id="ShowId" name="ShowId"></h1>
+        	  </div>
+        </div>
+	</form>
+	</div>
+		
+    <!-- 7. 푸터 -->
+    <div class="member-insert-form-footer">
+        <div>
+            <a href="#none">이용약관</a>
+            <a href="#none">개인정보처리방침</a>
+            <a href="#none">회원정보 고객센터</a>
+        </div>
+        <span><a href="#none">PALCorp.</a></span>
+    </div>
+    
+   	<script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+	<script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
+	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js}"></script>
+	<script th:inline="javascript">
+	/* 이메일 인증번호 발송 */
+	function sendNumber() {
+	    const confirmResult = $('#confirmResult');
+	    
+	    $.ajax({
+	        url: "/findIdMail",
+	        type: "post",
+	        dataType: "json",
+	        data: {
+	            "mail": $("#memberEmail").val(),
+	            "memberName": $("#memberName").val()
+	        },
+	        success: function(data) {
+	            // 서버에서 반환된 JSON 데이터 파싱
+	            const isFind = data.find_result;
+	            const sendResult = data.send_result;
+	
+	            if (isFind==null) {
+	                confirmResult.text('일치하는 회원 정보가 없습니다.');
+	                confirmResult.css('color', 'orange');
+	                confirmResult.show();
+	            } else {
+	                confirmResult.text('인증번호가 발송되었습니다. 이메일을 확인해주세요.');
+	                confirmResult.css('color', 'blue');
+	                confirmResult.show();
+	                $("#Confirm").attr("value", sendResult);
+	                $("#ConfirmId").attr("value", isFind);
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            confirmResult.text('인증번호 발송에 실패하였습니다.');
+	            confirmResult.css('color', 'orange');
+	            confirmResult.show();
+	            console.error(xhr.responseText);
+	        }
+	    });
+	}
+	
+	
+	
+	/* 이메일 인증번호 비교 */
+	function confirmNumber()
+	{
+		const number1 = $("#confirmNum").val();
+		const number2 = $("#Confirm").val();
+		const memberFindId = $("#ConfirmId").val();
+	    const confirmResult = $('#confirmResult');
+	    const showId = $("#ShowId");
+	    
+	    if(number1 == number2&&number1!=null)
+	    {
+	    	confirmResult.text('인증이 완료되었습니다.');
+	    	confirmResult.css('color', 'green');
+	    	confirmResult.show(); 	
+	    	
+	    	showId.text(memberFindId);
+	    	showId.show();
+	    }
+	    else
+	    {
+	    	confirmResult.text('인증번호가 일치하지않습니다.');
+	    	confirmResult.css('color', 'orange');
+	    	confirmResult.show(); 	
+	    }
+	}
+	</script>
+</body>
