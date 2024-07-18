@@ -3,6 +3,7 @@ package ks51team03.funeral.serviceList.mapper;
 import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveMemberPet;
+import ks51team03.funeral.serviceList.dto.ServiceImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,5 +36,8 @@ public interface ServiceListMapper {
 
     //장례 예약 전 회원 반려동물 정보 가져오기
     List<ReserveMemberPet> getMemberPet(@Param("memberId") String memberId);
+
+    // 장례 서비스 이미지 등록
+    void insertFuneralServiceImg(ServiceImgDto serviceImgDto);
 
 }
