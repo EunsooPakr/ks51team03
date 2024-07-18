@@ -176,7 +176,21 @@
             </script>
         </div>
         <div class="infocontainer" th:each="c : ${companyInfoById}">
-            <div class="image-section" th:style="|background-image: url('${imageUrl}');|"></div>
+            <div id="carouselExample" class="carousel slide banner" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-inner">
+                    <div class="carousel-item active full-item" th:each="i : ${companyImgs}">
+                        <img th:src="${i.filePath}" class="d-block w-100 contain-img" alt="Slide 1">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">이전</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">다음</span>
+                </button>
+            </div>
             <div class="content-section">
                 <h1 th:text="${c.companyName}"></h1>
                 <p>

@@ -119,6 +119,27 @@
 		<result column="inform_contents" property="informContents" />
 	</resultMap>
 
+	<resultMap id="CompanyImgResultMap" type="CompanyImg">
+		<id column="cicode" property="ciCode" />
+		<result column="ccode" property="cCode" />
+		<result column="file_idx" property="fileIdx" />
+		<result column="file_path" property="filePath" />
+	</resultMap>
+
+	<select id="getCompanyImgByCcode" parameterType="String" resultMap="CompanyImgResultMap">
+		-- 업체 이미지 조회
+		SELECT
+		ci.cicode, ci.ccode, ci.file_idx, f.file_path
+		FROM
+		company_img AS ci
+		LEFT JOIN
+		files AS f
+		ON
+		ci.file_idx = f.file_idx
+		WHERE
+		ci.ccode = #{cCode}
+	</select>
+
 	<insert id="insertCompanyImg" parameterType="CompanyImg">
 		<selectKey keyProperty="ciCode" resultType="String" order="BEFORE">
 			SELECT
@@ -130,8 +151,8 @@
 		</selectKey>
 		-- 업체 대표이미지 등록
 		INSERT INTO company_img
-		(cicode, ccode, file_idx)
-		VALUES (#{ciCode}, #{cCode}, #{fileIdx})
+		(cicode, ccode, file_idx, file_cate)
+		VALUES (#{ciCode}, #{cCode}, #{fileIdx}, '대표이미지')
 	</insert>
 
 	<insert id="insertComInformReciPient" parameterType="ComInformReciPient">
@@ -314,7 +335,7 @@
 
 	<select id="avgReviewScore" resultType="Double" parameterType="String">
 		-- 리뷰 별점 평균
-		SELECT AVG(rev_scope)
+		SELECT ROUND(AVG(rev_scope), 1)
 		FROM service_reviews
 		WHERE ccode = #{cCode}
 		GROUP BY ccode

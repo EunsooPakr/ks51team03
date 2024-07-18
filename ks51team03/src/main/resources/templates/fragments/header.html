@@ -15,6 +15,33 @@
 <!-- 								<a th:if="${session.SID == null}" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#login">로그인</a> -->
 <!-- 								<a th:if="${session.SID == null}" th:href="@{/member/login}" data-bs-toggle="modal" data-bs-target="#login">로그인</a> -->
 								<a th:if="${session.SID == null}" th:href="@{/member/login}" data-bs-toggle="modal" data-bs-target="#login">로그인</a>
+								<th:block th:if="${session.SID == null}">
+									<form th:action="@{/member/login/gara}" method="post" style="display: inline-block;">
+										<input type="hidden" name="memberId" value="id1">
+										<input type="hidden" name="memberPw" value="pw1">
+										<button type="submit" style="color: orange; margin:20px;">관리자</button>
+									</form>
+									<form th:action="@{/member/login/gara}" method="post" style="display: inline-block;">
+										<input type="hidden" name="memberId" value="id3">
+										<input type="hidden" name="memberPw" value="pw3">
+										<button type="submit" style="color: orange; margin:20px;">업체대표</button>
+									</form>
+									<form th:action="@{/member/login/gara}" method="post" style="display: inline-block;">
+										<input type="hidden" name="memberId" value="id6">
+										<input type="hidden" name="memberPw" value="pw6">
+										<button type="submit" style="color: orange; margin:20px;">업체직원</button>
+									</form>
+									<form th:action="@{/member/login/gara}" method="post" style="display: inline-block;">
+										<input type="hidden" name="memberId" value="id11">
+										<input type="hidden" name="memberPw" value="pw11">
+										<button type="submit" style="color: orange; margin:20px;">장례대표</button>
+									</form>
+									<form th:action="@{/member/login/gara}" method="post" style="display: inline-block;">
+										<input type="hidden" name="memberId" value="id66">
+										<input type="hidden" name="memberPw" value="pw66">
+										<button type="submit" style="color: orange; margin:20px;">일반사용자</button>
+									</form>
+								</th:block>
 								<a th:unless="${session.SID == null}" th:href="@{/member/logout}">로그아웃</a>
 							</div>
 

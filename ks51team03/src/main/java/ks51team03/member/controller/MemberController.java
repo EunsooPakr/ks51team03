@@ -91,6 +91,54 @@ public class MemberController {
         return isCheck;
     }
 
+	@PostMapping("/login/gara")
+	public String loginGara(@RequestParam(value = "memberId") String memberId
+			, @RequestParam(value = "memberPw") String memberPw
+			, HttpServletRequest request
+			, HttpServletResponse response
+			, HttpSession session){
+
+
+		//String viewName="/login";
+		Map<String, Object> checkMap = memberService.checkMemberInfo(memberId, memberPw);
+		boolean isCheck = (boolean) checkMap.get("isCheck");
+		if(isCheck) {
+			Member memberInfo = (Member) checkMap.get("memberInfo");
+			int informCount = memberService.getInformCount(memberInfo.getMemberId());
+			List<ComInformReciPient> getInform = memberService.getInform(memberInfo.getMemberId());
+			log.info("getInform: {}", getInform);
+
+			// 1. session
+			//HttpSession requestGetSession = request.getSession();  이렇게 가져올 수도 있다.
+			session.setAttribute("SID", memberInfo.getMemberId());
+			session.setAttribute("SNAME", memberInfo.getMemberName());
+			session.setAttribute("SLEVEL", memberInfo.getMemberLevel());
+			session.setAttribute("SINFOCOUNT", informCount);
+			session.setAttribute("SINFORM", getInform);
+
+
+			String ccode = memberService.getCompanyCodeByMemberId(memberInfo.getMemberId());
+			if(ccode == null) {
+				ccode = companyService.getCompanyCodeByMemberId(memberInfo.getMemberId());
+			}
+			log.info("ccode 1: {}", ccode);
+
+			session.setAttribute("CCODE", ccode);
+			log.info("Session CCODE set: {}", ccode);
+
+			// 2. cookies
+			Cookie cookie = new Cookie("loginId", memberInfo.getMemberId());
+			cookie.setPath("/");
+			cookie.setHttpOnly(true);
+			cookie.setMaxAge(60*60*1);  // 1시간 유지
+
+			// 생성된 쿠키를 응답객체에 담아 반환
+			response.addCookie(cookie);
+		}
+
+		return "redirect:/";
+	}
+
 	@GetMapping("/logout")
 	public String logout(HttpSession session, HttpServletResponse response){
 		session.invalidate();

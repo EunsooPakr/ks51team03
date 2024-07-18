@@ -81,7 +81,7 @@ public class FileUtils {
                 .fileNewName(fileNewName)
                 .fileSize(multipartFile.getSize())
                 .fileRegDate(fileRegDate)
-                .filePath("/attachment/" + today + "/" + fileNewName)
+                .filePath("/attachment/" + cate + "/" + today + "/" + fileNewName)
                 .build();
     }
 

@@ -12,6 +12,9 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
 
+    // 업체 대표 이미지 리스트 조회
+    List<CompanyImg> getCompanyImgByCcode(String cCode);
+
     // 업체 알림 수신자 등록
     int insertComInformReciPient(ComInformReciPient comInformReciPient);
 

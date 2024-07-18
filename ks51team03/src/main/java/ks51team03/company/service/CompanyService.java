@@ -22,6 +22,11 @@ public class CompanyService {
     private final FileUtils fileUtils;
     private final FileMapper fileMapper;
 
+    // 업체 대표 이미지 리스트 조회
+    public List<CompanyImg> getCompanyImgByCcode(String cCode){
+        return companyMapper.getCompanyImgByCcode(cCode);
+    }
+
     // 업체 알림 수신자 등록
     public int insertComInformReciPient(ComInformReciPient comInformReciPient){
         return companyMapper.insertComInformReciPient(comInformReciPient);

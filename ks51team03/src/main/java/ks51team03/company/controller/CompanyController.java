@@ -68,12 +68,16 @@ public class CompanyController {
 			// 현재 요일 가져오기
 			List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(companyCode);
 			int companyReviewCount = companyService.getCompanyReviewCount(companyCode);
+			List<CompanyImg> companyImgs = companyService.getCompanyImgByCcode(companyCode);
+			log.info("companyImgs : {}", companyImgs);
+
+
 			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
 			String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
 			model.addAttribute("companyOperTime", companyOperTime);
 			model.addAttribute("openingHours", openingHours);
 			model.addAttribute("companyReviewCount", companyReviewCount);
-
+			model.addAttribute("companyImgs", companyImgs);
 			model.addAttribute("companyInfoById", companyInfoById);
 
 		}
@@ -84,13 +88,14 @@ public class CompanyController {
 			// 현재 요일 가져오기
 			List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(cCode);
 			int companyReviewCount = companyService.getCompanyReviewCount(cCode);
+			List<CompanyImg> companyImgs = companyService.getCompanyImgByCcode(cCode);
 
 			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
 			String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
 			model.addAttribute("companyOperTime", companyOperTime);
 			model.addAttribute("openingHours", openingHours);
 			model.addAttribute("companyReviewCount", companyReviewCount);
-			log.info("companyInfoById : {}", companyInfoById);
+			model.addAttribute("companyImgs", companyImgs);
 			model.addAttribute("companyInfoById", companyInfoById);
 
 		}

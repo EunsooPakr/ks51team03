@@ -9,4 +9,6 @@ public class CompanyImg {
     private String cCode;
     private MultipartFile revImgFile;
     private String fileIdx;
+    private String filePath;
+
 }

@@ -3,10 +3,7 @@ package ks51team03.map.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
-import ks51team03.company.dto.ComMap;
-import ks51team03.company.dto.ComOperTime;
-import ks51team03.company.dto.ComReview;
-import ks51team03.company.dto.Company;
+import ks51team03.company.dto.*;
 import ks51team03.company.service.CompanyService;
 import ks51team03.member.dto.Member;
 import ks51team03.member.service.MemberServiceImpl;
@@ -134,12 +131,13 @@ public class MapController {
 		// 현재 요일 가져오기
 		List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(cCode);
 		int companyReviewCount = companyService.getCompanyReviewCount(cCode);
+		List<CompanyImg> companyImgs = companyService.getCompanyImgByCcode(cCode);
 		DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
 		String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
 		model.addAttribute("companyOperTime", companyOperTime);
 		model.addAttribute("openingHours", openingHours);
 		model.addAttribute("companyReviewCount", companyReviewCount);
-
+		model.addAttribute("companyImgs", companyImgs);
 		model.addAttribute("companyInfoById", companyInfoById);
 		return "map/map_company_info";
 	}

@@ -1307,11 +1307,21 @@ a{
     background-color: #ccc;
 }
 
-.carousel-item img {
-    height: 100%; /* 배너 높이에 맞게 이미지 크기 조정 */
-    object-fit: cover; /* 이미지 비율 유지 */
+.full-item {
+    height: 100%; /* 배너 높이 */
+    width: 100%;
 }
 
+.contain-img {
+    object-fit: contain !important; /* 이미지 비율 유지 */
+}
+
+.carousel-item img {
+    height: 100% !important; /* 배너 높이에 맞게 이미지 크기 조정 */
+    object-fit: cover; /* 이미지 비율 유지 */
+    width: 100% !important;
+    background-color: #1c1c1c;
+}
 
 .main-slide-banner {
     margin-top: 170px;
@@ -1320,6 +1330,8 @@ a{
 
 .carousel-inner {
 	height: 100%; /* 배너 높이 */
+    background-color: #1c1c1c;
+    width: 100%;
 }
 
 .card {
