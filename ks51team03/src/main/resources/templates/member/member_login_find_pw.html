@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<title>PAL_회원비밀번호_찾기</title>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}" >
+</head>
+<body>
+    <div class="member-insert-form-body">
+	<form class="member-insert-form" id="UpdatePwForm" th:action="@{/member/updatePw}" method="post">
+       <!-- 로고 -->		
+		<a href="/" class="logo-single">
+			<img th:src="@{/assets/img/pal_logo.png}" alt="IMG-LOGO">
+		</a>
+
+		<!-- 1. 아이디찾기-이름 -->
+        <h2>비밀번호 찾기</h2>
+        <br><br>
+        <div class="login-insert-field-addr" role="form" method="post" th:object="${memberFormDto}">
+	          <b>아이디</b>
+            	<input type="text" id="memberId" name="memberId" maxlength="25" required>	
+	          <b>가입시 기입한 이메일 인증</b>
+	          <div class="confirm-group">
+	              <input type="email"  id=memberEmail name="memberEmail" placeholder="이메일 입력">
+	              <input type="button" id="sendBtn" onclick="sendNumber()" value="인증번호 받기">
+	          </div>
+	          <div id="confirmEmailNum">
+	              <input type="text" id="confirmNum" placeholder="인증번호 입력">
+	              <input type="button" id="confirmBtn" onclick="confirmNumber()" value="인증번호 확인">
+	          </div>
+	          <div class="login-insert-field">
+	          	<a id="confirmResult">이메일 인증을 진행해주세요.</a>
+	          </div>
+	          
+	          <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
+	          <input type="text" id="ConfirmId" name="ConfirmId" style="display: none" value="">
+        
+        	  <div id="ChangePwBox" style="display: none;">
+			    <b>변경할 비밀번호</b>
+			    <input type="password" class="userpw" id="changePw" name="changePw" placeholder="변경할 비밀번호">
+			    <b>비밀번호 재확인</b>
+            	<input class="userpw-confirm" type="password">
+             	<a id="passwordMatchResult" style="display: none;"></a> <!-- 결과를 출력할 <a> 태그 -->
+				<input type="button" value="비밀번호변경" id="PwUpdateBtn">             	
+			</div>
+        </div>
+	</form>
+	</div>
+		
+    <!-- 7. 푸터 -->
+    <div class="member-insert-form-footer">
+        <div>
+            <a href="#none">이용약관</a>
+            <a href="#none">개인정보처리방침</a>
+            <a href="#none">회원정보 고객센터</a>
+        </div>
+        <span><a href="#none">PALCorp.</a></span>
+    </div>
+    
+   	<script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+	<script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
+	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js}"></script>
+	<script th:inline="javascript">
+	/* 이메일 인증번호 발송 */
+	function sendNumber() {
+	    const confirmResult = $('#confirmResult');
+	    
+	    $.ajax({
+	        url: "/findPwMail",
+	        type: "post",
+	        dataType: "json",
+	        data: {
+	            "mail": $("#memberEmail").val(),
+	            "memberId": $("#memberId").val()
+	        },
+	        success: function(data) {
+	            // 서버에서 반환된 JSON 데이터 파싱
+	            const isFind = data.find_result;
+	            const sendResult = data.send_result;
+	
+	            if (isFind==null) {
+	                confirmResult.text('일치하는 회원 정보가 없습니다.');
+	                confirmResult.css('color', 'orange');
+	                confirmResult.show();
+	            } else {
+	                confirmResult.text('인증번호가 발송되었습니다. 이메일을 확인해주세요.');
+	                confirmResult.css('color', 'blue');
+	                confirmResult.show();
+	                $("#Confirm").attr("value", sendResult);
+	                $("#ConfirmId").attr("value", isFind);
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            confirmResult.text('인증번호 발송에 실패하였습니다.');
+	            confirmResult.css('color', 'orange');
+	            confirmResult.show();
+	            console.error(xhr.responseText);
+	        }
+	    });
+	}
+	
+	/* 이메일 인증번호 비교 */
+	function confirmNumber()
+	{
+		const number1 = $("#confirmNum").val();
+		const number2 = $("#Confirm").val();
+		const memberFindId = $("#ConfirmId").val();
+	    const confirmResult = $('#confirmResult');
+	    const ChangePwBox = $("#ChangePwBox");
+	    
+	    if(number1 == number2&&number1!=null)
+	    {
+	    	confirmResult.text('인증이 완료되었습니다.');
+	    	confirmResult.css('color', 'green');
+	    	confirmResult.show(); 	
+	    	
+	    	 ChangePwBox.css('display', 'block');  // 변경된 부분
+	    }
+	    else
+	    {
+	    	confirmResult.text('인증번호가 일치하지않습니다.');
+	    	confirmResult.css('color', 'orange');
+	    	confirmResult.show(); 	
+	    }
+	}
+	
+	/* 비밀번호 재확인 */
+    $('.userpw-confirm').keyup(function() {
+	   	const password = $('.userpw').val(); 					// 첫 번째 비밀번호 입력 값
+	   	const confirmPassword = $(this).val(); 				// 비밀번호 재확인 입력 값
+	       
+	   	const passwordMatchResult = $('#passwordMatchResult');
+       
+       if (password === confirmPassword) {
+           passwordMatchResult.text('비밀번호가 일치합니다.');
+           passwordMatchResult.css('color', 'green'); 		// 일치 시 글자색 초록색으로 변경
+           passwordMatchResult.show();
+       } else {
+           passwordMatchResult.text('비밀번호가 일치하지 않습니다.');
+           passwordMatchResult.css('color', 'orange'); // 불일치 시 글자색 빨간색으로 변경
+           passwordMatchResult.show();
+       }
+   });
+	
+    /* 비밀번호 변경 */
+    $('#PwUpdateBtn').click(function() {
+        const passwordMatchResult = $('#passwordMatchResult');
+        const confirmResult = $('#confirmResult');
+        
+        /* 인증확인 */
+        if (confirmResult.text() === '인증이 완료되었습니다.' &&
+            passwordMatchResult.text() === '비밀번호가 일치합니다.') {
+            
+            // 비밀번호 변경 AJAX 요청
+            $.ajax({
+                url: '/member/updatePw',  // 서버의 비밀번호 변경 API 엔드포인트
+                type: 'POST',
+                data : { 'memberId' : $("#memberId").val(),'memberPw' : $('#changePw').val() },
+                dataType : 'json',
+                success: function(response) {
+                    alert('비밀번호 변경이 완료되었습니다.');
+                    window.location.href ='/';
+                },
+                error: function(xhr, status, error) {
+                    alert('비밀번호 변경에 실패하였습니다.');
+                    console.error(xhr.responseText);
+                    location.reload();  // 현재 페이지를 다시 로드
+                }
+            });
+            
+        } else {
+            alert('아이디, 비밀번호, 이메일 인증을 확인해주세요.');
+        }
+    });
+	
+	</script>
+</body>

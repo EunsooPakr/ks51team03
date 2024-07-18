@@ -91,4 +91,13 @@ public interface MemberMapper {
 
 	// 회원의 알림 확인
 	void updateInformStatus(String informId);
+	
+	//회원 이름과 이메일 일치 확인
+	String getMemberIdByNameEmail(Member member);
+	
+	//회원 아이디와 이메일 일치 확인
+	String getMemberPwByNameEmail(Member member);
+	
+	//비밀번호 수정
+	public int updateMemberPw(Member member);
 }

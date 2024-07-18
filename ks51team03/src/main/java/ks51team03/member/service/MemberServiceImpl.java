@@ -357,6 +357,27 @@ public class MemberServiceImpl implements MemberService{
 	public void disableNotification(String informId) {
 		memberMapper.updateInformStatus(informId);
 	}
+	
+	@Override
+	public String getMemberIdByNameEmail(Member member)
+	{
+		return memberMapper.getMemberIdByNameEmail(member);
+	}
+	
+	@Override
+	public String getMemberPwByNameEmail(Member member)
+	{
+		return memberMapper.getMemberPwByNameEmail(member);
+	}
+	
+	@Override
+	public boolean updateMemberPw(Member member)
+	{
+		int result=memberMapper.updateMemberPw(member);
+		
+		boolean updateResult=(result>0)?true:false;
+		return updateResult;
+	}
 }
 
 

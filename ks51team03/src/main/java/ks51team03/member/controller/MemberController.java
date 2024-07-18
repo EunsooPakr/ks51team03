@@ -20,8 +20,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import ks51team03.board.dto.NoticeBoard;
-import ks51team03.board.service.BoardService;
 import ks51team03.company.dto.ComInformReciPient;
 import ks51team03.company.dto.ComQuestion;
 import ks51team03.company.dto.ComReview;
@@ -387,5 +385,34 @@ public class MemberController {
 		return "member/member_main2";
 	}
 	
+	@GetMapping("/member_login_find_id")
+	public String userFindMemberIdPage(Model model)
+	{
+		return "member/member_login_find_id";
+	}
 	
+	@GetMapping("/member_login_find_pw")
+	public String userFindMemberPwPage(Model model)
+	{
+		return "member/member_login_find_pw";
+	}
+	
+	@ResponseBody
+	@PostMapping("/updatePw")
+	public ResponseEntity<Boolean> updatePw(String memberId,String memberPw) {
+		Member member=new Member();
+		member.setMemberId(memberId);
+		member.setMemberPw(memberPw);
+		
+		log.info("비밀번호수정 Member:{}", member);
+		
+		boolean isUpdated = memberService.updateMemberPw(member);
+	
+        if (isUpdated)
+        {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
+	}
 }

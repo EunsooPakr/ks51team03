@@ -78,4 +78,13 @@ public interface MemberService {
 
 	// 알림 상태 수정
 	void disableNotification(String informId);
+	
+	//이름과 이메일 정보 일치 확인
+	String getMemberIdByNameEmail(Member member);
+	
+	//아이디와 이메일 정보 일치 확인
+	String getMemberPwByNameEmail(Member member);
+	
+	//비밀번호 변경
+	boolean updateMemberPw(Member member);
 }
