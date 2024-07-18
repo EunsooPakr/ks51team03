@@ -31,7 +31,7 @@ public class PaymentController {
 
         if(memberId == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "로그인이 필요한 서비스입니다");
-            return "redirect:/member/member_main";
+            return "redirect:/";
         }
 
         paymentDto.setReserveId(memberId);
@@ -52,7 +52,7 @@ public class PaymentController {
         log.info("memberId: {}", memberId);
 
         if(memberId == null) {
-            return "redirect:/member/member_main";
+            return "redirect:/";
         }
 
         PaymentDto paymentDetail = paymentService.getPaymentDetail(fpcode);
@@ -62,5 +62,17 @@ public class PaymentController {
         model.addAttribute("paymentDetail", paymentDetail);
 
         return "funeral/funeral_confirm_payment_detail";
+    }
+
+    @GetMapping("funeral/funeral_Paymented_Service_List_Company")
+    public String paymentServiceListCompany(HttpSession session, Model model, PaymentDto paymentDto) {
+        String memberId = (String) session.getAttribute("SID");
+        log.info("memberId: {}", memberId);
+
+        if(memberId == null) {
+            return "redirect:/";
+        }
+
+        return "/funeral/funeral_Paymented_Service_List_Company";
     }
 }

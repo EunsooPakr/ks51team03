@@ -16,7 +16,7 @@ public class PaymentDto {
     private String fpMethod;  // 결제 수단
     private String fpStatus;  // 결제 상태
     private String comName; // 장례 서비스 타이틀 명
-    private String petName; // 애완동물 이름
+    private String reservePetName; // 애완동물 이름
     private String reserveRegDate;  //예약 등록일
     private String name;  //예약 등록일
     private String reserveStartDate;

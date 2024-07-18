@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed; /* 모든 열의 너비를 고정 길이로 설정 */
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle; /* 수직 가운데 정렬 */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .num {
+            width: 5%;
+        }
+
+        .title {
+            width: 5%; /* 제목 칸 너비 줄이기 */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .price {
+            width: 10%;
+        }
+
+        .weight {
+            width: 10%;
+        }
+
+        .comment {
+            width: 40%; /* 코멘트 칸 크기 늘리기 */
+            white-space: pre-line; /* 줄 바꿈을 허용 */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all; /* 단어가 길 때 줄 바꿈 */
+        }
+
+        .date {
+            width: 15%;
+        }
+
+        .state {
+            width: 10%;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="customContent">
+    <body>
+    <section class="py-12">
+        <div class="container">
+            <div class="board-body">
+                <div class="board_wrap">
+                    <div class="board_title">
+                        <strong id="board_title">결제된 장례 서비스 목록 입니다.</strong>
+                        <p>결제 서비스 목록(날짜, 시간, 서비스, 가격, 아이디, 펫이름, 결제 상태)</p>
+                    </div>
+
+                    <div class="board_list_wrap">
+                        <table class="board_list">
+                            <thead>
+                            <tr>
+                                <th class="num">번호</th>
+                                <th class="title">서비스 제목</th>
+                                <th class="price">가격</th>
+                                <th class="weight">허용 무게(kg)</th>
+                                <th class="comment">코멘트</th>
+                                <th class="date">등록일</th>
+                                <th class="state">상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${serviceList == null || #lists.isEmpty(serviceList)}">
+                                <td colspan="7">등록된 서비스가 없습니다.</td>
+                            </tr>
+                            <tr th:each="service, iterStat : ${serviceList}">
+                                <td class="num" th:text="${iterStat.count}"></td>
+                                <td class="title" th:text="${service.funeralserviceTitle}" title="${service.funeralserviceTitle}"></td>
+                                <td class="price" th:text="${service.funeralservicePrice}"></td>
+                                <td class="weight" th:text="${service.funeralserviceWeight}"></td>
+                                <td class="comment" th:text="${service.funeralserviceComment != null ? service.funeralserviceComment : 'N/A'}" title="${service.funeralserviceComment != null ? service.funeralserviceComment : 'N/A'}"></td>
+                                <td class="date" th:text="${service.funeralserviceRegDate}"></td>
+                                <td class="state" th:text="${service.funeralserviceState}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="board_page">
+                        <!-- 페이지 네이션 구현 -->
+                        <!-- 필요에 따라 추가 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </body>
+</th:block>
+
+<!-- 사용자정의 javascript file -->
+<th:block layout:fragment="customJsFile">
+
+</th:block>
+
+<!-- 사용자정의 javascript -->
+<th:block layout:fragment="customJs">
+
+</th:block>
+
+</html>

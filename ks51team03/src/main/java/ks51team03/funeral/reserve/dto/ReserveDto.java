@@ -16,5 +16,6 @@ public class ReserveDto {
         private String reserveConfirm; // 예약 확인
         private String reserveRegDate;  //예약 등록일
         private String reserveTime; //예약 시간
+        private String reservePetName; //예약된 반려동물 이름
 }
 
