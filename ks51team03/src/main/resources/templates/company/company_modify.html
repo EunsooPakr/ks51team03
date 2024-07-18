@@ -30,6 +30,7 @@
 
         .form-group {
             margin-bottom: 15px;
+            position: relative;
         }
 
         .form-group label {
@@ -57,7 +58,6 @@
         }
 
         .form-group button {
-            width: 100%;
             padding: 10px;
             background-color: #007BFF;
             border: none;
@@ -70,7 +70,25 @@
         .form-group button:hover {
             background-color: #0056b3;
         }
+
+        .form-group .delete-image-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        #currentImage {
+            width: 30%;
+            height: 100px;
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <th:block layout:fragment="customContent">
@@ -80,62 +98,91 @@
                 alert("[[${errorMessage}]]");
             </script>
         </div>
-    <div class="form-container">
-        <h2>업체 정보 수정</h2>
-        <form th:action="@{/company/modify_Company}" method="post" th:each="c : ${companyListById}" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="revImgFile">업체 대표이미지</label>
-                <input type="file" id="revImgFile" name="revImgFile" accept="image/*">
-            </div>
-            <div class="form-group">
-                <label for="business-type">업체 종류</label>
-                <select id="business-type" name="business-type">
-                    <option value="hospital">병원</option>
-                    <option value="pharmacy">약국</option>
-                    <option value="funeral">장례</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="companyName">업체명</label>
-                <input type="text" id="companyName" name="companyName" th:value="${c.companyName}" required>
-            </div>
-            <div class="form-group">
-                <label for="companyAddr">업체 주소</label>
-                <input type="text" id="companyAddr" name="companyAddr" th:value="${c.companyAddr}" required>
-            </div>
-            <div class="form-group">
-                <label for="companyAddrDetail">업체 상세주소</label>
-                <input type="text" id="companyAddrDetail" name="companyAddrDetail" th:value="${c.companyAddrDetail}" required>
-            </div>
-            <div class="form-group">
-                <label for="companyPhone">업체 전화번호</label>
-                <input type="tel" id="companyPhone" name="companyPhone" th:value="${c.companyPhone}" required>
-            </div>
-            <div class="form-group">
-                <label for="companyStfCount">업체 직원수</label>
-                <input type="number" id="companyStfCount" name="companyStfCount" th:value="${c.companyStfCount}" required>
-            </div>
-            <div class="form-group">
-                <label for="companyEmail">업체 이메일</label>
-                <input type="email" id="companyEmail" name="companyEmail" th:value="${c.companyEmail}" required>
-            </div>
-            <div class="form-group">
-                <span>업체 주차장 유무</span>
-                <div class="radio-group">
-                    <label><input type="radio" id="parking-yes" name="companyParking" value="yes" required> 예</label>
-                    <label><input type="radio" id="parking-no" name="companyParking" value="no"> 아니오</label>
+        <div class="form-container">
+            <h2>업체 정보 수정</h2>
+            <form th:action="@{/company/modify_Company}" th:object="${companyImgs}" method="post" th:each="c : ${companyListById}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="revImgFile">업체 대표이미지</label>
+                    <input type="file" id="revImgFile" name="revImgFile" accept="image/*">
+                    <div th:if="${companyImgs != null}">
+                        <div th:each="img : ${companyImgs}">
+                            <div th:if="${img.filePath != null}" style="position: relative;">
+                                <img id="currentImage" th:src="@{${img.filePath}}" alt="현재 이미지">
+                                <button type="button" class="delete-image-button">x</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="companyPage">회사 URL</label>
-                <input type="text" id="companyPage" name="companyPage" th:value="${c.companyPage}" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">등록하기</button>
-            </div>
-        </form>
-    </div>
+                <div class="form-group">
+                    <label for="business-type">업체 종류</label>
+                    <select id="business-type" name="business-type">
+                        <option value="hospital">병원</option>
+                        <option value="pharmacy">약국</option>
+                        <option value="funeral">장례</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="companyName">업체명</label>
+                    <input type="text" id="companyName" name="companyName" th:value="${c.companyName}" required>
+                </div>
+                <div class="form-group">
+                    <label for="companyAddr">업체 주소</label>
+                    <input type="text" id="companyAddr" name="companyAddr" th:value="${c.companyAddr}" required>
+                </div>
+                <div class="form-group">
+                    <label for="companyAddrDetail">업체 상세주소</label>
+                    <input type="text" id="companyAddrDetail" name="companyAddrDetail" th:value="${c.companyAddrDetail}" required>
+                </div>
+                <div class="form-group">
+                    <label for="companyPhone">업체 전화번호</label>
+                    <input type="tel" id="companyPhone" name="companyPhone" th:value="${c.companyPhone}" required>
+                </div>
+                <div class="form-group">
+                    <label for="companyStfCount">업체 직원수</label>
+                    <input type="number" id="companyStfCount" name="companyStfCount" th:value="${c.companyStfCount}" required>
+                </div>
+                <div class="form-group">
+                    <label for="companyEmail">업체 이메일</label>
+                    <input type="email" id="companyEmail" name="companyEmail" th:value="${c.companyEmail}" required>
+                </div>
+                <div class="form-group">
+                    <span>업체 주차장 유무</span>
+                    <div class="radio-group">
+                        <label><input type="radio" id="parking-yes" name="companyParking" value="yes" required> 예</label>
+                        <label><input type="radio" id="parking-no" name="companyParking" value="no"> 아니오</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="companyPage">회사 URL</label>
+                    <input type="text" id="companyPage" name="companyPage" th:value="${c.companyPage}" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">등록하기</button>
+                </div>
+                <input type="hidden" name="deleteImage" id="deleteImage" value="false">
+            </form>
+        </div>
     </section>
+    <script>
+        $(document).ready(function() {
+            function deleteImage(button) {
+                $('#deleteImage').val('true');
+                const img = $(button).prev('img');
+                if (img.length) {
+                    img.hide();
+                }
+                $(button).hide();
+            }
+
+            $('#revImgFile').on('click', function() {
+                $('#deleteImage').val('false');
+            });
+
+            $('.delete-image-button').on('click', function() {
+                deleteImage(this);
+            });
+        });
+    </script>
 </th:block>
 
 </html>

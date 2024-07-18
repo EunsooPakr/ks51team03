@@ -28,6 +28,7 @@
 
 		.form-group {
 			margin-bottom: 15px;
+			position: relative; /* 부모 요소에 상대적 위치를 부여합니다. */
 		}
 
 		.form-group label {
@@ -45,7 +46,6 @@
 		}
 
 		.form-group button {
-			width: 100%;
 			padding: 10px;
 			background-color: #007BFF;
 			border: none;
@@ -76,8 +76,11 @@
 			padding: 5px 10px;
 			cursor: pointer;
 			border-radius: 4px;
-			margin-top: 10px;
+			position: absolute; /* 버튼을 절대 위치로 설정합니다. */
+			top: 10px; /* 이미지의 위쪽에 위치시킵니다. */
+			right: 10px; /* 이미지의 오른쪽에 위치시킵니다. */
 		}
+
 		.mypage-contents-box {
 			flex: 1;
 			margin-left: 10px;
@@ -106,9 +109,9 @@
 					<div class="form-group file-upload">
 						<label for="revImgFile">이미지 첨부</label>
 						<input type="file" id="revImgFile" name="revImgFile" accept="image/*">
-						<div th:if="${review.filePath != null}">
+						<div th:if="${review.filePath != null}" style="position: relative;">
 							<img id="currentImage" th:src="@{${review.filePath}}" alt="현재 이미지">
-							<button type="button" class="delete-image-button">이미지 삭제</button>
+							<button type="button" class="delete-image-button">x</button>
 						</div>
 					</div>
 					<div class="form-group">
@@ -124,7 +127,7 @@
 		</div>
 	</section>
 	<script>
-		$('.delete-image-button').click(function(){
+		document.querySelector('.delete-image-button').addEventListener('click', function() {
 			document.getElementById('deleteImage').value = 'true';
 			const img = document.getElementById('currentImage');
 			if (img) {
@@ -134,13 +137,11 @@
 			if (button) {
 				button.style.display = 'none';
 			}
-		})
+		});
 
-		$('#revImgFile').click(function(){
+		document.getElementById('revImgFile').addEventListener('click', function() {
 			document.getElementById('deleteImage').value = 'false';
-		})
-
-
+		});
 	</script>
 </th:block>
 </html>

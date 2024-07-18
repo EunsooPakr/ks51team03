@@ -130,6 +130,7 @@ public class CompanyController {
 	@GetMapping("/company/company_modify")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
 	public String companyModify(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
+		String cCode = (String) session.getAttribute("CCODE");
 		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
 		if (memberId == null) {
 			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
@@ -148,11 +149,16 @@ public class CompanyController {
 		// 직원일경우
 		if (companyCode != null) {
 			List<Company> companyListById = companyService.getCompanyInfoByCcode(companyCode);
+			List<CompanyImg> companyImgs = companyService.getCompanyImgByCcode(companyCode);
+			log.info("companyImgs : {}", companyImgs);
 			model.addAttribute("companyListById", companyListById);
+			model.addAttribute("companyImgs", companyImgs);
 		}
 		else {
 			List<Company> companyListById = companyService.getCompanyInfoById(memberId);
+			List<CompanyImg> companyImgs = companyService.getCompanyImgByCcode(cCode);
 			model.addAttribute("companyListById", companyListById);
+			model.addAttribute("companyImgs", companyImgs);
 		}
 
 		return "company/company_modify";
