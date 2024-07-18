@@ -61,7 +61,7 @@ public class CompanyService {
 
         FileRequest fileRequest =  fileUtils.uploadFile(companyimg.getRevImgFile(), companyCode);
         if(fileRequest != null){
-            fileRequest.setFileCate("업체이미지");
+            fileRequest.setFileCate(companyCode);
             log.info("fileRequest: {}", fileRequest);
             fileMapper.addFile(fileRequest);
             companyimg.setFileIdx(fileRequest.getFileIdx());
