@@ -9,7 +9,7 @@
     <div class="main-wrapper booking-step-2">
 
         <!-- ====================================
-        ———	BOOKING SECTION
+        ———    BOOKING SECTION
         ===================================== -->
         <section class="py-8 py-md-10">
             <div class="container">
@@ -81,8 +81,9 @@
                                         <div class="form-group">
                                             <label for="fpMethod">모바일 결제</label>
                                             <div class="select-default select-confirm">
-                                                <select class="select-option" name="fpMethod">
+                                                <select class="select-option" id="fpMethod" name="fpMethod" onchange="togglePaymentOptions(this.value)">
                                                     <option value="EASY_PAY">모바일 결제 수단 선택</option>
+                                                    <option value="">선택안함</option>
                                                     <option value="KAKAOPAY">카카오페이</option>
                                                 </select>
                                             </div>
@@ -99,7 +100,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-8">
+                            <div class="mb-8" id="cardPaymentSection">
                                 <h3 class="text-capitalize mb-5">카드 결제</h3>
                                 <div class="row">
                                     <div class="col-lg-6">
@@ -319,6 +320,15 @@
             } catch (error) {
                 console.error("Error during payment process: ", error);
                 alert("결제 처리 중 오류가 발생했습니다. 송송송에게 문의해 주세요.");
+            }
+        }
+
+        function togglePaymentOptions(value) {
+            const cardPaymentSection = document.getElementById('cardPaymentSection');
+            if (value === "KAKAOPAY") {
+                cardPaymentSection.style.display = 'none'; // Hide the card payment section
+            } else {
+                cardPaymentSection.style.display = 'block'; // Show the card payment section
             }
         }
     </script>

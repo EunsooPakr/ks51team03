@@ -55,14 +55,9 @@
             margin: 16px 0;
         }
     </style>
-
 </head>
 <th:block layout:fragment="customContent">
-
     <div class="main-wrapper single-hotel-right-sidebar">
-        <!-- ====================================
-        ———	PACKAGES SECTION
-        ===================================== -->
         <section class="py-12">
             <div class="container">
                 <div class="row">
@@ -72,13 +67,11 @@
                                 <h2 class="card-header text-uppercase text-center bg-smoke border-bottom">
                                     반려 서비스 예약
                                 </h2>
-
                                 <div class="card-body px-3 py-4">
                                     <div class="border-bottom mb-5">
                                         <div class="form-group mb-5">
                                             <div class="row">
                                                 <label for="inputTime" class="col-xl-5 col-form-label text-center text-xl-end px-2">반려 서비스 예약일:</label>
-
                                                 <div class="col-xl-7">
                                                     <div class="form-group form-group-icon form-group-icon-category-2 mb-0">
                                                         <i class="far fa-calendar-alt" aria-hidden="true"></i>
@@ -88,25 +81,21 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="form-group mb-5">
                                             <div class="row">
                                                 <label for="inputTime" class="col-xl-5 col-form-label text-center text-xl-end px-2">반려 서비스 종료일:</label>
-
                                                 <div class="col-xl-7">
                                                     <div class="form-group form-group-icon form-group-icon-category-2 mb-0">
                                                         <i class="far fa-calendar-alt" aria-hidden="true"></i>
-                                                        <input type="text"  class="form-control daterange-picker-category-2" autocomplete="off" name="reserveEndDate" id="inputTime" value=""
+                                                        <input type="text" class="form-control daterange-picker-category-2" autocomplete="off" name="reserveEndDate" id="inputTime" value=""
                                                                placeholder="MM/DD/YYYY">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="form-group mb-5">
                                             <div class="row">
-                                                <label for="inputTime" class="col-xl-5 col-form-label text-center text-xl-right px-2">Select a time
-                                                    slot:</label>
+                                                <label for="inputTime" class="col-xl-5 col-form-label text-center text-xl-right px-2">Select a time slot:</label>
                                                 <div class="col-xl-7">
                                                     <div class="form-group mb-0">
                                                         <div class="select-default select-category-2 timer">
@@ -115,41 +104,57 @@
                                                                 <option value="10:00:00">10:00 AM</option>
                                                                 <option value="11:00:00">11:00 AM</option>
                                                                 <option value="12:00:00">12:00 PM</option>
-                                                                <option value="13:00:00">13:00 PM</option>
-                                                                <option value="14:00:00">14:00 PM</option>
-                                                                <option value="15:00:00">15:00 PM</option>
-                                                                <option value="16:00:00">16:00 PM</option>
+                                                                <option value="13:00:00">1:00 PM</option>
+                                                                <option value="14:00:00">2:00 PM</option>
+                                                                <option value="15:00:00">3:00 PM</option>
+                                                                <option value="16:00:00">4:00 PM</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="form-group mb-5">
                                             <div class="row">
                                                 <label for="funeralserviceTitle" class="col-xl-5 col-form-label text-center text-xl-end px-2">반려 서비스 선택:</label>
                                                 <div class="col-xl-7">
                                                     <div class="form-group mb-0">
                                                         <div class="select-default select-category-2">
-                                                            <select id="funeralserviceTitle" name="reserveServiceCode"  class="select-option" onchange="updateTotalPrice()">
+                                                            <select id="funeralserviceTitle" name="reserveServiceCode" class="select-option" onchange="updateTotalPrice()">
                                                                 <option th:each="service : ${serviceListCcode}"
                                                                         th:value="${service.getFuneralserviceCode()}"
                                                                         th:text="${service.getFuneralserviceTitle()}"
                                                                         th:data-price="${service.getFuneralservicePrice()}"
                                                                         th:attr="data-ccode=${service.getFuneralserviceCcode()}"></option>
-
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <!-- 반려동물 선택 옵션 -->
+                                        <div class="form-group mb-5">
+                                            <div class="row">
+                                                <label for="reservePetName" class="col-xl-5 col-form-label text-center text-xl-end px-2">반려동물 선택:</label>
+                                                <div class="col-xl-7">
+                                                    <div class="form-group mb-0">
+                                                        <div class="select-default select-category-2">
+                                                            <select id="reservePetName" name="reservePetName" class="select-option">
+                                                                <option value="" disabled selected>반려동물을 선택하세요</option>
+                                                                <option th:each="pet : ${getMemberPetList}" th:value="${pet.petName}" th:text="${pet.petName}">Pet Name</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 반려동물이 없을 때 메시지 표시 -->
+                                        <div th:if="${#lists.isEmpty(getMemberPetList)}">
+                                            <p>등록된 반려동물이 없습니다. 반려동물을 등록해주세요.</p>
+                                        </div>
                                         <div class="form-group mb-5">
                                             <div class="row align-items-center">
                                                 <label class="control-label col-xl-5 text-center text-xl-end">참여인원:</label>
-
                                                 <div class="col-xl-5">
                                                     <div class="count-input mx-auto">
                                                         <a class="incr-btn" data-action="decrease" href="javascript:void(0)">–</a>
@@ -160,14 +165,11 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="d-flex justify-content-between border-bottom mb-5 pb-5">
                                         <span class="text-uppercase h4 mb-0">전체 비용</span>
-                                        <span class="font-weight-bold text-primary h3 mb-0" id="totalPrice" th:te>$0</span>
+                                        <span class="font-weight-bold text-primary h3 mb-0" id="totalPrice" th:text="0"></span>
                                     </div>
-
                                     <input type="hidden" name="reserveCompanyCode" th:value="${reserveCompanyCode}" />
-
                                     <div class="d-grid text-center px-4">
                                         <button type="submit" class="btn btn-hover btn-lg btn-outline-secondary text-uppercase">
                                             예약 하기 <span class="ms-4"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
@@ -177,7 +179,6 @@
                             </div>
                         </form>
                     </div>
-
                     <div class="col-md-7 col-lg-8">
                         <div class="col-md-12 col-lg-12" th:if="${serviceListCcode != null}" th:each="ml : ${serviceListCcode}">
                             <div class="service-card">
@@ -185,7 +186,6 @@
                                 <div class="service-card-content">
                                     <div class="service-detail">
                                         <h2 th:text="${ml.funeralserviceTitle}"></h2>
-
                                     </div>
                                     <div class="service-detail">
                                         <span class="label">장례 서비스 가격:</span>
@@ -198,28 +198,23 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
     </div><!-- element wrapper ends -->
-
 </th:block>
 <!-- 사용자정의 javascript file -->
 <th:block layout:fragment="customJsFile">
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
 </th:block>
-
 <!-- 사용자정의 javascript -->
 <th:block layout:fragment="customJs">
     <script th:inline="javascript">
         $(document).ready(function (){
             const reserveStartDate = $('input[name="reserveStartDate"]');
             const reserveEndDate = $('input[name="reserveEndDate"]');
-
             if (reserveStartDate.length !== 0) {
                 reserveStartDate.daterangepicker({
                     autoUpdateInput: false,
@@ -238,15 +233,12 @@
                     }
                 });
             }
-
             $('input[name="reserveStartDate"],input[name="reserveEndDate"]').on('apply.daterangepicker', function (ev, picker) {
                 $(this).val(picker.startDate.format('YYYY-MM-DD'));
             });
-
             $('input[name="reserveStartDate"],input[name="reserveEndDate"]').on('cancel.daterangepicker', function (ev, picker) {
                 $(this).val('');
             });
-
             $('#funeralserviceTitle').change(function (){
                 const selectedOption = $(this).find('option:selected');
                 const price = parseInt(selectedOption.data('price'));
@@ -255,11 +247,8 @@
                 $('#reserveCompanyCode').val(ccode);
             });
         });
-
         $('#reserveBtn').click(function (){
-
             let isSubmit = true;
-
             $('#funeralReserveForm input, #funeralReserveForm select').each((idx, element) => {
                 const value = element.value.trim();
                 if(!value){
@@ -269,7 +258,6 @@
                     return false;
                 }
             });
-
             if (isSubmit) {
                 // Set ccode value from selected option
                 const selectedOption = $('#funeralserviceTitle').find('option:selected');
@@ -277,7 +265,6 @@
                 $('#reserveCompanyCode').val(ccode); // Update ccode value
                 $('#funeralReserveForm').submit(); // Submit the form
             }
-
         });
     </script>
 </th:block>

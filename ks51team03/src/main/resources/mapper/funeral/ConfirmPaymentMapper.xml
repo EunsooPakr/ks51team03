@@ -16,7 +16,7 @@
         <result     column="fp_method"          property="fpMethod"/>
         <result     column="fp_status"          property="fpStatus"/>
         <result     column="com_name"           property="comName"/>
-        <result     column="p_name"             property="petName"/>
+        <result     column="fr_pet_name"        property="reservePetName"/>
         <result     column="fr_reg_date"        property="reserveRegDate"/>
         <result     column="name"               property="name"/>
         <result     column="fr_start_date"      property="reserveStartDate"/>
@@ -31,7 +31,7 @@
             fr.id,
             fp.fp_final,
             c.com_name,
-            p.p_name,
+            fr_pet_name,
             fp.fp_method,
             fp.fp_pay_date,
             fp.fp_status,
@@ -47,10 +47,6 @@
             funeral_payment AS fp
             ON
             fp.frcode = fr.frcode
-            INNER join
-            pet AS p
-            on
-            fp.id = p.id
             INNER join
             company AS c
             ON
@@ -68,7 +64,7 @@
             fr.id,
             fp.fp_final,
             c.com_name,
-            p.p_name,
+            fr_pet_name,
             fp.fp_method,
             fp.fp_pay_date,
             fp.fp_status,
@@ -84,9 +80,6 @@
             INNER JOIN
             funeral_payment AS fp
             ON fp.frcode = fr.frcode
-            INNER JOIN
-            pet AS p
-            ON fp.id = p.id
             INNER JOIN
             company AS c
             ON c.ccode = fp.ccode
