@@ -64,7 +64,7 @@ public class CompanyService {
     // 업체 대표 이미지 업로드
     public void addCompanyWithFile(CompanyImg companyimg, String companyCode) {
 
-        FileRequest fileRequest =  fileUtils.uploadFile(companyimg.getRevImgFile(), companyCode);
+        FileRequest fileRequest =  fileUtils.uploadFile(companyimg.getRevImgFile(), companyCode+"대표이미지");
         if(fileRequest != null){
             fileRequest.setFileCate(companyCode);
             log.info("fileRequest: {}", fileRequest);
