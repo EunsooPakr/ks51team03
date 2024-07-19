@@ -184,7 +184,6 @@ public class BoardService {
         
         //이미지 등록
         boardMapper.insertnBoardImg(nboardimg);
-
     }
 	
 }
