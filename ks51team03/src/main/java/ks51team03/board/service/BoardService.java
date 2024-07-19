@@ -1,6 +1,5 @@
 package ks51team03.board.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,4 +163,5 @@ public class BoardService {
 	{
 		return boardMapper.getMainLatestBoard(bCode);
 	}
+	
 }

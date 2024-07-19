@@ -1550,3 +1550,6 @@ a{
 	text-decoration: underline; /* 호버 시 밑줄 추가 */
 }
 
+/*//////////////////////////////////////////////////////////////////
+[ board_write_gallery ]*/
+.cke_notification.cke_notification_warning { display: none; }

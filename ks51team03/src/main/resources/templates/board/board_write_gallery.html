@@ -4,6 +4,7 @@
       layout:decorate="~{layout/default}">
 <head>
  	<link rel="stylesheet" th:href="@{/assets/css/member_custom.css}" >
+
 </head>
 <!-- ====================================
 ——— BOARD SECTION
@@ -32,7 +33,7 @@
 			                    </dl>
 			                </div>
 			                <div class="cont">
-			                    <textarea name="nboardContent" placeholder="내용 입력"></textarea>
+			                	<textarea id = "nboardContent" name = "nboardContent"></textarea>
 			                </div>
 			            </div>
 			            <input type="text" name="boardCateCode" th:value="${boardTitle}" style="display: none;">
@@ -44,6 +45,12 @@
 		        </form>
 		    </div>
 	    </div>
+	    <script th:src="@{/assets/ckeditor/ckeditor.js}"></script>
+		<script th:inline="javascript">
+			CKEDITOR.replace('nboardContent', {
+				removePlugins: 'cloudservices'
+			});
+		</script>
 	</body>
 </th:block>
 

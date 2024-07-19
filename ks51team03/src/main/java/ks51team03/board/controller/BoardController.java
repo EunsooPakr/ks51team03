@@ -258,6 +258,22 @@ public class BoardController {
 		return "board/board_write_gallery";
 	}
 
+	@PostMapping("/board_write_gallery")
+	public String boardWriteGalleryPage(NoticeBoard nboard, RedirectAttributes rttr) {
+		log.info("board_write_normal");
+
+		String boardCateCodeName = nboard.getBoardCateCode();
+		String boardCateCode = boardService.getBoardCateCodeByBCTValue(nboard);
+		String boardCode = boardService.getBoardCodeByNBoard(nboard);
+
+		nboard.setBoardCateCode(boardCateCode);
+		nboard.setBoardCode(boardCode);
+		
+		boardService.insertNBoard(nboard);
+
+		String encodedBoardCateValue = UriUtils.encodeQueryParam(boardCateCodeName, StandardCharsets.UTF_8);
+		return "redirect:/board/board_write_gallery?currentPage=1&boardCateValue=" + encodedBoardCateValue;
+	}
 	/*
 	 * 자유 게시글 검색
 	 * 

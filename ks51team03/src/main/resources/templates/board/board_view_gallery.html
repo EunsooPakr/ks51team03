@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<head>
+<link rel="stylesheet" th:href="@{/assets/css/member_custom.css}">
+</head>
+<!-- ====================================
+——— BOARD SECTION
+===================================== -->
+<th:block layout:fragment="customContent">
+	<body>
+		<div class="board-body">
+			<div class="board_wrap">
+				<div class="board_title">
+					<strong id="board_title" th:text="${boardTitle}">게시판 이름</strong>
+					<p id="board_info" th:text="${boardInfo}">게시판 설명</p>
+				</div>
+				<div class="board_view_wrap">
+					<div class="board_view">
+						<div class="title" th:text="${noticeBoard.nboardTitle}"></div>
+						<div class="info">
+							<dl>
+								<dt>번호</dt>
+								<dd th:text="${noticeBoard.nboardCode}"></dd>
+							</dl>
+							<dl>
+								<dt>작성자</dt>
+								<dd th:text="${noticeBoard.memberId}"></dd>
+							</dl>
+							<dl>
+								<dt>작성일</dt>
+								<dd th:text="${noticeBoard.nboardRegistDate}"></dd>
+							</dl>
+							<dl>
+								<dt>조회수</dt>
+								<dd th:text="${noticeBoard.nboardView}"></dd>
+							</dl>
+							<dl>
+								<dt>추천수</dt>
+								<dd th:text="${noticeBoard.nboardRec}"></dd>
+							</dl>
+						</div>
+						<div class="cont">
+							<span th:text="${noticeBoard.nboardContent}"></span>
+						</div>
+					</div>
+					<div class="bt_wrap">
+						<a th:href="'/board/board_list_normal?currentPage=1&boardCateValue='+${boardTitle}" class="on">목록</a>
+						<a th:if="${session.SID == noticeBoard.memberId}" th:href="'/board/board_edit_normal?nboardCode=' + ${noticeBoard.nboardCode}+'&boardCateValue='+${boardTitle}">수정</a>
+						<a th:unless="${session.SID == noticeBoard.memberId}" href="#" id="nBoardRecBtn">추천</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script th:inline="javascript">
+	    	$(document).ready(function() {
+		        $('#nBoardRecBtn').click(function(event) {
+		            event.preventDefault(); // 기본 동작(링크로 이동) 방지
+		          
+		            $.ajax({
+		                type: 'POST', // 또는 'GET'에 따라 변경할 수 있음
+		                url: '/board/recommend', // 추천 처리를 담당하는 서버의 URL
+		                data: {
+		                	nboardCode: [[${noticeBoard.nboardCode}]] // 추천 대상 게시물의 코드를 서버로 전달
+		                },
+		                success: function(response) {
+		                    // 추천 성공 시, 추천 버튼을 비활성화하거나 메시지를 표시하는 등의 추가 작업 가능
+		                    alert('해당 게시물을 추천하였습니다.');
+		                    location.reload(); // 페이지 리로드
+		                },
+		                error: function() {
+		                    alert('추천을 처리하는 중 오류가 발생했습니다.');
+		                }
+		            });
+		        });
+		    });
+	</script>
+	</body>
+</th:block>
+
+<!-- 사용자정의 javascript file -->
+<th:block layout:fragment="customJsFile">
+</th:block>
+
+<!-- 사용자정의 javascript -->
+<th:block layout:fragment="customJs">
+</th:block>
+</html>
