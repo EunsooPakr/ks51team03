@@ -4,11 +4,22 @@
 	layout:decorate="~{layout/default}">
 <head>
 <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}">
+
 </head>
 <!-- ====================================
 ——— BOARD SECTION
 ===================================== -->
 <th:block layout:fragment="customContent">
+	<style>
+			table {
+				border: 1px solid black;
+				width: 100%;
+			}
+			
+			table tr td {
+				border: 1px solid black;
+			}
+	</style>
 	<body>
 		<div class="board-body">
 			<div class="board_wrap">

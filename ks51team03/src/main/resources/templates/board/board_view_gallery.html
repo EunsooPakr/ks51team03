@@ -4,6 +4,8 @@
 	layout:decorate="~{layout/default}">
 <head>
 <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}">
+<link rel="stylesheet" th:href="@{/assets/css/ckeditor_contents.css}">
+
 </head>
 <!-- ====================================
 ——— BOARD SECTION
@@ -41,13 +43,12 @@
 								<dd th:text="${noticeBoard.nboardRec}"></dd>
 							</dl>
 						</div>
-						<div class="cont">
-							<span th:text="${noticeBoard.nboardContent}"></span>
+						<div class="cont" th:utext="${noticeBoard.nboardContent}">
 						</div>
 					</div>
 					<div class="bt_wrap">
-						<a th:href="'/board/board_list_normal?currentPage=1&boardCateValue='+${boardTitle}" class="on">목록</a>
-						<a th:if="${session.SID == noticeBoard.memberId}" th:href="'/board/board_edit_normal?nboardCode=' + ${noticeBoard.nboardCode}+'&boardCateValue='+${boardTitle}">수정</a>
+						<a th:href="'/board/board_list_gallery?currentPage=1&boardCateValue='+${boardTitle}" class="on">목록</a>
+						<a th:if="${session.SID == noticeBoard.memberId}" th:href="'/board/board_edit_gallery?nboardCode=' + ${noticeBoard.nboardCode}+'&boardCateValue='+${boardTitle}">수정</a>
 						<a th:unless="${session.SID == noticeBoard.memberId}" href="#" id="nBoardRecBtn">추천</a>
 					</div>
 				</div>

@@ -241,6 +241,30 @@
 			nb.nbcode=#{nboardCode};
 	</select>
 	
+	<insert id="insertnBoardImg" parameterType="NBoardImg">
+		<selectKey keyProperty="nbiCode" resultType="String" order="BEFORE">
+			SELECT
+			CASE
+			WHEN COUNT(*) = 0 THEN 'nbi1'
+			ELSE CONCAT('nbi', (MAX(CAST(SUBSTRING_INDEX(nbicode, 'nbi', -1) AS UNSIGNED)) + 1))
+			END
+			FROM nboard_img
+		</selectKey>
+		-- 게시글 대표 이미지 등록
+		INSERT INTO nboard_img
+		(	nbicode, 
+			nbcode, 
+			file_idx, 
+			file_cate
+		)
+		VALUES 
+		(	#{nbiCode},
+		 	#{nbCode},
+		 	#{fileIdx},
+		   	'게시글대표이미지'
+		)
+	</insert>
+	
 	<!-- <select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
 		/*게시글 검색*/
 		SELECT

@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
+import jakarta.servlet.http.HttpSession;
 import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
 import ks51team03.board.service.BoardService;
+import ks51team03.company.dto.Company;
+import ks51team03.company.dto.CompanyImg;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -272,7 +276,42 @@ public class BoardController {
 		boardService.insertNBoard(nboard);
 
 		String encodedBoardCateValue = UriUtils.encodeQueryParam(boardCateCodeName, StandardCharsets.UTF_8);
-		return "redirect:/board/board_write_gallery?currentPage=1&boardCateValue=" + encodedBoardCateValue;
+		return "redirect:/board/board_list_gallery?currentPage=1&boardCateValue=" + encodedBoardCateValue;
+	}
+	
+
+	/* 갤러리 게시글 열람 */
+	@GetMapping("/board_view_gallery")
+	public String boardGalleryNormalPage(@RequestParam(value = "nboardCode") String nboardCode,Model model) {
+		log.info("board_view_gallery");
+
+		// 게시글 코드를 숫자만 분리해서 넘기기
+		// int nbcode=Integer.parseInt(nboardCode.replaceAll("[^\\d]", ""));
+		String boardTitle = boardService.getBCTValueByNBCode(nboardCode); // 기본값 설정
+		String boardInfo = boardService.getBoardInfoByBCTValue(boardTitle);
+
+		model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
+		model.addAttribute("boardInfo", boardInfo); // boardTitle 변수를 모델에 추가
+		model.addAttribute("noticeBoard", boardService.getNBoardByNBCode(nboardCode));
+		// 조회수 증가
+		boardService.increaseViewByNBCode(nboardCode);
+		return "board/board_view_gallery";
+	}
+	
+	
+	//여기 수정!!!
+	
+	@PostMapping("/board_write_gallery")
+	public String modifyCompany(NoticeBoard nboard, HttpSession session, @RequestParam MultipartFile multipartFile) {
+		CompanyImg companyImg = new CompanyImg();
+		companyImg.setRevImgFile(multipartFile);
+		String cCode = (String) session.getAttribute("CCODE");
+		company.setCompanyCode(cCode);
+		companyImg.setCCode(cCode);
+		
+		boardService.upLoadImgByNBCode(companyImg, company.getCompanyCode());
+		companyService.modifyCompany(company);
+		return "redirect:/map/map_main";
 	}
 	/*
 	 * 자유 게시글 검색

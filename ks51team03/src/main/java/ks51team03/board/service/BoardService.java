@@ -7,9 +7,14 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ks51team03.board.dto.NBoardImg;
 import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
 import ks51team03.board.mapper.BoardMapper;
+import ks51team03.company.dto.CompanyImg;
+import ks51team03.files.dto.FileRequest;
+import ks51team03.files.mapper.FileMapper;
+import ks51team03.files.util.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BoardService {
 	private final BoardMapper boardMapper;
+	private final FileUtils fileUtils;
+    private final FileMapper fileMapper;
 
 	public Map<String, Object> getNoticeBoardList(String boardCateValue, int currentPage, String searchKey,
 			String searchValue) {
@@ -163,5 +170,21 @@ public class BoardService {
 	{
 		return boardMapper.getMainLatestBoard(bCode);
 	}
+	
+	// 게시판 파일 업로드
+    public void upLoadImgByNBCode(NBoardImg nboardimg, String nBoardCode) {
+
+        FileRequest fileRequest =  fileUtils.uploadFile(nboardimg.getNBoardImgFile(), nBoardCode);
+        if(fileRequest != null){
+            fileRequest.setFileCate(nBoardCode);
+            log.info("fileRequest: {}", fileRequest);
+            fileMapper.addFile(fileRequest);
+            nboardimg.setFileIdx(fileRequest.getFileIdx());
+        }
+        
+        //이미지 등록
+        boardMapper.insertnBoardImg(nboardimg);
+
+    }
 	
 }

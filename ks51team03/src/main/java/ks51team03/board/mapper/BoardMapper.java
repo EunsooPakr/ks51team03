@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import ks51team03.board.dto.NBoardImg;
 import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
 
@@ -66,4 +67,7 @@ public interface BoardMapper {
 	
 	//추천순으로 가져오기
 	public List<NoticeBoard> getMainLatestBoard(String bCode);
+	
+	// 게시글 이미지 등록
+    void insertnBoardImg(NBoardImg nboardimg);
 }

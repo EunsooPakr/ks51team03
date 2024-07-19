@@ -4,7 +4,7 @@
       layout:decorate="~{layout/default}">
 <head>
  	<link rel="stylesheet" th:href="@{/assets/css/member_custom.css}" >
-
+	
 </head>
 <!-- ====================================
 ——— BOARD SECTION
@@ -48,7 +48,10 @@
 	    <script th:src="@{/assets/ckeditor/ckeditor.js}"></script>
 		<script th:inline="javascript">
 			CKEDITOR.replace('nboardContent', {
-				removePlugins: 'cloudservices'
+				removePlugins: 'cloudservices,easyimage',
+				 extraAllowedContent: 'table tr td{border:1px solid black;}',
+				 contentsCss: '/assets/css/ckeditor_contents.css',
+				 filebrowserUploadUrl:'/board/imageUpload.do'
 			});
 		</script>
 	</body>
