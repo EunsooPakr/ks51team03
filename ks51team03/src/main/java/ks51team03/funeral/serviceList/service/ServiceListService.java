@@ -74,18 +74,29 @@ public class ServiceListService {
     public void addFuneralServiceImg(ServiceImgDto serviceImgDto, String companyCode){
 
         FileRequest fileRequest = fileUtils.uploadFile(serviceImgDto.getFurImgFile(), companyCode);
-        if(fileRequest == null){
+        if(fileRequest != null){
             fileRequest.setFileCate(companyCode);
             log.info("fileRequest: {}", fileRequest);
             fileMapper.addFile(fileRequest);
             serviceImgDto.setFileIdx(fileRequest.getFileIdx());
         }
-        //serviceListMapper.insertFuneralServiceImg(serviceImgDto);
+        serviceListMapper.insertFuneralServiceImg(serviceImgDto);
     }
 
     // 장례 예약 서비스 이미지 등록하기
     public void addFuneralServiceImg(ServiceImgDto serviceImgDto){
         serviceListMapper.insertFuneralServiceImg(serviceImgDto);
+    }
+
+    public List<ServiceListDto> modifyServiceInfoByCode(String funeralserviceCode){
+
+        log.info("getServiceInfoByCode: {}", serviceListMapper.modifyServiceInfoByCode(funeralserviceCode));
+
+        return serviceListMapper.modifyServiceInfoByCode(funeralserviceCode);
+    }
+
+    public void updateServiceInfo(ServiceListDto serviceListDto){
+        serviceListMapper.updateServiceInfo(serviceListDto);
     }
 
 }

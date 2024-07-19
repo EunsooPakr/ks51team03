@@ -157,7 +157,7 @@
             WHEN COUNT(fscode) = 0 THEN 'fs1'
             ELSE
             CONCAT(
-            'fr',
+            'fs',
             LPAD(MAX(CAST(SUBSTRING(fscode, 3) AS UNSIGNED))+1, 3, '0')
             )
             END AS funeralserviceCode
@@ -255,5 +255,35 @@
         VALUES (#{fsicode}, #{ccode}, #{fscode}, #{fileIdx}, '장례 예약')
     </insert>
 
+    <!-- 장례 서비스 수정 -->
+    <select id="modifyServiceInfoByCode" parameterType="String" resultMap="getServiceListMap">
+        SELECT
+        fs.fscode,
+        fs.ccode,
+        fs.fs_title,
+        fs.fs_price,
+        fs_comment,
+        fs.fs_weight,
+        fs.id,
+        fs.fs_reg_date,
+        fs.fs_state
+        FROM
+        funeral_service AS fs
+        where
+        fs.fscode = #{funeralserviceCode};
+    </select>
+
+    <update id="updateServiceInfo" parameterType="ks51team03.funeral.serviceList.dto.ServiceListDto">
+        UPDATE
+            funeral_service
+        SET
+        fs_title = #{funeralserviceTitle},
+        fs_comment = #{funeralserviceComment},
+        fs_price = #{funeralservicePrice},
+        fs_weight = #{funeralserviceWeight},
+        fs_state = #{funeralserviceState}
+        WHERE
+        fscode = #{funeralserviceCode}
+    </update>
 
 </mapper>

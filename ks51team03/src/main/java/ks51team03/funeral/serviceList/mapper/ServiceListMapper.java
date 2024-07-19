@@ -40,4 +40,9 @@ public interface ServiceListMapper {
     // 장례 서비스 이미지 등록
     void insertFuneralServiceImg(ServiceImgDto serviceImgDto);
 
+    //장례업체 정보 조회를 위한 업체 코드 조회
+    List<ServiceListDto> modifyServiceInfoByCode(String funeralserviceCode);
+
+    //등록된 장례 서비스 수정
+    void updateServiceInfo(ServiceListDto serviceListDto);
 }
