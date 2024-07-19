@@ -59,6 +59,14 @@
         <result     column="p_weight"          property="petWeight"/>
     </resultMap>
 
+    <resultMap id="getFuneralServiceImg" type="ks51team03.funeral.serviceList.dto.ServiceImgDto">
+        <id         column="fsicode"               property="fsicode"/>
+        <result     column="ccode"                 property="ccode"/>
+        <result     column="fscode"                property="fscode"/>
+        <result     column="file_idx"              property="fileidx"/>
+        <result     column="file_path"             property="filePath"/>
+    </resultMap>
+
     <!-- 장례 서비스 전체 조회 -->
     <select id="getServiceListDto" resultMap="getServiceListMap">
         SELECT
@@ -232,7 +240,20 @@
         m.id = #{memberId}
     </select>
 
-
+    <insert id="insertFuneralServiceImg" parameterType="Map">
+        <selectKey keyProperty="fsicode" resultType="String" order="BEFORE">
+            SELECT
+            CASE
+            WHEN COUNT(*) = 0 THEN 'fsi1'
+            ELSE CONCAT('fsi', (MAX(CAST(SUBSTRING_INDEX(fsicode, 'ci', -1) AS UNSIGNED)) + 1))
+            END
+            FROM funeral_service_img
+        </selectKey>
+        -- 장례 서비스 이미지 등록
+        INSERT INTO funeral_service_img
+        (fsicode, ccode, fscode, file_idx, file_cate)
+        VALUES (#{fsicode}, #{ccode}, #{fscode}, #{fileIdx}, '장례 예약')
+    </insert>
 
 
 </mapper>

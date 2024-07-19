@@ -1,8 +1,12 @@
 package ks51team03.funeral.serviceList.service;
 
 import ks51team03.company.dto.Company;
+import ks51team03.files.dto.FileRequest;
+import ks51team03.files.mapper.FileMapper;
+import ks51team03.files.util.FileUtils;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveMemberPet;
+import ks51team03.funeral.serviceList.dto.ServiceImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +23,8 @@ import java.util.List;
 public class ServiceListService {
 
     private final ServiceListMapper serviceListMapper;
+    private final FileUtils fileUtils;
+    private final FileMapper fileMapper;
 
     public List<ServiceListDto> getServiceList() {
         return serviceListMapper.getServiceListDto();
@@ -44,10 +50,10 @@ public class ServiceListService {
         return serviceListMapper.getCompanyInfo(company);
     }
 
-    public void insertFuneralService(ServiceListDto serviceListDto){
-
+    public String insertFuneralService(ServiceListDto serviceListDto){
         serviceListMapper.insertFuneralService(serviceListDto);
-    };
+        return serviceListDto.getFuneralserviceCode(); // 생성된 fscode 반환
+    }
 
     // 장례 업체에 등록된 장례 서비스를 가져오기 위한 company 코드
     public List<ServiceListDto> getServiceList(ServiceListDto serviceListDto){
@@ -62,6 +68,24 @@ public class ServiceListService {
     // 장례 예약 전 회원 반려동물 가져오기 위한 코드
     public List<ReserveMemberPet> getMemberPet(String memberId){
         return serviceListMapper.getMemberPet(memberId);
+    }
+
+    // 장례 예약 서비스 이미지 업로드
+    public void addFuneralServiceImg(ServiceImgDto serviceImgDto, String companyCode){
+
+        FileRequest fileRequest = fileUtils.uploadFile(serviceImgDto.getFurImgFile(), companyCode);
+        if(fileRequest == null){
+            fileRequest.setFileCate(companyCode);
+            log.info("fileRequest: {}", fileRequest);
+            fileMapper.addFile(fileRequest);
+            serviceImgDto.setFileIdx(fileRequest.getFileIdx());
+        }
+        //serviceListMapper.insertFuneralServiceImg(serviceImgDto);
+    }
+
+    // 장례 예약 서비스 이미지 등록하기
+    public void addFuneralServiceImg(ServiceImgDto serviceImgDto){
+        serviceListMapper.insertFuneralServiceImg(serviceImgDto);
     }
 
 }

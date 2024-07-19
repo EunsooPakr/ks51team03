@@ -51,7 +51,7 @@
                                     <p class="text-primary mb-0">장례 서비스 등록</p>
                                 </div>
 
-                                <form th:action="@{/funeral/funeral_insert_service}" method="post">
+                                <form th:action="@{/funeral/funeral_insert_service}" method="post" enctype="multipart/form-data">
                                     <div class="form-group mb-4">
                                         <p>장례 서비스 title</p>
                                         <input type="text" name="funeralserviceTitle" class="form-control form-control-lg rounded border-0">
@@ -73,8 +73,8 @@
                                     </div>
 
                                     <div class="form-group file-upload">
-                                        <label for="revImegFile"></label>
-                                        <input type="file" name="revImegFile" id="revImegFile" accept="image/*" class="form-control form-control-lg rounded border-0">
+                                        <label for="furImgFile"></label>
+                                        <input type="file" name="furImgFile" id="furImgFile" accept="image/*" class="form-control form-control-lg rounded border-0">
                                     </div>
 
                                     <div class="pt-2">

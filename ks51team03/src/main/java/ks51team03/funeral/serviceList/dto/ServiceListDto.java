@@ -1,6 +1,7 @@
 package ks51team03.funeral.serviceList.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class ServiceListDto {
@@ -14,4 +15,7 @@ public class ServiceListDto {
     private String funeralserviceId; // 등록자 아이디
     private String funeralserviceRegDate; // 등록일
     private String funeralserviceState; //상태
+    private String fileIdx;
+    private MultipartFile revImgFile;
+    private String filePath;
 }
