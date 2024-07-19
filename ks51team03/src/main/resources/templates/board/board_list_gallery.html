@@ -127,7 +127,7 @@
 						<a href="#" th:attr="onclick='changePage(\'' + ${lastPage} + '\')'" th:utext="${'>>'}"></a>
 					</div>
 	                <div class="bt_wrap">
-	                    <a id="nBoardWriteBtn" class="board-list-normal-btn" th:href="@{/board/board_write_normal}">등록</a>
+	                    <a id="nBoardWriteBtn" class="board-list-normal-btn" th:href="@{/board/board_write_gallery(boardCateValue=${boardTitle})}">등록</a>
 	                </div>
 	            </div>
 	        </div>
