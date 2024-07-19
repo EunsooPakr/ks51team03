@@ -12,6 +12,24 @@
         <result column="file_size" property="fileSize" />
         <result column="file_reg_date" property="fileRegDate" />
     </resultMap>
+
+    <delete id="deleteReview" parameterType="String" >
+        -- 회원 리뷰 이미지 삭제
+        DELETE
+        FROM
+            files
+        WHERE
+            file_idx = #{fileIdx}
+    </delete>
+
+    <update id="updateReviewImg" parameterType="String">
+        -- 회원 리뷰 이미지 null 만들기
+        UPDATE service_reviews
+        SET
+        file_idx = null
+        WHERE file_idx = #{fileIdx}
+    </update>
+
     <select id="getFileByRevCode" resultMap="FileRequestResultMap">
         SELECT file_idx, file_origin_name, file_new_name, file_path, file_size, file_reg_date, file_cate
         FROM files

@@ -33,6 +33,7 @@ import ks51team03.pet.mapper.PetMapper;
 import ks51team03.pet.service.PetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -333,17 +334,18 @@ public class MemberController {
 	@GetMapping("/member_mypage_review_modify")
 	public String userReviewModify(@RequestParam("revcode") String revCode, Model model, HttpSession session) {
 		ComReview review = memberService.getCompanyReviewByRevCode(revCode);
-
 		model.addAttribute("review", review);
 
 		return "member/member_mypage_review_modify";
 	}
 
 	@PostMapping("/member_review_modify")
-	public String userReviewModifyAction(@RequestParam("revCode") String revCode, ComReview review, @RequestParam(value = "deleteImage", required = false) boolean deleteImage) {
+	public String userReviewModifyAction(@RequestParam("revCode") String revCode, ComReview review,
+										 @RequestParam(value = "deleteImage", required = false) boolean deleteImage,
+										 @RequestParam(value = "newImage", required = false) boolean newImage,
+										 @RequestParam("revImgFile") MultipartFile revImgFile) {
 		review.setRevCode(revCode);
-		memberService.memberReviewModify(review, deleteImage);
-
+		memberService.memberReviewModify(review, deleteImage, newImage, revImgFile);
 		return "redirect:/member/member_mypage_myQandR";
 	}
 

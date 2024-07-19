@@ -122,6 +122,8 @@
 						<button type="submit">후기 제출</button>
 					</div>
 					<input type="hidden" name="deleteImage" id="deleteImage" value="false">
+					<input type="hidden" name="newImage" id="newImage" value="false">
+					<input type="hidden" name="fileIdx" id="fileIdx" th:value="${review.getFileIdx()}">
 				</form>
 			</div>
 		</div>
@@ -129,6 +131,7 @@
 	<script>
 		document.querySelector('.delete-image-button').addEventListener('click', function() {
 			document.getElementById('deleteImage').value = 'true';
+			document.getElementById('fileIdx').value = '';
 			const img = document.getElementById('currentImage');
 			if (img) {
 				img.style.display = 'none';
@@ -138,10 +141,10 @@
 				button.style.display = 'none';
 			}
 		});
-
-		document.getElementById('revImgFile').addEventListener('click', function() {
-			document.getElementById('deleteImage').value = 'false';
+		document.getElementById('revImgFile').addEventListener('change', function() {
+			document.getElementById('newImage').value = 'true';
 		});
+
 	</script>
 </th:block>
 </html>

@@ -10,6 +10,7 @@ import ks51team03.company.dto.ComReview;
 import ks51team03.member.dto.Member;
 import ks51team03.member.dto.MemberLevel;
 import ks51team03.member.dto.Search;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
 
@@ -23,7 +24,7 @@ public interface MemberService {
 	int memberReviewDelete(ComReview review);
 
 	// 이미지 삭제
-	int memberReviewModify(ComReview review, boolean deleteImage);
+	int memberReviewModify(ComReview review, boolean deleteImage, boolean newImage, MultipartFile revImgFile);
 
 	// 회원 리뷰 수정
 	int memberReviewModify(ComReview review);

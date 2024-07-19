@@ -19,6 +19,7 @@ import ks51team03.member.mapper.MemberMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Transactional : 트랜잭션 처리 (ACID) 
@@ -71,21 +72,27 @@ public class MemberServiceImpl implements MemberService{
 	 * 회원의 특정 리뷰 수정
 	 */
 	@Override
-	public int memberReviewModify(ComReview review, boolean deleteImage) {
+	public int memberReviewModify(ComReview review, boolean deleteImage, boolean newImage, MultipartFile revImgFile) {
 		FileUtils fileUtils = new FileUtils();
+		FileRequest fileRequest = null;
+
 		if (deleteImage) {
-			FileRequest fileRequest = fileMapper.getFileByRevCode(review.getRevCode());
-			if (fileRequest != null) {
-				fileUtils.deleteFile(fileRequest);
-				review.setFileIdx(null);
-			}
-		} else if (review.getRevImgFile() != null && !review.getRevImgFile().isEmpty()) {
-			FileRequest fileRequest = fileUtils.uploadFile(review.getRevImgFile(), "리뷰");
+			fileRequest = fileMapper.getFileByRevCode(review.getRevCode());
+			fileRequest.setFileCate("리뷰");
+			fileUtils.deleteFile(fileRequest);
+			fileMapper.updateReviewImg(fileRequest.getFileIdx());
+			fileMapper.deleteReview(fileRequest.getFileIdx());
+			review.setFileIdx(null);
+		}
+
+		if (newImage && revImgFile != null && !revImgFile.isEmpty()) {
+			fileRequest = fileUtils.uploadFile(revImgFile, "리뷰");
 			if (fileRequest != null) {
 				fileMapper.addFile(fileRequest);
 				review.setFileIdx(fileRequest.getFileIdx());
 			}
 		}
+
 		return memberMapper.memberReviewModify(review);
 	}
 
@@ -205,7 +212,6 @@ public class MemberServiceImpl implements MemberService{
 			}
 		}
 		search.setSearchKey(columnName);
-		log.info("search: {}", search);
 		
 		return memberMapper.getSearchList(search);
 	}
@@ -302,8 +308,6 @@ public class MemberServiceImpl implements MemberService{
 	public List<Member> getMemberList() {
 		
 		List<Member> memberList = memberMapper.getMemberList();
-		
-		log.info("memberSerive memberList: {}", memberList);
 		
 		if(memberList != null) {
 			memberList.forEach( member -> {

@@ -21,7 +21,8 @@ public class FileUtils {
     private final String uploadPath = "/home/ks51team03/attachment";
 
     public void deleteFile(FileRequest fileRequest) {
-        Path filePath = Paths.get(uploadPath, fileRequest.getFilePath());
+        Path filePath = Paths.get("/home/ks51team03" + fileRequest.getFilePath());
+
         try {
             Files.deleteIfExists(filePath);
         } catch (IOException e) {

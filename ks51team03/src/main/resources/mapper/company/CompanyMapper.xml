@@ -201,7 +201,7 @@
 	</select>
 
 	<delete id="deleteReview" parameterType="ComReview" >
-		-- 업체 문의 삭제
+		-- 업체 리뷰 삭제
 		DELETE
 		FROM
 		service_reviews
