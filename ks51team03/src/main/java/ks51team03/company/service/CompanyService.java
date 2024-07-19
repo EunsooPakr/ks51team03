@@ -53,7 +53,7 @@ public class CompanyService {
         FileRequest fileRequest =  fileUtils.uploadFile(comReview.getRevImgFile(), "리뷰");
         if(fileRequest != null){
             fileRequest.setFileCate("리뷰");
-            log.info("fileRequest: {}", fileRequest);
+
             fileMapper.addFile(fileRequest);
             comReview.setFileIdx(fileRequest.getFileIdx());
         }
@@ -67,7 +67,7 @@ public class CompanyService {
         FileRequest fileRequest =  fileUtils.uploadFile(companyimg.getRevImgFile(), companyCode+"대표이미지");
         if(fileRequest != null){
             fileRequest.setFileCate(companyCode);
-            log.info("fileRequest: {}", fileRequest);
+
             fileMapper.addFile(fileRequest);
             companyimg.setFileIdx(fileRequest.getFileIdx());
         }
@@ -123,13 +123,13 @@ public class CompanyService {
 
     // 업체 문의 답변 리스트 반환
     public List<ComQuestionAnswer> getCompanyQuestionAnswer(String cCode){
-        log.info("getCompanyQuestionAnswer cCode:{}",companyMapper.getCompanyQuestionAnswer(cCode));
+
         return companyMapper.getCompanyQuestionAnswer(cCode);
     }
 
     // 업체 문의 리스트 반환
     public List<ComQuestion> getCompanyQuestion(String cCode){
-        log.info("getCompanyQuestion: {}", companyMapper.getCompanyQuestion(cCode));
+
         return companyMapper.getCompanyQuestion(cCode);
 
     }
@@ -146,19 +146,19 @@ public class CompanyService {
 
     // 전체 업체 리스트 반환
     public List<Company> getCompanyList(){
-        log.info("getCompanyList: {}", companyMapper.getCompanyList());
+
         return companyMapper.getCompanyList();
     }
 
     // 업체 코드로 업체 운영시간 리스트 반환
     public List<ComOperTime> getCompanyOperTime(String cCode){
-        log.info("getCompanyOperTime: {}", companyMapper.getCompanyOperTime(cCode));
+
         return companyMapper.getCompanyOperTime(cCode);
     }
 
     // 세션의 아이디를 통해 업체 리스트 반환
     public List<Company> getCompanyInfoById(String memberId){
-        log.info("getCompanyListById: {}", companyMapper.getCompanyInfoById(memberId));
+
         return companyMapper.getCompanyInfoById(memberId);
     }
 
@@ -180,7 +180,7 @@ public class CompanyService {
 
     // 좌표 반환
     public ComMap getComMapByCCode(String companyCode) {
-        log.info("Getting ComMap for cCode: {}", companyCode);
+
         return companyMapper.getComMapByCCode(companyCode);
     }
 
@@ -194,44 +194,44 @@ public class CompanyService {
 
     // 업체 리뷰 반환
     public List<ComReview> getCompanyReview(String companyCode) {
-        log.info("Getting ComReview for cCode: {}", companyCode);
+
         return companyMapper.getCompanyReview(companyCode);
     }
 
     // 업체 리뷰수 반환
     public int getCompanyReviewCount(String companyCode) {
         int reviewCount = companyMapper.getCompanyReviewCount(companyCode);
-        log.info("Review Count for cCode {}: {}", companyCode, reviewCount);
+
         return reviewCount;
     }
 
     // 직원 신청 회원 조회
     public List<ComStaff> getStaffSingList(String cCode){
-        log.info("Getting Sign Staff List: {}", companyMapper.getStaffSignList(cCode));
+
         return companyMapper.getStaffSignList(cCode);
     }
 
     // 직원 리스트 반환
     public List<ComStaff> getStaffList(String cCode){
-        log.info("Getting Staff List: {}", companyMapper.getStaffList(cCode));
+
         return companyMapper.getStaffList(cCode);
     }
 
     // 직원 승인 전 회원 레벨 변경
     public int updateLevel(String memberId){
-        log.info("changing member Level: {}", companyMapper.updateLevel(memberId));
+
         return companyMapper.updateLevel(memberId);
     }
 
     // 직원 승인
     public int acceptStaff(String requestId, String memberId){
-        log.info("Accepting Staff: {}", requestId);
+
         return companyMapper.acceptStaff(requestId,memberId);
     }
 
     // 직원 해고
     public int deleteStaff(String requestId){
-        log.info("deleting Staff: {}", requestId);
+
         return companyMapper.deleteStaff(requestId);
     }
 

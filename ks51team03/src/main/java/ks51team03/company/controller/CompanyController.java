@@ -43,7 +43,7 @@ public class CompanyController {
 		String cCode = (String) session.getAttribute("CCODE");
 		// 세션 아이디로 직원 테이블에서 업체 코드 찾기
 		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
-		log.info("companyCode : {}", companyCode);
+
 
 		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
 		if (memberId == null) {
@@ -53,7 +53,7 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
+
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
@@ -64,12 +64,12 @@ public class CompanyController {
 		if (companyCode != null) {
 			// 업체 코드로 업체 정보 출력
 			List<Company> companyInfoById = companyService.getCompanyInfoByCcode(companyCode);
-			log.info("companyInfoById : {}", companyInfoById);
+
 			// 현재 요일 가져오기
 			List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(companyCode);
 			int companyReviewCount = companyService.getCompanyReviewCount(companyCode);
 			List<CompanyImg> companyImgs = companyService.getCompanyImgByCcode(companyCode);
-			log.info("companyImgs : {}", companyImgs);
+
 
 
 			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
@@ -139,7 +139,7 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
+
 		String companyCode = companyService.getCompanyCodeByMemberId(memberId);
 		// 사용자 레벨 확인
 		if (!member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
@@ -150,7 +150,7 @@ public class CompanyController {
 		if (companyCode != null) {
 			List<Company> companyListById = companyService.getCompanyInfoByCcode(companyCode);
 			List<CompanyImg> companyImgs = companyService.getCompanyImgByCcode(companyCode);
-			log.info("companyImgs : {}", companyImgs);
+
 			model.addAttribute("companyListById", companyListById);
 			model.addAttribute("companyImgs", companyImgs);
 		}
@@ -171,7 +171,7 @@ public class CompanyController {
 		String cCode = (String) session.getAttribute("CCODE");
 		company.setCompanyCode(cCode);
 		companyImg.setCCode(cCode);
-		log.info("업체수정 company:{}", company);
+
 		companyService.addCompanyWithFile(companyImg, company.getCompanyCode());
 		companyService.modifyCompany(company);
 		return "redirect:/map/map_main";
@@ -189,7 +189,7 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
+
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
@@ -219,7 +219,7 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
+
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
@@ -242,7 +242,7 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
+
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
@@ -265,7 +265,7 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
+
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
@@ -314,7 +314,7 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
+
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
@@ -351,8 +351,6 @@ public class CompanyController {
 	public String submitQuestion(@ModelAttribute ComQuestion comQuestion, HttpSession session) {
 		String memberId = (String) session.getAttribute("SID");
 		comQuestion.setMemberId(memberId);
-		log.info("Received cCode: {}", comQuestion.getCCode());
-		log.info("Received qcteNum: {}", comQuestion.getQcteNum());
 
 		// qctcKind 값을 qctenum 값으로 변환
 		String qctenum = getQctenum(comQuestion.getQcteNum(), comQuestion.getCCode());
@@ -387,7 +385,6 @@ public class CompanyController {
 		String memberId = (String) session.getAttribute("SID");
 		comReview.setMemberId(memberId);
 		comReview.setCCode(cCode);
-		log.info("comReview: {}", comReview);
 		companyService.addReviewWithFile(comReview);
 
 		//companyService.addReview(comReview);
@@ -414,7 +411,6 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
@@ -445,7 +441,6 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
@@ -453,7 +448,6 @@ public class CompanyController {
 		}
 		ComQuestion question = companyService.getCompanyQuestionById(quesnum);
 		ComQuestionAnswer answer = companyService.getAnswerByQuesNum(quesnum);
-		log.info("answer: {}", answer);
 		model.addAttribute("question", question);
 		model.addAttribute("answer", answer);
 		return "company/company_question_answer_modify";
@@ -474,7 +468,7 @@ public class CompanyController {
 
 	@PostMapping("/company/review_delete")
 	public String deleteReview(@RequestParam("revCode")String revCode){
-		log.info("revCode: {}", revCode);
+
 		companyService.deleteReview(revCode);
 		return "redirect:company_review";
 	}
@@ -491,7 +485,7 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
+
 		// 사용자 레벨 확인
 		if (member == null || !member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
@@ -504,7 +498,7 @@ public class CompanyController {
 		}
 		if (companyCode != null) {
 			List<ComReview> comReviews = companyService.getCompanyReview(companyCode);
-			log.info("comReviews: {}", comReviews);
+
 			model.addAttribute("comReviews", comReviews);
 
 		}
@@ -525,7 +519,7 @@ public class CompanyController {
 
 		// 사용자 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
-		log.info("memberLevel: {}", member.getMemberLevel());
+
 		// 사용자 레벨 확인
 		if (!member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
 			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
@@ -538,7 +532,7 @@ public class CompanyController {
 		}
 		if (companyCode != null) {
 			List<ComLike> comLikes = companyService.getCompanyLikeMemberByCcode(companyCode);
-			log.info("comLikes: {}", comLikes);
+
 			model.addAttribute("comLikes", comLikes);
 
 		}
@@ -550,10 +544,7 @@ public class CompanyController {
 	public ResponseEntity<String> sendAlarm(@RequestBody ComInform comInform, HttpSession session,
 											RedirectAttributes redirectAttributes, ComInformReciPient comInformReciPient) {
 		String memberId = (String) session.getAttribute("SID");
-		log.info("알림 발송자: {}", memberId);
-		log.info("알림 받을 회원 목록: {}", comInform.getMemberIds());
-		log.info("알림 제목: {}", comInform.getInformValue());
-		log.info("알림 내용: {}", comInform.getInformContents());
+
 
 		comInform.setMemberId(memberId);
 		if (comInform.getMemberIds() == null || comInform.getMemberIds().isEmpty()) {
@@ -563,7 +554,7 @@ public class CompanyController {
 		comInform.setInformValue(comInform.getInformValue());
 		comInform.setInformContents(comInform.getInformContents());
 		companyService.insertComInform(comInform);
-		log.info("comInform기본키 찾기: {}", comInform);
+
 
 		for (String recipientId : comInform.getMemberIds()) {
 			comInformReciPient.setInformCode(comInform.getInformCode());
@@ -581,7 +572,7 @@ public class CompanyController {
 	@PostMapping("/company/insertCompany")
 	public String insertCompany(Company company) {
 		
-		log.info("업체등록 Company:{}", company);
+
 		
 		companyService.insertCompany(company);
 		

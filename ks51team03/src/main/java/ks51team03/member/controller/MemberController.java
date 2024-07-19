@@ -64,7 +64,7 @@ public class MemberController {
 			Member memberInfo = (Member) checkMap.get("memberInfo");
 			int informCount = memberService.getInformCount(memberInfo.getMemberId());
 			List<ComInformReciPient> getInform = memberService.getInform(memberInfo.getMemberId());
-			log.info("getInform: {}", getInform);
+
 
 			// 1. session
 			//HttpSession requestGetSession = request.getSession();  이렇게 가져올 수도 있다.
@@ -79,10 +79,10 @@ public class MemberController {
 			if(ccode == null) {
 				ccode = companyService.getCompanyCodeByMemberId(memberInfo.getMemberId());
 			}
-			log.info("ccode 1: {}", ccode);
+
 
 			session.setAttribute("CCODE", ccode);
-			log.info("Session CCODE set: {}", ccode);
+
 
 			// 2. cookies
 			Cookie cookie = new Cookie("loginId", memberInfo.getMemberId());
@@ -112,7 +112,7 @@ public class MemberController {
 			Member memberInfo = (Member) checkMap.get("memberInfo");
 			int informCount = memberService.getInformCount(memberInfo.getMemberId());
 			List<ComInformReciPient> getInform = memberService.getInform(memberInfo.getMemberId());
-			log.info("getInform: {}", getInform);
+
 
 			// 1. session
 			//HttpSession requestGetSession = request.getSession();  이렇게 가져올 수도 있다.
@@ -127,10 +127,10 @@ public class MemberController {
 			if(ccode == null) {
 				ccode = companyService.getCompanyCodeByMemberId(memberInfo.getMemberId());
 			}
-			log.info("ccode 1: {}", ccode);
+
 
 			session.setAttribute("CCODE", ccode);
-			log.info("Session CCODE set: {}", ccode);
+
 
 			// 2. cookies
 			Cookie cookie = new Cookie("loginId", memberInfo.getMemberId());
@@ -174,7 +174,7 @@ public class MemberController {
 	@PostMapping("/idCheck")
 	@ResponseBody
 	public boolean idCheck(@RequestParam(value="memberId") String memberId) {
-		log.info("아이디중복체크: memberId {}", memberId);
+
 		boolean isMember = false;
 		
 		isMember = memberMapper.idCheck(memberId);
@@ -196,7 +196,7 @@ public class MemberController {
 		}
 		else
 		{
-			log.info("회원가입 Member:{}", member);
+
 			memberService.insertMember(member);
 		}
 		
@@ -258,7 +258,7 @@ public class MemberController {
 
 	@PostMapping("/updateMember")
 	public String modifyMember(Member member) {
-		log.info("회원수정 Member:{}", member);
+
 		memberService.updateMember(member);
 		return "redirect:/member/member_mypage_memberinfo";
 	}
@@ -266,7 +266,6 @@ public class MemberController {
 	@GetMapping("/updateMember")
 	public String modifyMember(@RequestParam(value="memberId") String memberId
 							  ,Model model) {
-		log.info("수정화면 memberId:{}", memberId);
 		Member memberInfo = memberService.getMemberInfoById(memberId);
 		List<MemberLevel> memberLevelList = memberService.getMemberLevelList();
 		
@@ -283,8 +282,6 @@ public class MemberController {
 		String memberId=(String) session.getAttribute("SID");
 		List<ComQuestion> memberQuestion = memberService.getQuestionById(memberId);
 		List<ComReview> comReviews = memberService.getCompanyReview(memberId);
-		log.info("memberQuestion: {}", memberQuestion);
-		log.info("comReviews: {}", comReviews);
 		model.addAttribute("memberQuestion",memberQuestion);
 		model.addAttribute("comReviews",comReviews);
 
@@ -294,8 +291,6 @@ public class MemberController {
 	@GetMapping("/member_mypage_question_modify")
 	public String userQuestionModify(@RequestParam("quesnum") String quesNum, Model model) {
 		ComQuestion question = companyService.getCompanyQuestionById(quesNum);
-
-		log.info("question: {}", question);
 		model.addAttribute("question", question);
 
 		return "member/member_mypage_question_modify";
@@ -339,7 +334,6 @@ public class MemberController {
 	public String userReviewModify(@RequestParam("revcode") String revCode, Model model, HttpSession session) {
 		ComReview review = memberService.getCompanyReviewByRevCode(revCode);
 
-		log.info("review: {}", review);
 		model.addAttribute("review", review);
 
 		return "member/member_mypage_review_modify";
@@ -347,7 +341,6 @@ public class MemberController {
 
 	@PostMapping("/member_review_modify")
 	public String userReviewModifyAction(@RequestParam("revCode") String revCode, ComReview review, @RequestParam(value = "deleteImage", required = false) boolean deleteImage) {
-		log.info("revCode: {}", revCode);
 		review.setRevCode(revCode);
 		memberService.memberReviewModify(review, deleteImage);
 
@@ -356,8 +349,7 @@ public class MemberController {
 
 	// 회원 리뷰 삭제
 	@PostMapping("/member_mypage_review_delete")
-	public String userReviewDeleteAction(@RequestParam("revCode") String revCode, ComReview review, @RequestParam(value = "deleteImage", required = false) boolean deleteImage) {
-		log.info("revCode: {}", revCode);
+	public String userReviewDeleteAction(@RequestParam("revCode") String revCode, ComReview review) {
 		review.setRevCode(revCode);
 		memberService.memberReviewDelete(review);
 
@@ -424,7 +416,7 @@ public class MemberController {
 			int informCount = memberService.getInformCount(memberId);
 			session.setAttribute("SINFORM", getInform);
 			session.setAttribute("SINFOCOUNT", informCount);
-			log.info("informCount: {}", informCount);
+
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -456,8 +448,6 @@ public class MemberController {
 		Member member=new Member();
 		member.setMemberId(memberId);
 		member.setMemberPw(memberPw);
-		
-		log.info("비밀번호수정 Member:{}", member);
 		
 		boolean isUpdated = memberService.updateMemberPw(member);
 	
