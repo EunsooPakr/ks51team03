@@ -183,27 +183,6 @@ public class BoardController {
 		return "board/board_write_normal";
 	}
 
-	/*
-	 * 자유 게시글 열람
-	 * 
-	 * @GetMapping("/board_view_normal") public String
-	 * boardViewNormalPage(@RequestParam(value = "nboardCode") String nboardCode,
-	 * 
-	 * @RequestParam(name = "boardCateValue") String boardCateValue, Model model) {
-	 * log.info("board_view_normal");
-	 * 
-	 * // 게시글 코드를 숫자만 분리해서 넘기기 // int
-	 * nbcode=Integer.parseInt(nboardCode.replaceAll("[^\\d]", "")); String
-	 * boardTitle = boardCateValue; // 기본값 설정 String
-	 * boardInfo=boardService.getBoardInfoByBCTValue(boardCateValue);
-	 * 
-	 * model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
-	 * model.addAttribute("boardInfo", boardInfo); // boardTitle 변수를 모델에 추가
-	 * model.addAttribute("noticeBoard",
-	 * boardService.getNBoardByNBCode(nboardCode)); // 조회수 증가
-	 * boardService.increaseViewByNBCode(nboardCode); return
-	 * "board/board_view_normal"; }
-	 */
 
 	/* 자유 게시글 열람 */
 	@GetMapping("/board_view_normal")
@@ -264,6 +243,19 @@ public class BoardController {
 		 */
 		String encodedBoardCateValue = UriUtils.encodeQueryParam(BoardCateValueName, StandardCharsets.UTF_8);
 		return "redirect:/board/board_list_normal?currentPage=1&boardCateValue=" + encodedBoardCateValue;
+	}
+	
+	/* 갤러리게시글 작성 */
+	@GetMapping("/board_write_gallery")
+	public String boardWriteGalleryPage(Model model,@RequestParam(name = "boardCateValue") String boardCateValue)
+	{
+		String boardTitle = boardCateValue; // 기본값 설정
+		String boardInfo = boardService.getBoardInfoByBCTValue(boardCateValue);
+
+		model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
+		model.addAttribute("boardInfo", boardInfo); // boardTitle 변수를 모델에 추가
+		
+		return "board/board_write_gallery";
 	}
 
 	/*

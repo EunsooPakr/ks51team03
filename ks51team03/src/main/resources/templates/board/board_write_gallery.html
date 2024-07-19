@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+ 	<link rel="stylesheet" th:href="@{/assets/css/member_custom.css}" >
+</head>
+<!-- ====================================
+——— BOARD SECTION
+===================================== -->
+<th:block layout:fragment="customContent">
+	<body>
+		<div class="board-body">
+		    <div class="board_wrap">
+		        <div class="board_title">
+		            <strong id="board_title" th:text="${boardTitle}">게시판 이름</strong>
+		            <p id="board_info" th:text="${boardInfo}">게시판 설명</p>
+		        </div>
+		        <form role="form" action="/board/board_write_gallery" method="post">
+			        <div class="board_write_wrap">
+			            <div class="board_write">
+			                <div class="title">
+			                    <dl>
+			                        <dt>제목</dt>
+			                        <dd><input type="text" name="nboardTitle" placeholder="제목 입력"></dd>
+			                    </dl>
+			                </div>
+			                <div class="info">
+			                    <dl>
+			                        <dt>작성자</dt>
+			                        <dd><input type="text" id="memberId" name="memberId"  th:value="${session.SID}" readonly="readonly"></dd>
+			                    </dl>
+			                </div>
+			                <div class="cont">
+			                    <textarea name="nboardContent" placeholder="내용 입력"></textarea>
+			                </div>
+			            </div>
+			            <input type="text" name="boardCateCode" th:value="${boardTitle}" style="display: none;">
+			            <div class="board-list-btn">
+				            <button type="submit" class="board-list-normal-btn">등록</button>
+				            <button type="reset" class="board-list-normal-btn">취소</button>
+			            </div>
+			        </div>
+		        </form>
+		    </div>
+	    </div>
+	</body>
+</th:block>
+
+<!-- 사용자정의 javascript file -->
+<th:block layout:fragment="customJsFile">
+</th:block>
+	
+<!-- 사용자정의 javascript -->
+<th:block layout:fragment="customJs">
+</th:block>
+</html>
