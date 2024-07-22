@@ -231,14 +231,13 @@ public class ServiceListController {
 
 		log.info("로그인한 회원 아이디 memberId={}", memberId);
 
-		if(memberId == null) {
+		if (memberId == null) {
 			return "redirect:/";
 		}
 
 		company.setMemberId(memberId);
 
 		List<ServiceListDto> serviceListCode = serviceListService.modifyServiceInfoByCode(funeralserviceCode);
-
 		List<Company> getCompanyInfoList = serviceListService.getCompanyInfo(company);
 
 		if (getCompanyInfoList == null || getCompanyInfoList.isEmpty()) {
@@ -249,20 +248,27 @@ public class ServiceListController {
 			session.setAttribute("ccode", ccode);
 		}
 
-		log.info("getCompanyInfoList:{}", getCompanyInfoList);
+		// 서비스 이미지 정보 조회
+		ServiceImgDto serviceImgDto = serviceListService.getServiceImg(funeralserviceCode, (String) session.getAttribute("ccode"));
 
+		log.info("getCompanyInfoList:{}", getCompanyInfoList);
 		log.info("serviceListCode:{}", serviceListCode);
+		log.info("serviceImgDto:{}", serviceImgDto);
 
 		model.addAttribute("serviceListDto", serviceListDto);
 		model.addAttribute("serviceListCode", serviceListCode);
 		model.addAttribute("getCompanyInfoList", getCompanyInfoList);
-
+		model.addAttribute("serviceImgDto", serviceImgDto);
 
 		return "funeral/funeral_company_service_modify.html";
 	}
 
 	@PostMapping("funeral/funeral_company_service_modify")
-	public String modifyFuneralService(Model model,HttpSession session, ServiceListDto serviceListDto){
+	public String modifyFuneralService(Model model,
+									   HttpSession session,
+									   @ModelAttribute ServiceListDto serviceListDto,
+									   @RequestParam("furImgFile") MultipartFile multipartFile,
+									   RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
 		serviceListDto.setFuneralserviceId(memberId);
 
@@ -272,11 +278,28 @@ public class ServiceListController {
 			return "redirect:/";
 		}
 
-		serviceListDto.setFuneralserviceId(memberId);
-
+		// 서비스 정보 업데이트
 		serviceListService.updateServiceInfo(serviceListDto);
+
+		// 이미지 업로드 처리
+		if (!multipartFile.isEmpty()) {
+			String ccode = (String) session.getAttribute("ccode");
+			String fscode = serviceListDto.getFuneralserviceCode();
+
+			ServiceImgDto serviceImgDto = new ServiceImgDto();
+			serviceImgDto.setFurImgFile(multipartFile);
+			serviceImgDto.setCcode(ccode);
+			serviceImgDto.setFscode(fscode);
+
+			serviceListService.addOrUpdateFuneralServiceImg(serviceImgDto, ccode);
+		}
+
+		// 성공 메시지 설정
+		redirectAttributes.addFlashAttribute("message", "장례 서비스가 정상적으로 수정되었습니다.");
 
 		return "redirect:/funeral/funeral_regService_List";
 	}
+
+
 
 }

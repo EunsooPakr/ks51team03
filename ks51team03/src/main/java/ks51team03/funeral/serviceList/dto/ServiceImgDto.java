@@ -13,4 +13,9 @@ public class ServiceImgDto {
     private String fileIdx;
     private String fileCate;
     private MultipartFile furImgFile;
+    private String fileOriginName; // 파일 원본 이름
+    private String fileNewName; // 파일 새로운 이름
+    private String filePath; // 파일 경로
+    private Long fileSize; // 파일 크기
+    private String fileRegDate; // 파일 등록 날짜
 }

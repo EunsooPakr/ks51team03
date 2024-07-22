@@ -78,6 +78,18 @@
                                         </select>
                                     </div>
 
+                                    <!-- 이미지 표시 -->
+                                    <div class="form-group mb-4">
+                                        <p>등록된 이미지</p>
+                                        <div th:if="${serviceImgDto != null && serviceImgDto.filePath != null}">
+                                            <img th:src="@{${serviceImgDto.filePath}}" alt="이미지" class="img-fluid"/>
+                                        </div>
+                                        <div th:if="${serviceImgDto == null || serviceImgDto.filePath == null}">
+                                            <p>등록된 이미지가 없습니다.</p>
+                                        </div>
+                                    </div>
+
+
                                     <div class="form-group file-upload">
                                         <label for="furImgFile"></label>
                                         <input type="file" name="furImgFile" id="furImgFile" accept="image/*" class="form-control form-control-lg rounded border-0">
