@@ -69,6 +69,7 @@
                     <th>작성자 아이디</th>
                     <th>내용</th>
                     <th>작성일</th>
+                    <th>사진</th>
                     <th>삭제</th>
                 </tr>
                 </thead>
@@ -78,7 +79,7 @@
                     <td th:text="${r.memberId}"></td>
                     <td th:text="${r.revContent}"></td>
                     <td th:text="${r.revAdminDate}"></td>
-                    <td><img src="/attachment/240711/e292027f753f4b23ae50019b661c6c33.png" alt=""></td>
+                    <td><img th:src="${r.filePath}" alt="" style="width:200px;"></td>
                     <td>
                         <form th:action="@{/company/review_delete}" method="post">
                             <input type="hidden" name="revCode" th:value="${r.revCode}" />

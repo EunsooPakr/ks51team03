@@ -165,14 +165,30 @@ public class CompanyController {
 	}
 
 	@PostMapping("/company/modify_Company")
-	public String modifyCompany(Company company, HttpSession session, @RequestParam("revImgFile") MultipartFile multipartFile) {
-		CompanyImg companyImg = new CompanyImg();
-		companyImg.setRevImgFile(multipartFile);
+	public String modifyCompany(Company company, HttpSession session,
+								@RequestParam("revImgFile") List<MultipartFile> multipartFiles,
+								@RequestParam(value = "deleteImage", required = false) List<String> deleteImage) {
 		String cCode = (String) session.getAttribute("CCODE");
 		company.setCompanyCode(cCode);
-		companyImg.setCCode(cCode);
 
-		companyService.addCompanyWithFile(companyImg, company.getCompanyCode());
+		log.info("deleteImage는: {}",deleteImage);
+		// 기존 이미지 삭제 처리
+		if (deleteImage != null) {
+			for (String imageId : deleteImage) {
+				companyService.deleteCompanyImage(imageId);
+			}
+		}
+
+		// 새 이미지 추가 처리
+		for (MultipartFile file : multipartFiles) {
+			if (!file.isEmpty()) {
+				CompanyImg companyImg = new CompanyImg();
+				companyImg.setRevImgFile(file);
+				companyImg.setCCode(cCode);
+				companyService.addCompanyImage(companyImg);
+			}
+		}
+
 		companyService.modifyCompany(company);
 		return "redirect:/map/map_main";
 	}
@@ -467,9 +483,10 @@ public class CompanyController {
 	}
 
 	@PostMapping("/company/review_delete")
-	public String deleteReview(@RequestParam("revCode")String revCode){
+	public String deleteReview(ComReview comReview){
 
-		companyService.deleteReview(revCode);
+		memberService.memberReviewDelete(comReview);
+
 		return "redirect:company_review";
 	}
 

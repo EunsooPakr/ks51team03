@@ -79,6 +79,7 @@
 		<result column="fileidx" property="fileIdx" />
 		<result column="rev_scope" property="revScope" />
 		<result column="rev_content" property="revContent" />
+		<result column="file_path" property="filePath" />
 	</resultMap>
 
 	<resultMap id="QuestionResultMap" type="ComQuestion">
@@ -354,12 +355,16 @@
 	<select id="getCompanyReview" parameterType="String" resultMap="ComReviewResultMap">
 		-- 업체 코드로 리뷰 검색
 		SELECT
-		revcode, id, ccode, rev_admin_date, rev_update_date,
-		file_idx, rev_scope, rev_content
+			r.revcode, r.id, r.ccode, r.rev_admin_date, r.rev_update_date,
+			r.file_idx, r.rev_scope, r.rev_content, f.file_path
 		FROM
-		service_reviews
+			service_reviews AS r
+		inner join
+			files AS f
+		on
+			r.file_idx = f.file_idx
 		WHERE
-		ccode = #{cCode}
+			ccode = #{cCode}
 	</select>
 
 	<select id="getCompanyOperTime" resultMap="ComOperTimeResultMap">
@@ -529,6 +534,15 @@
 		WHERE
 		s.stf_check = 1 AND s.ccode = #{cCode}
 	</select>
+
+	<insert id="addCompanyImage" parameterType="CompanyImg">
+		INSERT INTO company_img (file_idx, ccode)
+		VALUES (#{fileIdx}, #{cCode})
+	</insert>
+
+	<delete id="deleteCompanyImage" parameterType="String">
+		DELETE FROM company_img WHERE file_idx = #{imageId}
+	</delete>
 
 	<update id="modifyCompany" parameterType="Company" >
 		/* 업체 수정 */

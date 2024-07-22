@@ -12,6 +12,9 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
 
+    // 업체 대표 이미지 삭제
+    int deleteCompanyImage(String imageId);
+
     // 업체 대표 이미지 리스트 조회
     List<CompanyImg> getCompanyImgByCcode(String cCode);
 
@@ -28,7 +31,7 @@ public interface CompanyMapper {
     Double avgReviewScore(String companyCode);
 
     // 업체의 리뷰 삭제
-    void deleteReview(String revCode);
+    int deleteReview(ComReview comReview);
 
     // 업체 대표 이미지 등록
     void insertCompanyImg(CompanyImg companyImg);

@@ -42,10 +42,7 @@ public class CompanyService {
         return companyMapper.getCompanyLikeMemberByCcode(cCode);
     }
 
-    // 업체 리뷰 삭제
-    public void deleteReview(String revCode){
-        companyMapper.deleteReview(revCode);
-    }
+    // 업체 리뷰 삭제, memberService에서 하기로함
 
     // 리뷰 파일 업로드
     public void addReviewWithFile(ComReview comReview) {
@@ -67,18 +64,13 @@ public class CompanyService {
         FileRequest fileRequest =  fileUtils.uploadFile(companyimg.getRevImgFile(), companyCode+"대표이미지");
         if(fileRequest != null){
             fileRequest.setFileCate(companyCode);
-
             fileMapper.addFile(fileRequest);
             companyimg.setFileIdx(fileRequest.getFileIdx());
         }
-        addCompanyImg(companyimg);
-
-    }
-    // 업체 대표 이미지 등록하기
-    public void addCompanyImg(CompanyImg companyimg){
         companyMapper.insertCompanyImg(companyimg);
 
     }
+
 
     // 리뷰 등록하기
     public void addReview(ComReview comReview) {
@@ -114,6 +106,30 @@ public class CompanyService {
     // 업체 수정
     public int modifyCompany(Company company) {
         return companyMapper.modifyCompany(company);
+    }
+
+    // 업체 이미지 등록
+    public void addCompanyImage(CompanyImg companyImg) {
+        // 파일 업로드 처리 로직 추가
+        FileUtils fileUtils = new FileUtils();
+        FileRequest fileRequest = fileUtils.uploadFile(companyImg.getRevImgFile(), "업체");
+        fileRequest.setFileCate(companyImg.getCCode());
+        companyImg.setFileIdx(fileRequest.getFileIdx());
+        fileMapper.addFile(fileRequest);
+        companyMapper.insertCompanyImg(companyImg);
+
+    }
+
+    // 업체 이미지 삭제
+    public void deleteCompanyImage(String imageId) {
+        FileRequest fileRequest = fileMapper.getFileByFileIdx(imageId);
+        if (fileRequest != null) {
+            FileUtils fileUtils = new FileUtils();
+            fileUtils.deleteFile(fileRequest);
+            companyMapper.deleteCompanyImage(imageId);
+            fileMapper.deleteReview(imageId);
+
+        }
     }
 
     // 문의 답변 등록

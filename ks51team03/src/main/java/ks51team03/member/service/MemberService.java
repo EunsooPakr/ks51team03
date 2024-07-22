@@ -26,8 +26,6 @@ public interface MemberService {
 	// 이미지 삭제
 	int memberReviewModify(ComReview review, boolean deleteImage, boolean newImage, MultipartFile revImgFile);
 
-	// 회원 리뷰 수정
-	int memberReviewModify(ComReview review);
 
 	// 회원 리뷰 수정을 위한 특정 리뷰 검색
 	ComReview getCompanyReviewByRevCode(String revCode);

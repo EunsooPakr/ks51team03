@@ -107,8 +107,8 @@
                     <div th:if="${companyImgs != null}">
                         <div th:each="img : ${companyImgs}">
                             <div th:if="${img.filePath != null}" style="position: relative;">
-                                <img id="currentImage" th:src="@{${img.filePath}}" alt="현재 이미지">
-                                <button type="button" class="delete-image-button">x</button>
+                                <img id="currentImage" th:src="@{${img.filePath}}" alt="현재 이미지" th:data-image-id="${img.fileIdx}">
+                                <button type="button" class="delete-image-button" th:data-image-id="${img.fileIdx}">x</button>
                             </div>
                         </div>
                     </div>
@@ -148,8 +148,8 @@
                 <div class="form-group">
                     <span>업체 주차장 유무</span>
                     <div class="radio-group">
-                        <label><input type="radio" id="parking-yes" name="companyParking" value="yes" required> 예</label>
-                        <label><input type="radio" id="parking-no" name="companyParking" value="no"> 아니오</label>
+                        <label><input type="radio" id="parking-yes" name="companyParking" value="yes" required th:checked="${c.companyParking == 'yes'}"> 예</label>
+                        <label><input type="radio" id="parking-no" name="companyParking" value="no" th:checked="${c.companyParking == 'no'}"> 아니오</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -159,27 +159,20 @@
                 <div class="form-group">
                     <button type="submit">등록하기</button>
                 </div>
-                <input type="hidden" name="deleteImage" id="deleteImage" value="false">
+                <input type="hidden" name="deleteImage" id="deleteImage" value="">
             </form>
         </div>
     </section>
     <script>
         $(document).ready(function() {
-            function deleteImage(button) {
-                $('#deleteImage').val('true');
-                const img = $(button).prev('img');
-                if (img.length) {
-                    img.hide();
-                }
-                $(button).hide();
-            }
-
-            $('#revImgFile').on('click', function() {
-                $('#deleteImage').val('false');
-            });
-
+            var deleteImages = [];
             $('.delete-image-button').on('click', function() {
-                deleteImage(this);
+                var imageId = $(this).data('image-id');
+                deleteImages.push(imageId);
+                $(this).prev('img').hide();
+                $(this).hide();
+                $('#deleteImage').val(deleteImages.join(','));
+                console.log(`deleteImages: ${deleteImages}`);
             });
         });
     </script>

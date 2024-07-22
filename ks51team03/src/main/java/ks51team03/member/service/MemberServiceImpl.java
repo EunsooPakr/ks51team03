@@ -64,8 +64,10 @@ public class MemberServiceImpl implements MemberService{
 		if (fileRequest != null) {
 			fileUtils.deleteFile(fileRequest);
 			review.setFileIdx(null);
+			memberMapper.memberReviewDelete(review);
+			fileMapper.deleteReview(fileRequest.getFileIdx());
 		}
-		return memberMapper.memberReviewDelete(review);
+		return 0;
 	}
 
 	/**
@@ -73,36 +75,36 @@ public class MemberServiceImpl implements MemberService{
 	 */
 	@Override
 	public int memberReviewModify(ComReview review, boolean deleteImage, boolean newImage, MultipartFile revImgFile) {
-		FileUtils fileUtils = new FileUtils();
-		FileRequest fileRequest = null;
-
 		if (deleteImage) {
-			fileRequest = fileMapper.getFileByRevCode(review.getRevCode());
+			handleImageDeletion(review);
+		}
+		if (newImage && revImgFile != null && !revImgFile.isEmpty()) {
+			handleImageUpload(review, revImgFile);
+		}
+		return memberMapper.memberReviewModify(review);
+	}
+
+	private void handleImageDeletion(ComReview review) {
+		FileRequest fileRequest = fileMapper.getFileByRevCode(review.getRevCode());
+		if (fileRequest != null) {
 			fileRequest.setFileCate("리뷰");
+			FileUtils fileUtils = new FileUtils();
 			fileUtils.deleteFile(fileRequest);
 			fileMapper.updateReviewImg(fileRequest.getFileIdx());
 			fileMapper.deleteReview(fileRequest.getFileIdx());
 			review.setFileIdx(null);
 		}
+	}
 
-		if (newImage && revImgFile != null && !revImgFile.isEmpty()) {
-			fileRequest = fileUtils.uploadFile(revImgFile, "리뷰");
-			if (fileRequest != null) {
-				fileMapper.addFile(fileRequest);
-				review.setFileIdx(fileRequest.getFileIdx());
-			}
+	private void handleImageUpload(ComReview review, MultipartFile revImgFile) {
+		FileUtils fileUtils = new FileUtils();
+		FileRequest fileRequest = fileUtils.uploadFile(revImgFile, "리뷰");
+		if (fileRequest != null) {
+			fileMapper.addFile(fileRequest);
+			review.setFileIdx(fileRequest.getFileIdx());
 		}
-
-		return memberMapper.memberReviewModify(review);
 	}
 
-	/**
-	 * 회원의 특정 리뷰 수정
-	 */
-	@Override
-	public int memberReviewModify(ComReview review) {
-		return memberMapper.memberReviewModify(review);
-	}
 
 	/**
 	 * 회원의 특정 리뷰 검색

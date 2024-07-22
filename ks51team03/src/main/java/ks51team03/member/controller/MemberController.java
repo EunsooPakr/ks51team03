@@ -341,8 +341,8 @@ public class MemberController {
 
 	@PostMapping("/member_review_modify")
 	public String userReviewModifyAction(@RequestParam("revCode") String revCode, ComReview review,
-										 @RequestParam(value = "deleteImage", required = false) boolean deleteImage,
-										 @RequestParam(value = "newImage", required = false) boolean newImage,
+										 @RequestParam(value = "deleteImage", defaultValue = "false") boolean deleteImage,
+										 @RequestParam(value = "newImage", defaultValue = "false") boolean newImage,
 										 @RequestParam("revImgFile") MultipartFile revImgFile) {
 		review.setRevCode(revCode);
 		memberService.memberReviewModify(review, deleteImage, newImage, revImgFile);

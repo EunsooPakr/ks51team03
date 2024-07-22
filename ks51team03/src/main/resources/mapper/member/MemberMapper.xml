@@ -154,6 +154,7 @@
 			r.file_idx = f.file_idx
 		WHERE
 			r.id = #{memberId}
+		ORDER BY r.rev_admin_date DESC
 	</select>
 
 	<delete id="deleteAnswersByQuesNum" parameterType="String">
