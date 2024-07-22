@@ -28,25 +28,15 @@
               </div>
             </div>
 
-            <div class="col-md-6 col-lg-8 d-none d-md-block">
-              <div class="d-flex justify-content-md-end">
-                <a href="cars-list.html" class="icon-md bg-white rounded shadow">
-                  <i class="fa fa-bars text-gray-color" aria-hidden="true"></i>
-                </a>
-
-                <a href="javascript:void(0)" class="icon-md bg-primary rounded shadow ms-3">
-                  <i class="fa fa-th text-white" aria-hidden="true"></i>
-                </a>
-              </div>
             </div>
           </div>
         </div>
-s
+
         <div class="row" >
           <div class="col-md-6 col-lg-4 mb-5" th:if="${ComServiceListDto != null}" th:each="l : ${ComServiceListDto}" >
             <div class="card card-hover">
               <a href="javascript:void(0)" class="position-relative">
-                <img class="card-img-top lazyestload" th:data-src="@{/assets/img/cars/car-img-01.jpg}" th:src="@{/assets/img/cars/car-img-01.jpg}" alt="Card image cap">
+                <img class="card-img-top" th:src="${l.getFilePath()}" alt="이미지">
                 <div class="card-img-overlay card-hover-overlay rounded-top d-flex flex-column">
                 </div>
               </a>

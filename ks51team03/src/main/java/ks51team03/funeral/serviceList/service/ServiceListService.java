@@ -6,6 +6,7 @@ import ks51team03.files.mapper.FileMapper;
 import ks51team03.files.util.FileUtils;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveMemberPet;
+import ks51team03.funeral.serviceList.dto.FuneralCompanyImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
@@ -62,7 +63,7 @@ public class ServiceListService {
     };
 
     // 장례 회사 정보를 가져오기 위한 조회
-    public List<Company> getCompanyInfoList(){
+    public List<FuneralCompanyImgDto> getCompanyInfoList(){
         return serviceListMapper.getCompanyInfoList();
     }
 

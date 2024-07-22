@@ -5,6 +5,7 @@ import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveMemberPet;
 import ks51team03.funeral.reserve.service.ReserveService;
+import ks51team03.funeral.serviceList.dto.FuneralCompanyImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
@@ -72,7 +73,7 @@ public class ServiceListController {
 
 		log.info("로그인한 회원 아이디 memberId={}", memberId);
 
-		List<Company> ComServiceListDto = serviceListService.getCompanyInfoList();
+		List<FuneralCompanyImgDto> ComServiceListDto = serviceListService.getCompanyInfoList();
 
 		log.info("ComServiceListDto:{}", ComServiceListDto);
 
