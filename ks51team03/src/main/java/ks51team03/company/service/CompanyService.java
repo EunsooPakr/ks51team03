@@ -112,7 +112,7 @@ public class CompanyService {
     public void addCompanyImage(CompanyImg companyImg) {
         // 파일 업로드 처리 로직 추가
         FileUtils fileUtils = new FileUtils();
-        FileRequest fileRequest = fileUtils.uploadFile(companyImg.getRevImgFile(), "업체");
+        FileRequest fileRequest = fileUtils.uploadFile(companyImg.getRevImgFile(), "업체대표이미지");
         fileRequest.setFileCate(companyImg.getCCode());
         companyImg.setFileIdx(fileRequest.getFileIdx());
         fileMapper.addFile(fileRequest);
