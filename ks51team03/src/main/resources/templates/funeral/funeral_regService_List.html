@@ -55,6 +55,11 @@
         .state {
             width: 10%;
         }
+
+        .modify {
+            width: 10%;
+        }
+
     </style>
 </head>
 
@@ -80,6 +85,7 @@
                                 <th class="comment">코멘트</th>
                                 <th class="date">등록일</th>
                                 <th class="state">상태</th>
+                                <th class="modify">수정</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -94,6 +100,9 @@
                                 <td class="comment" th:text="${service.funeralserviceComment != null ? service.funeralserviceComment : 'N/A'}" title="${service.funeralserviceComment != null ? service.funeralserviceComment : 'N/A'}"></td>
                                 <td class="date" th:text="${service.funeralserviceRegDate}"></td>
                                 <td class="state" th:text="${service.funeralserviceState}"></td>
+                                <td class="modify">
+                                    <a th:href="@{/funeral/funeral_company_service_modify(funeralserviceCode=${service.getFuneralserviceCode()})}" class="btn btn-xs btn-outline-secondary text-uppercase">수정</a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
