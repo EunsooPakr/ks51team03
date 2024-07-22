@@ -92,6 +92,7 @@ public class CompanyController {
 
 			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
 			String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
+
 			model.addAttribute("companyOperTime", companyOperTime);
 			model.addAttribute("openingHours", openingHours);
 			model.addAttribute("companyReviewCount", companyReviewCount);
@@ -164,6 +165,67 @@ public class CompanyController {
 		return "company/company_modify";
 	}
 
+	@GetMapping("/company/company_add_opertime")
+	public String addOperTime(HttpSession session, RedirectAttributes redirectAttributes){
+		String memberId = (String) session.getAttribute("SID");
+
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+
+		// 사용자 레벨 확인
+		if (!member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
+		return "company/company_add_opertime";
+	}
+	@PostMapping("/company/company_add_opertime")
+	public String insertOperTime(ComOperTime comOperTime, HttpSession session){
+		String memberId = (String)session.getAttribute("SID");
+		String cCode = (String)session.getAttribute("CCODE");
+		comOperTime.setCCode(cCode);
+		comOperTime.setMemberId(memberId);
+		companyService.insertOperTime(comOperTime);
+		return "redirect:/company/company_info";
+	}
+
+	@GetMapping("/company/company_modify_opertime")
+	public String modifyOperTime(HttpSession session, RedirectAttributes redirectAttributes, Model model){
+		String memberId = (String) session.getAttribute("SID");
+		String cCode = (String)session.getAttribute("CCODE");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+
+		// 사용자 정보 조회
+		Member member = memberService.getMemberInfoById(memberId);
+
+		// 사용자 레벨 확인
+		if (!member.getMemberLevel().equals("level2") && !member.getMemberLevel().equals("level3")) {
+			redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
+		}
+
+		List<ComOperTime> comOperTime = companyService.getCompanyOperTime(cCode);
+		log.info("comOperTime: {}", comOperTime);
+		model.addAttribute("comOperTime", comOperTime);
+		return "company/company_modify_opertime";
+	}
+	@PostMapping("/company/company_modify_opertime")
+	public String modifyOperTime(@RequestParam("otCode")String otCode, ComOperTime comOperTime){
+		comOperTime.setOtCode(otCode);
+		companyService.updateOperTime(comOperTime);
+		return "redirect:/company/company_info";
+	}
+
 	@PostMapping("/company/modify_Company")
 	public String modifyCompany(Company company, HttpSession session,
 								@RequestParam("revImgFile") List<MultipartFile> multipartFiles,
@@ -171,7 +233,6 @@ public class CompanyController {
 		String cCode = (String) session.getAttribute("CCODE");
 		company.setCompanyCode(cCode);
 
-		log.info("deleteImage는: {}",deleteImage);
 		// 기존 이미지 삭제 처리
 		if (deleteImage != null) {
 			for (String imageId : deleteImage) {
@@ -190,7 +251,7 @@ public class CompanyController {
 		}
 
 		companyService.modifyCompany(company);
-		return "redirect:/map/map_main";
+		return "redirect:/company/company_info";
 	}
 
 	@GetMapping("/company/company_staff_setting")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
@@ -483,7 +544,7 @@ public class CompanyController {
 	}
 
 	@PostMapping("/company/review_delete")
-	public String deleteReview(ComReview comReview){
+	public String deleteReview( ComReview comReview){
 
 		memberService.memberReviewDelete(comReview);
 

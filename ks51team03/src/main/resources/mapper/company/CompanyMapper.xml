@@ -74,6 +74,7 @@
 		<result column="id" property="memberId" />
 		<result column="rev_category" property="revCategory" />
 		<result column="ccode" property="cCode" />
+		<result column="com_name" property="companyName" />
 		<result column="rev_admin_date" property="revAdminDate" />
 		<result column="rev_update_date" property="revUpdateDate" />
 		<result column="fileidx" property="fileIdx" />
@@ -126,6 +127,22 @@
 		<result column="file_idx" property="fileIdx" />
 		<result column="file_path" property="filePath" />
 	</resultMap>
+
+	<select id="getAllReview" resultMap="ComReviewResultMap">
+		-- 모든 리뷰 최신순 조회
+		SELECT
+			r.revcode, r.id, r.ccode, r.rev_admin_date, r.rev_update_date
+			, r.file_idx, r.rev_scope, r.rev_content, c.com_name
+		FROM
+			service_reviews AS r
+		INNER JOIN
+			company AS c
+		ON
+			r.ccode = c.ccode
+		ORDER BY
+			r.rev_admin_date DESC
+		LIMIT 6
+	</select>
 
 	<select id="getCompanyImgByCcode" parameterType="String" resultMap="CompanyImgResultMap">
 		-- 업체 이미지 조회
@@ -359,13 +376,48 @@
 			r.file_idx, r.rev_scope, r.rev_content, f.file_path
 		FROM
 			service_reviews AS r
-		inner join
+		left join
 			files AS f
 		on
 			r.file_idx = f.file_idx
 		WHERE
 			ccode = #{cCode}
 	</select>
+
+	<insert id="insertOperTime" parameterType="ComOperTime">
+		<selectKey keyProperty="otCode" resultType="String" order="BEFORE">
+			SELECT
+			CASE
+			WHEN COUNT(*) = 0 THEN 'ot1'
+			ELSE CONCAT('ot', (MAX(CAST(SUBSTRING_INDEX(otcode, 'ot', -1) AS UNSIGNED)) + 1))
+			END
+			FROM com_oper_time
+		</selectKey>
+		-- 문의 등록
+		INSERT INTO com_oper_time
+		(otcode, ccode, ot_mon, ot_tue, ot_wed, ot_thu, ot_fri, ot_sat, ot_sun
+			, ot_holiday, ot_regular_holiday, ot_break_time, id, ot_reg_date)
+		VALUES (#{otCode}, #{cCode}, #{otMon}, #{otTue}, #{otWed}, #{otThu}, #{otFri}, #{otSat}, #{otSun},
+		#{otHoliday}, #{otRegularHoliday}, #{otBreakTime}, #{memberId}, NOW() )
+	</insert>
+
+	<update id="updateOperTime" parameterType="ComOperTime">
+		-- 업체 운영시간 수정
+		UPDATE com_oper_time
+		SET
+		ot_mon = #{otMon},
+		ot_tue = #{otTue},
+		ot_wed = #{otWed},
+		ot_thu = #{otThu},
+		ot_fri = #{otFri},
+		ot_sat = #{otSat},
+		ot_sun = #{otSun},
+		ot_holiday = #{otHoliday},
+		ot_regular_holiday = #{otRegularHoliday},
+		ot_break_time = #{otBreakTime},
+		ot_reg_date = NOW()
+		WHERE otcode = #{otCode}
+	</update>
 
 	<select id="getCompanyOperTime" resultMap="ComOperTimeResultMap">
 		-- 업체 운영시간 검색
@@ -569,9 +621,7 @@
 			<if test="companyEmail != null and companyEmail != ''">
 				com_email = #{companyEmail},
 			</if>
-			<if test="companyParking != null and companyParking != ''">
 				com_parking = #{companyParking},
-			</if>
 			<if test="companyPage != null and companyPage != ''">
 				com_page = #{companyPage}
 			</if>

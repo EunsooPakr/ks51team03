@@ -71,6 +71,17 @@
         .content-section h1 {
             font-size: 24px;
             margin: 10px 0;
+            display: inline-block;
+        }
+
+        .like-button {
+            display: inline-block;
+            margin-left: 100px; /* 여백 조정 */
+            font-size: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #007BFF;
         }
 
         .content-section p {
@@ -193,10 +204,16 @@
             </div>
             <div class="content-section">
                 <h1 th:text="${c.companyName}"></h1>
+                <form th:action="@{/member/member_like}" method="post" style="display:inline;">
+                    <input type="hidden" name="cCode" th:value="${c.companyCode}">
+                    <button type="submit" class="like-button">♡ 구독</button>
+                </form>
                 <p>
                     <span th:text="${c.companyClass}"></span> ·
                     후기수: <span th:text="${companyReviewCount}"></span> ·
-                    직원수: <span th:text="${c.companyStfCount}"></span>
+                    직원수: <span th:text="${c.companyStfCount}"></span> ·
+                    주차장: <span th:if="${c.companyParking == true}" th:text="O"></span>
+                    <span th:unless="${c.companyParking == true}" th:text="X"></span>
                 </p>
                 <div class="details">
                     <h2>상세정보</h2>

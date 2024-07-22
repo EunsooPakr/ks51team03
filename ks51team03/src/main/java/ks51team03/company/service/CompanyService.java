@@ -22,6 +22,21 @@ public class CompanyService {
     private final FileUtils fileUtils;
     private final FileMapper fileMapper;
 
+    // 업체 운영시간 수정
+    public int updateOperTime(ComOperTime comOperTime){
+        return companyMapper.updateOperTime(comOperTime);
+    }
+
+    // 업체 운영시간 등록
+    public int insertOperTime(ComOperTime comOperTime){
+        return companyMapper.insertOperTime(comOperTime);
+    }
+
+    // 모든 리뷰 조회
+    public List<ComReview> getAllReview(){
+        return companyMapper.getAllReview();
+    }
+
     // 업체 대표 이미지 리스트 조회
     public List<CompanyImg> getCompanyImgByCcode(String cCode){
         return companyMapper.getCompanyImgByCcode(cCode);

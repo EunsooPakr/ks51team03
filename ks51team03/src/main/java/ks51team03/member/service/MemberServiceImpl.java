@@ -67,6 +67,9 @@ public class MemberServiceImpl implements MemberService{
 			memberMapper.memberReviewDelete(review);
 			fileMapper.deleteReview(fileRequest.getFileIdx());
 		}
+		else{
+			memberMapper.memberReviewDelete(review);
+		}
 		return 0;
 	}
 

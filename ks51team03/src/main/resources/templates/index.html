@@ -289,63 +289,31 @@
     <div class="container mt-5 review-box">
         <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row">
-                        <div class="col-md-4 mb-4 rb-min-height">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">리뷰 1</h5>
-                                    <p class="card-text">여기에 메모 내용을 입력하세요. 여기에 메모 내용을 입력하세요.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4 rb-min-height">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">리뷰 2</h5>
-                                    <p class="card-text">여기에 메모 내용을 입력하세요.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4 rb-min-height">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">리뷰 3</h5>
-                                    <p class="card-text">여기에 메모 내용을 입력하세요.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="row">
-                        <div class="col-md-4 mb-4 rb-min-height">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">리뷰 4</h5>
-                                    <p class="card-text">여기에 메모 내용을 입력하세요.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4 rb-min-height">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">리뷰 5</h5>
-                                    <p class="card-text">여기에 메모 내용을 입력하세요.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4 rb-min-height">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">리뷰 6</h5>
-                                    <p class="card-text">여기에 메모 내용을 입력하세요.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+				<div class="carousel-item active">
+					<div class="row">
+						<div class="col-md-4 mb-4 rb-min-height" th:each="review, iterStat : ${comReviews}" th:if="${iterStat.index < 3}">
+							<div class="card text-center">
+								<div class="card-body">
+									<h5 class="card-title" th:text="${review.companyName}"></h5>
+									<p class="card-text" th:text="${review.revContent}"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="row">
+						<div class="col-md-4 mb-4 rb-min-height" th:each="review, iterStat : ${comReviews}" th:if="${iterStat.index >= 3}">
+							<div class="card text-center">
+								<div class="card-body">
+									<h5 class="card-title" th:text="${review.companyName}"></h5>
+									<p class="card-text" th:text="${review.revContent}"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>

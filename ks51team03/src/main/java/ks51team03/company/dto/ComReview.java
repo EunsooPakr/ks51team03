@@ -16,4 +16,6 @@ public class ComReview {
     private String revContent;
     private String companyName;
     private String filePath;
+    private String comName;
+
 }

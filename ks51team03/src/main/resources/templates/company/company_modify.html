@@ -115,10 +115,10 @@
                 </div>
                 <div class="form-group">
                     <label for="business-type">업체 종류</label>
-                    <select id="business-type" name="business-type">
-                        <option value="hospital">병원</option>
-                        <option value="pharmacy">약국</option>
-                        <option value="funeral">장례</option>
+                    <select id="business-type" name="companyClass">
+                        <option value="동물병원">동물병원</option>
+                        <option value="약국">동물약국</option>
+                        <option value="동물장례">동물장례</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -148,8 +148,8 @@
                 <div class="form-group">
                     <span>업체 주차장 유무</span>
                     <div class="radio-group">
-                        <label><input type="radio" id="parking-yes" name="companyParking" value="yes" required th:checked="${c.companyParking == 'yes'}"> 예</label>
-                        <label><input type="radio" id="parking-no" name="companyParking" value="no" th:checked="${c.companyParking == 'no'}"> 아니오</label>
+                        <label><input type="radio" id="parking-yes" name="companyParking" th:value="${1}" required th:checked="${c.companyParking == '1'}"> 예</label>
+                        <label><input type="radio" id="parking-no" name="companyParking" th:value="${0}" th:checked="${c.companyParking == '0'}"> 아니오</label>
                     </div>
                 </div>
                 <div class="form-group">

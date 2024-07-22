@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+            width: 100%;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #218838;
+        }
+
+        .time-inputs {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .time-inputs input {
+            width: 48%;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="customContent">
+    <section class="bg-smoke py-12">
+        <div class="form-container">
+            <h2>업체 운영시간 수정</h2>
+            <form th:action="@{/company/company_modify_opertime}" method="post" th:each="c : ${comOperTime}">
+                <input type="hidden" name="otCode" th:value="${c.otCode}">
+                <input type="hidden" name="cCode" th:value="${c.cCode}">
+
+                <div class="form-group">
+                    <label for="otMon">월요일</label>
+                    <div class="time-inputs">
+                        <input type="text" id="otMon" name="otMon" th:value="${c.otMon}" placeholder="예: 09:00 ~ 18:00, 휴무, 24시간 운영">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="otTue">화요일</label>
+                    <div class="time-inputs">
+                        <input type="text" id="otTue" name="otTue" th:value="${c.otTue}" placeholder="예: 09:00 ~ 18:00, 휴무, 24시간 운영">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="otWed">수요일</label>
+                    <div class="time-inputs">
+                        <input type="text" id="otWed" name="otWed" th:value="${c.otWed}" placeholder="예: 09:00 ~ 18:00, 휴무, 24시간 운영">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="otThu">목요일</label>
+                    <div class="time-inputs">
+                        <input type="text" id="otThu" name="otThu" th:value="${c.otThu}" placeholder="예: 09:00 ~ 18:00, 휴무, 24시간 운영">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="otFri">금요일</label>
+                    <div class="time-inputs">
+                        <input type="text" id="otFri" name="otFri" th:value="${c.otFri}" placeholder="예: 09:00 ~ 18:00, 휴무, 24시간 운영">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="otSat">토요일</label>
+                    <div class="time-inputs">
+                        <input type="text" id="otSat" name="otSat" th:value="${c.otSat}" placeholder="예: 09:00 ~ 18:00, 휴무, 24시간 운영">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="otSun">일요일</label>
+                    <div class="time-inputs">
+                        <input type="text" id="otSun" name="otSun" th:value="${c.otSun}" placeholder="예: 09:00 ~ 18:00, 휴무, 24시간 운영">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="otBreakTime">브레이크타임</label>
+                    <div class="time-inputs">
+                        <input type="text" id="otBreakTime" name="otBreakTime" th:value="${c.otBreakTime}" placeholder="예: 15:00 ~ 17:00">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="otHoliday">공휴일</label>
+                    <input type="text" id="otHoliday" name="otHoliday" th:value="${c.otHoliday}" placeholder="예: 09:00 ~ 18:00">
+                </div>
+
+                <div class="form-group">
+                    <label for="otRegularHoliday">정기 휴무</label>
+                    <input type="text" id="otRegularHoliday" name="otRegularHoliday" th:value="${c.otRegularHoliday}" placeholder="예: 매주 월요일">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit">운영시간 수정</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</th:block>
+
+</html>

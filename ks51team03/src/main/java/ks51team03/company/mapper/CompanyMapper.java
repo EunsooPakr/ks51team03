@@ -12,6 +12,15 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
 
+    // 업체 운영시간 수정
+    int updateOperTime(ComOperTime comOperTime);
+
+    // 업체 운영시간 등록
+    int insertOperTime(ComOperTime comOperTime);
+
+    // 모든 리뷰 조회
+    List<ComReview> getAllReview();
+
     // 업체 대표 이미지 삭제
     int deleteCompanyImage(String imageId);
 

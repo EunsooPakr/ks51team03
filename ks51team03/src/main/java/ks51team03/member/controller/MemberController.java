@@ -437,6 +437,7 @@ public class MemberController {
 	{
 		return "member/member_login_find_id";
 	}
+
 	
 	@GetMapping("/member_login_find_pw")
 	public String userFindMemberPwPage(Model model)
@@ -460,4 +461,6 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
         }
 	}
+
+
 }
