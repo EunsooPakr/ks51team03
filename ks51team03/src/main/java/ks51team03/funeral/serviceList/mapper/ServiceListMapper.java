@@ -45,4 +45,17 @@ public interface ServiceListMapper {
 
     //등록된 장례 서비스 수정
     void updateServiceInfo(ServiceListDto serviceListDto);
+
+    //등록된 장례 서비스 이미지 삭제
+    void deleteServiceImg(ServiceImgDto serviceImgDto);
+
+    //등록된 장례 서비스 이미지 체크
+    boolean checkServiceImgExists(@Param("fscode") String fscode, @Param("ccode") String ccode);
+
+    //장례 서비스 등록 이미지 수정
+    ServiceImgDto getServiceImg(@Param("fscode") String fscode, @Param("ccode") String ccode);
+
+    //
+    List<ServiceImgDto> getServiceImgs(@Param("fscodeList") List<String> fscodeList, @Param("ccode") String ccode);
+
 }

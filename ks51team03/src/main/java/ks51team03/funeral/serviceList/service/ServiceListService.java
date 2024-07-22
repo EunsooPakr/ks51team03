@@ -26,6 +26,7 @@ public class ServiceListService {
     private final FileUtils fileUtils;
     private final FileMapper fileMapper;
 
+
     public List<ServiceListDto> getServiceList() {
         return serviceListMapper.getServiceListDto();
     }
@@ -98,6 +99,43 @@ public class ServiceListService {
     public void updateServiceInfo(ServiceListDto serviceListDto){
         serviceListMapper.updateServiceInfo(serviceListDto);
     }
+
+    public void addOrUpdateFuneralServiceImg(ServiceImgDto serviceImgDto, String companyCode){
+        // 파일 업로드 처리
+        FileRequest fileRequest = fileUtils.uploadFile(serviceImgDto.getFurImgFile(), companyCode);
+        if (fileRequest != null) {
+            fileRequest.setFileCate(companyCode);
+            log.info("fileRequest: {}", fileRequest);
+            fileMapper.addFile(fileRequest);
+            serviceImgDto.setFileIdx(fileRequest.getFileIdx());
+        }
+
+        // 기존 이미지가 있는지 확인
+      /*  if (serviceListMapper.checkServiceImgExists(serviceImgDto.getFscode(), serviceImgDto.getCcode())) {
+            // 기존 파일 삭제
+            ServiceImgDto existingImg = serviceListMapper.getServiceImg(serviceImgDto.getFscode(), serviceImgDto.getCcode());
+            if (existingImg != null && existingImg.getFileIdx() != null) {
+                fileUtils.deleteFile(existingImg.getFileIdx());
+                serviceListMapper.deleteServiceImg(serviceImgDto);
+            }
+        }*/
+
+        // 새 이미지 삽입
+        serviceListMapper.insertFuneralServiceImg(serviceImgDto);
+    }
+
+    //장례 서비스 이미지를 가져오기 위한 메서드
+    public ServiceImgDto getServiceImg(String fscode, String ccode){
+        return serviceListMapper.getServiceImg(fscode, ccode);
+    }
+
+    //
+    public List<ServiceImgDto> getServiceImgs(List<String> fscodeList, String ccode) {
+        return serviceListMapper.getServiceImgs(fscodeList, ccode);
+    }
+
+
+
 
 }
 

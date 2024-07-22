@@ -25,6 +25,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -95,6 +97,7 @@ public class ServiceListController {
 		return "funeral/funeral_total_serviceList";
 	}
 
+	// 컨트롤러 부분 수정
 	@GetMapping("funeral/funeral_service_detail")
 	public String funeralReserve(
 			@RequestParam(value="funeralserviceCcode") String funeralserviceCcode,
@@ -105,17 +108,41 @@ public class ServiceListController {
 		log.info("로그인한 회원 아이디 memberId={}", memberId);
 
 		List<ServiceListDto> serviceListCcode = serviceListService.getServiceInfoByCode(funeralserviceCcode);
+		List<String> fscodeList = serviceListCcode.stream()
+				.map(ServiceListDto::getFuneralserviceCode)
+				.collect(Collectors.toList());
 
 		// memberId를 전달
 		List<ReserveMemberPet> getMemberPetList = serviceListService.getMemberPet(memberId);
 		log.info("getMemberPetList:{}", getMemberPetList);
 
-		model.addAttribute("reserveCompanyCode", funeralserviceCcode);
+		// ccode 설정
+		String ccode = funeralserviceCcode;
+		log.info("ccode: {}", ccode);
+
+		if (ccode == null) {
+			log.error("ccode가 세션에 없습니다.");
+			return "redirect:/errorPage"; // 에러 페이지로 리디렉션
+		}
+
+		// 장례 서비스 이미지 가져오기
+		List<ServiceImgDto> serviceImgDtos = serviceListService.getServiceImgs(fscodeList, ccode);
+		log.info("serviceImgDtos : {}", serviceImgDtos);
+
+		Map<String, List<ServiceImgDto>> imagesByServiceCode = serviceImgDtos.stream()
+				.collect(Collectors.groupingBy(ServiceImgDto::getFscode));
+
+		model.addAttribute("funeralserviceCcode", ccode);
 		model.addAttribute("serviceListCcode", serviceListCcode);
 		model.addAttribute("getMemberPetList", getMemberPetList);
+		model.addAttribute("imagesByServiceCode", imagesByServiceCode);
 
 		return "funeral/funeral_service_detail";
 	}
+
+
+
+
 
 
 	@GetMapping("funeral/funeral_insert_service")
@@ -231,14 +258,13 @@ public class ServiceListController {
 
 		log.info("로그인한 회원 아이디 memberId={}", memberId);
 
-		if(memberId == null) {
+		if (memberId == null) {
 			return "redirect:/";
 		}
 
 		company.setMemberId(memberId);
 
 		List<ServiceListDto> serviceListCode = serviceListService.modifyServiceInfoByCode(funeralserviceCode);
-
 		List<Company> getCompanyInfoList = serviceListService.getCompanyInfo(company);
 
 		if (getCompanyInfoList == null || getCompanyInfoList.isEmpty()) {
@@ -249,20 +275,27 @@ public class ServiceListController {
 			session.setAttribute("ccode", ccode);
 		}
 
-		log.info("getCompanyInfoList:{}", getCompanyInfoList);
+		// 서비스 이미지 정보 조회
+		ServiceImgDto serviceImgDto = serviceListService.getServiceImg(funeralserviceCode, (String) session.getAttribute("ccode"));
 
+		log.info("getCompanyInfoList:{}", getCompanyInfoList);
 		log.info("serviceListCode:{}", serviceListCode);
+		log.info("serviceImgDto:{}", serviceImgDto);
 
 		model.addAttribute("serviceListDto", serviceListDto);
 		model.addAttribute("serviceListCode", serviceListCode);
 		model.addAttribute("getCompanyInfoList", getCompanyInfoList);
-
+		model.addAttribute("serviceImgDto", serviceImgDto);
 
 		return "funeral/funeral_company_service_modify.html";
 	}
 
 	@PostMapping("funeral/funeral_company_service_modify")
-	public String modifyFuneralService(Model model,HttpSession session, ServiceListDto serviceListDto){
+	public String modifyFuneralService(Model model,
+									   HttpSession session,
+									   @ModelAttribute ServiceListDto serviceListDto,
+									   @RequestParam("furImgFile") MultipartFile multipartFile,
+									   RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
 		serviceListDto.setFuneralserviceId(memberId);
 
@@ -272,11 +305,28 @@ public class ServiceListController {
 			return "redirect:/";
 		}
 
-		serviceListDto.setFuneralserviceId(memberId);
-
+		// 서비스 정보 업데이트
 		serviceListService.updateServiceInfo(serviceListDto);
+
+		// 이미지 업로드 처리
+		if (!multipartFile.isEmpty()) {
+			String ccode = (String) session.getAttribute("ccode");
+			String fscode = serviceListDto.getFuneralserviceCode();
+
+			ServiceImgDto serviceImgDto = new ServiceImgDto();
+			serviceImgDto.setFurImgFile(multipartFile);
+			serviceImgDto.setCcode(ccode);
+			serviceImgDto.setFscode(fscode);
+
+			serviceListService.addOrUpdateFuneralServiceImg(serviceImgDto, ccode);
+		}
+
+		// 성공 메시지 설정
+		redirectAttributes.addFlashAttribute("message", "장례 서비스가 정상적으로 수정되었습니다.");
 
 		return "redirect:/funeral/funeral_regService_List";
 	}
+
+
 
 }
