@@ -186,4 +186,9 @@ public class BoardService {
         boardMapper.insertnBoardImg(nboardimg);
     }
 	
+    
+    public String getNBoardImgByNBCode(String nbcode)
+    {
+    	return boardMapper.getNBoardImgByNBCode(nbcode);
+    }
 }

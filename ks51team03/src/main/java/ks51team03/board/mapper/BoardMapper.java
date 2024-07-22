@@ -70,4 +70,7 @@ public interface BoardMapper {
 	
 	// 게시글 이미지 등록
     void insertnBoardImg(NBoardImg nboardimg);
+    
+    // 게시글 코드로 게시글 이미지 경로 가져오기
+    public String getNBoardImgByNBCode(String nbcode);
 }

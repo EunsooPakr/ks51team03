@@ -129,8 +129,24 @@
 		UPDATE
 			notice_board
 		SET
+			<if test="memberId != null and memberId != ''">
+			id=#{memberId},
+			</if>
+			<if test="boardCode != null and boardCode != ''">
+			bcode=#{boardCode},
+			</if>
+			<if test="boardCateCode != null and boardCateCode != ''">
+			bctcode=#{boardCateCode},
+			</if>
+			<if test="nboardTitle != null and nboardTitle != ''">
 			nb_title=#{nboardTitle},
+			</if>
+			<if test="nboardContent != null and nboardContent != ''">
 			nb_content=#{nboardContent}
+			</if>
+			<if test="nboardRegistDate != null and nboardRegistDate != ''">
+			nb_reg=#{nboardRegistDate}
+			</if>
 		 WHERE
         	nbcode = #{nboardCode};
 	</update>
@@ -264,6 +280,20 @@
 		   	'게시글대표이미지'
 		)
 	</insert>
+	
+	<select id="getNBoardImgByNBCode" parameterType="String" resultType="String">
+		/*게시글 코드로 이미지 경로 가져오기*/
+		SELECT
+			f.file_path
+		FROM
+			nboard_img as ni
+			LEFT JOIN
+			files as f
+			ON
+			ni.file_idx=f.file_idx
+		WHERE
+		ni.nbcode = #{nbcode}
+	</select>
 	
 	<!-- <select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
 		/*게시글 검색*/

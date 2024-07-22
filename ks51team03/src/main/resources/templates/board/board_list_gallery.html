@@ -9,189 +9,113 @@
 ——— BOARD SECTION
 ===================================== -->
 <th:block layout:fragment="customContent">
-	<body>
-	    <div class="board-body">
-	        <div class="board_wrap">
-	            <div class="board_title">
-	                <!-- strong id="board_title">자유 게시글</strong> -->
-	                <strong id="board_title" th:text="${boardTitle}">게시판 이름</strong>
-	                <p id="board_info" th:text="${boardInfo}">게시판 설명</p>
-	                <h1 class="member-info-profile-top-textline"></h1>
-	            </div>
-	            
-	            <!-- 게시판 검색 -->
-				<div id="search" class="board-list-search">
-					<select id="searchKey">
-						<option th:if="${searchCate != null}"
-								th:each="l : ${searchCate}"
-								th:value="${l.searchKey}"
-								th:text="${l.searchText}">
-						</option>	
-					</select>
-					<input type="text" id="searchValue" placeholder="검색어를 입력해주세요"/>
-					<button type="button" id="searchBtn">검색</button>
-				</div>
-	            
-	            <!-- 게시판 내용 -->
-	            <div class="board_list_wrap">
-	                <div class="board-list">
-	                	<div class="row">
-	                		<div class="col-md-3 gallery-board-box">
-		                		<div class="gb-box-img">
-		                			<img th:src="@{/assets/img/profile-no-img.png}">
-		                		</div>
-		                		<div class="gb-box-text">
-		                			<h5>게시물제목1</h5>
-		                			<a>게시자1</a>
-		                		</div>
-		                	</div>
-	                		<div class="col-md-3 gallery-board-box">
-		                		<div class="gb-box-img">
-		                			<img th:src="@{/assets/img/profile-no-img.png}">
-		                		</div>
-		                		<div class="gb-box-text">
-		                			<h5>게시물제목2</h5>
-		                			<a>게시자2</a>
-		                		</div>
-		                	</div>
-	                		<div class="col-md-3 gallery-board-box">
-		                		<div class="gb-box-img">
-		                			<img th:src="@{/assets/img/profile-no-img.png}">
-		                		</div>
-		                		<div class="gb-box-text">
-		                			<h5>게시물제목3</h5>
-		                			<a>게시자3</a>
-		                		</div>
-		                	</div>
-		                	<div class="col-md-3 gallery-board-box">
-		                		<div class="gb-box-img">
-		                			<img th:src="@{/assets/img/profile-no-img.png}">
-		                		</div>
-		                		<div class="gb-box-text">
-		                			<h5>게시물제목4</h5>
-		                			<a>게시자4</a>
-		                		</div>
-		                	</div>
-	                		<div class="col-md-3 gallery-board-box">
-		                		<div class="gb-box-img">
-		                			<img th:src="@{/assets/img/profile-no-img.png}">
-		                		</div>
-		                		<div class="gb-box-text">
-		                			<h5>게시물제목5</h5>
-		                			<a>게시자5</a>
-		                		</div>
-		                	</div>
-	                		<div class="col-md-3 gallery-board-box">
-		                		<div class="gb-box-img">
-		                			<img th:src="@{/assets/img/profile-no-img.png}">
-		                		</div>
-		                		<div class="gb-box-text">
-		                			<h5>게시물제목6</h5>
-		                			<a>게시자6</a>
-		                		</div>
-		                	</div>
-		                	<div class="col-md-3 gallery-board-box">
-		                		<div class="gb-box-img">
-		                			<img th:src="@{/assets/img/profile-no-img.png}">
-		                		</div>
-		                		<div class="gb-box-text">
-		                			<h5>게시물제목7</h5>
-		                			<a>게시자7</a>
-		                		</div>
-		                	</div>
-		                	<div class="col-md-3 gallery-board-box">
-		                		<div class="gb-box-img">
-		                			<img th:src="@{/assets/img/profile-no-img.png}">
-		                		</div>
-		                		<div class="gb-box-text">
-		                			<h5>게시물제목8</h5>
-		                			<a>게시자8</a>
-		                		</div>
-		                	</div>
-	                	</div>
-	                	
-	    
-	                </div>
-	                <div class="board_page">
-	                	<a id="board_currentPage" th:text=${currentPage} style="display: none"></a>
-						<a href="#" class="bt first" th:attr="onclick='changePage(\'' + ${startPageNum} + '\')'" th:utext="${'<<'}"></a>
-						<a th:if="${currentPage > 1}" class="bt prev"
-						   href="#" th:attr="onclick='changePage(\'' + ${currentPage - 1} + '\')'" th:utext="${'<'}"></a>
-						<a th:unless="${currentPage > 1}" class="bt prev" th:utext="${'<'}"></a>
-						<th:block class="num" th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
-						    <a th:if="${currentPage == num}" class="num on" th:text="|${num}|"></a>
-						    <a th:unless="${currentPage == num}" class="num" href="#" th:attr="onclick='changePage(\'' + ${num} + '\')'" th:text="|${num}|"></a>
-						</th:block>
-						<a th:if="${currentPage < lastPage}" class="bt next" href="#" th:attr="onclick='changePage(\'' + ${currentPage + 1} + '\')'" th:utext="${'>'}"></a>
-						<a th:unless="${currentPage < lastPage}" class="bt next" th:utext="${'>'}"></a>
-						<a href="#" th:attr="onclick='changePage(\'' + ${lastPage} + '\')'" th:utext="${'>>'}"></a>
-					</div>
-	                <div class="bt_wrap">
-	                    <a id="nBoardWriteBtn" class="board-list-normal-btn" th:href="@{/board/board_write_gallery(boardCateValue=${boardTitle})}">등록</a>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	    
-	    <script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
-	    <script th:inline="javascript">
-	        $(document).ready(function() {
-	        	$('#nBoardWriteBtn').click(function() {
-	    			const sId=[[${session.SID}]];
-	    			if(sId==null)
-	    			{
-	    				event.preventDefault(); // 기본 동작 중지
-	    				alert('로그인 후 이용해 주세요.');
-	    				//location.reload();
-	    			}
-	    			else
-	    			{
-	    				 console.log('로그인 사용자: ' + sId);
-	    				 window.location.href = $('#nBoardWriteBtn').attr('href'); // href 속성의 URL로 이동
-	    			}
-	    		});
-	
-	            $('#searchBtn').click(function(event) {
-	                event.preventDefault();
-	                const searchKey = $('#searchKey').val();
-	                const searchValue = $('#searchValue').val();
-	                const boardCateValue = $('#board_title').text();
-	                //const currentPage=$('#board_currentPage').val();
-	                
-	                let serverSearchKey;
-	                switch (searchKey) {
-	                    case 'memberId':
-	                        serverSearchKey = 'id';
-	                        break;
-	                    case 'nboardTitle':
-	                        serverSearchKey = 'nb_title';
-	                        break;
-	                    case 'nboardContent':
-	                        serverSearchKey = 'nb_content';
-	                        break;
-	                    default:
-	                        serverSearchKey = 'nb_title';
-	                }
-	                
-	                const url = '/board/board_list_normal?currentPage=1'+'&searchType=' + serverSearchKey + '&searchKeyword=' + searchValue + '&boardCateValue=' + boardCateValue;
-	                window.location.href = url;
-	            });
-	        });
-	        
-	        function changePage(changePageNum) {
-                // 현재 URL 가져오기
+    <body>
+        <div class="board-body">
+            <div class="board_wrap">
+                <div class="board_title">
+                    <strong id="board_title" th:text="${boardTitle}">게시판 이름</strong>
+                    <p id="board_info" th:text="${boardInfo}">게시판 설명</p>
+                </div>
+
+                <!-- 게시판 검색 -->
+                <div id="search" class="board-list-search">
+                    <select id="searchKey">
+                        <option th:each="l : ${searchCate}"
+                                th:value="${l.searchKey}"
+                                th:text="${l.searchText}">
+                        </option>
+                    </select>
+                    <input type="text" id="searchValue" placeholder="검색어를 입력해주세요"/>
+                    <button type="button" id="searchBtn">검색</button>
+                </div>
+
+                <!-- 게시판 내용 -->
+                <div class="board_list_wrap">
+                    <div class="board-list row">
+                        <div th:each="noticeBoard : ${NoticeBoardList}" class="col-md-3 gallery-board-box">
+                            <div class="gb-box-img">
+                                <a th:href="@{/board/board_view_gallery(nboardCode=${noticeBoard.nboardCode})}">
+                                    <img th:if="${noticeBoard.nboardImg != null}" th:src="@{'/attachments/' + ${noticeBoard.nboardImg}}" alt="게시물 이미지">
+                                    <img th:unless="${noticeBoard.nboardImg != null}" th:src="@{/assets/img/profile-no-img.png}" alt="대체 이미지">
+                                </a>
+                           </div>
+                            <div class="gb-box-text">
+                                <h5 th:text="${noticeBoard.nboardTitle}">게시물 제목</h5>
+                                <a th:text="${noticeBoard.memberId}">게시자</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="board_page">
+                    <a id="board_currentPage" th:text="${currentPage}" style="display: none"></a>
+                    <a href="#" class="bt first" th:attr="onclick='changePage(\'' + ${startPageNum} + '\')'" th:utext="${'<<'}"></a>
+                    <a th:if="${currentPage > 1}" class="bt prev"
+                       href="#" th:attr="onclick='changePage(\'' + ${currentPage - 1} + '\')'" th:utext="${'<'}"></a>
+                    <a th:unless="${currentPage > 1}" class="bt prev" th:utext="${'<'}"></a>
+                    <th:block class="num" th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+                        <a th:if="${currentPage == num}" class="num on" th:text="|${num}|"></a>
+                        <a th:unless="${currentPage == num}" class="num" href="#" th:attr="onclick='changePage(\'' + ${num} + '\')'" th:text="|${num}|"></a>
+                    </th:block>
+                    <a th:if="${currentPage < lastPage}" class="bt next" href="#" th:attr="onclick='changePage(\'' + ${currentPage + 1} + '\')'" th:utext="${'>'}"></a>
+                    <a th:unless="${currentPage < lastPage}" class="bt next" th:utext="${'>'}"></a>
+                    <a href="#" th:attr="onclick='changePage(\'' + ${lastPage} + '\')'" th:utext="${'>>'}"></a>
+                </div>
+                <div class="bt_wrap">
+                    <a id="nBoardWriteBtn" class="board-list-normal-btn" th:href="@{/board/board_write_gallery(boardCateValue=${boardTitle})}">등록</a>
+                </div>
+            </div>
+        </div>
+
+        <script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
+        <script th:inline="javascript">
+            $(document).ready(function() {
+                $('#nBoardWriteBtn').click(function() {
+                    const sId=[[${session.SID}]];
+                    if(sId==null)
+                    {
+                        event.preventDefault(); // 기본 동작 중지
+                        alert('로그인 후 이용해 주세요.');
+                    }
+                    else
+                    {
+                         console.log('로그인 사용자: ' + sId);
+                         window.location.href = $('#nBoardWriteBtn').attr('href'); // href 속성의 URL로 이동
+                    }
+                });
+
+                $('#searchBtn').click(function(event) {
+                    event.preventDefault();
+                    const searchKey = $('#searchKey').val();
+                    const searchValue = $('#searchValue').val();
+                    const boardCateValue = $('#board_title').text();
+
+                    let serverSearchKey;
+                    switch (searchKey) {
+                        case 'memberId':
+                            serverSearchKey = 'id';
+                            break;
+                        case 'nboardTitle':
+                            serverSearchKey = 'nb_title';
+                            break;
+                        case 'nboardContent':
+                            serverSearchKey = 'nb_content';
+                            break;
+                        default:
+                            serverSearchKey = 'nb_title';
+                    }
+
+                    const url = '/board/board_list_normal?currentPage=1'+'&searchType=' + serverSearchKey + '&searchKeyword=' + searchValue + '&boardCateValue=' + boardCateValue;
+                    window.location.href = url;
+                });
+            });
+
+            function changePage(changePageNum) {
                 var currentUrl = window.location.href;
-                
-                // URL에서 currentPage 값 변경
                 var regex = /currentPage=\d+/;
                 var newUrl = currentUrl.replace(regex, 'currentPage=' + changePageNum);
-                console.log(regex);
-                console.log(newUrl);
-                
-                // 새로운 URL로 페이지 이동
                 window.location.href = newUrl;
             }
-	    </script>
-	</body>
+        </script>
+    </body>
 </th:block>
 </html>

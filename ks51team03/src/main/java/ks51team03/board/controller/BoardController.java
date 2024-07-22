@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
-
-import jakarta.servlet.http.HttpSession;
+import ks51team03.board.dto.NBoardImg;
 import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
+import ks51team03.board.mapper.BoardMapper;
 import ks51team03.board.service.BoardService;
-import ks51team03.company.dto.Company;
-import ks51team03.company.dto.CompanyImg;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,49 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BoardController {
 	private final BoardService boardService;
+	private final BoardMapper boardmapper;
 
-	@GetMapping("/board_list_gallery")
-	public String getGalleryBoardList(Model model,
-			@RequestParam(name = "currentPage", defaultValue = "1") int currentPage,
-			@RequestParam(name = "searchType", required = false, defaultValue = "nb_title") String searchType,
-			@RequestParam(name = "searchKeyword", required = false, defaultValue = "") String searchKeyword,
-			@RequestParam(name = "boardCateValue") String boardCateValue) {
-
-		String boardTitle = boardCateValue; // 기본값 설정
-
-		// 서비스 메서드 호출
-		Map<String, Object> resultMap = boardService.getNoticeBoardList(boardCateValue, currentPage, searchType,
-				searchKeyword);
-		String boardCode = boardService.getBoardCodeByBCTValue(boardCateValue);
-		String boardInfo = boardService.getBoardInfoByBCTValue(boardCateValue);
-
-		// 결과를 모델에 담아서 뷰로 전달
-		model.addAttribute("NoticeBoardList", resultMap.get("NoticeBoardList"));
-		model.addAttribute("startPageNum", resultMap.get("startPageNum"));
-		model.addAttribute("endPageNum", resultMap.get("endPageNum"));
-		model.addAttribute("lastPage", resultMap.get("lastPage"));
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
-		model.addAttribute("boardCode", boardCode); // boardTitle 변수를 모델에 추가
-		model.addAttribute("boardInfo", boardInfo); // boardTitle 변수를 모델에 추가
-		// 검색 키워드 설정
-		List<NBoardSearch> searchCate = new ArrayList<>();
-		NBoardSearch search1 = new NBoardSearch();
-		search1.setSearchKey("memberId");
-		search1.setSearchText("회원아이디");
-		NBoardSearch search2 = new NBoardSearch();
-		search2.setSearchKey("nboardTitle");
-		search2.setSearchText("제목");
-		NBoardSearch search3 = new NBoardSearch();
-		search3.setSearchKey("nboardContent");
-		search3.setSearchText("내용");
-		searchCate.add(search1);
-		searchCate.add(search2);
-		searchCate.add(search3);
-		model.addAttribute("searchCate", searchCate);
-
-		return "board/board_list_gallery"; // 뷰 이름 리턴
-	}
+	
 
 	@GetMapping("/board_list_normal")
 	public String getNoticeBoardList(Model model,
@@ -157,7 +115,6 @@ public class BoardController {
 
 		return "board/board_list_normal"; // 뷰 이름 리턴
 	}
-	// 이거 작성할때 게시판 이름에 맞는 게시판 코드 조합해서 넣어야함!!!!!!!
 
 	/* 자유게시글 작성 */
 	@PostMapping("/board_write_normal")
@@ -184,6 +141,7 @@ public class BoardController {
 
 		model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
 		model.addAttribute("boardInfo", boardInfo); // boardTitle 변수를 모델에 추가
+		
 		return "board/board_write_normal";
 	}
 
@@ -249,6 +207,100 @@ public class BoardController {
 		return "redirect:/board/board_list_normal?currentPage=1&boardCateValue=" + encodedBoardCateValue;
 	}
 	
+	
+	
+	@GetMapping("/board_list_gallery")
+	public String getGalleryBoardList(Model model,
+	                                  @RequestParam(name = "currentPage", defaultValue = "1") int currentPage,
+	                                  @RequestParam(name = "searchType", required = false, defaultValue = "nb_title") String searchType,
+	                                  @RequestParam(name = "searchKeyword", required = false, defaultValue = "") String searchKeyword,
+	                                  @RequestParam(name = "boardCateValue") String boardCateValue) {
+
+	    String boardTitle = boardCateValue; // 기본값 설정
+
+	    // 서비스 메서드 호출
+	    Map<String, Object> resultMap = boardService.getNoticeBoardList(boardCateValue, currentPage, searchType, searchKeyword);
+	    String boardCode = boardService.getBoardCodeByBCTValue(boardCateValue);
+	    String boardInfo = boardService.getBoardInfoByBCTValue(boardCateValue);
+
+	    
+	    
+	    // 결과를 모델에 담아서 뷰로 전달
+	    model.addAttribute("NoticeBoardList", resultMap.get("NoticeBoardList"));
+	    model.addAttribute("startPageNum", resultMap.get("startPageNum"));
+	    model.addAttribute("endPageNum", resultMap.get("endPageNum"));
+	    model.addAttribute("lastPage", resultMap.get("lastPage"));
+	    model.addAttribute("currentPage", currentPage);
+	    model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
+	    model.addAttribute("boardCode", boardCode); // boardCode 변수를 모델에 추가
+	    model.addAttribute("boardInfo", boardInfo); // boardInfo 변수를 모델에 추가
+
+	    // 검색 키워드 설정
+	    List<NBoardSearch> searchCate = new ArrayList<>();
+	    NBoardSearch search1 = new NBoardSearch();
+	    search1.setSearchKey("memberId");
+	    search1.setSearchText("회원아이디");
+	    NBoardSearch search2 = new NBoardSearch();
+	    search2.setSearchKey("nboardTitle");
+	    search2.setSearchText("제목");
+	    NBoardSearch search3 = new NBoardSearch();
+	    search3.setSearchKey("nboardContent");
+	    search3.setSearchText("내용");
+	    searchCate.add(search1);
+	    searchCate.add(search2);
+	    searchCate.add(search3);
+	    model.addAttribute("searchCate", searchCate);
+
+	    return "board/board_list_gallery"; // 뷰 이름 리턴
+	}
+
+	
+	
+	
+	/*
+	@GetMapping("/board_list_gallery")
+	public String getGalleryBoardList(Model model,
+			@RequestParam(name = "currentPage", defaultValue = "1") int currentPage,
+			@RequestParam(name = "searchType", required = false, defaultValue = "nb_title") String searchType,
+			@RequestParam(name = "searchKeyword", required = false, defaultValue = "") String searchKeyword,
+			@RequestParam(name = "boardCateValue") String boardCateValue) {
+
+		String boardTitle = boardCateValue; // 기본값 설정
+
+		// 서비스 메서드 호출
+		Map<String, Object> resultMap = boardService.getNoticeBoardList(boardCateValue, currentPage, searchType,
+				searchKeyword);
+		String boardCode = boardService.getBoardCodeByBCTValue(boardCateValue);
+		String boardInfo = boardService.getBoardInfoByBCTValue(boardCateValue);
+
+		// 결과를 모델에 담아서 뷰로 전달
+		model.addAttribute("NoticeBoardList", resultMap.get("NoticeBoardList"));
+		model.addAttribute("startPageNum", resultMap.get("startPageNum"));
+		model.addAttribute("endPageNum", resultMap.get("endPageNum"));
+		model.addAttribute("lastPage", resultMap.get("lastPage"));
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
+		model.addAttribute("boardCode", boardCode); // boardTitle 변수를 모델에 추가
+		model.addAttribute("boardInfo", boardInfo); // boardTitle 변수를 모델에 추가
+		// 검색 키워드 설정
+		List<NBoardSearch> searchCate = new ArrayList<>();
+		NBoardSearch search1 = new NBoardSearch();
+		search1.setSearchKey("memberId");
+		search1.setSearchText("회원아이디");
+		NBoardSearch search2 = new NBoardSearch();
+		search2.setSearchKey("nboardTitle");
+		search2.setSearchText("제목");
+		NBoardSearch search3 = new NBoardSearch();
+		search3.setSearchKey("nboardContent");
+		search3.setSearchText("내용");
+		searchCate.add(search1);
+		searchCate.add(search2);
+		searchCate.add(search3);
+		model.addAttribute("searchCate", searchCate);
+
+		return "board/board_list_gallery"; // 뷰 이름 리턴
+	}*/
+	
 	/* 갤러리게시글 작성 */
 	@GetMapping("/board_write_gallery")
 	public String boardWriteGalleryPage(Model model,@RequestParam(name = "boardCateValue") String boardCateValue)
@@ -264,21 +316,34 @@ public class BoardController {
 
 	@PostMapping("/board_write_gallery")
 	public String boardWriteGalleryPage(NoticeBoard nboard, RedirectAttributes rttr) {
-		log.info("board_write_normal");
+	    log.info("board_write_gallery");
 
-		String boardCateCodeName = nboard.getBoardCateCode();
-		String boardCateCode = boardService.getBoardCateCodeByBCTValue(nboard);
-		String boardCode = boardService.getBoardCodeByNBoard(nboard);
+	    String boardCateCodeName = nboard.getBoardCateCode();
+	    String boardCateCode = boardService.getBoardCateCodeByBCTValue(nboard);
+	    String boardCode = boardService.getBoardCodeByNBoard(nboard);
+	    
+	    nboard.setBoardCateCode(boardCateCode);
+	    nboard.setBoardCode(boardCode);
+	    String nbcode = "nb" + String.valueOf(boardmapper.getNBoardCode());
+	    
+	    nboard.setNboardCode(nbcode);
+	    
+	    boardService.updateNBoard(nboard);
+	    
+	    
+	    String boardImgUrl=boardService.getNBoardImgByNBCode(nbcode);
+	    nboard.setNboardImg(boardImgUrl);
+	    System.out.println("boardImgUrl: " + boardImgUrl);
+	    
+	    String encodedBoardCateValue = UriUtils.encodeQueryParam(boardCateCodeName, StandardCharsets.UTF_8);
+	    
 
-		nboard.setBoardCateCode(boardCateCode);
-		nboard.setBoardCode(boardCode);
-		
-		boardService.insertNBoard(nboard);
+	    // 이미지 업로드 로직은 필요하지 않음
+	    // boardService.upLoadImgByNBCode(nboardimg, nbcode);
 
-		String encodedBoardCateValue = UriUtils.encodeQueryParam(boardCateCodeName, StandardCharsets.UTF_8);
-		return "redirect:/board/board_list_gallery?currentPage=1&boardCateValue=" + encodedBoardCateValue;
+	    return "redirect:/board/board_list_gallery?currentPage=1&boardCateValue=" + encodedBoardCateValue;
 	}
-	
+
 
 	/* 갤러리 게시글 열람 */
 	@GetMapping("/board_view_gallery")
@@ -299,20 +364,6 @@ public class BoardController {
 	}
 	
 	
-	//여기 수정!!!
-	
-	@PostMapping("/board_write_gallery")
-	public String modifyCompany(NoticeBoard nboard, HttpSession session, @RequestParam MultipartFile multipartFile) {
-		CompanyImg companyImg = new CompanyImg();
-		companyImg.setRevImgFile(multipartFile);
-		String cCode = (String) session.getAttribute("CCODE");
-		company.setCompanyCode(cCode);
-		companyImg.setCCode(cCode);
-		
-		boardService.upLoadImgByNBCode(companyImg, company.getCompanyCode());
-		companyService.modifyCompany(company);
-		return "redirect:/map/map_main";
-	}
 	/*
 	 * 자유 게시글 검색
 	 * 
