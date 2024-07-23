@@ -35,7 +35,7 @@
                         <div th:each="noticeBoard : ${NoticeBoardList}" class="col-md-3 gallery-board-box">
                             <div class="gb-box-img">
                                 <a th:href="@{/board/board_view_gallery(nboardCode=${noticeBoard.nboardCode})}">
-                                    <img th:if="${noticeBoard.nboardImg != null}" th:src="@{'/attachments/' + ${noticeBoard.nboardImg}}" alt="게시물 이미지">
+                                    <img th:if="${noticeBoard.nboardImg != null}" th:src="@{${noticeBoard.nboardImg}}" alt="게시물 이미지">
                                     <img th:unless="${noticeBoard.nboardImg != null}" th:src="@{/assets/img/profile-no-img.png}" alt="대체 이미지">
                                 </a>
                            </div>

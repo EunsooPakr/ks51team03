@@ -21,6 +21,7 @@ import ks51team03.board.dto.NBoardImg;
 import ks51team03.board.dto.NoticeBoard;
 import ks51team03.board.mapper.BoardMapper;
 import ks51team03.board.service.BoardService;
+import ks51team03.files.dto.FileRequest;
 
 @RestController
 public class BoardImgController {
@@ -87,16 +88,18 @@ public class BoardImgController {
             // NoticeBoard 객체를 데이터베이스에 삽입
             boardService.insertNBoard(noticeBoard);
 
+            
+            nbcode = "nb" + String.valueOf(boardmapper.getNBoardCode());
             // nboard_img 테이블에 이미지 정보 삽입
             NBoardImg nBoardImg = new NBoardImg();
             nBoardImg.setNbCode(nbcode);
             nBoardImg.setFilePath(fileUrl);
             nBoardImg.setNBoardImgFile(upload);
-            boardService.upLoadImgByNBCode(nBoardImg, nbcode);
+            FileRequest fileRequest = boardService.upLoadImgByNBCode(nBoardImg, nbcode);
 
             
             // JSON 응답을 올바르게 생성
-            String jsonResponse = String.format("{\"uploaded\": 1, \"fileName\": \"%s\", \"url\": \"%s\"}", fileName, fileUrl);
+            String jsonResponse = String.format("{\"uploaded\": 1, \"fileName\": \"%s\", \"url\": \"%s\"}", fileName, fileRequest.getFilePath());
 
             printWriter = response.getWriter();
             printWriter.print(jsonResponse); // println 대신 print 사용
@@ -118,7 +121,9 @@ public class BoardImgController {
     
     @GetMapping("/attachments/**")
     public void getImage(HttpServletRequest request, HttpServletResponse response) {
-        String filePath = request.getRequestURI().replace("/attachments", "");
+        
+    	System.out.println("test");
+    	String filePath = request.getRequestURI().replace("/attachments", "");
         File file = new File("/home/ks51team03/attachment" + filePath);
 
         if (file.exists()) {

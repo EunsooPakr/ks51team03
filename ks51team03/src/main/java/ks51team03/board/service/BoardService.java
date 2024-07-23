@@ -172,18 +172,23 @@ public class BoardService {
 	}
 	
 	// 게시판 파일 업로드
-    public void upLoadImgByNBCode(NBoardImg nboardimg, String nBoardCode) {
+	// @return fileRequest
+    public FileRequest upLoadImgByNBCode(NBoardImg nboardimg, String nBoardCode) {
 
         FileRequest fileRequest =  fileUtils.uploadFile(nboardimg.getNBoardImgFile(), nBoardCode);
         if(fileRequest != null){
             fileRequest.setFileCate(nBoardCode);
             log.info("fileRequest: {}", fileRequest);
+            String filePath = fileRequest.getFilePath().replace("/attachment", "/attachments");
+            fileRequest.setFilePath(filePath);
             fileMapper.addFile(fileRequest);
             nboardimg.setFileIdx(fileRequest.getFileIdx());
+            nboardimg.setFilePath(filePath);
         }
         
         //이미지 등록
         boardMapper.insertnBoardImg(nboardimg);
+        return fileRequest;
     }
 	
     

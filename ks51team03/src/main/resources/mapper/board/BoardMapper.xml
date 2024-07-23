@@ -142,10 +142,13 @@
 			nb_title=#{nboardTitle},
 			</if>
 			<if test="nboardContent != null and nboardContent != ''">
-			nb_content=#{nboardContent}
+			nb_content=#{nboardContent},
 			</if>
 			<if test="nboardRegistDate != null and nboardRegistDate != ''">
-			nb_reg=#{nboardRegistDate}
+			nb_reg=#{nboardRegistDate},
+			</if>
+			<if test="nboardImg != null and nboardImg != ''">
+			nb_img=#{nboardImg}
 			</if>
 		 WHERE
         	nbcode = #{nboardCode};

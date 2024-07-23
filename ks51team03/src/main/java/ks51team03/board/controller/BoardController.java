@@ -328,12 +328,11 @@ public class BoardController {
 	    
 	    nboard.setNboardCode(nbcode);
 	    
-	    boardService.updateNBoard(nboard);
-	    
-	    
 	    String boardImgUrl=boardService.getNBoardImgByNBCode(nbcode);
 	    nboard.setNboardImg(boardImgUrl);
 	    System.out.println("boardImgUrl: " + boardImgUrl);
+	    
+	    boardService.updateNBoard(nboard);
 	    
 	    String encodedBoardCateValue = UriUtils.encodeQueryParam(boardCateCodeName, StandardCharsets.UTF_8);
 	    
