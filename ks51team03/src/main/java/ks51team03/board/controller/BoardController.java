@@ -327,10 +327,28 @@ public class BoardController {
 	    String nbcode = "nb" + String.valueOf(boardmapper.getNBoardCode());
 	    
 	    nboard.setNboardCode(nbcode);
+
 	    
 	    String boardImgUrl=boardService.getNBoardImgByNBCode(nbcode);
 	    nboard.setNboardImg(boardImgUrl);
 	    System.out.println("boardImgUrl: " + boardImgUrl);
+	    System.out.println("contents:"+nboard.getNboardContent());
+	    // 대표 이미지가 내용에서 지워질 때까지 반복
+	    while (!nboard.getNboardContent().contains(boardImgUrl)) {
+	        boardService.deleteFilesAndNBoardImg(boardImgUrl);
+	        System.out.println("Deleted: " + boardImgUrl);
+
+	        // 이미지가 삭제된 후 업데이트된 내용을 다시 가져옵니다.
+	        boardImgUrl = boardService.getNBoardImgByNBCode(nbcode);
+	        nboard.setNboardImg(boardImgUrl);
+	        System.out.println("New boardImgUrl: " + boardImgUrl);
+
+	        // 만약 더 이상 삭제할 이미지가 없다면 루프를 종료합니다.
+	        if (boardImgUrl == null || boardImgUrl.isEmpty()) {
+	        	System.out.println("boardImgUrl.isEmpty()");
+	            break;
+	        }
+	    }
 	    
 	    boardService.updateNBoard(nboard);
 	    
@@ -362,6 +380,57 @@ public class BoardController {
 		return "board/board_view_gallery";
 	}
 	
+	/* 자유 게시글 수정 전 읽어오기 */
+	@GetMapping("/board_edit_gallery")
+	public String boardEditGalleryPage(@RequestParam(value = "nboardCode") String nboardCode,
+			@RequestParam(name = "boardCateValue") String boardCateValue, Model model) {
+		log.info("board_edit_normal");
+
+		String boardTitle = boardCateValue; // 기본값 설정
+		String boardInfo = boardService.getBoardInfoByBCTValue(boardCateValue);
+
+		model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
+		model.addAttribute("boardInfo", boardInfo); // boardTitle 변수를 모델에 추가
+		model.addAttribute("noticeBoard", boardService.getNBoardByNBCode(nboardCode));
+
+		return "board/board_edit_gallery";
+	}
+
+	/* 자유 게시글 수정 */
+	@PostMapping("/board_edit_gallery")
+	public String boardEditGalleryPage(NoticeBoard nboard, RedirectAttributes rttr) {
+		log.info("board_edit_normal");
+
+		String BoardCateValueName = boardService.getBCTValueNameByBCTCode(nboard);
+		String nbcode =nboard.getNboardCode();
+		 
+		String boardImgUrl=boardService.getNBoardImgByNBCode(nbcode);
+	    nboard.setNboardImg(boardImgUrl);
+	    System.out.println("boardImgUrl: " + boardImgUrl);
+	    System.out.println("contents:"+nboard.getNboardContent());
+	    // 대표 이미지가 내용에서 지워질 때까지 반복
+	    if (boardImgUrl != null && nboard.getNboardContent() != null) {
+		    while (!nboard.getNboardContent().contains(boardImgUrl)) {
+		        boardService.deleteFilesAndNBoardImg(boardImgUrl);
+		        System.out.println("Deleted: " + boardImgUrl);
+	
+		        // 이미지가 삭제된 후 업데이트된 내용을 다시 가져옵니다.
+		        boardImgUrl = boardService.getNBoardImgByNBCode(nbcode);
+		        nboard.setNboardImg(boardImgUrl);
+		        System.out.println("New boardImgUrl: " + boardImgUrl);
+	
+		        // 만약 더 이상 삭제할 이미지가 없다면 루프를 종료합니다.
+		        if (boardImgUrl == null || boardImgUrl.isEmpty()) {
+		        	System.out.println("boardImgUrl.isEmpty()");
+		            break;
+		        }
+		    }
+	    }
+	    boardService.updateNBoard(nboard);
+	    
+		String encodedBoardCateValue = UriUtils.encodeQueryParam(BoardCateValueName, StandardCharsets.UTF_8);
+		return "redirect:/board/board_list_gallery?currentPage=1&boardCateValue=" + encodedBoardCateValue;
+	}
 	
 	/*
 	 * 자유 게시글 검색

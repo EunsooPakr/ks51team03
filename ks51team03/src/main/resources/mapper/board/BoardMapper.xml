@@ -128,7 +128,7 @@
 		/* 게시글 수정*/
 		UPDATE
 			notice_board
-		SET
+		<trim prefix="SET" suffixOverrides=",">
 			<if test="memberId != null and memberId != ''">
 			id=#{memberId},
 			</if>
@@ -150,6 +150,7 @@
 			<if test="nboardImg != null and nboardImg != ''">
 			nb_img=#{nboardImg}
 			</if>
+		 </trim>
 		 WHERE
         	nbcode = #{nboardCode};
 	</update>
@@ -296,8 +297,26 @@
 			ni.file_idx=f.file_idx
 		WHERE
 		ni.nbcode = #{nbcode}
+		LIMIT 1;
 	</select>
 	
+	<delete id="deleteFromNBoardImg" parameterType="String">
+	    DELETE FROM nboard_img
+	    WHERE 
+	    	file_idx
+	    IN
+	    (
+	        SELECT file_idx
+	        FROM files
+	        WHERE file_path = #{nboardImg}
+    	)
+	</delete>
+	
+	<delete id="deleteFromFiles" parameterType="String">
+    	DELETE FROM files
+    	WHERE
+    		file_path = #{nboardImg}
+	</delete>
 	<!-- <select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
 		/*게시글 검색*/
 		SELECT

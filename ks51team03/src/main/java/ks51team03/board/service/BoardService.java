@@ -196,4 +196,13 @@ public class BoardService {
     {
     	return boardMapper.getNBoardImgByNBCode(nbcode);
     }
+    
+    @Transactional
+    public void deleteFilesAndNBoardImg(String nboardImg) {
+        // nboard_img 테이블에서 삭제
+        boardMapper.deleteFromNBoardImg(nboardImg);
+        // files 테이블에서 삭제
+        boardMapper.deleteFromFiles(nboardImg);
+    }
+    
 }

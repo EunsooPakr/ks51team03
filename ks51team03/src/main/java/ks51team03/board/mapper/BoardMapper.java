@@ -73,4 +73,10 @@ public interface BoardMapper {
     
     // 게시글 코드로 게시글 이미지 경로 가져오기
     public String getNBoardImgByNBCode(String nbcode);
+    
+    //이미지 경로로 보드 이미지 테이블에 이미지 삭제
+    public void deleteFromNBoardImg(String nboardImg);
+    
+    //이미지 경로로 파일 테이블에 이미지 삭제
+    public void deleteFromFiles(String nboardImg);
 }

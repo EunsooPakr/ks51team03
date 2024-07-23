@@ -35,7 +35,8 @@ public class BoardImgController {
     @PostMapping("/board/imageUpload")
     public void imageUpload(HttpServletRequest request,
                             HttpServletResponse response,
-                            @RequestParam("upload") MultipartFile upload) throws Exception {
+                            @RequestParam("upload") MultipartFile upload,
+                            @RequestParam(value = "nboardCode", required = false, defaultValue = "") String nboardCode) throws Exception {
         UUID uid = UUID.randomUUID();
 
         OutputStream out = null;
@@ -48,8 +49,14 @@ public class BoardImgController {
             String fileName = upload.getOriginalFilename();
             byte[] bytes = upload.getBytes();
 
-            String nbcode = "nb" + String.valueOf(boardmapper.getNBoardCode());
-
+            String nbcode = nboardCode;
+            System.out.println("nboardCode:"+nbcode);
+            if (nboardCode.equals(""))
+            {
+            	nbcode="nb" + String.valueOf(boardmapper.getNBoardCode()+1);
+            	System.out.println("nboardCode is null:"+nbcode);
+            }
+            
             String path = "/home/ks51team03/attachment" + File.separator + nbcode;
             String ckUploadPath = path + File.separator + uid + "_" + fileName;
 
@@ -66,38 +73,35 @@ public class BoardImgController {
             String fileUrl = "/attachments/" + nbcode + "/" + uid + "_" + fileName;
             System.out.println("File URL: " + fileUrl); // 업로드된 파일의 URL 출력
 
-            /*
-            //파일 경로를 데이터베이스에 저장
-            NBoardImg nBoardImg = new NBoardImg();
-            nBoardImg.setNbCode(nbcode);
-            nBoardImg.setFilePath(fileUrl);
-            nBoardImg.setNBoardImgFile(upload);
-            boardService.upLoadImgByNBCode(nBoardImg, nbcode);
-            */
-         // NoticeBoard 객체에 이미지 경로를 설정
-            NoticeBoard noticeBoard = new NoticeBoard();
-            noticeBoard.setNboardCode(nbcode);
-            noticeBoard.setMemberId("id66");
-            noticeBoard.setBoardCode("b3");
-            noticeBoard.setBoardCateCode("bct3");
-            noticeBoard.setNboardTitle("temp");
-            noticeBoard.setNboardContent("temp");
-            noticeBoard.setNboardRegistDate("temp");
-            noticeBoard.setNboardImg(fileUrl);
+            String areadyImg=boardService.getNBoardImgByNBCode(nbcode);
+            System.out.println("areadyImg:"+areadyImg);
+            if ("".equals(nboardCode)&&areadyImg==null)
+            {
+            	NoticeBoard noticeBoard = new NoticeBoard();
+                noticeBoard.setNboardCode(nbcode);
+                noticeBoard.setMemberId("id66");
+                noticeBoard.setBoardCode("b3");
+                noticeBoard.setBoardCateCode("bct3");
+                noticeBoard.setNboardTitle("temp");
+                noticeBoard.setNboardContent("temp");
+                noticeBoard.setNboardRegistDate("temp");
+                noticeBoard.setNboardImg(fileUrl);
 
-            // NoticeBoard 객체를 데이터베이스에 삽입
-            boardService.insertNBoard(noticeBoard);
-
+                // NoticeBoard 객체를 데이터베이스에 삽입
+                boardService.insertNBoard(noticeBoard);
+                
+                nbcode = "nb" + String.valueOf(boardmapper.getNBoardCode());
+            }
             
-            nbcode = "nb" + String.valueOf(boardmapper.getNBoardCode());
+            
             // nboard_img 테이블에 이미지 정보 삽입
             NBoardImg nBoardImg = new NBoardImg();
+     
             nBoardImg.setNbCode(nbcode);
             nBoardImg.setFilePath(fileUrl);
             nBoardImg.setNBoardImgFile(upload);
             FileRequest fileRequest = boardService.upLoadImgByNBCode(nBoardImg, nbcode);
 
-            
             // JSON 응답을 올바르게 생성
             String jsonResponse = String.format("{\"uploaded\": 1, \"fileName\": \"%s\", \"url\": \"%s\"}", fileName, fileRequest.getFilePath());
 
