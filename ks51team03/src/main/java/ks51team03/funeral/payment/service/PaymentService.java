@@ -1,6 +1,7 @@
 package ks51team03.funeral.payment.service;
 
 import ks51team03.funeral.payment.dto.PaymentDto;
+import ks51team03.funeral.payment.dto.TopServiceImgDto;
 import ks51team03.funeral.payment.mapper.PaymentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,11 @@ public class PaymentService {
     public List<PaymentDto> getPaymentServiceCompnay(PaymentDto paymentDto) {
         log.info("getPaymentServiceCompnay");
         return paymentMapper.getPaymentServiceCompnay(paymentDto);
+    }
+
+    //장례 대표 이미지 인덱스 노출
+    public String getTopServiceImg() {
+        return paymentMapper.getTopServiceImg();
     }
 
 
