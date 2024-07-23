@@ -54,4 +54,8 @@ public interface ServiceListMapper {
 
     //장례 서비스 등록 이미지 수정
     ServiceImgDto getServiceImg(@Param("fscode") String fscode, @Param("ccode") String ccode);
+
+    //
+    List<ServiceImgDto> getServiceImgs(@Param("fscodeList") List<String> fscodeList, @Param("ccode") String ccode);
+
 }

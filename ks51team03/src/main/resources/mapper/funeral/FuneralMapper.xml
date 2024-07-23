@@ -319,4 +319,30 @@
         DELETE FROM funeral_service_img
         WHERE fscode = #{fscode} AND ccode = #{ccode}
     </delete>
+
+    <select id="getServiceImgs" resultMap="getServiceImgResultMap" parameterType="map">
+        SELECT
+        fsi.fsicode,
+        fsi.ccode,
+        fsi.fscode,
+        fsi.file_idx,
+        fsi.file_cate,
+        f.file_origin_name,
+        f.file_new_name,
+        f.file_path,
+        f.file_size,
+        f.file_reg_date
+        FROM
+        funeral_service_img fsi
+        INNER JOIN files f ON fsi.file_idx = f.file_idx
+        WHERE
+        fsi.fscode IN
+        <foreach item="fscode" collection="fscodeList" open="(" separator="," close=")">
+            #{fscode}
+        </foreach>
+        AND fsi.ccode = #{ccode}
+    </select>
+
+
+
 </mapper>

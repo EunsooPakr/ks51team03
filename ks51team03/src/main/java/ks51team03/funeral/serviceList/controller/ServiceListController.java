@@ -25,6 +25,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -95,6 +97,7 @@ public class ServiceListController {
 		return "funeral/funeral_total_serviceList";
 	}
 
+	// 컨트롤러 부분 수정
 	@GetMapping("funeral/funeral_service_detail")
 	public String funeralReserve(
 			@RequestParam(value="funeralserviceCcode") String funeralserviceCcode,
@@ -105,17 +108,41 @@ public class ServiceListController {
 		log.info("로그인한 회원 아이디 memberId={}", memberId);
 
 		List<ServiceListDto> serviceListCcode = serviceListService.getServiceInfoByCode(funeralserviceCcode);
+		List<String> fscodeList = serviceListCcode.stream()
+				.map(ServiceListDto::getFuneralserviceCode)
+				.collect(Collectors.toList());
 
 		// memberId를 전달
 		List<ReserveMemberPet> getMemberPetList = serviceListService.getMemberPet(memberId);
 		log.info("getMemberPetList:{}", getMemberPetList);
 
-		model.addAttribute("reserveCompanyCode", funeralserviceCcode);
+		// ccode 설정
+		String ccode = funeralserviceCcode;
+		log.info("ccode: {}", ccode);
+
+		if (ccode == null) {
+			log.error("ccode가 세션에 없습니다.");
+			return "redirect:/errorPage"; // 에러 페이지로 리디렉션
+		}
+
+		// 장례 서비스 이미지 가져오기
+		List<ServiceImgDto> serviceImgDtos = serviceListService.getServiceImgs(fscodeList, ccode);
+		log.info("serviceImgDtos : {}", serviceImgDtos);
+
+		Map<String, List<ServiceImgDto>> imagesByServiceCode = serviceImgDtos.stream()
+				.collect(Collectors.groupingBy(ServiceImgDto::getFscode));
+
+		model.addAttribute("funeralserviceCcode", ccode);
 		model.addAttribute("serviceListCcode", serviceListCcode);
 		model.addAttribute("getMemberPetList", getMemberPetList);
+		model.addAttribute("imagesByServiceCode", imagesByServiceCode);
 
 		return "funeral/funeral_service_detail";
 	}
+
+
+
+
 
 
 	@GetMapping("funeral/funeral_insert_service")

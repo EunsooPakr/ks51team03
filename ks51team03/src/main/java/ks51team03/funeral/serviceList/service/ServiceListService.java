@@ -129,6 +129,12 @@ public class ServiceListService {
         return serviceListMapper.getServiceImg(fscode, ccode);
     }
 
+    //
+    public List<ServiceImgDto> getServiceImgs(List<String> fscodeList, String ccode) {
+        return serviceListMapper.getServiceImgs(fscodeList, ccode);
+    }
+
+
 
 
 }
