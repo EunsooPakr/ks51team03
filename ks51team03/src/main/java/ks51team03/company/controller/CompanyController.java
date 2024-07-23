@@ -285,6 +285,7 @@ public class CompanyController {
 		return "company/company_staff_setting";
 	}
 
+
 	@PostMapping("/company/staff/delete")
 	public String deleteStaff(@RequestParam String requestId, HttpSession session, RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
@@ -303,6 +304,7 @@ public class CompanyController {
 			return "redirect:/member/member_mypage_memberinfo"; // 에러 메시지를 보낼 페이지로 리다이렉트
 		}
 		// 직원 해고 로직
+		companyService.updateLevelBeforeDelete(requestId);
 		companyService.deleteStaff(requestId);
 		return "redirect:/company/company_staff_setting";
 	}
@@ -355,17 +357,28 @@ public class CompanyController {
 
 	// 직원 신청
 	@GetMapping("/company/company_staff_signUp")
-	public String companySignUp(Model model) {
+	public String companySignUp(Model model, HttpSession session) {
+		String memberId = (String) session.getAttribute("SID");
 		List<Company> companyList = companyService.getCompanyList();
+		String checkCcode = companyService.getCompanyCodeByMemberId(memberId);
+		log.info("checkCcode :{}", checkCcode);
 		model.addAttribute("companyList", companyList);
+		if(checkCcode != null){
+			model.addAttribute("checkCcode", checkCcode);
+		}
+
 		return "company/company_staff_signUp";
 	}
 
 	// 직원 신청
 	@PostMapping("/company/staff/signUp")
-	public String signStaff(@RequestParam("companyCode") String companyCode, HttpSession session, ComStaff comStaff) {
+	public String signStaff(@RequestParam("companyCode") String companyCode, HttpSession session, ComStaff comStaff
+	, RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
-
+		if(companyService.getStaffSignLog(memberId)){
+			redirectAttributes.addFlashAttribute("errorMessage", "한 업체에만 신청할 수 있습니다.");
+			return "redirect:/member/member_mypage_memberinfo";
+		}
 		// 회원 정보 조회
 		Member member = memberService.getMemberInfoById(memberId);
 		String phone = member.getMemberPhone();
@@ -375,7 +388,7 @@ public class CompanyController {
 
 		companyService.insertStaff(comStaff);
 
-		return "redirect:/member/member_mypage_main"; // 신청 후 리다이렉트
+		return "redirect:/member/member_mypage_memberinfo"; // 신청 후 리다이렉트
 	}
 
 	// 업체 문의 조회
@@ -649,11 +662,7 @@ public class CompanyController {
 	/*업체 등록*/
 	@PostMapping("/company/insertCompany")
 	public String insertCompany(Company company) {
-		
-
-		
 		companyService.insertCompany(company);
-		
 		return "redirect:/";
 	}
 	
@@ -664,5 +673,8 @@ public class CompanyController {
 		
 		return "member/member_login_insert_com";
 	}
+
+
+
 
 }

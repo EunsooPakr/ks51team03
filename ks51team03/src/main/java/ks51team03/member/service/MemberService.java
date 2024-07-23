@@ -9,10 +9,32 @@ import ks51team03.company.dto.ComQuestion;
 import ks51team03.company.dto.ComReview;
 import ks51team03.member.dto.Member;
 import ks51team03.member.dto.MemberLevel;
+import ks51team03.member.dto.MemberLike;
 import ks51team03.member.dto.Search;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
+
+	// 회원 구독 상태 0일때 1로 바꾸기
+	int updateMemberLikeStateOn(String lkCone);
+
+	// 회원 구독 추가 전 이미 있는지 체크
+	MemberLike memberLikeCheckFirst(String cCode, String memberId);
+
+	// 회원 구독 했는지 체크
+	MemberLike memberLikeCheck(String cCode, String memberId);
+
+	// 회원 구독 취소 업데이트
+	int updateMemberLikeState(String lkCode);
+
+	// 회원 알림 조작
+	int updateMemberLikeAlarm(String lkCode, int lkAlarm);
+
+	// 회원 구독 업체리스트 조회
+	List<MemberLike> memberGetLikeCompany(String memberId);
+
+	// 회원 구독
+	int memberAddLike(MemberLike memberLike);
 
 	// 회원 알림 내용 조회
 	List<ComInformReciPient> getInform(String memberId);

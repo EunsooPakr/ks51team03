@@ -36,7 +36,14 @@
 
 								<div class="form-check custom-form-check">
 									<label>
-										<a href="#">알림 정보 </a>
+										<a th:href="@{/member/member_mypage_like_setting}">알림 정보 </a>
+									</label>
+								</div>
+
+								<div class="form-check custom-form-check"
+									 th:if="${session.SLEVEL == 'level1' or session.SLEVEL == 'level4'}">
+									<label>
+										<a th:href="@{/company/company_staff_signUp}">직원 신청 </a>
 									</label>
 								</div>
 							</div>
@@ -66,7 +73,8 @@
 						</div>
 					</div>
 
-					<div class="card">
+					<!-- 업체 관련 메뉴: 관리자나 업체 회원만 표시 -->
+					<div class="card" th:if="${session.SLEVEL == 'level1' or session.SLEVEL == 'level2' or session.SLEVEL == 'level3'}">
 						<div class="card-header" id="headingThree">
 							<h5 class="icon-bg collapsed" data-bs-toggle="collapse"
 								data-bs-target="#collapseThree" aria-expanded="false"
@@ -74,7 +82,6 @@
 								<span>업체 관리</span>
 							</h5>
 						</div>
-
 						<div id="collapseThree" class="collapse"
 							 aria-labelledby="headingThree" data-bs-parent="#accordionOne">
 							<div class="card-body">
@@ -83,28 +90,24 @@
 										<a th:href="@{/company/company_info}">업체 정보 </a>
 									</label>
 								</div>
-
 								<div class="form-check custom-form-check">
 									<label>
 										<a th:href="@{/company/company_staff_setting}">직원 관리</a>
 									</label>
 								</div>
-
 								<div class="form-check custom-form-check">
 									<label>
 										<a th:href="@{/company/company_question}">문의 관리</a>
 									</label>
 								</div>
-
 								<div class="form-check custom-form-check">
 									<label>
 										<a th:href="@{/company/company_review}">리뷰 관리</a>
 									</label>
 								</div>
-
 								<div class="form-check custom-form-check">
 									<label>
-										<a href="#">알림 관리</a>
+										<a th:href="@{/company/company_send_alarm}">알림 관리</a>
 									</label>
 								</div>
 							</div>

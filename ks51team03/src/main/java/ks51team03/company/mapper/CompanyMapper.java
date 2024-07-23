@@ -66,6 +66,9 @@ public interface CompanyMapper {
     // 문의 답변 등록
     void insertAnswer(ComQuestionAnswer comQuestionAnswer);
 
+    // 직원 신청 전 이력 확인
+    Boolean getStaffSignLog(String memberId);
+
     // 직원 신청 로직
     void insertStaff(ComStaff comStaff);
 
@@ -116,6 +119,9 @@ public interface CompanyMapper {
 
     // 직원 해고
     int deleteStaff(String requestId);
+
+    // 직원 해고 전 레벨 변경
+    int updateLevelBeforeDelete(String memberId);
 
     // 아이디로 업체 정보 가져오기
     Company getCompanyByMemberId(@Param("memberId") String memberId);

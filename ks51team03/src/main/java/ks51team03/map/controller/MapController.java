@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import ks51team03.company.dto.*;
 import ks51team03.company.service.CompanyService;
 import ks51team03.member.dto.Member;
+import ks51team03.member.dto.MemberLike;
 import ks51team03.member.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -124,7 +125,8 @@ public class MapController {
 	}
 
 	@GetMapping("/map/map_company_info")
-	public String companyInfo(@RequestParam("cCode") String cCode, Model model) {
+	public String companyInfo(@RequestParam("cCode") String cCode, Model model, HttpSession session) {
+		String memberId = (String)session.getAttribute("SID");
 		// 업체 코드로 업체 정보 출력
 		List<Company> companyInfoById = companyService.getCompanyInfoByCcode(cCode);
 		log.info("companyInfoById : {}", companyInfoById);
@@ -134,11 +136,15 @@ public class MapController {
 		List<CompanyImg> companyImgs = companyService.getCompanyImgByCcode(cCode);
 		DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
 		String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
+		MemberLike likeCheck = memberService.memberLikeCheck(cCode, memberId);
+		log.info("likeCheck : {}", likeCheck);
 		model.addAttribute("companyOperTime", companyOperTime);
 		model.addAttribute("openingHours", openingHours);
 		model.addAttribute("companyReviewCount", companyReviewCount);
 		model.addAttribute("companyImgs", companyImgs);
 		model.addAttribute("companyInfoById", companyInfoById);
+		model.addAttribute("likeCheck", likeCheck.getLkState());
+		model.addAttribute("lkCode", likeCheck.getLkCode());
 		return "map/map_company_info";
 	}
 

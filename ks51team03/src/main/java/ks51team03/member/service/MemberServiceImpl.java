@@ -9,6 +9,7 @@ import ks51team03.company.mapper.CompanyMapper;
 import ks51team03.files.dto.FileRequest;
 import ks51team03.files.mapper.FileMapper;
 import ks51team03.files.util.FileUtils;
+import ks51team03.member.dto.MemberLike;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,62 @@ public class MemberServiceImpl implements MemberService{
 	private final CompanyMapper companyMapper;
 	private final FileMapper fileMapper;
 
+
+	/**
+	 * 회원 구독 상태 0일때 1로 바꾸기
+	 */
+	@Override
+	public int updateMemberLikeStateOn(String lkCone) {
+		return memberMapper.updateMemberLikeStateOn(lkCone);
+	}
+
+	/**
+	 * 회원 구독 추가 전 존재 여부 확인
+	 */
+	@Override
+	public MemberLike memberLikeCheckFirst(String cCode, String memberId) {
+		return memberMapper.memberLikeCheckFirst(cCode,memberId);
+	}
+
+	/**
+	 * 회원 구독 여부 확인
+	 */
+	@Override
+	public MemberLike memberLikeCheck(String cCode, String memberId) {
+		return memberMapper.memberLikeCheck(cCode, memberId);
+	}
+
+	/**
+	 * 회원 구독 취소 작업
+	 */
+	@Override
+	public int updateMemberLikeState(String lkCode) {
+		return memberMapper.updateMemberLikeState(lkCode);
+	}
+
+	/**
+	 * 회원 알림 여부 설정
+	 */
+	@Override
+	public int updateMemberLikeAlarm(String lkCode, int lkAlarm) {
+		return memberMapper.updateMemberLikeAlarm(lkCode,lkAlarm);
+	}
+
+	/**
+	 * 회원 구독 업체 리스트 조회
+	 */
+	@Override
+	public List<MemberLike> memberGetLikeCompany(String memberId) {
+		return memberMapper.memberGetLikeCompany(memberId);
+	}
+
+	/**
+	 * 회원 구독 추가
+	 */
+	@Override
+	public int memberAddLike(MemberLike memberLike) {
+		return memberMapper.memberAddLike(memberLike);
+	}
 
 	/**
 	 * 회원의 알림 조회

@@ -7,6 +7,11 @@
           type="text/css">
 </head>
 <th:block layout:fragment="customContent">
+    <div th:if="${errorMessage != null}">
+        <script>
+            alert("[[${errorMessage}]]");
+        </script>
+    </div>
     <section class="bg-smoke py-12">
         <div class="mypage-contents-box">
             <div class="member-info-form">

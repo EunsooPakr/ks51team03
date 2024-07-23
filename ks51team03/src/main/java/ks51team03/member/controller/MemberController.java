@@ -4,25 +4,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ks51team03.company.dto.*;
+import ks51team03.member.dto.MemberLike;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import ks51team03.company.dto.ComInformReciPient;
-import ks51team03.company.dto.ComQuestion;
-import ks51team03.company.dto.ComReview;
 import ks51team03.company.service.CompanyService;
 import ks51team03.member.dto.Member;
 import ks51team03.member.dto.MemberLevel;
@@ -34,6 +27,7 @@ import ks51team03.pet.service.PetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -438,13 +432,13 @@ public class MemberController {
 		return "member/member_login_find_id";
 	}
 
-	
+
 	@GetMapping("/member_login_find_pw")
 	public String userFindMemberPwPage(Model model)
 	{
 		return "member/member_login_find_pw";
 	}
-	
+
 	@ResponseBody
 	@PostMapping("/updatePw")
 	public ResponseEntity<Boolean> updatePw(String memberId,String memberPw) {
@@ -460,6 +454,64 @@ public class MemberController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
         }
+	}
+
+	@PostMapping("/member_like")
+	@ResponseBody
+	public String userAddLike(@RequestBody Map<String, String> requestData, HttpSession session) {
+		String memberId = (String) session.getAttribute("SID");
+		String cCode = requestData.get("cCode");
+		MemberLike memberLike = memberService.memberLikeCheckFirst(cCode, memberId);
+		if(memberLike.getLkState().equals("1")){
+			memberService.updateMemberLikeStateOn(memberLike.getLkCode());
+		}
+		else{
+			memberLike.setMemberId(memberId);
+			memberLike.setCCode(cCode);
+			memberService.memberAddLike(memberLike);
+		}
+		return "redirect:/map/map_company_info";
+	}
+
+	@GetMapping("/member_mypage_like_setting")
+	public String LikeList(Model model, HttpSession session, RedirectAttributes redirectAttributes){
+		String memberId = (String) session.getAttribute("SID");
+		// 세션에 아이디가 없으면 로그인 페이지로 리다이렉트
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
+		List<MemberLike> comLikes = memberService.memberGetLikeCompany(memberId);
+		log.info("comLikes: {}", comLikes);
+		model.addAttribute("comLikes",comLikes);
+		return "member/member_mypage_like_setting";
+
+	}
+
+	@PostMapping("/updateAlarm")
+	@ResponseBody
+	public String updateMemberAlarm(@RequestParam("lkCode") String lkCode,
+									@RequestParam("currentAlarmState") int lkAlarm) {
+		memberService.updateMemberLikeAlarm(lkCode,lkAlarm);
+		return "redirect:/map/map_company_info";
+	}
+
+	// 마이 페이지에서 구독 취소
+	@PostMapping("/updateLikeState")
+	@ResponseBody
+	public String updateMemberLikeState(@RequestParam("lkCode") String lkCode) {
+		memberService.updateMemberLikeState(lkCode);
+		return "redirect:/map/map_company_info";
+	}
+
+	// 업체 페이지에서 구독 취소
+	@PostMapping("/updateLikeStateForComInfo")
+	@ResponseBody
+	public String updateLikeState(@RequestBody Map<String, String> request) {
+		String lkCode = request.get("lkCode");
+		System.out.println("lkCode: " + lkCode);
+		memberService.updateMemberLikeState(lkCode);
+		return "redirect:/map/map_company_info";
 	}
 
 

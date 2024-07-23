@@ -521,6 +521,16 @@
 		id= #{memberId}
 	</update>
 
+	<update id="updateLevelBeforeDelete" parameterType="String">
+		-- 업체 직원 해고 전 회원 레벨 변경
+		UPDATE member
+		<set>
+			`level`='level4'
+		</set>
+		WHERE
+		id= #{memberId}
+	</update>
+
 	<update id="acceptStaff" parameterType="String" >
 		/* 업체 직원 승인 */
 		UPDATE staff
@@ -552,6 +562,14 @@
 			s.id = m.id
 		WHERE
 			s.stf_check = 0 AND s.ccode = #{cCode}
+	</select>
+
+	<select id="getStaffSignLog" parameterType="string" resultType="boolean">
+		-- 직원 등록 신청전 신청 이력 확인
+		SELECT
+		count(id)
+		FROM staff
+		WHERE id = #{memberId}
 	</select>
 
 	<insert id="insertStaff" parameterType="ComStaff">

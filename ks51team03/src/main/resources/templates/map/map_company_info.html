@@ -76,7 +76,7 @@
 
         .like-button {
             display: inline-block;
-            margin-left: 100px; /* 여백 조정 */
+            margin-left: 300px; /* 여백 조정 */
             font-size: 16px;
             background: none;
             border: none;
@@ -203,11 +203,16 @@
                 </button>
             </div>
             <div class="content-section">
+                <div th:if="${likeCheck== '0'|| likeCheck== null}">
                 <h1 th:text="${c.companyName}"></h1>
-                <form th:action="@{/member/member_like}" method="post" style="display:inline;">
-                    <input type="hidden" name="cCode" th:value="${c.companyCode}">
-                    <button type="submit" class="like-button">♡ 구독</button>
-                </form>
+                    <input class="likeInput" type="hidden" name="cCode" th:value="${c.companyCode}">
+                    <button type="submit" class="like-button" id="like">♡ 구독</button>
+                </div>
+                <div th:unless="${likeCheck== '0'|| likeCheck== null}">
+                    <h1 th:text="${c.companyName}"></h1>
+                    <input class="likeInput" type="hidden" name="lkCode" th:value="${lkCode}">
+                    <button type="submit" class="like-button" id="unLike">♥ 구독중</button>
+                </div>
                 <p>
                     <span th:text="${c.companyClass}"></span> ·
                     후기수: <span th:text="${companyReviewCount}"></span> ·
@@ -257,6 +262,57 @@
                     }
                 });
             });
+
+            $('#like').click(function(){
+                const cCode = $('.likeInput').val();
+                fetch('/member/member_like', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ cCode: cCode })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            throw new Error('Network response was not ok');
+                        }
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            })
+            $('#unLike').click(function(){
+                const lkCode = $('.likeInput').val();
+                console.log("lkCode: " + lkCode);
+                fetch('/member/updateLikeStateForComInfo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ lkCode: lkCode })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            return location.reload();
+                        } else {
+                            throw new Error('Network response was not ok');
+                        }
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            })
+
         });
     </script>
 </th:block>

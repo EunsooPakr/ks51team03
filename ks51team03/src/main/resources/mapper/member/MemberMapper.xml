@@ -66,6 +66,81 @@
 		<result column="inform_datetime" property="dateTime" />
 	</resultMap>
 
+	<resultMap id="MemberLikeResultMap" type="MemberLike">
+		<id column="lkcode" property="lkCode" />
+		<result column="id" property="memberId" />
+		<result column="ccode" property="cCode" />
+		<result column="lk_alarm" property="lkAlarm" />
+		<result column="lk_date" property="lkDate" />
+		<result column="lk_state" property="lkState" />
+		<result column="com_name" property="companyName" />
+	</resultMap>
+
+	<select id="memberLikeCheckFirst" parameterType="String" resultMap="MemberLikeResultMap">
+		-- 회원 구독 추가 전 이미 있는지 확인
+
+		SELECT count(l.lk_state) AS 'lk_state', l.lkcode
+		FROM `like`	AS l
+		join
+		member AS m
+		on
+		l.id = m.id
+		WHERE ccode = #{cCode} AND l.id = #{memberId}
+		GROUP BY l.lkcode;
+	</select>
+
+	<select id="memberLikeCheck" parameterType="String" resultMap="MemberLikeResultMap">
+		-- 회원 구독한지 안 한지 작업중
+
+		SELECT l.lk_state AS 'lk_state', l.lkcode
+		FROM `like`	AS l
+		join
+		member AS m
+		on
+		l.id = m.id
+		WHERE ccode = #{cCode} AND l.id = #{memberId}
+		GROUP BY l.lkcode;
+	</select>
+
+	<update id="updateMemberLikeStateOn">
+		-- 회원 구독 상태 0일때 1로 바꾸기
+		UPDATE `like` SET lk_state=1 WHERE lkcode=#{lkCode}
+	</update>
+
+	<update id="updateMemberLikeState">
+		-- 회원 구독 취소
+		UPDATE `like` SET lk_state=0 WHERE lkcode=#{lkCode}
+	</update>
+
+	<update id="updateMemberLikeAlarm">
+		-- 회원 알림 조작
+		UPDATE `like` SET lk_alarm=#{lkAlarm} WHERE lkcode=#{lkCode}
+	</update>
+
+	<select id="memberGetLikeCompany" parameterType="String" resultMap="MemberLikeResultMap">
+		-- 회원 구독 업체 리스트 조회
+		SELECT l.lkcode, l.id, l.ccode, l.lk_alarm, l.lk_date, l.lk_state, c.com_name
+		FROM `like` AS l
+		JOIN company AS c
+		ON l.ccode = c.ccode
+		WHERE l.id=#{memberId} AND l.lk_state = 1
+	</select>
+
+	<insert id="memberAddLike" parameterType="MemberLike">
+		<selectKey keyProperty="lkCode" resultType="String" order="BEFORE">
+			SELECT
+			CASE
+			WHEN COUNT(*) = 0 THEN 'like1'
+			ELSE CONCAT('like', (MAX(CAST(SUBSTRING_INDEX(lkcode, 'like', -1) AS UNSIGNED)) + 1))
+			END
+			FROM `like`
+		</selectKey>
+		-- 회원 구독하기
+		INSERT INTO `like`
+		(lkcode, id, ccode, lk_alarm, lk_date, lk_state)
+		VALUES (#{lkCode}, #{memberId}, #{cCode}, 1, NOW(), 1)
+	</insert>
+
 	<update id="updateInformStatus">
 		-- 알림 확인 상태 수정
 		UPDATE inform_recipient

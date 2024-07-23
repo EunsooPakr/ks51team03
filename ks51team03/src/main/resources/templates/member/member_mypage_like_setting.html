@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/mypage_default}">
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/font/iconic/css/material-design-iconic-font.min.css}">
+	<style>
+		.mypage-contents-box {
+			margin: 20px;
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		th, td {
+			padding: 10px;
+			border: 1px solid #ddd;
+			text-align: left;
+		}
+		th {
+			background-color: #f4f4f4;
+		}
+		button {
+			margin-left: 10px;
+		}
+		.tableElement td button{
+			transition: all 0.3s;
+			color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+		}
+		.tableElement td button:hover {
+			text-decoration: none;
+			--bs-link-color-rgb: var(--bs-link-hover-color-rgb);
+		}
+	</style>
+</head>
+<th:block layout:fragment="customContent">
+	<section class="bg-smoke py-12">
+		<div class="mypage-contents-box">
+			<table>
+				<thead>
+				<tr>
+					<th>업체 이름</th>
+					<th>알림 설정</th>
+					<th>구독 취소</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:each="comLikes : ${comLikes}" class="tableElement">
+					<td>
+						<a th:text="${comLikes.companyName}" th:href="@{'/map/map_company_info?cCode=' + ${comLikes.cCode}}"></a>
+					</td>
+					<td th:if="${comLikes.lkAlarm != '0'}" >
+						<button th:attr="data-lkcode=${comLikes.lkCode}" onclick="toggleAlarm(this, 0)">알림끄기</button>
+					</td>
+					<td th:unless="${comLikes.lkAlarm != '0'}" >
+						<button th:attr="data-lkcode=${comLikes.lkCode}" onclick="toggleAlarm(this, 1)">알림받기</button>
+					</td>
+					<td>
+						<button th:attr="data-lkcode=${comLikes.lkCode}" onclick="cancelSubscription(this)">구독취소</button>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+	<script>
+		function toggleAlarm(button, lkAlarm) {
+			const lkCode = button.getAttribute('data-lkcode');
+			console.log("lkCode: " + lkCode);
+			fetch('/member/updateAlarm', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				body: `lkCode=${lkCode}&currentAlarmState=${lkAlarm}`
+			})
+					.then(response => {
+						if (response.ok) {
+							console.log('Alarm toggle request successful.');
+							alert("변경되었습니다.");
+							location.reload();
+						} else {
+							console.error('Error toggling alarm');
+						}
+					})
+					.catch(error => {
+						console.error('Error toggling alarm', error);
+					});
+		}
+
+		function cancelSubscription(button) {
+			const lkCode = button.getAttribute('data-lkcode');
+			fetch('/member/updateLikeState', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				body: `lkCode=${lkCode}`
+			})
+					.then(response => {
+						if (response.ok) {
+							console.log('Cancel like request successful.');
+							alert("변경되었습니다.");
+							location.reload();
+						} else {
+							console.error('Error like Cancel');
+						}
+					})
+					.catch(error => {
+						console.error('Error like Cancel', error);
+					});
+		}
+	</script>
+</th:block>
+</html>

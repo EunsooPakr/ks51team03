@@ -98,6 +98,12 @@ public class CompanyService {
     }
 
 
+    // 직원 신청 전 이력 확인
+    public Boolean getStaffSignLog(String memberId){
+
+        return companyMapper.getStaffSignLog(memberId); // null일 경우 기본값 0 반환
+    }
+
     // 직원 신청 insert 작업
     public void insertStaff(ComStaff comStaff) {
         companyMapper.insertStaff(comStaff);
@@ -258,6 +264,11 @@ public class CompanyService {
     public int acceptStaff(String requestId, String memberId){
 
         return companyMapper.acceptStaff(requestId,memberId);
+    }
+
+    // 직원 해고 전 회원 레벨 변경
+    public int updateLevelBeforeDelete(String memberId){
+        return companyMapper.updateLevelBeforeDelete(memberId);
     }
 
     // 직원 해고
