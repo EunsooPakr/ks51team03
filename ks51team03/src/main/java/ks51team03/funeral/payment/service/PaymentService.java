@@ -31,4 +31,11 @@ public class PaymentService {
         return paymentMapper.getPaymentDetail(fpcode);
     }
 
+    //업체별 결제 내역 리스트
+    public List<PaymentDto> getPaymentServiceCompnay(PaymentDto paymentDto) {
+        log.info("getPaymentServiceCompnay");
+        return paymentMapper.getPaymentServiceCompnay(paymentDto);
+    }
+
+
 }

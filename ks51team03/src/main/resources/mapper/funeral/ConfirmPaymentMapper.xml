@@ -91,6 +91,36 @@
             fp.fpcode = #{fpcode}
     </select>
 
+    <select id="getPaymentServiceCompnay" resultMap="getConfirmPaymentInfo">
+        SELECT
+            fp.fpcode,
+            fp.ccode,
+            fp.frcode,
+            fp.fp_final,
+            c.com_name,
+            fp.fp_method,
+            fp.fp_pay_date,
+            fp.fp_status,
+            fp.fp_name,
+            fp.id,
+            fr.fr_start_date,
+            fr.fr_pet_name
+        FROM
+            funeral_payment AS fp
+            INNER join
+            funeral_reserve AS fr
+            on
+            fr.frcode = fp.frcode
+            INNER JOIN
+            company AS c
+            ON
+            c.ccode = fp.ccode
+        WHERE
+        fp.ccode = #{ccode}
+    </select>
+
+
+
 
 
 </mapper>
