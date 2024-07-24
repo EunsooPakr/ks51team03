@@ -308,8 +308,11 @@ public class BoardController {
 		String boardTitle = boardCateValue; // 기본값 설정
 		String boardInfo = boardService.getBoardInfoByBCTValue(boardCateValue);
 
+		String nboardCode="nb" + String.valueOf(boardmapper.getNBoardCode()+1);
+		
 		model.addAttribute("boardTitle", boardTitle); // boardTitle 변수를 모델에 추가
 		model.addAttribute("boardInfo", boardInfo); // boardTitle 변수를 모델에 추가
+		model.addAttribute("nboardCode", nboardCode); // nboardCode 변수를 모델에 추가
 		
 		return "board/board_write_gallery";
 	}

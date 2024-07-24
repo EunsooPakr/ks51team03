@@ -35,8 +35,7 @@
                                 <textarea id="nboardContent" name="nboardContent"></textarea>
                             </div>
                         </div>
-                         <input type="hidden" id="nboardCode" name="nboardCode" th:value="${nboardCode}">
-                        <input type="hidden" id="boardCateCode" name="boardCateCode" th:value="${boardTitle}">
+                        <input type="text" name="boardCateCode" th:value="${boardTitle}" style="display: none;">
                         <div class="board-list-btn">
                             <button type="submit" class="board-list-normal-btn">등록</button>
                             <button type="reset" class="board-list-normal-btn">취소</button>
@@ -45,24 +44,26 @@
                 </form>
             </div>
         </div>
-</th:block>
-<th:block layout:fragment="customJs">
-	<script th:src="@{/assets/ckeditor/ckeditor.js}"></script>
-    <script th:inline="javascript">
-        $(function(){
-        	console.log('Thymeleaf variables are being processed');
-        	const nboardCode = /*[[${nboardCode}]]*/ '';
-            console.log('nboardCode from Thymeleaf: ', nboardCode);
-            
+        <script th:src="@{/assets/ckeditor/ckeditor.js}"></script>
+        <script th:inline="javascript">
             CKEDITOR.replace('nboardContent', {
                 removePlugins: 'cloudservices,easyimage',
                 extraAllowedContent: 'table tr td{border:1px solid black;}',
                 contentsCss: '/assets/css/ckeditor_contents.css',
-                filebrowserUploadUrl: '/board/imageUpload?nboardCode=' + encodeURIComponent(nboardCode)+'&mode='+"write",
-                filebrowserImageUploadUrl: '/board/imageUpload?nboardCode=' + encodeURIComponent(nboardCode)+'&mode='+"write"
-
+                filebrowserUploadUrl:'/board/imageUpload',
+                filebrowserImageUploadUrl:'/board/imageUpload',
+                uploadUrl:'/board/imageUpload',
+                uploadImage: true
             });
-        });
-    </script>
+        </script>
+    </body>
+</th:block>
+
+<!-- 사용자정의 javascript file -->
+<th:block layout:fragment="customJsFile">
+</th:block>
+
+<!-- 사용자정의 javascript -->
+<th:block layout:fragment="customJs">
 </th:block>
 </html>

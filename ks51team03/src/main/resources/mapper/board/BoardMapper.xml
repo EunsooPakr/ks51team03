@@ -262,14 +262,12 @@
 	</select>
 	
 	<insert id="insertnBoardImg" parameterType="NBoardImg">
-		<selectKey keyProperty="nbiCode" resultType="String" order="BEFORE">
-			SELECT
-			CASE
-			WHEN COUNT(*) = 0 THEN 'nbi1'
-			ELSE CONCAT('nbi', (MAX(CAST(SUBSTRING_INDEX(nbicode, 'nbi', -1) AS UNSIGNED)) + 1))
-			END
-			FROM nboard_img
-		</selectKey>
+		 /* 게시글 이미지 추가 */
+	    <selectKey keyProperty="nbiCode" resultType="String" order="BEFORE">
+	        SELECT 
+	            CONCAT('nbi', COALESCE(MAX(CAST(SUBSTRING(nbicode, 4) AS UNSIGNED)), 0) + 1)
+	        FROM nboard_img
+	    </selectKey>
 		-- 게시글 대표 이미지 등록
 		INSERT INTO nboard_img
 		(	nbicode, 
@@ -301,6 +299,7 @@
 	</select>
 	
 	<delete id="deleteFromNBoardImg" parameterType="String">
+		/*게시글이미지 삭제*/
 	    DELETE FROM nboard_img
 	    WHERE 
 	    	file_idx
@@ -313,6 +312,7 @@
 	</delete>
 	
 	<delete id="deleteFromFiles" parameterType="String">
+		/*게시글 파일 삭제*/
     	DELETE FROM files
     	WHERE
     		file_path = #{nboardImg}
