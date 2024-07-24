@@ -22,6 +22,11 @@ public class CompanyService {
     private final FileUtils fileUtils;
     private final FileMapper fileMapper;
 
+    // 업체 이미지 조회 지도용
+    public List<String> getCompanyImgByCcodeForMap(String cCode){
+        return companyMapper.getCompanyImgByCcodeForMap(cCode);
+    }
+
     // 업체 운영시간 수정
     public int updateOperTime(ComOperTime comOperTime){
         return companyMapper.updateOperTime(comOperTime);
@@ -107,6 +112,11 @@ public class CompanyService {
     // 직원 신청 insert 작업
     public void insertStaff(ComStaff comStaff) {
         companyMapper.insertStaff(comStaff);
+    }
+
+    // 직원 신청 취소 로직
+    public String signStaffCancel(String memberId){
+        return companyMapper.signStaffCancel(memberId);
     }
 
     // 특정 문의 조회
@@ -289,6 +299,7 @@ public class CompanyService {
     	int update=companyMapper.updateCeo(company);
 		int result = companyMapper.insertCompany(company);
 	}
+
 
 
 

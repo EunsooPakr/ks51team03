@@ -241,9 +241,13 @@ public class MemberController {
 	}
 	
 	@GetMapping("/member_mypage_memberinfo")
-	public String userMyPageMemberInfo(Model model,HttpSession session)
+	public String userMyPageMemberInfo(Model model,HttpSession session, RedirectAttributes redirectAttributes)
 	{
 		String memberId=(String) session.getAttribute("SID");
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
 		Member memberInfo = memberService.getMemberInfoById(memberId);
 		
 		model.addAttribute("memberInfo",memberInfo);
@@ -272,9 +276,13 @@ public class MemberController {
 	}
 	
 	@GetMapping("/member_mypage_myQandR")
-	public String userMyPageMyQandR(Model model,HttpSession session)
+	public String userMyPageMyQandR(Model model,HttpSession session, RedirectAttributes redirectAttributes)
 	{
 		String memberId=(String) session.getAttribute("SID");
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
 		List<ComQuestion> memberQuestion = memberService.getQuestionById(memberId);
 		List<ComReview> comReviews = memberService.getCompanyReview(memberId);
 		model.addAttribute("memberQuestion",memberQuestion);

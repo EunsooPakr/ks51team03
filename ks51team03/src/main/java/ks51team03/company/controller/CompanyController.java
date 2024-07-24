@@ -2,8 +2,6 @@ package ks51team03.company.controller;
 import jakarta.servlet.http.HttpSession;
 import ks51team03.company.dto.*;
 import ks51team03.company.service.CompanyService;
-import ks51team03.files.dto.FileRequest;
-import ks51team03.files.util.FileUtils;
 import ks51team03.member.dto.Member;
 import ks51team03.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -357,8 +355,12 @@ public class CompanyController {
 
 	// 직원 신청
 	@GetMapping("/company/company_staff_signUp")
-	public String companySignUp(Model model, HttpSession session) {
+	public String companySignUp(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		String memberId = (String) session.getAttribute("SID");
+		if (memberId == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "로그인을 하는게 좋을거같은데");
+			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
+		}
 		List<Company> companyList = companyService.getCompanyList();
 		String checkCcode = companyService.getCompanyCodeByMemberId(memberId);
 		log.info("checkCcode :{}", checkCcode);
@@ -389,6 +391,15 @@ public class CompanyController {
 		companyService.insertStaff(comStaff);
 
 		return "redirect:/member/member_mypage_memberinfo"; // 신청 후 리다이렉트
+	}
+
+	// 직원 신청 취소
+	@PostMapping("/company/staff/signUpCancel")
+	public String signStaffCancel(HttpSession session){
+		String memberId = (String) session.getAttribute("SID");
+		companyService.signStaffCancel(memberId);
+
+		return "redirect:/company/company_staff_signUp";
 	}
 
 	// 업체 문의 조회

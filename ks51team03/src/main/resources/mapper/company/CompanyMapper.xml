@@ -158,6 +158,20 @@
 		ci.ccode = #{cCode}
 	</select>
 
+	<select id="getCompanyImgByCcodeForMap" parameterType="List">
+		-- 업체 이미지 조회 지도용
+		SELECT
+		f.file_path
+		FROM
+		company_img AS ci
+		LEFT JOIN
+		files AS f
+		ON
+		ci.file_idx = f.file_idx
+		WHERE
+		ci.ccode = #{cCode}
+	</select>
+
 	<insert id="insertCompanyImg" parameterType="CompanyImg">
 		<selectKey keyProperty="ciCode" resultType="String" order="BEFORE">
 			SELECT
@@ -590,6 +604,11 @@
 		VALUES
 		(#{stfCode}, #{memberId}, #{cCode}, 'level3', #{stfPhone}, 0, null, null)
 	</insert>
+
+	<delete id="signStaffCancel" parameterType="String">
+		-- 직원 신청 취소
+		DELETE FROM staff WHERE id = #{memberId}
+	</delete>
 
 	<select id="getStaffList" resultMap="ComStaffResultMap">
 		-- 직원 리스트

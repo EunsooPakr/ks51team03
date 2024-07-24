@@ -58,7 +58,13 @@
                     <td th:text="${company.companyCeo}"></td>
                     <td th:text="${company.companyAddr} + ' ' + ${company.companyAddrDetail}" style="width: 400px"></td>
                     <td th:text="${company.companyPhone}" style="width: 150px"></td>
-                    <td>
+                    <td th:if="${checkCcode != null && company.companyCode.equals(checkCcode)}">
+                        <form th:action="@{/company/staff/signUpCancel}" method="post">
+                            <input type="hidden" name="companyCode" th:value="${company.companyCode}" />
+                            <button type="submit" class="apply-btn">취소</button>
+                        </form>
+                    </td>
+                    <td th:unless="${checkCcode != null && company.companyCode.equals(checkCcode)}">
                         <form th:action="@{/company/staff/signUp}" method="post">
                             <input type="hidden" name="companyCode" th:value="${company.companyCode}" />
                             <button type="submit" class="apply-btn">신청</button>

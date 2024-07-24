@@ -12,6 +12,9 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
 
+    // 업체 이미지 조회 지도용
+    List<String> getCompanyImgByCcodeForMap(String cCode);
+
     // 업체 운영시간 수정
     int updateOperTime(ComOperTime comOperTime);
 
@@ -71,6 +74,9 @@ public interface CompanyMapper {
 
     // 직원 신청 로직
     void insertStaff(ComStaff comStaff);
+
+    // 직원 신청 취소 로직
+    String signStaffCancel(String memberId);
 
     // 업체  수정
     int modifyCompany(Company company);

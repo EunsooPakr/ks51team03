@@ -31,26 +31,8 @@ public class MapController {
 
 
 	@GetMapping("/map/map_main")
-	public String mapMainPage(Model model, @RequestParam(value = "keyword", required = false) String keyword) throws JsonProcessingException {
-		List<Company> companyList = companyService.getCompanyListByKeyWord(keyword);
-		List<ComMap> comMapList = new ArrayList<>();
+	public String mapMainPage() {
 
-		// 회사 목록에서 cCode 값을 추출하여 ComMap 객체를 가져옵니다
-		for (Company company : companyList) {
-			ComMap comMap = companyService.getComMapByCCode(company.getCompanyCode());
-			if (comMap != null) {
-				comMapList.add(comMap);
-			}
-		}
-
-		log.info("keyword: {}", keyword);
-		log.info("comMapList: {}", comMapList); // comMapList 확인 로그
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		String comMapListJson = objectMapper.writeValueAsString(comMapList);
-
-		model.addAttribute("companyList", companyList);
-		model.addAttribute("comMapListJson", comMapListJson);
 
 		return "map/map_main";
 	}
@@ -85,8 +67,10 @@ public class MapController {
 		Map<String, Object> response = new HashMap<>();
 		int reviewCount = companyService.getCompanyReviewCount(cCode);
 		double avgReviewScore = companyService.getAvgReviewScore(cCode);
+		List<String> comImg = companyService.getCompanyImgByCcodeForMap(cCode);
+		log.info("comImg: {}", comImg);
 		List<ComReview> reviews = companyService.getCompanyReview(cCode);
-		if(reviews != null && reviews.size() > 0) {
+		if(reviews != null) {
 			Member revMember = memberService.getMemberInfoById(reviews.get(0).getMemberId());
 			response.put("revMember", revMember);
 		}
@@ -94,6 +78,7 @@ public class MapController {
 		response.put("reviewCount", reviewCount);
 		response.put("avgReviewScore", avgReviewScore);
 		response.put("reviews", reviews);
+		response.put("comImg", comImg);
 
 		return response;
 	}

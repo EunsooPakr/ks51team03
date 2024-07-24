@@ -1,4 +1,20 @@
+/* 공통 스타일 */
+input.detail-input {
+    width: 100%;
+    margin: 5px 0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0);
+    text-align: center;
+}
 
+/* 포커스 상태 스타일 */
+input.detail-input:focus {
+    border-color: #007BFF;
+    background-color: #e9ecef;
+}
+
+/* 기존 스타일 */
 #map {
     width: 100%;
     height: 800px;
@@ -23,7 +39,6 @@
 #info_wrap {
     display: none;
 }
-
 
 .map_wrap, #info_wrap, .map_wrap * {
     margin: 0;
@@ -248,7 +263,6 @@
 .company_image {
     width: 100%;
     height: 150px;
-    background-color: orange;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -265,7 +279,6 @@
     display: inline-block;
     margin: 10px 20px;
 }
-
 
 #placeAddress, #placePhone, #employee_count {
     margin: 5px 0;
@@ -285,8 +298,7 @@ hr {
 }
 
 .review_list {
-    background-color: #28a745;
-    color: white;
+    color: black;
     padding: 10px;
 }
 
@@ -295,7 +307,6 @@ hr {
 }
 
 .review-container {
-    display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -352,7 +363,6 @@ hr {
 .search-container button:hover {
     background-color: #0056b3;
 }
-
 
 #placeNameContainer {
     font-size: 24px !important;
