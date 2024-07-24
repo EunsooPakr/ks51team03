@@ -40,7 +40,7 @@ public class ServiceListService {
     }
 
     /**
-     * 회원가입 프로세스
+     *  장례 예약 프로세스
      */
     public void funeralReserve(ReserveDto reserveDto){
 
@@ -110,18 +110,6 @@ public class ServiceListService {
             fileMapper.addFile(fileRequest);
             serviceImgDto.setFileIdx(fileRequest.getFileIdx());
         }
-
-        // 기존 이미지가 있는지 확인
-      /*  if (serviceListMapper.checkServiceImgExists(serviceImgDto.getFscode(), serviceImgDto.getCcode())) {
-            // 기존 파일 삭제
-            ServiceImgDto existingImg = serviceListMapper.getServiceImg(serviceImgDto.getFscode(), serviceImgDto.getCcode());
-            if (existingImg != null && existingImg.getFileIdx() != null) {
-                fileUtils.deleteFile(existingImg.getFileIdx());
-                serviceListMapper.deleteServiceImg(serviceImgDto);
-            }
-        }*/
-
-        // 새 이미지 삽입
         serviceListMapper.insertFuneralServiceImg(serviceImgDto);
     }
 

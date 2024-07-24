@@ -37,6 +37,7 @@
     </resultMap>
 
     <select id="confirmPayment" resultMap="getConfirmPaymentInfo">
+        /* 회원별 장례 결제 정보 확인*/
         SELECT
             fp.fpcode,
             fp.ccode,
@@ -70,6 +71,7 @@
     </select>
 
     <select id="getPaymentDetail" resultMap="getConfirmPaymentInfo">
+        /* 결제 정보 상세 내역 */
         SELECT
             fp.fpcode,
             fp.ccode,
@@ -106,6 +108,7 @@
     </select>
 
     <select id="getPaymentServiceCompnay" resultMap="getConfirmPaymentInfo">
+        /* 장례 업체별 장례 서비스 결제 내역*/
         SELECT
             fp.fpcode,
             fp.ccode,
@@ -135,6 +138,7 @@
 
     <!-- index 장례 서비스 대표 이미지  -->
     <select id="getTopServiceImg" resultType="String">
+        /* 장례 서비스 중 가장 많은 결제건을 가진 이미지 가져오는 쿼리문*/
         select
             f.file_path
         from

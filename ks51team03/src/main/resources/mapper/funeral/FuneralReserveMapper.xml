@@ -70,6 +70,7 @@
     </resultMap>
 
     <select id="getLastFuneralServiceCode" parameterType="String" resultType="String">
+        /* 장례 예약 기본키 코드 중 제일 큰 숫자 가져오기*/
         SELECT Max(frcode) FROM funeral_reserve
     </select>
 
@@ -121,6 +122,7 @@
 
     <!-- 장례 예약버튼 누른 후 인적사항 확인 -->
     <select id="funeralReserveInfo" resultMap="getFuneralReserveInfo">
+        /* 예약 후 인적사항 조회*/
         SELECT
         fr.id,
         fr.fr_pet_name,
@@ -147,6 +149,7 @@
 
     <!-- 장례 예약버튼 누른 후 인적사항 확인 -->
     <select id="funeralReserveServiceInfo" resultMap="getFuneralReserveServiceInfo">
+        /* 예약 후 예약한 정보 조회*/
         SELECT
             fr.frcode,
             fr.fscode,
@@ -224,6 +227,7 @@
 
 
     <select id="getLastFpcode" resultType="String">
+        /*마지막 결제 코드 찾는 select문*/
         SELECT
             fpcode
         FROM
@@ -234,6 +238,7 @@
 
 
     <select id="confirmPayment" resultMap="getConfirmPaymentInfo">
+        /* 장례 결제 내역 및 정보를 확인하기 위한 select문*/
         SELECT
             fp.fpcode,
             fp.ccode,
