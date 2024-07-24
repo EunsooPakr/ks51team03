@@ -53,8 +53,18 @@ public class ServiceListController {
 
 		log.info("선택한 반려동물 이름: {}", reserveDto.getReservePetName());
 
+		// 세션에서 ccode 값 가져오기
+		String ccode = (String) session.getAttribute("CCODE");
+		log.info("세션에서 가져온 ccode: {}", ccode);
+
+		if (ccode == null || ccode.isEmpty()) {
+			log.error("ccode가 세션에 없습니다.");
+			return "redirect:/errorPage"; // 에러 페이지로 리디렉션
+		}
+
 		reserveDto.setReserveId(memberId);
 		reserveDto.setReservePhone(reservePhone);
+		reserveDto.setReserveCompanyCode(ccode); // ccode 설정
 
 		reserveService.funeralReserve(reserveDto);
 		log.info("reserveDto={}", reserveDto);
@@ -62,6 +72,7 @@ public class ServiceListController {
 
 		return "redirect:/funeral/funeral_reserve_info";
 	}
+
 
 
 
@@ -121,10 +132,13 @@ public class ServiceListController {
 		String ccode = funeralserviceCcode;
 		log.info("ccode: {}", ccode);
 
-		if (ccode == null) {
+		if (ccode == null || ccode.isEmpty()) {
 			log.error("ccode가 세션에 없습니다.");
 			return "redirect:/errorPage"; // 에러 페이지로 리디렉션
 		}
+
+		// 세션에 ccode 저장
+		session.setAttribute("CCODE", ccode);
 
 		// 장례 서비스 이미지 가져오기
 		List<ServiceImgDto> serviceImgDtos = serviceListService.getServiceImgs(fscodeList, ccode);
@@ -140,6 +154,7 @@ public class ServiceListController {
 
 		return "funeral/funeral_service_detail";
 	}
+
 
 
 
