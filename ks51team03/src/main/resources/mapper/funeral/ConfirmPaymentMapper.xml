@@ -22,7 +22,22 @@
         <result     column="fr_start_date"      property="reserveStartDate"/>
     </resultMap>
 
+    <resultMap id="getTopServiceImg" type="ks51team03.funeral.payment.dto.TopServiceImgDto">
+        <id         column="fpcode"             property="fpcode"/>
+        <result     column="ccode"              property="ccode"/>
+        <result     column="fscode"             property="fscode"/>
+        <result     column="frcode"             property="frcode"/>
+        <result     column="fp_name"            property="fpName"/>
+        <result     column="fp_final"           property="fpFinal"/>
+        <result     column="fp_pay_date"        property="fpPayDate"/>
+        <result     column="file_idx"           property="fileIdx"/>
+        <result     column="file_path"          property="filePath" />
+        <result     column="file_size"          property="fileSize" />
+
+    </resultMap>
+
     <select id="confirmPayment" resultMap="getConfirmPaymentInfo">
+        /* 회원별 장례 결제 정보 확인*/
         SELECT
             fp.fpcode,
             fp.ccode,
@@ -56,6 +71,7 @@
     </select>
 
     <select id="getPaymentDetail" resultMap="getConfirmPaymentInfo">
+        /* 결제 정보 상세 내역 */
         SELECT
             fp.fpcode,
             fp.ccode,
@@ -89,6 +105,70 @@
             m.id = fr.id
         WHERE
             fp.fpcode = #{fpcode}
+    </select>
+
+    <select id="getPaymentServiceCompnay" resultMap="getConfirmPaymentInfo">
+        /* 장례 업체별 장례 서비스 결제 내역*/
+        SELECT
+            fp.fpcode,
+            fp.ccode,
+            fp.frcode,
+            fp.fp_final,
+            c.com_name,
+            fp.fp_method,
+            fp.fp_pay_date,
+            fp.fp_status,
+            fp.fp_name,
+            fp.id,
+            fr.fr_start_date,
+            fr.fr_pet_name
+        FROM
+            funeral_payment AS fp
+            INNER join
+            funeral_reserve AS fr
+            on
+            fr.frcode = fp.frcode
+            INNER JOIN
+            company AS c
+            ON
+            c.ccode = fp.ccode
+        WHERE
+        fp.ccode = #{ccode}
+    </select>
+
+    <!-- index 장례 서비스 대표 이미지  -->
+    <select id="getTopServiceImg" resultType="String">
+        /* 장례 서비스 중 가장 많은 결제건을 가진 이미지 가져오는 쿼리문*/
+        select
+            f.file_path
+        from
+            funeral_payment AS fp
+            INNER join
+            funeral_service AS fs
+            on
+            fp.fp_name = fs.fs_title
+            INNER join
+            funeral_service_img AS fsi
+            on
+            fsi.fscode = fs.fscode
+            INNER join
+            files AS f
+            on
+            f.file_idx = fsi.file_idx
+        where
+         fp.fp_name = (
+                        SELECT
+                        fp_name
+                        FROM
+                        funeral_payment
+                        WHERE
+                        fp_pay_date >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+                        GROUP BY
+                        fp_name
+                        ORDER BY
+                        COUNT(fp_pay_date) DESC
+                        LIMIT 1)
+        LIMIT 1
     </select>
 
 

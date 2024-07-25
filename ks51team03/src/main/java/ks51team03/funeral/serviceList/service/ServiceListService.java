@@ -6,6 +6,7 @@ import ks51team03.files.mapper.FileMapper;
 import ks51team03.files.util.FileUtils;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveMemberPet;
+import ks51team03.funeral.serviceList.dto.FuneralCompanyImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
@@ -39,7 +40,7 @@ public class ServiceListService {
     }
 
     /**
-     * 회원가입 프로세스
+     *  장례 예약 프로세스
      */
     public void funeralReserve(ReserveDto reserveDto){
 
@@ -62,7 +63,7 @@ public class ServiceListService {
     };
 
     // 장례 회사 정보를 가져오기 위한 조회
-    public List<Company> getCompanyInfoList(){
+    public List<FuneralCompanyImgDto> getCompanyInfoList(){
         return serviceListMapper.getCompanyInfoList();
     }
 
@@ -109,18 +110,6 @@ public class ServiceListService {
             fileMapper.addFile(fileRequest);
             serviceImgDto.setFileIdx(fileRequest.getFileIdx());
         }
-
-        // 기존 이미지가 있는지 확인
-      /*  if (serviceListMapper.checkServiceImgExists(serviceImgDto.getFscode(), serviceImgDto.getCcode())) {
-            // 기존 파일 삭제
-            ServiceImgDto existingImg = serviceListMapper.getServiceImg(serviceImgDto.getFscode(), serviceImgDto.getCcode());
-            if (existingImg != null && existingImg.getFileIdx() != null) {
-                fileUtils.deleteFile(existingImg.getFileIdx());
-                serviceListMapper.deleteServiceImg(serviceImgDto);
-            }
-        }*/
-
-        // 새 이미지 삽입
         serviceListMapper.insertFuneralServiceImg(serviceImgDto);
     }
 

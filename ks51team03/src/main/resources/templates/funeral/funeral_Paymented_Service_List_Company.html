@@ -26,7 +26,7 @@
         }
 
         .title {
-            width: 5%; /* 제목 칸 너비 줄이기 */
+            width: 1%; /* 제목 칸 너비 줄이기 */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -41,7 +41,7 @@
         }
 
         .comment {
-            width: 40%; /* 코멘트 칸 크기 늘리기 */
+            width: 20%; /* 코멘트 칸 크기 늘리기 */
             white-space: pre-line; /* 줄 바꿈을 허용 */
             overflow: hidden;
             text-overflow: ellipsis;
@@ -49,7 +49,7 @@
         }
 
         .date {
-            width: 15%;
+            width: 30%;
         }
 
         .state {
@@ -65,8 +65,8 @@
             <div class="board-body">
                 <div class="board_wrap">
                     <div class="board_title">
-                        <strong id="board_title">결제된 장례 서비스 목록 입니다.</strong>
-                        <p>결제 서비스 목록(날짜, 시간, 서비스, 가격, 아이디, 펫이름, 결제 상태)</p>
+                        <strong id="board_title"> 장례 서비스 예약 목록 입니다.</strong>
+                        <p>서비스 목록(장례 서비스, 예약일, 예약자 ID, 반려동물 명, 결제 상태, 결제일, 결제 방법)</p>
                     </div>
 
                     <div class="board_list_wrap">
@@ -74,26 +74,28 @@
                             <thead>
                             <tr>
                                 <th class="num">번호</th>
-                                <th class="title">서비스 제목</th>
-                                <th class="price">가격</th>
-                                <th class="weight">허용 무게(kg)</th>
-                                <th class="comment">코멘트</th>
-                                <th class="date">등록일</th>
-                                <th class="state">상태</th>
+                                <th class="comment">장례 서비스 </th>
+                                <th class="comment">예약일</th>
+                                <th class="weight">예약자 ID</th>
+                                <th class="comment">반려동물 명</th>
+                                <th class="date">결제 상태</th>
+                                <th class="state">결제일</th>
+                                <th class="date">결제 방법</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:if="${serviceList == null || #lists.isEmpty(serviceList)}">
-                                <td colspan="7">등록된 서비스가 없습니다.</td>
+                            <tr th:if="${getPaymentServiceCompnayList == null || #lists.isEmpty(getPaymentServiceCompnayList)}">
+                                <td colspan="8">결제된 내역이 없습니다.</td>
                             </tr>
-                            <tr th:each="service, iterStat : ${serviceList}">
+                            <tr th:each="p, iterStat : ${getPaymentServiceCompnayList}">
                                 <td class="num" th:text="${iterStat.count}"></td>
-                                <td class="title" th:text="${service.funeralserviceTitle}" title="${service.funeralserviceTitle}"></td>
-                                <td class="price" th:text="${service.funeralservicePrice}"></td>
-                                <td class="weight" th:text="${service.funeralserviceWeight}"></td>
-                                <td class="comment" th:text="${service.funeralserviceComment != null ? service.funeralserviceComment : 'N/A'}" title="${service.funeralserviceComment != null ? service.funeralserviceComment : 'N/A'}"></td>
-                                <td class="date" th:text="${service.funeralserviceRegDate}"></td>
-                                <td class="state" th:text="${service.funeralserviceState}"></td>
+                                <td class="title" th:text="${p.getFpName()}"></td>
+                                <td class="price" th:text="${p.getReserveStartDate()}"></td>
+                                <td class="weight" th:text="${p.getReserveId()}"></td>
+                                <td class="comment" th:text="${p.getReservePetName() != null && !#strings.isEmpty(p.getReservePetName()) ? p.getReservePetName() : '등록되지 않음'}"></td>
+                                <td class="date" th:text="${p.getFpStatus()}"></td>
+                                <td class="state" th:text="${p.getFpPayDate()}"></td>
+                                <td class="date" th:text="${p.getFpMethod()}"></td>
                             </tr>
                             </tbody>
                         </table>

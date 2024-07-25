@@ -29,22 +29,32 @@
         <result     column="fr_reserve_time"    property="reserveTime"/>
     </resultMap>
 
-    <resultMap id="getCompanyInfo" type="ks51team03.company.dto.Company">
-        <id 	column="ccode" property="companyCode" />
-        <result column="com_class" property="companyClass" />
-        <result column="com_name" property="companyName" />
-        <result column="com_ceo" property="companyCeo" />
-        <result column="com_addr" property="companyAddr" />
-        <result column="com_addr_detail" property="companyAddrDetail" />
-        <result column="com_phone" property="companyPhone" />
-        <result column="com_stfcount" property="companyStfCount" />
-        <result column="com_email" property="companyEmail" />
-        <result column="com_parking" property="companyParking" />
-        <result column="com_page" property="companyPage" />
-        <result column="com_reg_date" property="companyRegDate" />
-        <result column="com_post_num" property="comPostNum" />
-        <result column="id" property="memberId" />
-        <result column="com_post_num" property="comPostNum" />
+    <resultMap id="getCompanyInfo" type="ks51team03.funeral.serviceList.dto.FuneralCompanyImgDto">
+        <id 	column="ccode"              property="companyCode" />
+        <result column="com_class"          property="companyClass" />
+        <result column="com_name"           property="companyName" />
+        <result column="com_ceo"            property="companyCeo" />
+        <result column="com_addr"           property="companyAddr" />
+        <result column="com_phone"          property="companyPhone" />
+        <result column="com_stfcount"       property="companyStfCount" />
+        <result column="com_email"          property="companyEmail" />
+        <result column="com_reg_date"       property="companyRegDate" />
+        <result column="id"                 property="memberId" />
+        <result column="file_idx"           property="fileIdx" />
+        <result column="file_path"          property="filePath" />
+    </resultMap>
+
+    <resultMap id="getCompanyInfoModify" type="ks51team03.company.dto.Company">
+        <id 	column="ccode"              property="companyCode" />
+        <result column="com_class"          property="companyClass" />
+        <result column="com_name"           property="companyName" />
+        <result column="com_ceo"            property="companyCeo" />
+        <result column="com_addr"           property="companyAddr" />
+        <result column="com_phone"          property="companyPhone" />
+        <result column="com_stfcount"       property="companyStfCount" />
+        <result column="com_email"          property="companyEmail" />
+        <result column="com_reg_date"       property="companyRegDate" />
+        <result column="id"                 property="memberId" />
     </resultMap>
 
     <resultMap id="getMemberPet" type="ks51team03.funeral.reserve.dto.ReserveMemberPet">
@@ -89,6 +99,7 @@
 
     <!-- 장례 서비스 전체 조회 -->
     <select id="getServiceInfoByCode" parameterType="String" resultMap="getServiceListMap">
+        /* 장례 업체별 장례 서비스 정보*/
         SELECT
         fs.fscode,
         fs.ccode,
@@ -137,7 +148,8 @@
     </insert>
 
     <!-- 장례 서비스 등록시 회사 정보 확인 -->
-    <select id="getCompanyInfo" resultMap="getCompanyInfo">
+    <select id="getCompanyInfo" resultMap="getCompanyInfoModify">
+        /* 장례 업체 정보 */
         SELECT
         c.ccode,
         c.com_class,
@@ -157,6 +169,7 @@
 
     <insert id="insertFuneralService" parameterType="Map">
         <selectKey keyProperty="funeralserviceCode" resultType="String" order="BEFORE">
+            /* 장례 서비스 등록을 위한 fscode 조회*/
             SELECT
             CASE
             WHEN COUNT(fscode) = 0 THEN 'fs1'
@@ -169,7 +182,7 @@
             FROM
             funeral_service;
         </selectKey>
-
+        /* 장례 서비스 등록 insert문*/
         INSERT INTO funeral_service (
         fscode,
         ccode,
@@ -194,6 +207,7 @@
     </insert>
 
     <select id="getServiceList" resultMap="getServiceListMap">
+        /* 업체별 등록된 장례 서비스 리스트*/
         SELECT
             fscode,
             ccode,
@@ -212,6 +226,7 @@
 
     <!-- 장례 서비스 노출을 위한 회사 정보 가져오기 -->
     <select id="getCompanyInfoList" resultMap="getCompanyInfo">
+        /* 장례 서비스 노출을 위한 회사 정보 select문*/
         SELECT
         c.ccode,
         c.com_class,
@@ -221,16 +236,26 @@
         c.com_phone,
         c.com_stfcount,
         c.id,
-        c.com_parking,
-        c.com_reg_date
+        c.com_reg_date,
+        f.file_path,
+        f.file_idx
         FROM
         company AS c
-        WHERE
-        c.com_class LIKE '%장례%';
+        INNER join
+        company_img AS ci
+        ON
+        c.ccode = ci.ccode
+        INNER join
+        files AS f
+        on
+        ci.file_idx = f.file_idx
+        where
+        c.com_class like '%장례%'
     </select>
 
     <!-- 장례 예약 시 반려동물 정보 가져오기 위한 코드 -->
     <select id="getMemberPet" resultMap="getMemberPet">
+        /* 예약시 반려동물 가져오기 위한 select문*/
         SELECT
         p.p_name,
         m.id,
@@ -264,6 +289,7 @@
 
     <!-- 장례 서비스 수정 -->
     <select id="modifyServiceInfoByCode" parameterType="String" resultMap="getServiceListMap">
+        /* 등록된 장례 서비스 수정을 위한 select문 */
         SELECT
         fs.fscode,
         fs.ccode,
@@ -281,6 +307,7 @@
     </select>
 
     <update id="updateServiceInfo" parameterType="ks51team03.funeral.serviceList.dto.ServiceListDto">
+        /* 등록된 장례 서비스 수정 */
         UPDATE
             funeral_service
         SET
@@ -295,6 +322,7 @@
 
     <!-- 기존 이미지 정보 가져오기 -->
     <select id="getServiceImg" resultMap="getServiceImgResultMap" parameterType="map">
+        /* 기존 이미지 정보 가져오는 select문 */
         SELECT
         fsi.fsicode,
         fsi.ccode,
@@ -316,11 +344,13 @@
 
     <!-- 기존 파일을 삭제하는 쿼리 -->
     <delete id="deleteServiceImg" parameterType="ks51team03.funeral.serviceList.dto.ServiceImgDto">
+        /* 기존 이미지 파일 삭제하는 delete문 */
         DELETE FROM funeral_service_img
         WHERE fscode = #{fscode} AND ccode = #{ccode}
     </delete>
 
     <select id="getServiceImgs" resultMap="getServiceImgResultMap" parameterType="map">
+        /* 장례 업체별 등록된 이미지를 가져오기 위한 select문 */
         SELECT
         fsi.fsicode,
         fsi.ccode,

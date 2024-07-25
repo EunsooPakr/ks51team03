@@ -3,6 +3,7 @@ package ks51team03.funeral.payment.controller;
 import jakarta.servlet.http.HttpSession;
 import ks51team03.funeral.payment.dto.PaymentDto;
 import ks51team03.funeral.payment.service.PaymentService;
+import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.member.dto.Member;
 import ks51team03.member.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -67,12 +68,22 @@ public class PaymentController {
     @GetMapping("funeral/funeral_Paymented_Service_List_Company")
     public String paymentServiceListCompany(HttpSession session, Model model, PaymentDto paymentDto) {
         String memberId = (String) session.getAttribute("SID");
+        String ccode = (String) session.getAttribute("CCODE");
         log.info("memberId: {}", memberId);
 
         if(memberId == null) {
             return "redirect:/";
         }
 
+        paymentDto.setCcode(ccode);
+
+        List<PaymentDto> getPaymentServiceCompnayList = paymentService.getPaymentServiceCompnay(paymentDto);
+
+        log.info("getPaymentServiceCompnayList: {}", getPaymentServiceCompnayList);
+        model.addAttribute("getPaymentServiceCompnayList", getPaymentServiceCompnayList);
+
         return "/funeral/funeral_Paymented_Service_List_Company";
     }
+
+
 }

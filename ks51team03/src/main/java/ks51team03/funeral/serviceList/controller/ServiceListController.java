@@ -5,6 +5,7 @@ import ks51team03.company.dto.Company;
 import ks51team03.funeral.reserve.dto.ReserveDto;
 import ks51team03.funeral.reserve.dto.ReserveMemberPet;
 import ks51team03.funeral.reserve.service.ReserveService;
+import ks51team03.funeral.serviceList.dto.FuneralCompanyImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceImgDto;
 import ks51team03.funeral.serviceList.dto.ServiceListDto;
 import ks51team03.funeral.serviceList.mapper.ServiceListMapper;
@@ -52,8 +53,18 @@ public class ServiceListController {
 
 		log.info("선택한 반려동물 이름: {}", reserveDto.getReservePetName());
 
+		// 세션에서 ccode 값 가져오기
+		String ccode = (String) session.getAttribute("CCODE");
+		log.info("세션에서 가져온 ccode: {}", ccode);
+
+		if (ccode == null || ccode.isEmpty()) {
+			log.error("ccode가 세션에 없습니다.");
+			return "redirect:/errorPage"; // 에러 페이지로 리디렉션
+		}
+
 		reserveDto.setReserveId(memberId);
 		reserveDto.setReservePhone(reservePhone);
+		reserveDto.setReserveCompanyCode(ccode); // ccode 설정
 
 		reserveService.funeralReserve(reserveDto);
 		log.info("reserveDto={}", reserveDto);
@@ -65,6 +76,7 @@ public class ServiceListController {
 
 
 
+
 	@GetMapping("/funeral/serviceList")			// 어노테이션 괄호안에는 옵션을 쓴다.   /  컨트롤러에서는 무조건 String으로 반환
 	public String funeralServiceList(Model model, HttpSession session) {
 
@@ -72,7 +84,7 @@ public class ServiceListController {
 
 		log.info("로그인한 회원 아이디 memberId={}", memberId);
 
-		List<Company> ComServiceListDto = serviceListService.getCompanyInfoList();
+		List<FuneralCompanyImgDto> ComServiceListDto = serviceListService.getCompanyInfoList();
 
 		log.info("ComServiceListDto:{}", ComServiceListDto);
 
@@ -120,10 +132,13 @@ public class ServiceListController {
 		String ccode = funeralserviceCcode;
 		log.info("ccode: {}", ccode);
 
-		if (ccode == null) {
+		if (ccode == null || ccode.isEmpty()) {
 			log.error("ccode가 세션에 없습니다.");
 			return "redirect:/errorPage"; // 에러 페이지로 리디렉션
 		}
+
+		// 세션에 ccode 저장
+		session.setAttribute("CCODE", ccode);
 
 		// 장례 서비스 이미지 가져오기
 		List<ServiceImgDto> serviceImgDtos = serviceListService.getServiceImgs(fscodeList, ccode);
@@ -139,6 +154,7 @@ public class ServiceListController {
 
 		return "funeral/funeral_service_detail";
 	}
+
 
 
 
