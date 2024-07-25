@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <link rel="stylesheet" th:href="@{/assets/css/member_custom.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/ckeditor_contents.css}">
+    <script th:src="@{/assets/ckeditor/ckeditor.js}"></script>
+</head>
+<th:block layout:fragment="customContent">
+    <div class="board-body">
+        <div class="board_wrap">
+            <div class="board_title">
+                <strong id="board_title" th:text="${boardTitle}">게시판 이름</strong>
+                <p id="board_info" th:text="${boardInfo}">게시판 설명</p>
+            </div>
+            <form role="form" action="/board/board_edit_gallery" method="post" enctype="multipart/form-data">
+                <div class="board_view_wrap">
+                    <div class="board_view">
+                        <div class="title">
+                            <dl>
+                                <dt>제목</dt>
+                                <dd>
+                                    <input type="text" name="nboardTitle" th:value="${noticeBoard.nboardTitle}">
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="info">
+                            <dl>
+                                <dt>번호</dt>
+                                <dd th:text="${noticeBoard.nboardCode}"></dd>
+                            </dl>
+                            <dl>
+                                <dt>작성자</dt>
+                                <dd th:text="${noticeBoard.memberId}"></dd>
+                            </dl>
+                            <dl>
+                                <dt>작성일</dt>
+                                <dd th:text="${noticeBoard.nboardRegistDate}"></dd>
+                            </dl>
+                            <dl>
+                                <dt>조회수</dt>
+                                <dd th:text="${noticeBoard.nboardView}"></dd>
+                            </dl>
+                            <dl>
+                                <dt>추천수</dt>
+                                <dd th:text="${noticeBoard.nboardRec}"></dd>
+                            </dl>
+                        </div>
+                        <div class="cont">
+                            <textarea id="nboardContent" name="nboardContent" th:utext="${noticeBoard.nboardContent}"></textarea>
+                        </div>
+                        <input type="hidden" id="nboardCode" name="nboardCode" th:value="${noticeBoard.nboardCode}">
+                        <input type="hidden" name="nboardCateCode" th:value="${noticeBoard.boardCateCode}">
+                    </div>
+                    <div class="board-list-btn">
+                        <button type="submit" class="board-list-normal-btn">수정</button>
+                        <button type="reset" class="board-list-normal-btn">취소</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</th:block>
+<th:block layout:fragment="customJs">
+	<script th:src="@{/assets/ckeditor/ckeditor.js}"></script>
+    <script th:inline="javascript">
+        $(function(){
+        	console.log('Thymeleaf variables are being processed');
+            const nboardCode = /*[[${noticeBoard.nboardCode}]]*/ '';
+            console.log('nboardCode from Thymeleaf: ', nboardCode);
+
+            CKEDITOR.replace('nboardContent', {
+                removePlugins: 'cloudservices,easyimage',
+                extraAllowedContent: 'table tr td{border:1px solid black;}',
+                contentsCss: '/assets/css/ckeditor_contents.css',
+                filebrowserUploadUrl: '/board/imageUpload',
+                filebrowserImageUploadUrl: '/board/imageUpload'
+            });
+
+            CKEDITOR.on('dialogDefinition', function (ev) {
+                var dialogName = ev.data.name;
+                var dialogDefinition = ev.data.definition;
+
+                if (dialogName === 'image') {
+                    var uploadTab = dialogDefinition.getContents('Upload');
+                    var uploadButton = uploadTab.get('uploadButton');
+
+                    uploadButton.onClick = function (evt) {
+                        console.log('Upload button clicked');
+                        var fileInput = this.getDialog().getContentElement('Upload', 'upload').getInputElement().$;
+                        console.log('fileInput: ', fileInput);
+                        console.log('nboardCode in dialogDefinition: ', nboardCode);
+
+                        var formData = new FormData();
+                        formData.append('upload', fileInput.files[0]);
+                        formData.append('nboardCode', nboardCode);
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/board/imageUpload', true);
+                        xhr.onload = function () {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                var url = response.url;
+                                console.log('Uploaded file URL: ', url);
+
+                                // URL 필드 업데이트
+                                var dialog = this.getDialog();
+                                var urlField = dialog.getContentElement('info', 'txtUrl');
+                                urlField.setValue(url);
+
+                                // 미리보기 업데이트
+                                var preview = dialog.getContentElement('info', 'previewImage');
+                                if (preview) {
+                                    preview.getInputElement().setAttribute('src', url);
+                                }
+
+                                // 크기 필드 업데이트
+                                var widthField = dialog.getContentElement('info', 'txtWidth');
+                                var heightField = dialog.getContentElement('info', 'txtHeight');
+                                if (widthField && heightField) {
+                                    var img = new Image();
+                                    img.onload = function () {
+                                        widthField.setValue(img.width);
+                                        heightField.setValue(img.height);
+                                    };
+                                    img.src = url;
+                                }
+                            } else {
+                                alert('파일 업로드에 실패했습니다.');
+                            }
+                        }.bind(this);
+                        xhr.send(formData);
+                    };
+                }
+            });
+        });
+    </script>
+</th:block>
+</html>

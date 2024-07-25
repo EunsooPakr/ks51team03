@@ -668,13 +668,12 @@ a{
 .board-list-normal-btn {
 	font-size:1rem;
 	background: #000;
-    color: #fff;
+    color: #fff !important;
 	position: relative;
 	border: 0;
 	padding: 15px 25px;
 	display: inline-block;
 	text-align: center;
-	color: white;
 	margin:5px;
 }
 
@@ -1549,3 +1548,6 @@ a{
 	text-decoration: underline; /* 호버 시 밑줄 추가 */
 }
 
+/*//////////////////////////////////////////////////////////////////
+[ board_write_gallery ]*/
+.cke_notification.cke_notification_warning { display: none; }

@@ -93,8 +93,8 @@ public class MemberController {
     }
 
 	@PostMapping("/login/gara")
-	public String loginGara(@RequestParam(value = "memberId") String memberId
-			, @RequestParam(value = "memberPw") String memberPw
+	public String loginGara(@RequestParam(value = "headerId") String memberId
+			, @RequestParam(value = "headerPw") String memberPw
 			, HttpServletRequest request
 			, HttpServletResponse response
 			, HttpSession session){

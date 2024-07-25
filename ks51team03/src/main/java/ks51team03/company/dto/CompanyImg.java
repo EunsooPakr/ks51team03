@@ -10,5 +10,4 @@ public class CompanyImg {
     private MultipartFile revImgFile;
     private String fileIdx;
     private String filePath;
-
 }

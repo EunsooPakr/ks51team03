@@ -128,9 +128,29 @@
 		/* 게시글 수정*/
 		UPDATE
 			notice_board
-		SET
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="memberId != null and memberId != ''">
+			id=#{memberId},
+			</if>
+			<if test="boardCode != null and boardCode != ''">
+			bcode=#{boardCode},
+			</if>
+			<if test="boardCateCode != null and boardCateCode != ''">
+			bctcode=#{boardCateCode},
+			</if>
+			<if test="nboardTitle != null and nboardTitle != ''">
 			nb_title=#{nboardTitle},
-			nb_content=#{nboardContent}
+			</if>
+			<if test="nboardContent != null and nboardContent != ''">
+			nb_content=#{nboardContent},
+			</if>
+			<if test="nboardRegistDate != null and nboardRegistDate != ''">
+			nb_reg=#{nboardRegistDate},
+			</if>
+			<if test="nboardImg != null and nboardImg != ''">
+			nb_img=#{nboardImg}
+			</if>
+		 </trim>
 		 WHERE
         	nbcode = #{nboardCode};
 	</update>
@@ -241,6 +261,62 @@
 			nb.nbcode=#{nboardCode};
 	</select>
 	
+	<insert id="insertnBoardImg" parameterType="NBoardImg">
+		 /* 게시글 이미지 추가 */
+	    <selectKey keyProperty="nbiCode" resultType="String" order="BEFORE">
+	        SELECT 
+	            CONCAT('nbi', COALESCE(MAX(CAST(SUBSTRING(nbicode, 4) AS UNSIGNED)), 0) + 1)
+	        FROM nboard_img
+	    </selectKey>
+		-- 게시글 대표 이미지 등록
+		INSERT INTO nboard_img
+		(	nbicode, 
+			nbcode, 
+			file_idx, 
+			file_cate
+		)
+		VALUES 
+		(	#{nbiCode},
+		 	#{nbCode},
+		 	#{fileIdx},
+		   	'게시글대표이미지'
+		)
+	</insert>
+	
+	<select id="getNBoardImgByNBCode" parameterType="String" resultType="String">
+		/*게시글 코드로 이미지 경로 가져오기*/
+		SELECT
+			f.file_path
+		FROM
+			nboard_img as ni
+			LEFT JOIN
+			files as f
+			ON
+			ni.file_idx=f.file_idx
+		WHERE
+		ni.nbcode = #{nbcode}
+		LIMIT 1;
+	</select>
+	
+	<delete id="deleteFromNBoardImg" parameterType="String">
+		/*게시글이미지 삭제*/
+	    DELETE FROM nboard_img
+	    WHERE 
+	    	file_idx
+	    IN
+	    (
+	        SELECT file_idx
+	        FROM files
+	        WHERE file_path = #{nboardImg}
+    	)
+	</delete>
+	
+	<delete id="deleteFromFiles" parameterType="String">
+		/*게시글 파일 삭제*/
+    	DELETE FROM files
+    	WHERE
+    		file_path = #{nboardImg}
+	</delete>
 	<!-- <select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
 		/*게시글 검색*/
 		SELECT
