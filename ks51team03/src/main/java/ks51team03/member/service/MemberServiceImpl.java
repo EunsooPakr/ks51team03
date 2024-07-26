@@ -90,8 +90,8 @@ public class MemberServiceImpl implements MemberService{
 	 * 회원 구독 추가
 	 */
 	@Override
-	public int memberAddLike(MemberLike memberLike) {
-		return memberMapper.memberAddLike(memberLike);
+	public int memberAddLike(String memberId, String cCode) {
+		return memberMapper.memberAddLike(memberId, cCode);
 	}
 
 	/**

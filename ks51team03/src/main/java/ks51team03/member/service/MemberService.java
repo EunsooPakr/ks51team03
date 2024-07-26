@@ -34,9 +34,9 @@ public interface MemberService {
 	List<MemberLike> memberGetLikeCompany(String memberId);
 
 	// 회원 구독
-	int memberAddLike(MemberLike memberLike);
+    int memberAddLike(String memberId, String cCode);
 
-	// 회원 알림 내용 조회
+    // 회원 알림 내용 조회
 	List<ComInformReciPient> getInform(String memberId);
 
 	// 회원 알림 수 조회

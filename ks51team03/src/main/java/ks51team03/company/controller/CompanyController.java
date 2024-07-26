@@ -213,7 +213,6 @@ public class CompanyController {
 		}
 
 		List<ComOperTime> comOperTime = companyService.getCompanyOperTime(cCode);
-		log.info("comOperTime: {}", comOperTime);
 		model.addAttribute("comOperTime", comOperTime);
 		return "company/company_modify_opertime";
 	}
@@ -363,7 +362,6 @@ public class CompanyController {
 		}
 		List<Company> companyList = companyService.getCompanyList();
 		String checkCcode = companyService.getCompanyCodeByMemberId(memberId);
-		log.info("checkCcode :{}", checkCcode);
 		model.addAttribute("companyList", companyList);
 		if(checkCcode != null){
 			model.addAttribute("checkCcode", checkCcode);
@@ -600,9 +598,9 @@ public class CompanyController {
 		}
 		if (companyCode != null) {
 			List<ComReview> comReviews = companyService.getCompanyReview(companyCode);
-
-			model.addAttribute("comReviews", comReviews);
-
+			if(comReviews != null){
+				model.addAttribute("comReviews", comReviews);
+			}
 		}
 
 		return "company/company_review";

@@ -694,7 +694,7 @@
 	<select id="getComMapByCCode" resultMap="ComMapResultMap">
 		-- 업체코드로 업체 좌표및 링크 검색
 		SELECT
-			c.ccode, c.cm_link, c.cm_x, c.cm_y, c.id
+			c.ccode, c.cm_x, c.cm_y, c.id
 		FROM
 			com_map AS c
 		WHERE
@@ -708,6 +708,21 @@
 		FROM 
 	    	company;
 	</select>
+
+	<insert id="insertComMap" parameterType="Company">
+		<selectKey keyProperty="cmCode" resultType="String" order="BEFORE">
+			SELECT
+			CASE
+			WHEN COUNT(*) = 0 THEN 'cm1'
+			ELSE CONCAT('cm', (MAX(CAST(SUBSTRING_INDEX(cmcode, 'cm', -1) AS UNSIGNED)) + 1))
+			END
+			FROM com_map
+		</selectKey>
+		-- 업체 위경도 등록
+		INSERT INTO com_map
+		(cmcode, ccode, cm_x, cm_y, id, com_map_date)
+		VALUES (#{cmCode}, #{companyCode}, #{comMapX}, #{comMapY}, #{memberId}, NOW())
+	</insert>
 
 
 	<insert id="insertCompany" parameterType="Company">
@@ -726,7 +741,8 @@
 			com_parking,
 			com_page,
 			com_reg_date,
-			id
+			id,
+			com_active
 		)VALUES(
 			#{companyCode},
 			#{companyClass},
@@ -741,7 +757,8 @@
 			#{companyParking}, 
 			#{companyPage}, 
 			CURDATE(),
-			#{memberId}
+			#{memberId},
+			1
 		);
 	</insert>
 	

@@ -126,7 +126,7 @@
 		WHERE l.id=#{memberId} AND l.lk_state = 1
 	</select>
 
-	<insert id="memberAddLike" parameterType="MemberLike">
+	<insert id="memberAddLike" parameterType="String">
 		<selectKey keyProperty="lkCode" resultType="String" order="BEFORE">
 			SELECT
 			CASE

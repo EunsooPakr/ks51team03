@@ -137,6 +137,9 @@ public interface CompanyMapper {
 
     // 업체 코드로 해당 업체 리뷰수 불러오기
     Integer getCompanyReviewCount(@Param("cCode") String cCode);
+
+    // 업체 위경도 등록
+    int insertComMap(Company company);
     
     // 업체 등록
  	int insertCompany(Company company);

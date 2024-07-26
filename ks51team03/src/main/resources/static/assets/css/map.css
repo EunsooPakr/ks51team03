@@ -369,3 +369,14 @@ hr {
     font-weight: bold;
     margin: 10px 0;
 }
+.review {
+    border-bottom: 1px solid yellowgreen; /* 구분선 추가 */
+    padding: 10px 0; /* 위아래 여백 추가 */
+}
+
+.review img {
+    display: block;
+    margin-top: 5px; /* 이미지와 텍스트 사이의 간격 조정 */
+    width: 80px; /* 이미지 크기 조정 */
+    height: 80px; /* 이미지 비율 유지 */
+}

@@ -470,13 +470,13 @@ public class MemberController {
 		String memberId = (String) session.getAttribute("SID");
 		String cCode = requestData.get("cCode");
 		MemberLike memberLike = memberService.memberLikeCheckFirst(cCode, memberId);
-		if(memberLike.getLkState().equals("1")){
-			memberService.updateMemberLikeStateOn(memberLike.getLkCode());
+		if(memberLike != null){
+			if(memberLike.getLkState().equals("1")){
+				memberService.updateMemberLikeStateOn(memberLike.getLkCode());
+			}
 		}
 		else{
-			memberLike.setMemberId(memberId);
-			memberLike.setCCode(cCode);
-			memberService.memberAddLike(memberLike);
+			memberService.memberAddLike(memberId, cCode);
 		}
 		return "redirect:/map/map_company_info";
 	}
@@ -490,7 +490,6 @@ public class MemberController {
 			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
 		}
 		List<MemberLike> comLikes = memberService.memberGetLikeCompany(memberId);
-		log.info("comLikes: {}", comLikes);
 		model.addAttribute("comLikes",comLikes);
 		return "member/member_mypage_like_setting";
 

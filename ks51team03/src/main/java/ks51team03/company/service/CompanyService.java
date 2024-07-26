@@ -287,6 +287,7 @@ public class CompanyService {
         return companyMapper.deleteStaff(requestId);
     }
 
+
     // 업체 등록
     public void insertCompany(Company company) {
     	String ccode="ccode"+String.valueOf(companyMapper.getCompanyCode()+1);
@@ -298,6 +299,7 @@ public class CompanyService {
     	
     	int update=companyMapper.updateCeo(company);
 		int result = companyMapper.insertCompany(company);
+       companyMapper.insertComMap(company);
 	}
 
 

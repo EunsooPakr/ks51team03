@@ -20,7 +20,9 @@ public class Company {
     private String companyRegDate;
     private String memberId;
     private String comPostNum;
-
+    private String comMapX;
+    private String comMapY;
+    private String cmCode;
 
 
 }

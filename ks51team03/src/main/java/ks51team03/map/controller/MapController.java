@@ -40,9 +40,7 @@ public class MapController {
 	@ResponseBody
 	@GetMapping("/map/get_company_list")
 	public List<Company> getCompanyList(@RequestParam(value = "keyword", required = false) String keyword) {
-		log.info("Received keyword: {}", keyword);
 		List<Company> companyList = companyService.getCompanyListByKeyWord(keyword);
-		log.info("Resulting company list: {}", companyList);
 		return companyList;
 	}
 
@@ -54,10 +52,10 @@ public class MapController {
 			ComMap comMap = companyService.getComMapByCCode(companyCode);
 			if (comMap != null) {
 				comMapList.add(comMap);
-				log.info("comMapList: {}", comMapList);
 
 			}
 		}
+
 		return comMapList;
 	}
 
@@ -68,16 +66,15 @@ public class MapController {
 		int reviewCount = companyService.getCompanyReviewCount(cCode);
 		double avgReviewScore = companyService.getAvgReviewScore(cCode);
 		List<String> comImg = companyService.getCompanyImgByCcodeForMap(cCode);
-		log.info("comImg: {}", comImg);
 		List<ComReview> reviews = companyService.getCompanyReview(cCode);
 		if(reviews != null) {
 			Member revMember = memberService.getMemberInfoById(reviews.get(0).getMemberId());
 			response.put("revMember", revMember);
+			response.put("reviews", reviews);
 		}
 
 		response.put("reviewCount", reviewCount);
 		response.put("avgReviewScore", avgReviewScore);
-		response.put("reviews", reviews);
 		response.put("comImg", comImg);
 
 		return response;
@@ -92,7 +89,6 @@ public class MapController {
 			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
 		}
 		model.addAttribute("cCode", cCode);
-		log.info("문의 작성 대상 : {}", cCode);
 		return "map/map_write_question";
 	}
 
@@ -105,7 +101,6 @@ public class MapController {
 			return "redirect:/map/map_main"; // 로그인 페이지로 리다이렉트
 		}
 		model.addAttribute("cCode", cCode);
-		log.info("리뷰 작성 대상 : {}", cCode);
 		return "map/map_write_review";
 	}
 
@@ -114,7 +109,6 @@ public class MapController {
 		String memberId = (String)session.getAttribute("SID");
 		// 업체 코드로 업체 정보 출력
 		List<Company> companyInfoById = companyService.getCompanyInfoByCcode(cCode);
-		log.info("companyInfoById : {}", companyInfoById);
 		// 현재 요일 가져오기
 		List<ComOperTime> companyOperTime = companyService.getCompanyOperTime(cCode);
 		int companyReviewCount = companyService.getCompanyReviewCount(cCode);
@@ -122,14 +116,16 @@ public class MapController {
 		DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
 		String openingHours = getOpeningHoursForDay(dayOfWeek, companyOperTime);
 		MemberLike likeCheck = memberService.memberLikeCheck(cCode, memberId);
-		log.info("likeCheck : {}", likeCheck);
+		if(likeCheck != null){
+			model.addAttribute("likeCheck", likeCheck.getLkState());
+			model.addAttribute("lkCode", likeCheck.getLkCode());
+		}
 		model.addAttribute("companyOperTime", companyOperTime);
 		model.addAttribute("openingHours", openingHours);
 		model.addAttribute("companyReviewCount", companyReviewCount);
 		model.addAttribute("companyImgs", companyImgs);
 		model.addAttribute("companyInfoById", companyInfoById);
-		model.addAttribute("likeCheck", likeCheck.getLkState());
-		model.addAttribute("lkCode", likeCheck.getLkCode());
+
 		return "map/map_company_info";
 	}
 

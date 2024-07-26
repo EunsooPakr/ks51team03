@@ -91,6 +91,7 @@ function getComMapList(cCodes, keyword) {
         data: JSON.stringify(cCodes),
         success: function(response) {
             comMapList = response || [];
+            console.log("comMapList: " + JSON.stringify(comMapList));
 
             // 카카오에서 장소 검색
             ps.keywordSearch(keyword, placesSearchCB, {page: 1});
@@ -481,10 +482,23 @@ function showDetails(index, isDB) {
                 const reviewList = document.querySelector('.review_list');
                 reviewList.innerHTML = ''; // 기존 리뷰 목록 초기화
                 if (response.reviews && response.reviews.length > 0) {
-                    response.reviews.forEach(function(review) {
+                    const reviewsToShow = response.reviews.slice(0, 3);
+                    reviewsToShow.forEach(function(review) {
                         const reviewDiv = document.createElement('div');
                         reviewDiv.className = 'review';
-                        reviewDiv.innerText = review.memberId + ': ' + review.revContent;
+                        // 리뷰 텍스트 추가
+                        const reviewText = document.createElement('p');
+                        reviewText.innerText = review.memberId + ': ' + review.revContent;
+                        reviewDiv.appendChild(reviewText);
+                        // 이미지 추가
+                        if (review.filePath) {
+                            const reviewImage = document.createElement('img');
+                            reviewImage.src = review.filePath;
+                            reviewImage.style.display = 'block'; // 이미지 블록 요소로 설정
+                            reviewImage.style.width = '80px'; // 이미지 크기 조정
+                            reviewImage.style.height = '80px'; // 이미지 비율 유지
+                            reviewDiv.appendChild(reviewImage);
+                        }
                         reviewList.appendChild(reviewDiv);
                     });
                 } else {

@@ -37,6 +37,8 @@
 		<div class="login-insert-field-addr">
             <b>업체 주소</b>
             <div>
+                <input type="hidden" id="comMapX" name="comMapX">
+                <input type="hidden" id="comMapY" name="comMapY">
                 <input type="number" id="comPostNum" name="comPostNum" placeholder="우편번호 입력">
                 <input type="button" onclick="SearchPostNumberAddr()" value="우편번호 검색">
             </div>
@@ -107,6 +109,8 @@
    	<script th:src="@{/assets/js/jquery-3.7.1.js}"></script>
 	<script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
 	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js}"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=187a124bab49811facead4006ff52672&libraries=services"
+            type="text/javascript"></script>
 	<script th:inline="javascript">
 	/* 이메일 인증번호 발송 */
 	function sendNumber()
@@ -171,10 +175,21 @@
 	            { 
 	                addr = data.jibunAddress;
 	            }
+                // 위도 및 경도 좌푯값 구하기
+                const geocoder = new kakao.maps.services.Geocoder();
+                geocoder.addressSearch(data.roadAddress, (result, status) => {
+                    if (status === kakao.maps.services.Status.OK) {
+                        console.log('위도 : ' + result[0].y);
+                        console.log('경도 : ' + result[0].x);
+                        document.getElementById("comMapX").value = result[0].x;
+                        document.getElementById("comMapY").value = result[0].y;
+                    }
+                });
 	
 	            // 우편번호와 주소 정보를 해당 필드에 넣는다.
 	            document.getElementById('comPostNum').value = data.zonecode;
 	            document.getElementById("companyAddr").value = addr;
+
 	            // 커서를 상세주소 필드로 이동한다.
 	            document.getElementById("companyAddrDetail").focus();
 	        }
