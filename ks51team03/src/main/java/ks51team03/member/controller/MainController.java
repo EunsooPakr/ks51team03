@@ -49,4 +49,14 @@ public class MainController {
 		
 		return "index";
 	}
+	
+
+
+	@GetMapping("/inform/list_main")
+	public String listMainPage(Model model)
+	{
+		
+		
+		return "inform/list_main";
+	}
 }
