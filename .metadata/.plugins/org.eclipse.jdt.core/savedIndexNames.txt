@@ -80,7 +80,6 @@ INDEX VERSION 1.134+E:\github\ks51team03\.metadata\.plugins\org.eclipse.jdt.core
 2632573296.index
 858491238.index
 3727291951.index
-1481713021.index
 2378393194.index
 2024574522.index
 1498298621.index
