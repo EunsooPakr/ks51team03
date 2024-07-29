@@ -56,6 +56,7 @@
                     <div class="board-list-btn">
                         <button type="submit" class="board-list-normal-btn">수정</button>
                         <button type="reset" class="board-list-normal-btn">취소</button>
+                        <button id="retrunBtn" type="button" class="board-list-normal-btn">목록</button>
                     </div>
                 </div>
             </form>
@@ -65,6 +66,12 @@
 <th:block layout:fragment="customJs">
 	<script th:src="@{/assets/ckeditor/ckeditor.js}"></script>
     <script th:inline="javascript">
+	    $(document).ready(function() {
+	        $('#retrunBtn').click(function() {
+	            window.location.href = "/board/board_list_gallery?currentPage=1&boardCateValue=갤러리 게시글";
+	        });
+	    });
+    
         $(function(){
         	console.log('Thymeleaf variables are being processed');
             const nboardCode = /*[[${noticeBoard.nboardCode}]]*/ '';
@@ -74,8 +81,8 @@
                 removePlugins: 'cloudservices,easyimage',
                 extraAllowedContent: 'table tr td{border:1px solid black;}',
                 contentsCss: '/assets/css/ckeditor_contents.css',
-                filebrowserUploadUrl: '/board/imageUpload',
-                filebrowserImageUploadUrl: '/board/imageUpload'
+                filebrowserUploadUrl: '/board/imageUpload?nboardCode=' + encodeURIComponent(nboardCode)+'&mode='+"edit",
+                filebrowserImageUploadUrl: '/board/imageUpload?nboardCode=' + encodeURIComponent(nboardCode)+'&mode='+"edit"
             });
 
             CKEDITOR.on('dialogDefinition', function (ev) {

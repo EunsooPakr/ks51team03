@@ -7,11 +7,11 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ks51team03.board.dto.AnswerBoard;
 import ks51team03.board.dto.NBoardImg;
 import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
 import ks51team03.board.mapper.BoardMapper;
-import ks51team03.company.dto.CompanyImg;
 import ks51team03.files.dto.FileRequest;
 import ks51team03.files.mapper.FileMapper;
 import ks51team03.files.util.FileUtils;
@@ -84,6 +84,41 @@ public class BoardService {
 
 		int result = boardMapper.insertNBoard(nboard);
 	}
+	
+	public void insertABoard(AnswerBoard aboard) {
+		String abcode = "ab" + String.valueOf(boardMapper.getABoardCode() + 1);
+
+		aboard.setAboardCode(abcode);
+
+		int result = boardMapper.insertABoard(aboard);
+	}
+	
+	public void deleteABoardByABCode(String abCode) {
+		
+		int result = boardMapper.deleteABoardByABCode(abCode);
+	}
+	
+	public AnswerBoard getABoardByABCode(String aboardCode) {
+		
+		return boardMapper.getABoardByABCode(aboardCode);
+	}
+	
+	public void updateABoard(AnswerBoard aboard) {
+
+		boardMapper.updateABoard(aboard);
+	}
+	
+	public void selectABoard(String aboardCode) {
+		boardMapper.selectABoard(aboardCode);
+	}
+	
+	
+	// 게시글 코드로 답변 검색
+    public List<AnswerBoard> getABoardInfoByNBCode(String nboardCode) {
+		
+		return boardMapper.getABoardInfoByNBCode(nboardCode);
+	}
+	
 
 	public void updateNBoard(NoticeBoard nboard) {
 		int result = boardMapper.updateNBoard(nboard);
@@ -204,5 +239,6 @@ public class BoardService {
         // files 테이블에서 삭제
         boardMapper.deleteFromFiles(nboardImg);
     }
+    
     
 }

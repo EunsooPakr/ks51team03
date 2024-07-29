@@ -5,9 +5,11 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import ks51team03.board.dto.AnswerBoard;
 import ks51team03.board.dto.NBoardImg;
 import ks51team03.board.dto.NBoardSearch;
 import ks51team03.board.dto.NoticeBoard;
+import ks51team03.pet.dto.Pet;
 
 @Mapper
 public interface BoardMapper {
@@ -16,7 +18,27 @@ public interface BoardMapper {
 	int getNoticeBoardListCnt(String boardCateValue,String searchKey,String searchValue);
 	List<Map<String, Object>> getNoticeBoardList(String boardCateValue,int startRow, int rowPerPage,String searchKey,String searchValue);
 	
+	//답변글 등록
+	public int insertABoard(AnswerBoard aboard);
 	
+	//답변글 코드로 답변글 삭제
+	public int deleteABoardByABCode(String abCode);
+	
+	//답변글 코드로 답변글 도출
+	public AnswerBoard getABoardByABCode(String aboardCode);
+	
+	//해당 답변코드에 해당하는 답변글 채택
+	public void selectABoard(String aboardCode);
+	
+	//답변글 수정
+	public void updateABoard(AnswerBoard aboard);
+	
+	// 답변글 코드 도출
+	int getABoardCode();
+	
+	// 게시글 코드로 답변 검색
+    public List<AnswerBoard> getABoardInfoByNBCode(String nboardCode);
+	 	
 	//게시글 등록
 	public int insertNBoard(NoticeBoard nboard);
 	

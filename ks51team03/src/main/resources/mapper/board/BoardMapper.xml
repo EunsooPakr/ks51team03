@@ -20,6 +20,19 @@
 		<result column="nb_rec" property="nboardRec"/>
 	</resultMap>
 
+	<resultMap type="AnswerBoard" id="aBoardResultMap">
+		<!-- pk, column -->
+		<id column="abcode" property="aboardCode"/>
+		<result column="id" property="memberId"/>
+		<result column="nbcode" property="nboardCode"/>
+		<result column="ab_title" property="aboardTitle"/>
+		<result column="ab_content" property="aboardContent"/>
+		<result column="ab_reg" property="aboardRegistDate"/>
+		<result column="ab_update" property="aboardUpdateDate"/>
+		<result column="ab_delete" property="aboardDeleteDate"/>
+		<result column="ab_selected" property="aboardSelected"/>
+	</resultMap>
+
 	<select id="getNoticeBoardList" resultMap="nBoardResultMap">
 		/*게시글 목록 조회*/
 		SELECT
@@ -54,6 +67,59 @@
 	        AND nb.${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
 	    </if>;
 	</select>
+	
+	<insert id="insertABoard" parameterType="AnswerBoard" >
+	/*답변글 작성*/
+	INSERT INTO answer_board
+	( 	abcode,
+		id,
+		nbcode,
+		ab_title,
+		ab_content,
+		ab_reg,
+		ab_update,
+		ab_delete,
+		ab_selected
+	)VALUES(
+		#{aboardCode},
+		#{memberId},
+		#{nboardCode},
+		#{aboardTitle},
+		#{aboardContent},
+		CURDATE(),
+		#{aboardUpdateDate},
+		#{aboardDeleteDate},
+		#{aboardSelected}
+	);
+	</insert>
+	
+	<select id="getABoardCode" resultType="int">
+		/* 답변글코드 도출*/
+		SELECT 
+	    	MAX(CAST(REGEXP_REPLACE(abcode, '[^0-9]', '') AS UNSIGNED)) AS max_number
+		FROM 
+	    	answer_board;
+	</select>
+	
+	<select id="getABoardInfoByNBCode" parameterType="String" resultMap="aBoardResultMap">
+		/* 펫코드에 따라 특정 반려동물 정보조회 */
+		SELECT 
+			abcode,
+			id,
+			nbcode,
+			ab_title,
+			ab_content,
+			ab_reg,
+			ab_update,
+			ab_delete,
+			ab_selected
+		FROM
+			answer_board
+		WHERE 
+			nbcode = #{nboardCode};
+	</select>
+	
+	
 	
 	<insert id="insertNBoard" parameterType="NoticeBoard" >
 	/*게시글 작성*/
@@ -104,6 +170,16 @@
 			nb.nbcode=#{nboardCode};
 	</select>
 	
+	<select id="getABoardByABCode" parameterType="String" resultMap="aBoardResultMap">
+		/* 답변글 코드에 맞는 답변글 열람*/
+		SELECT
+			*
+		FROM
+			answer_board AS ab
+		WHERE 
+			ab.abcode=#{aboardCode};
+	</select>
+	
 	<update id="increaseViewByNBCode" parameterType="String">
 		/* 게시글 코드에 맞는 조회수 증가*/
 		UPDATE
@@ -123,6 +199,34 @@
 		WHERE
 			nbcode=#{nboardCode};	
 	</update>
+	
+	<update id="selectABoard" parameterType="String">
+		/* 답변글 채택*/
+		UPDATE
+			answer_board
+		SET
+			ab_selected=1	
+		WHERE
+			abcode=#{aboardCode};	
+	</update>
+	
+	
+	
+	<update id="updateABoard" parameterType="AnswerBoard">
+		/* 답변글 수정*/
+		UPDATE
+			answer_board
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="aboardContent != null and aboardContent != ''">
+			ab_content=#{aboardContent},
+			</if>
+			ab_update=CURDATE()
+		 </trim>
+		 WHERE
+        	abcode = #{aboardCode};
+	</update>
+	
+	
 	
 	<update id="updateNBoard" parameterType="NoticeBoard">
 		/* 게시글 수정*/
@@ -317,6 +421,15 @@
     	WHERE
     		file_path = #{nboardImg}
 	</delete>
+	
+	<delete id="deleteABoardByABCode" parameterType="String">
+		/*게시글 파일 삭제*/
+    	DELETE FROM answer_board
+    	WHERE
+    		abcode = #{abCode}
+	</delete>
+	
+	
 	<!-- <select id="getBoardSearchList" parameterType="NBoardSearch" resultMap="nBoardResultMap">
 		/*게시글 검색*/
 		SELECT
