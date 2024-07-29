@@ -66,7 +66,7 @@
 						</div>
 					</div>
 					<div class="bt_wrap">
-						<a th:href="'/board/board_list_gallery?currentPage=1&boardCateValue='+${boardTitle}" class="on">목록</a>
+						<a th:href="'/board/board_list_question?currentPage=1&boardCateValue='+${boardTitle}" class="on">목록</a>
 						<a th:if="${session.SID == noticeBoard.memberId}" th:href="'/board/board_edit_question?nboardCode=' + ${noticeBoard.nboardCode}+'&boardCateValue='+${boardTitle}">수정</a>
 						<a th:unless="${session.SID == noticeBoard.memberId}" href="#" id="nBoardRecBtn">추천</a>
 					</div>

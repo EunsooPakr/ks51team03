@@ -1600,7 +1600,7 @@ a{
 	height:300px;
 }
 
-.question-comment-box-write a, input {
+.question-comment-box-write a, .question-comment-box-write input {
 	font-size: 1.5rem;
 	font-weight: bold;
 	margin-left:5px;
