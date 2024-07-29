@@ -77,7 +77,8 @@ public class BoardImgController {
 
             String areadyImg=boardService.getNBoardImgByNBCode(nbcode);
             System.out.println("areadyImg:"+areadyImg);
-            if ("".equals(nboardCode)&&areadyImg==null)
+			/* if ("".equals(nboardCode)&&areadyImg==null) */
+            if (mode.equals("write"))
             {
             	NoticeBoard noticeBoard = new NoticeBoard();
                 noticeBoard.setNboardCode(nbcode);

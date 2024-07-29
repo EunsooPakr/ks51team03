@@ -31,7 +31,7 @@
 
                 <!-- 게시판 내용 -->
                 <div class="board_list_wrap">
-                    <div class="board-list row flex-plus">
+                    <div class="board-list row">
                         <div th:each="noticeBoard : ${NoticeBoardList}" class="col-md-3 gallery-board-box">
                             <div class="gb-box-img">
                                 <a th:href="@{/board/board_view_gallery(nboardCode=${noticeBoard.nboardCode})}">

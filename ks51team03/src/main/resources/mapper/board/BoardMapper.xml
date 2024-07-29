@@ -36,7 +36,7 @@
 	        AND nb.${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
 	    </if>
 		ORDER BY
-			CAST(SUBSTRING_INDEX(nb.nbcode, 'nb', -1) AS SIGNED)
+			CAST(SUBSTRING_INDEX(nb.nbcode, 'nb', -1) AS SIGNED) DESC
 		LIMIT #{startRow}, #{rowPerPage};
 	</select>
 	

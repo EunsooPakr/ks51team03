@@ -22,7 +22,7 @@
                             <div class="title">
                                 <dl>
                                     <dt>제목</dt>
-                                    <dd><input type="text" name="nboardTitle" placeholder="제목 입력"></dd>
+                                    <dd><input type="text" name="nboardTitle" placeholder="제목 입력" required="required"></dd>
                                 </dl>
                             </div>
                             <div class="info">
@@ -40,8 +40,8 @@
                         <div class="board-list-btn">
                             <button type="submit" class="board-list-normal-btn">등록</button>
                             <button type="reset" class="board-list-normal-btn">취소</button>
-                        </div>
-                    </div>
+ 							<button id="retrunBtn" type="button" class="board-list-normal-btn">목록</button>
+                    	</div>
                 </form>
             </div>
         </div>
@@ -49,6 +49,12 @@
 <th:block layout:fragment="customJs">
 	<script th:src="@{/assets/ckeditor/ckeditor.js}"></script>
     <script th:inline="javascript">
+	    $(document).ready(function() {
+	        $('#retrunBtn').click(function() {
+	            window.location.href = "/board/board_list_gallery?currentPage=1&boardCateValue=갤러리 게시글";
+	        });
+	    });
+	    
         $(function(){
         	console.log('Thymeleaf variables are being processed');
         	const nboardCode = /*[[${nboardCode}]]*/ '';
