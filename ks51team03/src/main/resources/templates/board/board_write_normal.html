@@ -39,6 +39,7 @@
 			            <div class="board-list-btn">
 				            <button type="submit" class="board-list-normal-btn">등록</button>
 				            <button type="reset" class="board-list-normal-btn">취소</button>
+			            	<button id="retrunBtn" type="button" class="board-list-normal-btn">목록</button>
 			            </div>
 			        </div>
 		        </form>
@@ -53,5 +54,12 @@
 	
 <!-- 사용자정의 javascript -->
 <th:block layout:fragment="customJs">
+	<script th:inline="javascript">
+	$(document).ready(function() {
+	        $('#retrunBtn').click(function() {
+	            window.location.href = "/board/board_list_normal?currentPage=1&boardCateValue=자유 게시글";
+	        });
+	    });
+	</script>
 </th:block>
 </html>

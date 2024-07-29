@@ -756,8 +756,14 @@ a{
     width: 20%;
 }
 
+.flex-plus {
+	display: flex;
+}
+
 
 .board_list {
+    flex-wrap: wrap;
+	
     width: 100%;
     border-top: 2px solid #000;
 }
@@ -1509,19 +1515,27 @@ a{
 /*//////////////////////////////////////////////////////////////////
 [ board_list_gallery ]*/
 .gallery-board-box {
+	/* margin: 10px; */
+    flex: 0 0 calc(25% - 10px); /* 4개씩 배치, 여백을 감안한 계산 */
+    box-sizing: border-box;
 	width: 250px; /* 예시로 설정한 전체 박스의 너비 */
 	border: 1px solid #ccc; /* 테두리 추가 */
 	padding: 10px; /* 내부 여백 추가 */
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-	margin: auto; /* 외부 여백 추가 */
+	/*margin: auto;  외부 여백 추가 */
 }
 
 .gb-box-img {
-	width: 100%; /* 부모 요소의 너비에 맞춤 */
-	height: auto; /* 자동 높이 조절 */
+	width: 230px;
+    height: 230px;
+    /*
+	width: 100%; 
+	height: auto;
+	*/ 
 	display: flex; /* flexbox 사용 */
 	justify-content: center; /* 수평 중앙 정렬 */
 	align-items: center; /* 수직 중앙 정렬 */
+	background-color: #2d2d2d; /* 밝은 검정색 배경 */
 	overflow: hidden; /* 넘치는 부분 숨김 */
 }
 
