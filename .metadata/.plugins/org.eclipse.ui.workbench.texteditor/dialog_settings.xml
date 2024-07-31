@@ -6,8 +6,10 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="insertNBoard"/>
+		<item key="selection" value="btn"/>
 		<list key="findhistory">
+			<item value="btn"/>
+			<item value="write_gallery"/>
 			<item value="insertNBoard"/>
 			<item value="byccode"/>
 			<item value="path"/>
@@ -21,8 +23,6 @@
 			<item value="main"/>
 			<item value="transition: all 0.4s"/>
 			<item value="transition: all 0.4s;"/>
-			<item value="0.4"/>
-			<item value="0.4s"/>
 		</list>
 		<list key="replacehistory">
 		</list>

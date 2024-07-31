@@ -1565,3 +1565,134 @@ a{
 /*//////////////////////////////////////////////////////////////////
 [ board_write_gallery ]*/
 .cke_notification.cke_notification_warning { display: none; }
+
+
+/*//////////////////////////////////////////////////////////////////
+[ board_view_question ]*/
+@font-face {
+	font-family: 'NanumBarunGothic';
+	src: url('/assets/font/custom/NanumBarunGothic.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+        
+@font-face {
+	font-family: 'NanumBarunGothicBold';
+	src: url('/assets/font/custom/NanumBarunGothicBold.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+.question-comment-box-list {
+	font-family: 'NanumBarunGothic', sans-serif; /* 지정한 폰트 적용 */
+	border: 2px solid black; /* 두께, 스타일, 색상 */
+    padding: 20px;           /* 내용과 테두리 사이의 여백 */
+    margin: 10px;            /* div와 다른 요소 사이의 여백 */
+	width:100%;
+}
+
+.question-comment-box-write {
+	/* border: 2px solid black; */ /* 두께, 스타일, 색상 */
+    padding: 20px;           /* 내용과 테두리 사이의 여백 */
+    margin: 10px;            /* div와 다른 요소 사이의 여백 */
+	width:100%;
+	height:300px;
+}
+
+.question-comment-box-write a, .question-comment-box-write input {
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-left:5px;
+}
+
+
+.question-comment-box-write a {
+
+}
+
+.question-comment-box-write input {
+
+	
+}
+
+.question-comment-box-write textarea {
+	resize: none; /* 사용자가 크기 조정 불가능하게 설정 */
+	border: 2px solid gray; /* 두께, 스타일, 색상 */
+	padding:10px;
+	width:85%;
+	margin-right:2%;
+	height:60%;
+	font-size:1rem;
+}
+
+.question-comment-box-write button {
+	width:13%;
+	font-size:1rem;
+	background: #000;
+    color: #fff !important;
+	position: relative;
+	border: 0;
+	padding: 15px 25px;
+	display: inline-block;
+	text-align: center;
+	float:right;
+}
+
+.question-comment-box-read {
+	padding: 20px;           /* 내용과 테두리 사이의 여백 */
+    margin: 10px;            /* div와 다른 요소 사이의 여백 */
+	width:100%;
+}
+
+
+.aboard-read-box {
+	width:100%;
+	height:200px;
+	border-bottom: 2px solid gray;
+}
+
+.aboard-read-box a {
+	
+	margin-left:5px;
+}
+
+.arb-id {
+	font-size: 1.3rem;
+	font-weight: bold;
+	color:gray;
+}
+
+.ard-date {
+	font-size: 1rem;
+	font-weight: bold;
+	color:gray;
+}
+
+.ard-btn {
+	font-size: 1rem;
+	font-weight: bold;
+	color:gray;
+	float:right;
+	margin-left:10px !important;
+	cursor: default; /* 기본 커서 모양을 변경하지 않음 */
+}
+
+.ard-btn:hover {
+    color: #FFA500; /* 글자색을 주황색으로 변경 */
+    text-decoration: none; /* 텍스트에 밑줄이 생기지 않도록 설정 */
+}
+
+/* 채택된 글자 */
+.seleted-text {
+    color: #FFA500 !important; /* 주황색 */
+}
+
+.aboard-read-box textarea {
+	resize: none; /* 사용자가 크기 조정 불가능하게 설정 */
+	padding:10px;
+	width:85%;
+	margin-right:2%;
+	height:60%;
+	font-size:1rem;
+}
