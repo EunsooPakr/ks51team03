@@ -116,6 +116,7 @@
                 <tr>
                     <th>관리자 계정</th>
                     <th>업체대표 계정</th>
+                    <th>장례 업체대표 계정</th>
                     <th>일반회원 계정</th>
                 </tr>
             </thead>
@@ -123,6 +124,7 @@
                 <tr class="id-box">
                     <td>아이디: id1<br>비밀번호: pw1</td>
                     <td>아이디: id3<br>비밀번호: pw3</td>
+                    <td>아이디: id11<br>비밀번호: pw11</td>
                     <td>아이디: id6<br>비밀번호: pw6</td>
                 </tr>
             </tbody>
@@ -138,7 +140,39 @@
                 <tr>
                     <td class="hc-wc">송재익(팀장)</td>
                     <td>
-                        여기에 본인이 작업한 페이지들을 볼 수 있도록 넣어주시면 됩니다.
+                        <ul>
+                            <li><a class="h1-bold" href="#" >메인화면 (index)</a>
+                            <li><a class="h1-bold">프로젝트 역할</a>
+                                <ul>
+                                    <li><a>주 1회 이상 온라인-오프라인 회의 진행 주도</a></li>
+                                    <li><a>담당 기능 URI 매핑, 기능 정의, DB Process</a></li>
+                                    <li><a>MVC 패턴에 맞춘 아키텍쳐 설계</a></li>
+                                    <li><a>중간, 완료 보고서 및 Excel 통합 구현 등 문서 작업 총괄 진행</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                         <ul>
+                                <li><a class="h1-bold">장례 서비스 예약</a>
+                                    <ul>
+                                         <li><a th:href="@{/funeral/serviceList}">예약 바로 가기[ 로그인 후 장례 업체 서비스 선택 필수 ]</a></li>
+                                         <li><a>Stream API를 활용한 서비스 코드별 이미지 그룹화</a></li>
+                                         <li><a>@RequestParam, @RequestBody를 활용한 업체별 동적 서비스화</a></li>
+                                         <li><a>Thymeleaf 템플릿 엔진을 사용하여 동적 콘텐츠를 생성하고 렌더링</a></li>
+                                         <li><a>jQuery를 사용하여 DOM 조작 및 이벤트 처리</a></li>
+                                         <li><a>Axios를 사용하여 비동기 요청을 보내고 서버와 데이터 교환</a></li>
+                                    </ul>
+                                </li>
+                         </ul>
+                         <ul>
+                                <li><a class="h1-bold">장례 서비스 결제</a></li>
+                                <ul>
+                                    <li><a th:href="@{/funeral/serviceList}">결제 바로 가기[ 예약 후 결제 가능 ]</a></li>
+                                    <li><a>Payment Gateway API를 사용하여 결제 처리</a></li>
+                                    <li><a>결제 완료 후 콜백을 처리하기 위한 WebHook 구현</a></li>
+                                    <li><a>JSON 형식의 데이터를 파싱하고 비즈니스 로직을 처리</a></li>
+                                    <li><a>업체 및 사용자별 결제 내역을 관리하고 조회하는 기능 제공</a></li>
+                                </ul>
+                          </ul>
                     </td>
                 </tr>
                 <tr>
